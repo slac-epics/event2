@@ -273,3 +273,9 @@ struct MrfErRegs {
 #define EV_IOCEVTTAB  _IO(EV_IOC_MAGIC, 4)
 
 #define EV_IOC_MAX   5
+
+/* The bits 27-24 of the FPGAVersion register tell us the form factor. */
+#define EVR_FORM_CPCI  0
+#define EVR_FORM_PMC   1
+#define EVR_FORM_VME   2
+#define EVR_FORM_SLAC 15

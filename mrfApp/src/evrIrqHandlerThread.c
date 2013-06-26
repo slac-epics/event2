@@ -5,14 +5,14 @@
 #include <epicsThread.h>
 
 struct evrIrqThreadArg {
-    void (**handler)(int);
+    void (**handler)(int, int);
     int fd;
 };
 
 static int evrIrqHandlerThread(void *p)
 {
     struct evrIrqThreadArg *arg = (struct evrIrqThreadArg *)p;
-    void (**irqHandler)(int) = arg->handler;
+    void (**irqHandler)(int, int) = arg->handler;
     int fd = arg->fd;
     int mask, cnt;
 
@@ -21,7 +21,7 @@ static int evrIrqHandlerThread(void *p)
     while(1) {
         cnt = read(fd, &mask, sizeof(mask));
         if (cnt == sizeof(mask)) {
-            if (*irqHandler) (*irqHandler)(mask);
+            if (*irqHandler) (*irqHandler)(fd, mask);
         } else if (cnt < 0) {
             if (errno != EINTR) {
                 perror("evrIrqHandlerThread has an unknown error");
@@ -45,7 +45,7 @@ int evrIrqHandlerInit( void )
     return 0; /* Not needed any more! */
 }
 
-void EvrIrqHandlerThreadCreate(void (**handler) (int), int fd)
+void EvrIrqHandlerThreadCreate(void (**handler) (int, int), int fd)
 {
     struct evrIrqThreadArg *arg = (struct evrIrqThreadArg *)
                                   malloc(sizeof(struct evrIrqThreadArg));

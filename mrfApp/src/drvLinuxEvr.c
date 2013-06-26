@@ -15,6 +15,7 @@
  * in that it has *both*.)
  */
 
+#include <sys/ioctl.h>
 #define  EVR_DRIVER_SUPPORT_MODULE   /* Indicates we are in the driver support module environment */
 #include "drvMrfEr.h"
 #undef	EVR_MAX_BUFFER
@@ -35,12 +36,6 @@
 
 #define DEVNODE_NAME_BASE	"/dev/er"
 #define DEVNODE_MINOR            '4'
-#ifdef EVENT_CLOCK_SPEED
-    #define FR_SYNTH_WORD   EVENT_CLOCK_SPEED
-#else
-    #warning EVENT_CLOCK_SPEED not defined default to 124.950 MHz
-    #define FR_SYNTH_WORD   CLOCK_124950_MHZ
-#endif
 
 /**************************************************************************************************/
 /*                              Private types                                                     */
@@ -48,119 +43,9 @@
 
 #define TOTAL_EVR_PULSES	12
 #define MAX_FP_CHANNELS         12
-#define TOTAL_FP_CHANNELS	((pLinuxErCard->ErCard.FormFactor == SLAC_EVR) ? 12 : 8)
+#define TOTAL_FP_CHANNELS	((pCard->FormFactor == SLAC_EVR) ? 12 : 8)
 #define TOTAL_TB_CHANNELS	40
-#define MAX_DG                  ((pLinuxErCard->ErCard.FormFactor == SLAC_EVR) ? EVR_NUM_DG : 4)
-
-enum outputs_mapping_id            /* See Table 1 in EVR document */
-{
-	PULSE_GENERATOR_0 = 0,
-	PULSE_GENERATOR_1 = 1,
-	PULSE_GENERATOR_2 = 2,
-	PULSE_GENERATOR_3 = 3,
-	PULSE_GENERATOR_4 = 4,
-	PULSE_GENERATOR_5 = 5,
-	PULSE_GENERATOR_6 = 6,
-	PULSE_GENERATOR_7 = 7,
-	PULSE_GENERATOR_8 = 8,
-	PULSE_GENERATOR_9 = 9,
-	PULSE_GENERATOR_10 = 10,
-	PULSE_GENERATOR_11 = 11,
-	DBUS_0 = 32,
-	DBUS_1 = 33,
-	DBUS_2 = 34,
-	DBUS_3 = 35,
-	DBUS_4 = 36,
-	DBUS_5 = 37,
-	DBUS_6 = 38,
-	DBUS_7 = 39,
-	PRESCALER_0 = 40,
-	PRESCALER_1 = 41,
-	PRESCALER_2 = 42,
-	LOGIC_1 = 62,
-	LOGIC_0 = 63,
-	UNUSED = 63,
-};
-
-/*
- * This *was* a hardware definition: See EVR-TREF-005. It isn't now, so we will insert 
- * DELAYED_PULSE_[4-11].
- *
- * (Actually, I suppose it still is, but we don't have any transition boards, so...)
- */
-enum transition_board_channel
-{
-	DELAYED_PULSE_0 = 0,
-	DELAYED_PULSE_1 = 1,
-	DELAYED_PULSE_2 = 2,
-	DELAYED_PULSE_3 = 3,
-	DELAYED_PULSE_4 = 4,
-	DELAYED_PULSE_5 = 5,
-	DELAYED_PULSE_6 = 6,
-	DELAYED_PULSE_7 = 7,
-	DELAYED_PULSE_8 = 8,
-	DELAYED_PULSE_9 = 9,
-	DELAYED_PULSE_10 = 10,
-	DELAYED_PULSE_11 = 11,
-	TRIGGER_EVENT_0 = 12,
-	TRIGGER_EVENT_1 = 13,
-	TRIGGER_EVENT_2 = 14,
-	TRIGGER_EVENT_3 = 15,
-	TRIGGER_EVENT_4 = 16,
-	TRIGGER_EVENT_5 = 17,
-	TRIGGER_EVENT_6 = 18,
-	OTP_DBUS_0 = 19,
-	OTP_DBUS_1 = 20,
-	OTP_DBUS_2 = 21,
-	OTP_DBUS_3 = 22,
-	OTP_DBUS_4 = 23,
-	OTP_DBUS_5 = 24,
-	OTP_DBUS_6 = 25,
-	OTP_DBUS_7 = 26,
-	OTP_8 = 27,
-	OTP_9 = 28,
-	OTP_10 = 29,
-	OTP_11 = 30,
-	OTP_12 = 31,
-	OTP_13 = 32,
-	OTL_0 = 33,
-	OTL_1 = 34,
-	OTL_2 = 35,
-	OTL_3 = 36,
-	OTL_4 = 37,
-	OTL_5 = 38,
-	OTL_6 = 39,
-        INVALID_TBC = 40, 
-	UNUSED_CH = 255,
-};
-
-struct PulseInfo
-{
-	epicsBoolean	DBusEnable;	/* Set if the DBus is used instead of Pulse */
-	epicsBoolean	Enable;		/* Should a pulse generator be used */
-	epicsUInt32		Delay;		/* Desired delay */
-	epicsUInt32		Width;		/* Desired width */
-	epicsBoolean	Pol;		/* Desired polarity */
-};
-
-struct LinuxErCardStruct
-{
-	struct ErCardStruct			ErCard;
-	/* Backplane channels on the old firmware, those now share
-	   a common set of resources, we need to keep track of them */
-	struct PulseInfo			OTP[EVR_NUM_OTP];
-	/* we cache the Map for each channel to go faster */
-	enum outputs_mapping_id			tb_channel[TOTAL_TB_CHANNELS];
-	enum transition_board_channel         	fp_channel[MAX_FP_CHANNELS];
-	enum outputs_mapping_id			pulse_irq;
-};
-#ifdef __compiler_offsetof
-#define offsetof(TYPE,MEMBER) __compiler_offsetof(TYPE,MEMBER)
-#else
-#define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
-#endif
-#define ercard_to_linuxercard(pCard) \
-				((struct LinuxErCardStruct *)(((char *)pCard) - offsetof(struct LinuxErCardStruct, ErCard)))
+#define MAX_DG                  ((pCard->FormFactor == SLAC_EVR) ? EVR_NUM_DG : 4)
 
 #define EVR_IRQ_OFF      0x0000         /* Turn off All Interrupts                                */
 #define EVR_IRQ_ALL      0x001f         /* Enable All Interrupts                                  */
@@ -198,69 +83,19 @@ int ErGetFormFactor( struct MrfErRegs	*	pEr )
 {
 	int		formFactor;
 	int		id = (be32_to_cpu(pEr->FPGAVersion)>>24) & 0x0F;
+        /*
+         * This is actually a bit silly.  We're translating from one constant
+         * to another.
+         */
 	switch ( id )
 	{
-	case 0x1:	formFactor	= PMC_EVR;	break;
-	case 0x0:	formFactor	= CPCI_EVR;	break;
-	case 0x2:	formFactor	= VME_EVR;	break;
-	case 0xf:	formFactor	= SLAC_EVR;	break;
-	default:	formFactor	= -1;		break;
+	case EVR_FORM_PMC:	formFactor	= PMC_EVR;	break;
+	case EVR_FORM_CPCI:	formFactor	= CPCI_EVR;	break;
+	case EVR_FORM_VME:	formFactor	= VME_EVR;	break;
+	case EVR_FORM_SLAC:	formFactor	= SLAC_EVR;	break;
+	default:        	formFactor	= -1;		break;
 	}
 	return formFactor;
-}
-
-
-int find_free_pulsegen(struct LinuxErCardStruct *pLinuxErCard)
-{
-	enum outputs_mapping_id pulse;
-	int id;
-
-	for(pulse = PULSE_GENERATOR_4; pulse <= PULSE_GENERATOR_11; pulse++) {
-		if(pLinuxErCard->pulse_irq == pulse)
-			continue;
-                if (pulse > PULSE_GENERATOR_9 && pLinuxErCard->ErCard.FormFactor != SLAC_EVR)
-                        break;
-		for(id = 0; id < TOTAL_TB_CHANNELS; id++)
-			if(pLinuxErCard->tb_channel[id] == pulse)
-				break;
-		/* If no channel uses this pulse it is available */
-		if(id != TOTAL_TB_CHANNELS)
-			continue;
-		if ( ErDebug >= 1 )
-			printf( "%s: Pulse %d is available.\n", __func__, pulse - PULSE_GENERATOR_0 );
-		return pulse-PULSE_GENERATOR_0;
-	}
-	return -1;
-}
-
-/* To ensure compatibility with old firmwares the front-panel outputs
-   are copies of the transition board outputs. This API takes care of
-   producing this behavior and must be called every time a transition
-   board output is re-mapped */
-int update_fp_map(struct LinuxErCardStruct *pLinuxErCard, enum transition_board_channel channel)
-{
-	int fp, count = 0;
-	
-	/* just in case someone would call this API with a value
-	   that is valid for FP but has no meaning as a TB output */
-	if(channel >= INVALID_TBC)
-		return 0;
-	for(fp = 0; fp < TOTAL_FP_CHANNELS; fp++) {
-		if(pLinuxErCard->fp_channel[fp] == channel) {
-			if(pLinuxErCard->ErCard.FormFactor == PMC_EVR)
-			{
-				if ( ErDebug >= 1 )
-					printf( "%s: Calling EvrSetFPOutMap for ch %d to pulse %d\n", __func__,
-							channel, pLinuxErCard->tb_channel[channel] );
-				EvrSetFPOutMap(pLinuxErCard->ErCard.pEr, fp, pLinuxErCard->tb_channel[channel]);
-			}
-			if(pLinuxErCard->ErCard.FormFactor == CPCI_EVR ||
-                           pLinuxErCard->ErCard.FormFactor == SLAC_EVR)
-				EvrSetUnivOutMap(pLinuxErCard->ErCard.pEr, fp, pLinuxErCard->tb_channel[channel]);
-			count++;
-		}
-	}
-	return count;
 }
 
 epicsUInt16 ErEnableIrq_nolock (ErCardStruct *pCard, epicsUInt16 Mask)
@@ -270,10 +105,12 @@ epicsUInt16 ErEnableIrq_nolock (ErCardStruct *pCard, epicsUInt16 Mask)
 	if(Mask == EVR_IRQ_TELL) {
 		ret = (epicsUInt16)pCard->IrqVector;
 	} else if (Mask == EVR_IRQ_OFF) {
-		pCard->IrqVector = EvrIrqEnable(pCard->pEr, 0);
+                pCard->IrqVector = 0;
+                ioctl(pCard->Slot, EV_IOCIRQMASK, &pCard->IrqVector);
 		ret = OK;
 	} else {
-		pCard->IrqVector = EvrIrqEnable(pCard->pEr, Mask | EVR_IRQ_MASTER_ENABLE);
+		pCard->IrqVector = Mask | EVR_IRQ_MASTER_ENABLE;
+                ioctl(pCard->Slot, EV_IOCIRQMASK, &pCard->IrqVector);
 		ret = OK;
 	}
 	return ret;
@@ -328,27 +165,26 @@ epicsUInt16 ErEnableIrq_nolock (ErCardStruct *pCard, epicsUInt16 Mask)
 |*
 \**************************************************************************************************/
 int irqCount = 0;
-void ErIrqHandler(int signal)
+void ErIrqHandler(int fd, int flags)
 {
 	struct ErCardStruct *pCard;
 	struct MrfErRegs *pEr;
-	int flags, i;
+	int i;
 	epicsMutexLock(ErCardListLock);
 	for (pCard = (ErCardStruct *)ellFirst(&ErCardList);
 		pCard != NULL;
 		pCard = (ErCardStruct *)ellNext(&pCard->Link)) {
 		epicsMutexLock(pCard->CardLock);
-		if(pCard->IrqLevel != 1) {
+		if(pCard->Slot != fd || pCard->IrqLevel != 1) {
 			epicsMutexUnlock(pCard->CardLock);
 			continue;
 		}
-		pEr = pCard->pEr;
-		flags = EvrGetIrqFlags(pEr);
+
                 /*
-                 * Acknowledge immediately!
+                 * Found our card!!
                  */
-                if(flags & ~EVR_IRQFLAG_FIFOFULL)
-                    EvrClearIrqFlags(pEr, (flags & ~EVR_IRQFLAG_FIFOFULL)); 
+
+		pEr = pCard->pEr;
 
                 irqCount++;
 
@@ -387,9 +223,6 @@ void ErIrqHandler(int signal)
 				(*pCard->DevErrorFunc)(pCard, ERROR_HEART);
 		}
 		if(flags & EVR_IRQFLAG_FIFOFULL) {
-			/* Clear and re-enable the FIFO and if applicable report the error */
-                        EvrClearFIFO(pEr);
-                        EvrClearIrqFlags(pEr, EVR_IRQFLAG_FIFOFULL);
 			if (pCard->DevErrorFunc != NULL)
 				(*pCard->DevErrorFunc)(pCard, ERROR_LOST);
 		}
@@ -398,10 +231,8 @@ void ErIrqHandler(int signal)
 			if (pCard->DevErrorFunc != NULL)
 				(*pCard->DevErrorFunc)(pCard, ERROR_TAXI);
 		}
-		if(flags) {
-			EvrIrqHandled(pCard->Slot);
-		}
 		epicsMutexUnlock(pCard->CardLock);
+                break;
 	}
 	epicsMutexUnlock(ErCardListLock);
 	return;
@@ -441,7 +272,6 @@ static int ErConfigure (
 	int ret, fdEvr;
 	int		actualFormFactor;
 	char strDevice[strlen(DEVNODE_NAME_BASE) + 3];
-	struct LinuxErCardStruct *pLinuxErCard;
 	struct ErCardStruct *pCard;
 	struct MrfErRegs *pEr;
     u32		FPGAVersion;
@@ -536,15 +366,14 @@ static int ErConfigure (
 	}
 	
 	/* Fill in the minimum of the driver structure for driver data structures management*/
-	pLinuxErCard = (struct LinuxErCardStruct *)malloc(sizeof(struct LinuxErCardStruct));
-	if (pLinuxErCard == NULL) {
+	pCard = (struct ErCardStruct *)malloc(sizeof(struct ErCardStruct));
+	if (pCard == NULL) {
 		errlogPrintf("%s@%d(malloc): failed.\n", __func__, __LINE__);
 		EvrClose(fdEvr);
 		epicsMutexUnlock(ErConfigureLock);
 		return ERROR;
 	}
-	memset(pLinuxErCard, 0, sizeof(struct LinuxErCardStruct));
-	pCard = &pLinuxErCard->ErCard;
+	memset(pCard, 0, sizeof(struct ErCardStruct));
 	pCard->Cardno = Card;
 	pCard->CardLock = epicsMutexCreate();
 	if (pCard->CardLock == 0) {
@@ -566,7 +395,6 @@ static int ErConfigure (
 	pCard->pEr = (void *)pEr;
 	pCard->Slot = fdEvr;	/* we steal this irrelevant field */
 	/* Set the clock divider. For now it is a fixed value */
-	EvrSetFracDiv(pEr, FR_SYNTH_WORD);
 	ErEnableIrq_nolock(pCard, EVR_IRQ_OFF);
 	EvrIrqAssignHandler(pEr, fdEvr, ErIrqHandler);
 	pCard->IrqLevel = 1;	/* Tell the interrupt handler this interrupt is enabled */
@@ -579,30 +407,6 @@ static int ErConfigure (
 /**************************************************************************************************/
 /*                              Public APIs                                                       */
 /*                                                                                                */
-
-/**************************************************************************************************
-|* ErCheckTaxi () -- Check to See if We Have A Receive Link Framing Error (TAXI)
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|* 
-|*-------------------------------------------------------------------------------------------------
-|* RETURNS:
-|*      status    = (epicsBoolean)   True if a framing error was present.
-|*                                   False if a framing error was not present.
-|*
-\**************************************************************************************************/
-epicsBoolean ErCheckTaxi(ErCardStruct *pCard)
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	epicsBoolean ret = epicsFalse;
-	
-	epicsMutexLock(pCard->CardLock);
-	if (EvrGetViolation(pEr, 1))
-		ret = epicsTrue;
-	epicsMutexUnlock(pCard->CardLock);
-	return ret;
-}
 
 /**************************************************************************************************
 |* ErDebugLevel () -- Set the Event Receiver Debug Flag to the Desired Level.
@@ -660,74 +464,6 @@ epicsUInt16 ErEnableIrq (ErCardStruct *pCard, epicsUInt16 Mask)
 	ret = ErEnableIrq_nolock(pCard, Mask);
 	epicsMutexUnlock(pCard->CardLock);
 	return ret;
-}
-
-/**************************************************************************************************
-|* ErEnableDBuff () -- Enable or Disable the Data Stream
-|*-------------------------------------------------------------------------------------------------
-|* CALLING SEQUENCE:
-|*      ErEnableDBuff (pCard, Enable);
-|*
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*      Enable    = (epicsBoolean)   If true, enable data stream transmission
-|*                                   If false, disable data stream transmission
-|*
-\**************************************************************************************************/
-void ErEnableDBuff(ErCardStruct *pCard, epicsBoolean Enable)
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	
-	epicsMutexLock(pCard->CardLock);
-	if(Enable == epicsTrue) {
-		EvrSetDBufMode(pEr, 1);
-		EvrReceiveDBuf(pEr, 1);
-	} else {
-		EvrReceiveDBuf(pEr, 0);
-		EvrSetDBufMode(pEr, 0);
-	}
-	epicsMutexUnlock(pCard->CardLock);
-	return;
-}
-
-/**************************************************************************************************
-|* ErEnableRam () -- Enable the Selected Event Mapping RAM
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*
-|*      RamNumber = (int)            Which Event Mapping RAM (1 or 2) we should enable.
-|*                                   If 0, disable all Event Mapping.
-|*
-\**************************************************************************************************/
-void ErEnableRam(ErCardStruct *pCard, int RamNumber)
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	
-	epicsMutexLock(pCard->CardLock);
-	EvrMapRamEnable(pEr, RamNumber-1, 1);
-	epicsMutexUnlock(pCard->CardLock);
-	return;
-}
-
-/**************************************************************************************************
-|* ErFinishDrvInit () -- Complete the Event Receiver Board Driver Initialization
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      AfterRecordInit = (int)          0 if the routine is being called before record
-|*                                         initialization has started.
-|*                                       1 if the routine is being called after record
-|*                                         initialzation completes.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* RETURNS:
-|*      Always returns OK
-|*
-\**************************************************************************************************/
-epicsStatus ErFinishDrvInit(int AfterRecordInit)
-{
-	return OK;
 }
 
 /**************************************************************************************************
@@ -1004,20 +740,7 @@ void ErRegisterDevDBuffHandler (ErCardStruct *pCard, DEV_DBUFF_FUNC DBuffFunc)
 |* ErResetAll () -- Reset the Event Receiver Card
 |*-------------------------------------------------------------------------------------------------
 |* FUNCTION:
-|* o Disable all card interrupt sources.
-|* o Disable event output mapping.
-|* o Flush the event FIFO.
-|* o Clear delay, width, and polarity of all Programmable Width (OTP) outputs.
-|* o Clear delay, width, prescaler, and polarity of all Programmable Delay (DG) outputs.
-|* o Clear the delay and prescaler values for the delayed interrupt.
-|* o Disable all Output Level (OTP) outputs.
-|* o Disable all Trigger Event Pulse (TRG) outputs.
-|* o Disable all Distributed Data Bus outputs.
-|* o Clear the event clock pre-scaler.
-|* o Disable all front-panel gate outputs.
-|* o Disable data stream transmission.
-|* o Clear all Control/Status register condition flags
-|* o Clear the event output mapping RAM's
+|* o Not much to do now... just disable our interrupts!
 |*
 |*-------------------------------------------------------------------------------------------------
 |* INPUT PARAMETERS:
@@ -1026,52 +749,8 @@ void ErRegisterDevDBuffHandler (ErCardStruct *pCard, DEV_DBUFF_FUNC DBuffFunc)
 \**************************************************************************************************/
 void ErResetAll(ErCardStruct *pCard)
 {	
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	struct LinuxErCardStruct *pLinuxErCard = ercard_to_linuxercard(pCard);
-	int i,j;
-
-	ErMasterEnableSet(pCard, epicsFalse);
 	epicsMutexLock(pCard->CardLock);
 	ErEnableIrq_nolock(pCard, EVR_IRQ_OFF);
-	for(i = 0; i < EVR_MAPRAMS; i++)
-		EvrMapRamEnable(pEr, i, 0);
-	for(i = 0; i < EVR_NUM_OTP; i++) {
-		if(i < 8)
-			pLinuxErCard->OTP[i].DBusEnable = epicsTrue;
-		else
-			pLinuxErCard->OTP[i].DBusEnable = epicsFalse;
-		pLinuxErCard->OTP[i].Enable = epicsFalse;
-		pLinuxErCard->OTP[i].Delay = 0;
-		pLinuxErCard->OTP[i].Width = 0;
-		pLinuxErCard->OTP[i].Pol = 0;
-	}
-	for(i = 0; i < TOTAL_EVR_PULSES; i++) {
-		EvrSetPulseParams(pEr, i, 0, 0, 0);
-		EvrSetPulseProperties(pEr, i, 1, 0, 0, 0, 0);
-	}
-	pLinuxErCard->pulse_irq = UNUSED;
-	EvrSetPulseIrqMap(pEr, pLinuxErCard->pulse_irq);
-	for(i=0; i < TOTAL_TB_CHANNELS; i++) {
-		pLinuxErCard->tb_channel[i] = UNUSED;
-		EvrSetTBOutMap(pEr, i, pLinuxErCard->tb_channel[i]);
-	}
-	EvrSetTimestampDivider(pEr, 0);
-	for(i=0; i < TOTAL_FP_CHANNELS; i++) {
-		pLinuxErCard->fp_channel[i] = UNUSED_CH;
-                if(pLinuxErCard->ErCard.FormFactor == PMC_EVR)
-                    EvrSetFPOutMap(pEr, i, pLinuxErCard->fp_channel[i]);
-                else if(pLinuxErCard->ErCard.FormFactor == CPCI_EVR ||
-                        pLinuxErCard->ErCard.FormFactor == SLAC_EVR)
-                    EvrSetUnivOutMap(pEr, i, pLinuxErCard->fp_channel[i]);
-	}
-	EvrReceiveDBuf(pEr, 0);
-	EvrSetDBufMode(pEr, 0);
-	for(i = 0; i < EVR_MAPRAMS; i++)
-		for(j = 0; j < sizeof(pEr->MapRam[0])/sizeof(u32); j++)
-			((u32 *)pEr->MapRam[0])[j] = 0;
-	EvrClearFIFO(pEr);
-	EvrClearIrqFlags(pEr, EVR_IRQFLAG_DATABUF | EVR_IRQFLAG_PULSE | EVR_IRQFLAG_EVENT
-				| EVR_IRQFLAG_HEARTBEAT | EVR_IRQFLAG_FIFOFULL | EVR_IRQFLAG_VIOLATION);
 	epicsMutexUnlock(pCard->CardLock);
 	return;
 }
@@ -1100,9 +779,6 @@ void ErSetDg(ErCardStruct *pCard, int Channel, epicsBoolean Enable,
 			epicsUInt16 Prescaler, epicsBoolean Pol)
 {
 	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	struct LinuxErCardStruct *pLinuxErCard = ercard_to_linuxercard(pCard);
-	enum outputs_mapping_id map;
-	int pulse;
 
 	if ( ErDebug >= 1 )
 		printf( "%s: EVR %d-%d %s DG %d: pre=%u, del=%u, wid=%u, pol=%s.\n",
@@ -1119,36 +795,11 @@ void ErSetDg(ErCardStruct *pCard, int Channel, epicsBoolean Enable,
             return;
 
 	epicsMutexLock(pCard->CardLock);
-	map = pLinuxErCard->tb_channel[DELAYED_PULSE_0 + Channel];
 	if(Enable) {
-		/* If the channel is already using a pulse generator we keep it 
-		   otherwise we get a new one */
-		if((map < PULSE_GENERATOR_0) || (map > PULSE_GENERATOR_11)) {
-			pulse = Channel; /* pulse = find_free_pulsegen(pLinuxErCard); */
-			/* Check for error */
-			if (pulse < 0) {
-				epicsMutexUnlock(pCard->CardLock);
-				errlogPrintf("%s: No free pulse generators! Wrong template?\n", __func__);
-				return;
-			}
-			map = pulse + PULSE_GENERATOR_0;
-			pLinuxErCard->tb_channel[DELAYED_PULSE_0 + Channel] = map;
-			EvrSetTBOutMap(pEr, DELAYED_PULSE_0 + Channel, map);
-			/* If a front panel uses the same settings as this TB port we update */
-			update_fp_map(pLinuxErCard, DELAYED_PULSE_0 + Channel);
-		} else {
-			pulse = map - PULSE_GENERATOR_0;
-		}
-		EvrSetPulseParams(pEr, pulse, Prescaler, Delay, Width);
-		EvrSetPulseProperties(pEr, pulse, Pol, 0, 0, 1, 1);
+		EvrSetPulseParams(pEr, Channel, Prescaler, Delay, Width);
+		EvrSetPulseProperties(pEr, Channel, Pol, 0, 0, 1, 1);
 	} else {
-		if(map == UNUSED) {
-			epicsMutexUnlock(pCard->CardLock);
-			return;
-		}
-		EvrSetTBOutMap(pEr, DELAYED_PULSE_0 + Channel, UNUSED);
-		pLinuxErCard->tb_channel[DELAYED_PULSE_0 + Channel] = UNUSED;
-		update_fp_map(pLinuxErCard, DELAYED_PULSE_0 + Channel);
+		EvrSetPulseProperties(pEr, Channel, Pol, 0, 0, 0, 0);
 	}
 
 	if ( ErDebug >= 2 )
@@ -1158,375 +809,6 @@ void ErSetDg(ErCardStruct *pCard, int Channel, epicsBoolean Enable,
 	return;
 }
 
-/**************************************************************************************************
-|* ErSetDirq () -- Set Parameters for the Delayed Interrupt.
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*
-|*      Enable    = (epicsBoolean)   True if we are to enable the delayed interrupt.
-|*                                   False if we are to disable the delayed interrupt.
-|*
-|*      Delay     = (epicsUInt16)    Desired delay for the delayed interrupt.
-|*
-|*      Prescaler = (epicsUInt16)    Prescaler countdown applied to the delayed interrupt.
-|* 
-|*-------------------------------------------------------------------------------------------------
-|* NOTES:
-|* o This routine expects to be called with the Event Receiver card structure locked.
-|*
-\**************************************************************************************************/
-void ErSetDirq(ErCardStruct *pCard, epicsBoolean Enable, epicsUInt16 Delay, epicsUInt16 Prescaler)
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	struct LinuxErCardStruct *pLinuxErCard = ercard_to_linuxercard(pCard);
-	int pulse;
-
-	if ( ErDebug >= 1 )
-		printf( "%s: EVR %d-%d %s D-IRQ: del=%u, pre=%u.\n",
-				__func__, pCard->Cardno, pCard->Slot,
-				( Enable ? "Enable" : "Disable" ),
-				Delay, Prescaler );
-
-	epicsMutexLock(pCard->CardLock);
-	if(Enable) {
-		if((pLinuxErCard->pulse_irq < PULSE_GENERATOR_0) || (pLinuxErCard->pulse_irq > PULSE_GENERATOR_11)) {
-			pulse = find_free_pulsegen(pLinuxErCard);
-			/* Check for error */
-			if (pulse < 0) {
-				epicsMutexUnlock(pCard->CardLock);
-				errlogPrintf("%s: No free pulse generators! Wrong template?\n", __func__);
-				return;
-			}
-			pLinuxErCard->pulse_irq = pulse + PULSE_GENERATOR_0;
-			EvrSetPulseIrqMap(pEr, pLinuxErCard->pulse_irq);
-		} else {
-			pulse = pLinuxErCard->pulse_irq - PULSE_GENERATOR_0;
-		}
-		EvrSetPulseParams(pEr, pulse, Prescaler, Delay, 0);
-		EvrSetPulseProperties(pEr, pulse, 1, 0, 0, 1, 1);
-	} else {
-		if(pLinuxErCard->pulse_irq != UNUSED)
-			EvrSetPulseIrqMap(pEr, pLinuxErCard->pulse_irq);
-		pLinuxErCard->pulse_irq = UNUSED;
-	}		
-	epicsMutexUnlock(pCard->CardLock);
-	return;
-}
-
-/**************************************************************************************************
-|* ErSetFPMap () -- Set Front Panel Signal Output Map
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*
-|*      Port      = (int)            Output port to be configured.  Ports 0-3 are TTL outputs.
-|*                                   Ports 4 and 5 are NIM outputs.
-|*
-|*      Map       = (epicsUInt16)    Mapping value for which signal should be mapped to the
-|*                                   selected port. (See definitions in the "drvMrfEr.h" header
-|*                                   file).
-|* 
-|*-------------------------------------------------------------------------------------------------
-|* RETURNS:
-|*      status    = (epicsStatus)    Returns OK (success) if the call succeeded.
-|*                                   Returns ERROR (failure) if the input parameters were illegal.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* NOTES:
-|* o This routine expects to be called with the Event Receiver card structure locked.
-|*
-\**************************************************************************************************/
-epicsStatus ErSetFPMap(ErCardStruct *pCard, int Port, epicsUInt16 Map)
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	struct LinuxErCardStruct *pLinuxErCard = ercard_to_linuxercard(pCard);
-
-	/* An interesting feature of the EVR firmware is that if you access
-	   a non-existant port, it will actually write into an existing port
-	   (in that case it ignores the upper part of the address) =>
-	   we reject any port above 3 which is the limit for PMC, but may
-	   not for other cards */
-	if((pCard->FormFactor == PMC_EVR) && (Port>=3))
-		return ERROR;
-	epicsMutexLock(pCard->CardLock);
-	/* This is tricky: with FW 230 the Map has changed. The old map
-	   was just a way to redirect one of the backplane channel on 
-	   the front panel, so we use this approach here too */
-	pLinuxErCard->fp_channel[Port] = Map;
-	if(Map < INVALID_TBC) {
-		/* Maps under INVALID_TBC are copies of TB output on the old firmware */
-		update_fp_map(pLinuxErCard, DELAYED_PULSE_0 + Map);
-	} else {
-		/* Maps after INVALID_TBC are the same on both firmware. */
-                if(pLinuxErCard->ErCard.FormFactor == PMC_EVR)
-                    EvrSetFPOutMap(pEr, Port, Map);
-                else if(pLinuxErCard->ErCard.FormFactor == CPCI_EVR ||
-                        pLinuxErCard->ErCard.FormFactor == SLAC_EVR)
-                    EvrSetUnivOutMap(pEr, Port, Map);
-	}
-	epicsMutexUnlock(pCard->CardLock);
-	return OK;
-}
-
-/**************************************************************************************************
-|* ErSetOtb () -- Enable or Disable the Selected Distributed Bus Channel
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      pCard   = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*      Channel = (int)           The distributed bus channel (0-7) that should be enabled or
-|*                                disabled.
-|*      Enable  = (epicsBoolean ) True if we are to enable the selected bus channel.
-|*                                False if we are to disable the selected bus channel.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* NOTES:
-|* o This routine expects to be called with the Event Receiver card structure locked.
-|*
-\**************************************************************************************************/
-void ErSetOtb(ErCardStruct *pCard, int Channel, epicsBoolean Enable)
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	struct LinuxErCardStruct *pLinuxErCard = ercard_to_linuxercard(pCard);
-
-	if ( ErDebug >= 1 )
-		printf( "%s: EVR %d-%d %s OTB %d\n",
-				__func__, pCard->Cardno, pCard->Slot,
-				( Enable ? "Enable" : "Disable" ),
-				Channel );
-
-	if(Enable) {
-		epicsMutexLock(pCard->CardLock);
-		EvrSetTBOutMap(pEr, OTP_DBUS_0 + Channel, DBUS_0 + Channel);
-		pLinuxErCard->tb_channel[OTP_DBUS_0 + Channel] = DBUS_0 + Channel;
-		pLinuxErCard->OTP[Channel].DBusEnable = epicsTrue;
-		update_fp_map(pLinuxErCard, OTP_DBUS_0 + Channel);
-		epicsMutexUnlock(pCard->CardLock);
-	} else {
-		pLinuxErCard->OTP[Channel].DBusEnable = epicsFalse;
-		ErSetOtp(	pCard, Channel, pLinuxErCard->OTP[Channel].Enable,
-					pLinuxErCard->OTP[Channel].Delay, 
-					pLinuxErCard->OTP[Channel].Width,
-					pLinuxErCard->OTP[Channel].Pol );
-	}
-	return;
-}
-
-/**************************************************************************************************
-|* ErSetOtl () -- Enable or Disable the Selected Level Output Channel
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      pCard   = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*      Channel = (int)           The level output channel (0-6) that should be enabled or
-|*                                disabled.
-|*      Enable  = (epicsBoolean ) True if we are to enable the selected level output channel
-|*                                False if we are to disable the selected level output channel.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* NOTES:
-|* o This routine expects to be called with the Event Receiver card structure locked.
-|*
-\**************************************************************************************************/
-void ErSetOtl(ErCardStruct *pCard, int Channel, epicsBoolean Enable)
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	struct LinuxErCardStruct *pLinuxErCard = ercard_to_linuxercard(pCard);
-	enum outputs_mapping_id map;
-	int pulse;
-	
-	if(Channel >= EVR_NUM_OTL) {
-		errlogPrintf("%s: invalid parameter: Channel = %d.\n", __func__, Channel);
-		return;
-	}
-	
-	epicsMutexLock(pCard->CardLock);
-	map = pLinuxErCard->tb_channel[OTL_0 + Channel];
-	if(Enable) {
-		/* If the channel is already using a pulse generator we keep it 
-		   otherwise we get a new one */
-		if((map >= PULSE_GENERATOR_0) && (map < PULSE_GENERATOR_11)) {
-			epicsMutexUnlock(pCard->CardLock);
-			return;
-		}
-		pulse = find_free_pulsegen(pLinuxErCard);
-		/* Check for error */
-		if (pulse < 0) {
-			epicsMutexUnlock(pCard->CardLock);
-			errlogPrintf("%s: No free pulse generators! Wrong template?\n", __func__);
-			return;
-		}
-		map = pulse + PULSE_GENERATOR_0;
-		pLinuxErCard->tb_channel[OTL_0 + Channel] = map;
-		EvrSetPulseParams(pEr, pulse, 1, 0, 0);
-		EvrSetPulseProperties(pEr, pulse, 1, 1, 1, 0, 1);
-		EvrSetTBOutMap(pEr, OTL_0 + Channel, map);
-		/* If a front panel uses the same settings as this TB port we update */
-		update_fp_map(pLinuxErCard, OTL_0 + Channel);
-	} else {
-		if(map == UNUSED) {
-			epicsMutexUnlock(pCard->CardLock);
-			return;
-		}
-		EvrSetTBOutMap(pEr, OTL_0 + Channel, UNUSED);
-		epicsMutexLock(pCard->CardLock);
-		pLinuxErCard->tb_channel[OTL_0 + Channel] = UNUSED;
-		epicsMutexUnlock(pCard->CardLock);
-		update_fp_map(pLinuxErCard, OTL_0 + Channel);
-	}		
-	epicsMutexUnlock(pCard->CardLock);
-	return;
-}
-
-
-/**	ErSetOtp
- *	Enable or disable a Programmable Width (OTP) channel
- ***********************************************************************************************/
-void ErSetOtp(
-    ErCardStruct                  *pCard,       /* Pointer to Event Receiver card structure       */
-    int                            Channel,     /* Channel number (0-13) of the OTP channel		  */
-    epicsBoolean                   Enable,      /* Enable/Disable flag                            */
-    epicsUInt32                    Delay,       /* Desired delay                                  */
-    epicsUInt32                    Width,       /* Desired width                                  */
-    epicsBoolean                   Pol)         /* Desired polarity                               */
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	struct LinuxErCardStruct *pLinuxErCard = ercard_to_linuxercard(pCard);
-	enum outputs_mapping_id map;
-	int pulse;
-
-	if ( ErDebug >= 1 )
-		printf( "%s: EVR %d-%d %s OTP%d: del=%u, wid=%u, pol=%s.\n",
-				__func__, pCard->Cardno, pCard->Slot,
-				( Enable ? "Enable" : "Disable" ),
-				Channel, Delay, Width,
-				( Pol ? "Nml" : "Inv" )	);
-
-	if( Channel < 0 || Channel >= EVR_NUM_OTP ) {
-		errlogPrintf("%s: invalid parameter: Channel = %d.\n", __func__, Channel);
-		return;
-	}
-	epicsMutexLock(pCard->CardLock);
-
-	/* save parameters */
-	pLinuxErCard->OTP[Channel].Enable = Enable;
-	pLinuxErCard->OTP[Channel].Delay = Delay;
-	pLinuxErCard->OTP[Channel].Width = Width;
-	pLinuxErCard->OTP[Channel].Pol = Pol;
-	
-	if(pLinuxErCard->OTP[Channel].DBusEnable != epicsTrue) {
-		map = pLinuxErCard->tb_channel[OTP_DBUS_0 + Channel];
-		if(Enable) {
-			/* If the channel is already using a pulse generator we keep it 
-			   otherwise we get a new one */
-			if((map < PULSE_GENERATOR_0) || (map > PULSE_GENERATOR_11)) {
-				pulse = find_free_pulsegen(pLinuxErCard);
-				/* Check for error */
-				if (pulse < 0) {
-					epicsMutexUnlock(pCard->CardLock);
-					errlogPrintf("%s: No free pulse generators! Wrong template?\n", __func__);
-					return;
-				}
-				map = pulse + PULSE_GENERATOR_0;
-				pLinuxErCard->tb_channel[OTP_DBUS_0 + Channel] = map;
-				EvrSetTBOutMap(pEr, OTP_DBUS_0 + Channel, map);
-				/* If a front panel uses the same settings as this TB port we update */
-				update_fp_map(pLinuxErCard, OTP_DBUS_0 + Channel);
-			} else {
-				pulse = map - PULSE_GENERATOR_0;
-			}
-			EvrSetPulseParams(pEr, pulse, 1, Delay, Width);
-			EvrSetPulseProperties(pEr, pulse, Pol, 0, 0, 1, 1);
-		} else {
-			if(map == UNUSED) {
-				epicsMutexUnlock(pCard->CardLock);
-				return;
-			}
-			EvrSetTBOutMap(pEr, OTP_DBUS_0 + Channel, UNUSED);
-			pLinuxErCard->tb_channel[OTP_DBUS_0 + Channel] = UNUSED;
-			update_fp_map(pLinuxErCard, OTP_DBUS_0 + Channel);
-		}		
-	}
-	epicsMutexUnlock(pCard->CardLock);
-	return;
-}
-
-void ErSetTrg(ErCardStruct *pCard, int Channel, epicsBoolean Enable)
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	struct LinuxErCardStruct *pLinuxErCard = ercard_to_linuxercard(pCard);
-	enum outputs_mapping_id map;
-	int pulse;
-
-	if ( ErDebug >= 1 )
-		printf( "%s: EVR %d-%d %s Trg %d.\n",
-				__func__, pCard->Cardno, pCard->Slot,
-				( Enable ? "Enable" : "Disable" ),
-				Channel );
-	
-	if ( Channel < 0 || Channel >= EVR_NUM_TRG ) {
-		errlogPrintf("%s: invalid parameter: Channel = %d.\n", __func__, Channel);
-		return;
-	}
-
-	epicsMutexLock(pCard->CardLock);
-	map = pLinuxErCard->tb_channel[TRIGGER_EVENT_0 + Channel];
-	if(Enable) {
-		/* If the channel is already using a pulse generator we keep it 
-		   otherwise we get a new one */
-		if((map >= PULSE_GENERATOR_0) && (map < PULSE_GENERATOR_11)) {
-			epicsMutexUnlock(pCard->CardLock);
-			return;
-		}
-		pulse = find_free_pulsegen(pLinuxErCard);
-		/* Check for error */
-		if (pulse < 0) {
-			epicsMutexUnlock(pCard->CardLock);
-			errlogPrintf("%s: No free pulse generators! Wrong template?\n", __func__);
-			return;
-		}
-		map = pulse + PULSE_GENERATOR_0;
-		EvrSetPulseParams(pEr, pulse, 0, 0, 0);
-		EvrSetPulseProperties(pEr, pulse, 1, 0, 0, 1, 1);
-		EvrSetTBOutMap(pEr, TRIGGER_EVENT_0 + Channel, map);
-		pLinuxErCard->tb_channel[TRIGGER_EVENT_0 + Channel] = map;
-		/* If a front panel uses the same settings as this TB port we update */
-		update_fp_map(pLinuxErCard, TRIGGER_EVENT_0 + Channel);
-	} else {
-		if(map == UNUSED) {
-			epicsMutexUnlock(pCard->CardLock);
-			return;
-		}
-		EvrSetTBOutMap(pEr, TRIGGER_EVENT_0 + Channel, UNUSED);
-		pLinuxErCard->tb_channel[TRIGGER_EVENT_0 + Channel] = UNUSED;
-		update_fp_map(pLinuxErCard, TRIGGER_EVENT_0 + Channel);
-	}		
-	epicsMutexUnlock(pCard->CardLock);
-	return;
-}
-
-/**************************************************************************************************
-|* ErSetTickPre () -- Set the Tick Counter Prescaler
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      pCard   = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*
-|*      Counter = (epicsUInt16)    If non-zero, the tick counter will count event-clock
-|*                                 ticks scaled by this value.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* NOTES:
-|* o This routine expects to be called with the Event Receiver card structure locked.
-|*
-\**************************************************************************************************/
-void ErSetTickPre(ErCardStruct *pCard, epicsUInt16 Counts)
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-
-/*	epicsMutexLock(pCard->CardLock); */
-	EvrSetTimestampDivider(pEr, Counts);
-/*	epicsMutexUnlock(pCard->CardLock); */
-	return;
-}
 
 /**************************************************************************************************
 |* ErTaxiIrq () -- Enable or Disable Event Receiver "TAXI" Violation Interrupts
@@ -1554,94 +836,6 @@ void ErTaxiIrq(ErCardStruct *pCard, epicsBoolean Enable)
 }
 
 /**************************************************************************************************
-|* ErProgramRam () -- Load the Selected Event Mapping RAM
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*
-|*      RamBuf    = (epicsUInt16 *)  Pointer to the array of event output mapping words that we
-|*                                   are to write to the requested mapping RAM
-|*
-|*      RamNumber = (int)            Which Event Mapping RAM (1 or 2) we should write.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* NOTES:
-|* o This routine expects to be called with the Event Receiver card structure locked.
-|* WARNING:
-|* o Assume all outputs have been configured first!!!
-|*
-\**************************************************************************************************/
-void ErProgramRam(ErCardStruct *pCard, epicsUInt16 *RamBuf, int RamNumber)
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	struct LinuxErCardStruct *pLinuxErCard = ercard_to_linuxercard(pCard);
-	int code;
-	epicsUInt32 ctrl;
-
-	if ((RamNumber < 1) || (RamNumber > EVR_MAPRAMS)) {
-		errlogPrintf("%s: RAM %d is not valid.\n", __func__, RamNumber);
-		return;
-	}
-	epicsMutexLock(pCard->CardLock);
-	ctrl = be32_to_cpu(pEr->Control);
-	if (((ctrl>>C_EVR_CTRL_MAP_RAM_SELECT) & 1) == (RamNumber-1)) {
-		epicsMutexUnlock(pCard->CardLock);
-		errlogPrintf("%s: RAM %d is active.\n", __func__, RamNumber);
-		return;
-	}
-	for(code=0; code < EVR_MAX_EVENT_CODE; code++) {
-                struct MapRamItemStruct ramloc = { 0, 0, 0, 0 };
-		int map;
-
-		if(code == 0x70)
-			ramloc.IntEvent |= 1<<C_EVR_MAP_SECONDS_0;
-		else if(code == 0x71)
-			ramloc.IntEvent |= 1<<C_EVR_MAP_SECONDS_1;
-		else if(code == 0x7A)
-			ramloc.IntEvent |= 1<<C_EVR_MAP_HEARTBEAT_EVENT;
-		else if(code == 0x7B)
-			ramloc.IntEvent |= 1<<C_EVR_MAP_RESETPRESC_EVENT;
-		else if(code == 0x7C)
-			ramloc.IntEvent |= 1<<C_EVR_MAP_TIMESTAMP_CLK;
-		else if(code == 0x7D)
-			ramloc.IntEvent |= 1<<C_EVR_MAP_TIMESTAMP_RESET;
-		if(RamBuf[code] & (1<<15))
-			ramloc.IntEvent |= 1<<C_EVR_MAP_SAVE_EVENT;
-		if(RamBuf[code] & (1<<14))
-			ramloc.IntEvent |= 1<<C_EVR_MAP_LATCH_TIMESTAMP;
-		for(map=0; map < 14; map++) {
-			if(RamBuf[code] & (1<<map)) {
-                                /*
-                                 * MCB - I'd like to make a case for dumping this.
-                                 * all we really use now is delayed pulse generators.
-                                 */
-				enum outputs_mapping_id func;
-				func = pLinuxErCard->tb_channel[OTL_0+(map>>1)];
-				if((func>=PULSE_GENERATOR_0) && (func <= PULSE_GENERATOR_11)) {
-					if(map & 1)
-						ramloc.PulseSet |= 1<<(func-PULSE_GENERATOR_0);
-					else
-						ramloc.PulseClear |= 1<<(func-PULSE_GENERATOR_0);
-				}
-				func = pLinuxErCard->tb_channel[OTP_DBUS_0+map];
-				if((func>=PULSE_GENERATOR_0) && (func <= PULSE_GENERATOR_11))
-					ramloc.PulseTrigger |= 1<<(func-PULSE_GENERATOR_0);
-				if(map < EVR_NUM_DG) {
-					func = pLinuxErCard->tb_channel[DELAYED_PULSE_0+map];
-					if((func>=PULSE_GENERATOR_0) && (func < PULSE_GENERATOR_11))
-						ramloc.PulseTrigger |= 1<<(func-PULSE_GENERATOR_0);
-				}
-			}
-		}
-		pEr->MapRam[RamNumber-1][code].IntEvent = be32_to_cpu(ramloc.IntEvent);
-		pEr->MapRam[RamNumber-1][code].PulseSet = be32_to_cpu(ramloc.PulseSet);
-		pEr->MapRam[RamNumber-1][code].PulseClear = be32_to_cpu(ramloc.PulseClear);
-		pEr->MapRam[RamNumber-1][code].PulseTrigger = be32_to_cpu(ramloc.PulseTrigger);
-	}
-	epicsMutexUnlock(pCard->CardLock);
-}
-
-/**************************************************************************************************
 |* ErUpdateRam () -- Load and Activate a New Event Map
 |*-------------------------------------------------------------------------------------------------
 |* INPUT PARAMETERS:
@@ -1657,13 +851,7 @@ void ErProgramRam(ErCardStruct *pCard, epicsUInt16 *RamBuf, int RamNumber)
 \**************************************************************************************************/
 void ErUpdateRam(ErCardStruct *pCard, epicsUInt16 *RamBuf)
 {
-	int ram;
-
-	if(ErGetRamStatus(pCard, 1))
-		ram = 2;
-	else ram = 1;
-	ErProgramRam(pCard, RamBuf, ram);
-	ErEnableRam(pCard, ram);
+    ioctl(pCard->Slot, EV_IOCEVTTAB, RamBuf);
 }
 
 /**************************************************************************************************
@@ -1701,7 +889,6 @@ epicsStatus ErDrvReport (int level)
 		printf("	Form factor %s.\n", FormFactorToString( ErGetFormFactor(pEr) ) );
 		printf("	Firmware Version = %4.4X.\n", ErGetFpgaVersion(pCard));
 		printf ("	Address = %p.\n", pCard->pEr);
-		printf ("	%s,  ", ErMasterEnableGet(pCard)? "Enabled" : "Disabled");
 		printf ("	%d Frame Errors\n", pCard->RxvioCount);
 		EvrDumpStatus( pEr );
 		EvrDumpPulses(		pEr, 10 );
@@ -1717,15 +904,6 @@ epicsStatus ErDrvReport (int level)
                 case SLAC_EVR:
                     EvrDumpUnivOutMap(	pEr, 12 );
                     break;
-                }
-                if (level >= 1) {
-                    struct LinuxErCardStruct *pLinuxErCard = ercard_to_linuxercard(pCard);
-                    printf("\nSoftware cache:\n");
-                    for (i = 0; i < TOTAL_TB_CHANNELS; i++)
-                        printf("tb_channel[%2d] %02x\n", i, pLinuxErCard->tb_channel[i]);
-                    for (i = 0; i < TOTAL_FP_CHANNELS; i++)
-                        printf("fp_channel[%2d] %02x\n", i, pLinuxErCard->fp_channel[i]);
-                    printf("pulse_irq %02x\n", pLinuxErCard->pulse_irq);
                 }
                 if (level >= 2) {
                     struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;

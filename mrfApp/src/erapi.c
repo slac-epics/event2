@@ -27,7 +27,7 @@
 
 #include "erapi.h"
 
-extern void EvrIrqHandlerThreadCreate(void (**handler) (int), int);
+extern void EvrIrqHandlerThreadCreate(void (**handler) (int, int), int);
 
 /*
 #define DEBUG 1
@@ -389,11 +389,10 @@ void EvrDumpTBOutMap(volatile struct MrfErRegs *pEr, int outputs)
 }
 
 void EvrIrqAssignHandler(volatile struct MrfErRegs *pEr, int fd,
-			 void (*handler)(int))
+			 void (*handler)(int, int))
 {
-  int oflags;
   static int have_thread = 0;
-  static void (*h)(int) = NULL;
+  static void (*h)(int, int) = NULL;
 
   /*
    * The Newest Regime: We create a separate handler that reads from our fd.
@@ -401,12 +400,6 @@ void EvrIrqAssignHandler(volatile struct MrfErRegs *pEr, int fd,
   h = handler;
   if (!have_thread)
       EvrIrqHandlerThreadCreate(&h, fd);
-}
-
-int EvrIrqEnable(volatile struct MrfErRegs *pEr, int mask)
-{
-  pEr->IrqEnable = be32_to_cpu(mask);
-  return be32_to_cpu(pEr->IrqEnable);
 }
 
 int EvrGetIrqFlags(volatile struct MrfErRegs *pEr)
@@ -418,11 +411,6 @@ int EvrClearIrqFlags(volatile struct MrfErRegs *pEr, int mask)
 {
   pEr->IrqFlag = be32_to_cpu(mask);
   return be32_to_cpu(pEr->IrqFlag);
-}
-
-void EvrIrqHandled(int fd)
-{
-  ioctl(fd, EV_IOCIRQEN);
 }
 
 int EvrSetPulseIrqMap(volatile struct MrfErRegs *pEr, int map)

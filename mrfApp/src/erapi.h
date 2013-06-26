@@ -53,7 +53,7 @@ int EvrSetFPOutMap(volatile struct MrfErRegs *pEr, int output, int map);
 void EvrDumpFPOutMap(volatile struct MrfErRegs *pEr, int outputs);
 int EvrSetTBOutMap(volatile struct MrfErRegs *pEr, int output, int map);
 void EvrDumpTBOutMap(volatile struct MrfErRegs *pEr, int outputs);
-void EvrIrqAssignHandler(volatile struct MrfErRegs *pEr, int fd, void (*handler)(int));
+void EvrIrqAssignHandler(volatile struct MrfErRegs *pEr, int fd, void (*handler)(int, int));
 int EvrIrqEnable(volatile struct MrfErRegs *pEr, int mask);
 int EvrGetIrqFlags(volatile struct MrfErRegs *pEr);
 int EvrClearIrqFlags(volatile struct MrfErRegs *pEr, int mask);

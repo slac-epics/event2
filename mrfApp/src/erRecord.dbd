@@ -614,13 +614,6 @@ recordtype(er) {
 		interest(1)
 		menu(erOPP)
 	}
-	field(PLOK,DBF_MENU) {
-		prompt("PLL lock lost")
-		promptgroup(GUI_DISPLAY)
-		pp(TRUE)
-		interest(1)
-		menu(menuYesNo)
-	}
 	field(TAXI,DBF_LONG) {
 		prompt("Taxi Violation")
 		special(SPC_NOMOD)

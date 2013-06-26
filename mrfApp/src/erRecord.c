@@ -226,7 +226,6 @@ STATIC void ErMonitor(struct erRecord *pRec)
 
   if (pRec->taxi != pRec->ltax) {
     pRec->ltax = pRec->taxi;
-    db_post_events(pRec, &pRec->plok, monitor_mask);    
     db_post_events(pRec, &pRec->taxi, monitor_mask);
   }
   return;

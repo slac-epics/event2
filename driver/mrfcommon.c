@@ -198,13 +198,21 @@ int ev_open(struct inode *inode, struct file *filp)
 	      ev_plx_irq_enable(ev_device);
               if (ev_device->access_device == DEVICE_SHEV) {
                   volatile struct MrfErRegs *pEr = ev_device->pEv;
+                  int form = (be32_to_cpu(pEr->FPGAVersion)>>24) & 0x0F;
+                  int j;
                   /*
-                   * In shared mode, enable the device, set the prescaler to 1,
-                   * and set the clock to be 119000MHz.
+                   * In shared mode, we need to initialize the device!
                    */
                   pEr->Control |= be32_to_cpu(1 << C_EVR_CTRL_MASTER_ENABLE);
                   pEr->EvCntPresc = be32_to_cpu(1);
                   pEr->FracDiv = be32_to_cpu(CLOCK_119000_MHZ);
+                  for (j = 0; j < 12; j++) {
+                      if(pLinuxErCard->ErCard.FormFactor == EVR_FORM_PMC)
+                          pEr->FPOutMap[j] = be16_to_cpu(j);
+                      else if(pLinuxErCard->ErCard.FormFactor == EVR_FORM_CPCI ||
+                              pLinuxErCard->ErCard.FormFactor == EVR_FORM_SLAC)
+                          pEr->UnivOutMap[j] = be16_to_cpu(j);
+                  }
               }
 	    }
 	  /* Inrease device reference count. */

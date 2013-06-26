@@ -54,7 +54,7 @@
 
 #include <debugPrint.h>                        /* SLAC Debug print utility                        */
 #ifdef HAS_IOOPS_H
-#include <basicIoOps.h>
+/* #include <basicIoOps.h> */
 #endif
 
 /**************************************************************************************************/
