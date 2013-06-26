@@ -1,0 +1,35 @@
+make:
+    configure
+    mrfApp
+	src
+    evrSupport
+	src
+x	srcRestore
+x	archiveSrc
+x	autosaveSrc
+	Db
+-----------------------------------------
+Db files:
+
+evrPmc230.template                 - templates
+evrSLAC.template                   - templates
+	- Pulse programming.
+evrPmcEvent.template               - templates
+	- Event code table.
+fiducial.db                        - evr
+	- evrEventCtrl.template    - templates
+	- evrPatternAll.db         - evr
+	     - evrPattern.db	   - evr
+	     - evrFiducial.db      - evr
+evrEventAll.db                     - evr
+	- evrPatternProc.db        - evr
+	- evrEvent.db              - evr
+evrTrigger.db                      - evr
+	- Trigger change record.
+----------------------------------
+evr-ipimb.substitutions:
+	evrPmc230.template
+	evrPmcEvent.template
+	fiducial.db
+	evrEventAll.db
+	evrTrigger.db

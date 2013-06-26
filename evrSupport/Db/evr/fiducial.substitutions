@@ -1,0 +1,27 @@
+# This substitution file should be used by any IOC that need to use the 
+# EVR for basic time processing. It does not handle any triggering or
+# beam processing.
+# 	IOC=Name of the IOC
+#	CARD= EVR card #
+
+# Including evrEventCtrl.db instead of evrEventCtrl.template
+# disables fiducial processing!
+#	The prior expansion used $(IOC) where we normally would use
+#	the EVR prefix, so that may explain the above note.
+
+#file evrEventCtrl.db
+file evrEventCtrl.template
+{
+#	  Device     Card   <----------------------------  Event -------------------------->       
+pattern { CARD   , NAME    , ID ,P0,P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,P11,P12,P13,VME}
+		{ $(CARD), FIDUCIAL, 1  , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0 , 0 , 0 , 1 }
+}
+
+file evrPatternAll.db 
+{
+#	    Device        ,  SLC Pattern, EVR/Trigger     
+#	                                    Links       
+  pattern
+  { DEVICE        ,  LINK4      , LINK5 , LINK6 , TREF    , TS1ST, TS2ND }
+  { $(DEV)        ,   ""        ,  ""   ,  ""   , 1.03E06 ,   1  ,   4   }
+}
