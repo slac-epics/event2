@@ -1,0 +1,36 @@
+This is MRF's pci_mrfev-1.0.2, with extra code to support the SLAC EVR
+and shared access.
+
+Both types of EVRs now have *4* minor devices.  The first two allow
+MRF EVR programming and are unused by the SLAC EVR.  The third is
+the usual register map used by the event module.  The fourth is
+the register map extended with data buffer and event queues for
+sharing the EVR.
+
+The driver allows multiple opens in either mode, but not simultaneous
+opens in both modes.  (In EVR mode, interrupt handling is left to user
+space, but in shared EVR mode, the interrupt handling is done in the
+kernel and the results are reported to user space.)
+
+The queue structure is mapped in at offset 0x8000 and looks like:
+	struct FIFOEvent {
+	  u32 TimestampHigh;
+	  u32 TimestampLow;
+	  u32 EventCode;
+	};
+	
+	struct DBufInfo {
+	  char data[2048];
+	  u32  status;
+	};
+	
+	/* These must be powers of two!!! */
+	#define MAX_EVR_EVTQ 1024
+	#define MAX_EVR_DBQ     4
+	struct EvrQueues {
+	  struct FIFOEvent evtq[MAX_EVR_EVTQ];
+	  struct DBufInfo  dbq[MAX_EVR_DBQ];
+	  long long ewp;
+	  long long dwp;
+	  int fifofull;
+	};
