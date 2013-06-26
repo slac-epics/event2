@@ -15,7 +15,7 @@
 #include <linux/version.h>
 #include <asm/page.h>
 
-#include "erapi.h"
+#include "evrmemmap.h"
 
 static u32 IntEvent[256] = {
     /* 0x00 */  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

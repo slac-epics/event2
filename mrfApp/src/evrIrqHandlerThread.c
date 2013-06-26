@@ -1,56 +1,57 @@
 #include <stdio.h>
-#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
 #include <epicsThread.h>
 
-static int evrIrqHandlerThread(void *handler)
-{
-    void (**irqHandler)(int) = handler;
-    int signal;
-    sigset_t  sigSet;
+struct evrIrqThreadArg {
+    void (**handler)(int);
+    int fd;
+};
 
-    sigemptyset(&sigSet);      
-    sigaddset(&sigSet,SIGIO);  
+static int evrIrqHandlerThread(void *p)
+{
+    struct evrIrqThreadArg *arg = (struct evrIrqThreadArg *)p;
+    void (**irqHandler)(int) = arg->handler;
+    int fd = arg->fd;
+    int mask, cnt;
+
+    free(p);
 
     while(1) {
-        sigwait(&sigSet, &signal); 
-        if (*irqHandler) (*irqHandler)(signal);
+        cnt = read(fd, &mask, sizeof(mask));
+        if (cnt == sizeof(mask)) {
+            if (*irqHandler) (*irqHandler)(mask);
+        } else if (cnt < 0) {
+            if (errno != EINTR) {
+                perror("evrIrqHandlerThread has an unknown error");
+                printf("evrIrqHandlerThread is exiting.\n");
+                /*
+                 * Nothing will work after this.  Do we want to just
+                 * exit(1) and call it a day?!?
+                 */
+                break;
+            }
+        } else {
+            printf("evrIrqHandlerThread read %d bytes?!?\n", cnt);
+        }
     }
 
     return 0;
 }
 
-static	unsigned int	fBlockedSIGIO	= 0;
-
 int evrIrqHandlerInit( void )
 {
-	int			status;
-	sigset_t	sigs;
-
-	/* No one should get SIGIO except the IRQ thread. */
-	sigemptyset( &sigs );
-	sigaddset( &sigs, SIGIO );
-	status = pthread_sigmask( SIG_BLOCK, &sigs, NULL );
-	if ( status == 0 )
-		fBlockedSIGIO	= 1;
-	else
-		perror( "evrIrqHandlerInit: Unable to block SIGIO signals" );
-	return status;
+    return 0; /* Not needed any more! */
 }
 
-void EvrIrqHandlerThreadCreate(void (**handler) (int))
+void EvrIrqHandlerThreadCreate(void (**handler) (int), int fd)
 {
-
-	if ( !fBlockedSIGIO )
-	{
-		fprintf( stderr,
-				"\n\n"
-				"ERROR in EvrIrqHandlerThreadCreate: evrIrqHandlerInit() either failed or\n"
-				"was not called in the process main() routine.\n"
-				"EVR will NOT function until this is fixed!\n\n" );
-		return;
-	}
-
+    struct evrIrqThreadArg *arg = (struct evrIrqThreadArg *)
+                                  malloc(sizeof(struct evrIrqThreadArg));
+    arg->handler = handler;
+    arg->fd = fd;
     epicsThreadMustCreate("evrIrqHandler", epicsThreadPriorityHigh+9,
                           epicsThreadGetStackSize(epicsThreadStackMedium),
-                          (EPICSTHREADFUNC)evrIrqHandlerThread,handler);
+                          (EPICSTHREADFUNC)evrIrqHandlerThread,arg);
 }

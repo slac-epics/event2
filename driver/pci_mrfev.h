@@ -11,6 +11,13 @@
 #define DEVICE_MINOR_NUMBERS      4
 #define MAX_MRF_DEVICES           8
 #define MAX_EVR_OPENS             4
+#define EVR_FIFO_EVENT_LIMIT    256
+
+/*
+ *  This is the Micrel SY87739L Fractional-N Synthesizer Configuration Bit Patterns for
+ *  the rate we use. from mrfCommon.h
+ */
+#define CLOCK_119000_MHZ        0x018741AD      /* 119.000 MHz.                                   */
 
 /* MRF values */
 #define PCI_DEVICE_ID_PLX_9030      0x9030
@@ -136,15 +143,6 @@ long ev_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
 int ev_fasync(int fd, struct file *filp, int mode);
 int ev_remap_mmap(struct file *filp, struct vm_area_struct *vma);
 irqreturn_t ev_interrupt(int irq, void *dev_id, struct pt_regs *regs);
-
-#define EV_IOC_MAGIC 220
-#define EV_IOCRESET   _IO(EV_IOC_MAGIC, 0)
-#define EV_IOCIRQEN   _IO(EV_IOC_MAGIC, 1)
-#define EV_IOCIRQDIS  _IO(EV_IOC_MAGIC, 2)
-#define EV_IOCIRQMASK _IO(EV_IOC_MAGIC, 3)
-#define EV_IOCEVTTAB  _IO(EV_IOC_MAGIC, 4)
-
-#define EV_IOC_MAX   5
 
 #define PLX9030_INTCSR_LINTI1_ENA  0x0001 /* LINTi1 enable */
 #define PLX9030_INTCSR_LINTI1_POL  0x0002 /* LINTi1 polarity, 1 = active high */

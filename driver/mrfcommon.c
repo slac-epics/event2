@@ -28,7 +28,7 @@
 #include <asm/page.h>
 #include <asm/uaccess.h>
 
-#include "erapi.h"
+#include "evrmemmap.h"
 #include "pci_mrfev.h"
 MODULE_LICENSE("GPL");
 
@@ -196,6 +196,16 @@ int ev_open(struct inode *inode, struct file *filp)
 	    {
 	      result = ev_assign_irq(ev_device);
 	      ev_plx_irq_enable(ev_device);
+              if (ev_device->access_device == DEVICE_SHEV) {
+                  volatile struct MrfErRegs *pEr = ev_device->pEv;
+                  /*
+                   * In shared mode, enable the device, set the prescaler to 1,
+                   * and set the clock to be 119000MHz.
+                   */
+                  pEr->Control |= be32_to_cpu(1 << C_EVR_CTRL_MASTER_ENABLE);
+                  pEr->EvCntPresc = be32_to_cpu(1);
+                  pEr->FracDiv = be32_to_cpu(CLOCK_119000_MHZ);
+              }
 	    }
 	  /* Inrease device reference count. */
 	  ev_device->refcount_ev++;
@@ -288,6 +298,13 @@ int ev_release(struct inode *inode, struct file *filp)
 	     time. */
 	  ev_plx_irq_disable(ev_device);
 	  free_irq(ev_device->irq, (void *) ev_device);
+          if (ev_device->access_device == DEVICE_SHEV) {
+              volatile struct MrfErRegs *pEr = ev_device->pEv;
+              /*
+               * In shared mode, disable the device when the last close happens.
+               */
+              pEr->Control &= be32_to_cpu(~(1 << C_EVR_CTRL_MASTER_ENABLE));
+          }
 	  ev_device->access_mode = 0;
 	  ev_device->access_device = -1;
 	}
@@ -453,13 +470,22 @@ int ev_remap_mmap(struct file *filp, struct vm_area_struct *vma)
       return -EPERM;
     }
 
-  if (vsize > sizeof(struct MrfErRegs) + sizeof(struct EvrQueues))
-    {
-      printk(KERN_NOTICE DEVICE_NAME ": mmap vsize %08x, ev_device->lenEv %08x regsize %08lx qsize %08lx\n",
-	     (unsigned int) vsize, (unsigned int) ev_device->lenEv,
-             sizeof(struct MrfErRegs), sizeof(struct EvrQueues));
-      return -EINVAL;
-    }
+  if (ev_device->access_device == DEVICE_EV) {
+    if (vsize > ev_device->lenEv)
+      {
+        printk(KERN_NOTICE DEVICE_NAME ": mmap vsize %08x, ev_device->lenEv %08x\n",
+	       (unsigned int) vsize, (unsigned int) ev_device->lenEv);
+        return -EINVAL;
+      }
+  } else {
+    if (vsize > EVR_MEM_WINDOW)
+      {
+        printk(KERN_NOTICE DEVICE_NAME ": mmap vsize %08x, ev_device->lenEv %08x regsize %08lx qsize %08lx\n",
+	       (unsigned int) vsize, (unsigned int) ev_device->lenEv,
+               sizeof(struct MrfErRegs), sizeof(struct EvrQueues));
+        return -EINVAL;
+      }
+  }
 
   if (offset < sizeof(struct MrfErRegs)) { /* At least some register space! */
       unsigned long psize = sizeof(struct MrfErRegs) - offset;    /* Size of region from offset to end */

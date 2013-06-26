@@ -68,8 +68,6 @@ struct MapRamItemStruct {
   u32  PulseClear;
 };
 
-#define EVR_FIFO_EVENT_LIMIT 256
-
 struct FIFOEvent {
   u32 TimestampHigh;
   u32 TimestampLow;
@@ -266,3 +264,12 @@ struct MrfErRegs {
 #define C_EVR_FPIN_BACKDBUS_BASE   16
 #define C_EVR_FPIN_EXT_ENABLE      24
 #define C_EVR_FPIN_BACKEV_ENABLE   25
+
+#define EV_IOC_MAGIC 220
+#define EV_IOCRESET   _IO(EV_IOC_MAGIC, 0)
+#define EV_IOCIRQEN   _IO(EV_IOC_MAGIC, 1)
+#define EV_IOCIRQDIS  _IO(EV_IOC_MAGIC, 2)
+#define EV_IOCIRQMASK _IO(EV_IOC_MAGIC, 3)
+#define EV_IOCEVTTAB  _IO(EV_IOC_MAGIC, 4)
+
+#define EV_IOC_MAX   5

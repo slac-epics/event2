@@ -4,7 +4,11 @@
 
   Author: Jukka Pietarinen (MRF)
   Date:   08.12.2006
+  Butcher: Michael Browne (SLAC)
+  Date:   06.26.2013
 
+  Heavily edited to support a shared board.  All routines that could screw other users have
+  been removed.
 */
 
 #include <sys/types.h>
@@ -23,7 +27,7 @@
 
 #include "erapi.h"
 
-extern void EvrIrqHandlerThreadCreate(void (**handler) (int));
+extern void EvrIrqHandlerThreadCreate(void (**handler) (int), int);
 
 /*
 #define DEBUG 1
@@ -66,16 +70,6 @@ int EvrClose(int fd)
 
   result = munmap(0, EVR_MEM_WINDOW);
   return close(fd);
-}
-
-int EvrEnable(volatile struct MrfErRegs *pEr, int state)
-{
-  if (state)
-    pEr->Control |= be32_to_cpu(1 << C_EVR_CTRL_MASTER_ENABLE);
-  else
-    pEr->Control &= be32_to_cpu(~(1 << C_EVR_CTRL_MASTER_ENABLE));
-  
-  return EvrGetEnable(pEr);
 }
 
 int EvrGetEnable(volatile struct MrfErRegs *pEr)
@@ -196,138 +190,6 @@ int EvrDumpMapRam(volatile struct MrfErRegs *pEr, int ram)
   return 0;
 }
 
-int EvrMapRamEnable(volatile struct MrfErRegs *pEr, int ram, int enable)
-{
-  int result;
-
-  if (ram < 0 || ram > 1)
-    return -1;
-
-  result = be32_to_cpu(pEr->Control);
-  result &= ~((1 << C_EVR_CTRL_MAP_RAM_ENABLE) | (1 << C_EVR_CTRL_MAP_RAM_SELECT));
-  if (ram == 1)
-    result |= (1 << C_EVR_CTRL_MAP_RAM_SELECT);
-  if (enable == 1)
-    result |= (1 << C_EVR_CTRL_MAP_RAM_ENABLE);
-  pEr->Control = be32_to_cpu(result);
-
-  return result;
-}
-
-int EvrSetPulseMap(volatile struct MrfErRegs *pEr, int ram, int code, int trig,
-		   int set, int clear)
-{
-  if (ram < 0 || ram >= EVR_MAPRAMS)
-    return -1;
-
-  if (code <= 0 || code > EVR_MAX_EVENT_CODE)
-    return -1;
-
-  if (trig >= 0 && trig < EVR_MAX_PULSES)
-    pEr->MapRam[ram][code].PulseTrigger |= be32_to_cpu(1 << trig);
-  if (set >= 0 && set < EVR_MAX_PULSES)
-    pEr->MapRam[ram][code].PulseSet |= be32_to_cpu(1 << set);
-  if (clear >= 0 && clear < EVR_MAX_PULSES)
-    pEr->MapRam[ram][code].PulseClear |= be32_to_cpu(1 << clear);
-
-  return 0;
-}
-
-int EvrSetForwardEvent(volatile struct MrfErRegs *pEr, int ram, int code, int enable)
-{
-  if (ram < 0 || ram >= EVR_MAPRAMS)
-    return -1;
-
-  if (code <= 0 || code > EVR_MAX_EVENT_CODE)
-    return -1;
-
-  if (!enable)
-    pEr->MapRam[ram][code].IntEvent &= be32_to_cpu(~(1 << C_EVR_MAP_FORWARD_EVENT));
-  if (enable)
-    pEr->MapRam[ram][code].IntEvent |= be32_to_cpu(1 << C_EVR_MAP_FORWARD_EVENT);
-    
-  return 0;
-}
-
-int EvrEnableEventForwarding(volatile struct MrfErRegs *pEr, int enable)
-{
-  if (enable)
-    pEr->Control |= be32_to_cpu(1 << C_EVR_CTRL_EVENT_FWD_ENA);
-  else
-    pEr->Control &= be32_to_cpu(~(1 << C_EVR_CTRL_EVENT_FWD_ENA));
-  
-  return EvrGetEventForwarding(pEr);
-}
-
-int EvrGetEventForwarding(volatile struct MrfErRegs *pEr)
-{
-  return be32_to_cpu(pEr->Control & be32_to_cpu(1 << C_EVR_CTRL_EVENT_FWD_ENA));
-}
-
-int EvrSetLedEvent(volatile struct MrfErRegs *pEr, int ram, int code, int enable)
-{
-  if (ram < 0 || ram >= EVR_MAPRAMS)
-    return -1;
-
-  if (code <= 0 || code > EVR_MAX_EVENT_CODE)
-    return -1;
-
-  if (!enable)
-    pEr->MapRam[ram][code].IntEvent &= be32_to_cpu(~(1 << C_EVR_MAP_LED_EVENT));
-  if (enable)
-    pEr->MapRam[ram][code].IntEvent |= be32_to_cpu(1 << C_EVR_MAP_LED_EVENT);
-    
-  return 0;
-}
-
-int EvrSetFIFOEvent(volatile struct MrfErRegs *pEr, int ram, int code, int enable)
-{
-  if (ram < 0 || ram >= EVR_MAPRAMS)
-    return -1;
-
-  if (code <= 0 || code > EVR_MAX_EVENT_CODE)
-    return -1;
-
-  if (!enable)
-    pEr->MapRam[ram][code].IntEvent &= be32_to_cpu(~(1 << C_EVR_MAP_SAVE_EVENT));
-  if (enable)
-    pEr->MapRam[ram][code].IntEvent |= be32_to_cpu(1 << C_EVR_MAP_SAVE_EVENT);
-    
-  return 0;
-}
-
-int EvrSetLatchEvent(volatile struct MrfErRegs *pEr, int ram, int code, int enable)
-{
-  if (ram < 0 || ram >= EVR_MAPRAMS)
-    return -1;
-
-  if (code <= 0 || code > EVR_MAX_EVENT_CODE)
-    return -1;
-
-  if (!enable)
-    pEr->MapRam[ram][code].IntEvent &= be32_to_cpu(~(1 << C_EVR_MAP_LATCH_TIMESTAMP));
-  if (enable)
-    pEr->MapRam[ram][code].IntEvent |= be32_to_cpu(1 << C_EVR_MAP_LATCH_TIMESTAMP);
-    
-  return 0;
-}
-
-int EvrSetFIFOStopEvent(volatile struct MrfErRegs *pEr, int ram, int code, int enable)
-{
-  if (ram < 0 || ram >= EVR_MAPRAMS)
-    return -1;
-
-  if (code <= 0 || code > EVR_MAX_EVENT_CODE)
-    return -1;
-
-  if (!enable)
-    pEr->MapRam[ram][code].IntEvent &= be32_to_cpu(~(1 << C_EVR_MAP_STOP_FIFO));
-  if (enable)
-    pEr->MapRam[ram][code].IntEvent |= be32_to_cpu(1 << C_EVR_MAP_STOP_FIFO);
-    
-  return 0;
-}
-
 int EvrClearFIFO(volatile struct MrfErRegs *pEr)
 {
   int ctrl;
@@ -355,36 +217,6 @@ int EvrGetFIFOEvent(volatile struct MrfErRegs *pEr, struct FIFOEvent *fe)
     return -1;
 }
 
-int EvrEnableFIFO(volatile struct MrfErRegs *pEr, int enable)
-{
-  if (enable)
-    pEr->Control |= be32_to_cpu(1 << C_EVR_CTRL_FIFO_ENABLE);
-  else
-    pEr->Control |= be32_to_cpu(1 << C_EVR_CTRL_FIFO_DISABLE);
-  
-  return EvrGetFIFOState(pEr);
-}
-
-int EvrGetFIFOState(volatile struct MrfErRegs *pEr)
-{
-  return be32_to_cpu(pEr->Status & be32_to_cpu(1 << C_EVR_STATUS_FIFO_STOPPED));
-}
-
-int EvrEnableFIFOStopEvent(volatile struct MrfErRegs *pEr, int enable)
-{
-  if (enable)
-    pEr->Control |= be32_to_cpu(1 << C_EVR_CTRL_FIFO_STOP_EV_EN);
-  else
-    pEr->Control &= be32_to_cpu(~(1 << C_EVR_CTRL_FIFO_STOP_EV_EN));
-  
-  return EvrGetFIFOStopEvent(pEr);
-}
-
-int EvrGetFIFOStopEvent(volatile struct MrfErRegs *pEr)
-{
-  return be32_to_cpu(pEr->Control & be32_to_cpu(1 << C_EVR_CTRL_FIFO_STOP_EV_EN));
-}
-
 int EvrDumpFIFO(volatile struct MrfErRegs *pEr)
 {
   struct FIFOEvent fe;
@@ -400,25 +232,6 @@ int EvrDumpFIFO(volatile struct MrfErRegs *pEr)
 	}
     }
   while (!i);
-
-  return 0;
-}
-
-int EvrClearPulseMap(volatile struct MrfErRegs *pEr, int ram, int code, int trig,
-		     int set, int clear)
-{
-  if (ram < 0 || ram >= EVR_MAPRAMS)
-    return -1;
-
-  if (code <= 0 || code > EVR_MAX_EVENT_CODE)
-    return -1;
-
-  if (trig >= 0 && trig < EVR_MAX_PULSES)
-    pEr->MapRam[ram][code].PulseTrigger &= be32_to_cpu(~(1 << trig));
-  if (set >= 0 && set < EVR_MAX_PULSES)
-    pEr->MapRam[ram][code].PulseSet &= be32_to_cpu(~(1 << set));
-  if (clear >= 0 && clear < EVR_MAX_PULSES)
-    pEr->MapRam[ram][code].PulseClear &= be32_to_cpu(~(1 << clear));
 
   return 0;
 }
@@ -583,32 +396,11 @@ void EvrIrqAssignHandler(volatile struct MrfErRegs *pEr, int fd,
   static void (*h)(int) = NULL;
 
   /*
-   * The New Regime: We create a separate handler that waits for the signal.
+   * The Newest Regime: We create a separate handler that reads from our fd.
    */
   h = handler;
   if (!have_thread)
-      EvrIrqHandlerThreadCreate(&h);
-
-#if 0
-  /*
-   * The Old Regime.
-   */
-  int result;
-  struct sigaction act;
-
-  act.sa_handler = handler;
-  sigemptyset(&act.sa_mask);
-  act.sa_flags = 0;
-
-  result = sigaction(SIGIO, &act, NULL);
-  printf("sigaction returned %d\n", result);
-#endif
-
-  fcntl(fd, F_SETOWN, getpid());
-  oflags = fcntl(fd, F_GETFL);
-  fcntl(fd, F_SETFL, oflags | FASYNC);
-  /* Now enable handler */
-  EvrIrqHandled(fd);
+      EvrIrqHandlerThreadCreate(&h, fd);
 }
 
 int EvrIrqEnable(volatile struct MrfErRegs *pEr, int mask)
@@ -658,125 +450,6 @@ u32 EvrGetDiagCounter(volatile struct MrfErRegs *pEr, int idx)
   return be32_to_cpu(pEr->DiagCounter[idx]);
 }
 
-int EvrUnivDlyEnable(volatile struct MrfErRegs *pEr, int dlymod, int enable)
-{
-  u32 gpio;
-  int sh = 0;
-
-  switch (dlymod)
-    {
-    case 0:
-      sh = 0;
-      break;
-    case 1:
-      sh = 4;
-      break;
-    default:
-      return -1;
-    }
-  
-  /* Setup outputs for both slots */
-  pEr->GPIODir = be32_to_cpu(((EVR_UNIV_DLY_DIN | EVR_UNIV_DLY_SCLK |
-	    EVR_UNIV_DLY_LCLK | EVR_UNIV_DLY_DIS) |
-	   ((EVR_UNIV_DLY_DIN | EVR_UNIV_DLY_SCLK |
-	     EVR_UNIV_DLY_LCLK | EVR_UNIV_DLY_DIS) << 4)));
-  gpio = be32_to_cpu(pEr->GPIOOut) & ~(EVR_UNIV_DLY_DIS << sh);
-  if (!enable)
-    gpio |= (EVR_UNIV_DLY_DIS << sh);
-  pEr->GPIOOut = be32_to_cpu(gpio);
-
-  return 0;
-}
-
-int EvrUnivDlySetDelay(volatile struct MrfErRegs *pEr, int dlymod, u32 dly0, u32 dly1)
-{
-  u32 gpio;
-  int sh = 0;
-  int sd;
-  int sr, i, din, sclk, lclk, dbit;
-
-  switch (dlymod)
-    {
-    case 0:
-      sh = 0;
-      break;
-    case 1:
-      sh = 4;
-      break;
-    default:
-      return -1;
-    }
-  
-  din = EVR_UNIV_DLY_DIN << sh;
-  sclk = EVR_UNIV_DLY_SCLK << sh;
-  lclk = EVR_UNIV_DLY_LCLK << sh;
-
-  gpio = be32_to_cpu(pEr->GPIOOut) & ~((EVR_UNIV_DLY_DIN | EVR_UNIV_DLY_SCLK |
-					EVR_UNIV_DLY_LCLK) | 
-				       ((EVR_UNIV_DLY_DIN | EVR_UNIV_DLY_SCLK |
-					 EVR_UNIV_DLY_LCLK) << 4));
-  /* Limit delay values */
-  dly0 &= 0x03ff;
-  dly1 &= 0x03ff;
-
-  /* We have to shift in the bits in following order:
-     DA7, DA6, DA5, DA4, DA3, DA2, DA1, DA0,
-     DB3, DB2, DB1, DB0, LENA, 0, DA9, DA8,
-     LENB, 0, DB9, DB8, DB7, DB6, DB5, DB4 */
-
-  sd = ((dly1 & 0x0ff) << 16) |
-    ((dly0 & 0x00f) << 12) | (dly1 & 0x300) | 
-    (dly0 >> 4);
-
-  sr = sd;
-  for (i = 24; i; i--)
-    {
-      dbit = 0;
-      if (sr & 0x00800000)
-	dbit = din;
-      pEr->GPIOOut = be32_to_cpu(gpio | dbit);
-      pEr->GPIOOut = be32_to_cpu(gpio | dbit | sclk);
-      pEr->GPIOOut = be32_to_cpu(gpio | dbit);
-      sr <<= 1;
-    }
-
-  pEr->GPIOOut = be32_to_cpu(gpio | lclk);
-  pEr->GPIOOut = be32_to_cpu(gpio);
-
-  /* Latch enables active */
-  sr = sd | 0x000880;
-  for (i = 24; i; i--)
-    {
-      dbit = 0;
-      if (sr & 0x00800000)
-	dbit = din;
-      pEr->GPIOOut = be32_to_cpu(gpio | dbit);
-      pEr->GPIOOut = be32_to_cpu(gpio | dbit | sclk);
-      pEr->GPIOOut = be32_to_cpu(gpio | dbit);
-      sr <<= 1;
-    }
-
-  pEr->GPIOOut = be32_to_cpu(gpio | lclk);
-  pEr->GPIOOut = be32_to_cpu(gpio);
-
-  sr = sd;
-  for (i = 24; i; i--)
-    {
-      dbit = 0;
-      if (sr & 0x00800000)
-	dbit = din;
-      pEr->GPIOOut = be32_to_cpu(gpio | dbit);
-      pEr->GPIOOut = be32_to_cpu(gpio | dbit | sclk);
-      pEr->GPIOOut = be32_to_cpu(gpio | dbit);
-      sr <<= 1;
-    }
-
-  pEr->GPIOOut = be32_to_cpu(gpio | lclk);
-  pEr->GPIOOut = be32_to_cpu(gpio);
-
-  return 0;
-}
-
 void EvrDumpHex(volatile struct MrfErRegs *pEr)
 {
   u32 *p = (u32 *) pEr;
@@ -789,16 +462,6 @@ void EvrDumpHex(volatile struct MrfErRegs *pEr)
 	printf("%08x ", be32_to_cpu(*p++));
       printf("\n");
     }
-}
-
-int EvrSetFracDiv(volatile struct MrfErRegs *pEr, int fracdiv)
-{
-  return pEr->FracDiv = be32_to_cpu(fracdiv);
-}
-
-int EvrGetFracDiv(volatile struct MrfErRegs *pEr)
-{
-  return be32_to_cpu(pEr->FracDiv);
 }
 
 int EvrSetDBufMode(volatile struct MrfErRegs *pEr, int enable)
@@ -826,195 +489,9 @@ int EvrReceiveDBuf(volatile struct MrfErRegs *pEr, int enable)
   return EvrGetDBufStatus(pEr);
 }
 
-int EvrGetDBuf(volatile struct MrfErRegs *pEr, char *dbuf, int size)
-{
-  int stat, rxsize;
-
-  stat = EvrGetDBufStatus(pEr);
-  /* Check that DBUF mode enabled */
-  if (!(stat & (1 << C_EVR_DATABUF_MODE)))
-    return -1;
-  /* Check that transfer is completed */
-  if (!(stat & (1 << C_EVR_DATABUF_RXREADY)))
-    return -1;
-
-  rxsize = stat & (EVR_MAX_BUFFER-1);
-
-  if (size < rxsize)
-    return -1;
-
-  memcpy((void *) dbuf, (void *) &pEr->Databuf[0], rxsize);
-
-  if (stat & (1 << C_EVR_DATABUF_CHECKSUM))
-    return -1;
-
-  return rxsize;
-}
-
-int EvrSetTimestampDivider(volatile struct MrfErRegs *pEr, int div)
-{
-  pEr->EvCntPresc = be32_to_cpu(div);
-
-  return be32_to_cpu(pEr->EvCntPresc);
-}
-
 int EvrGetTimestampCounter(volatile struct MrfErRegs *pEr)
 {
   return be32_to_cpu(pEr->TimestampEventCounter);
-}
-
-int EvrGetSecondsCounter(volatile struct MrfErRegs *pEr)
-{
-  return be32_to_cpu(pEr->SecondsCounter);
-}
-
-int EvrGetTimestampLatch(volatile struct MrfErRegs *pEr)
-{
-  return be32_to_cpu(pEr->TimestampLatch);
-}
-
-int EvrGetSecondsLatch(volatile struct MrfErRegs *pEr)
-{
-  return be32_to_cpu(pEr->SecondsLatch);
-}
-
-int EvrSetTimestampDBus(volatile struct MrfErRegs *pEr, int enable)
-{
-  int ctrl;
-
-  ctrl = be32_to_cpu(pEr->Control);
-  if (enable)
-    ctrl |= (1 << C_EVR_CTRL_TS_CLOCK_DBUS);
-  else
-    ctrl &= ~(1 << C_EVR_CTRL_TS_CLOCK_DBUS);
-  pEr->Control = be32_to_cpu(ctrl);
-
-  return be32_to_cpu(pEr->Control);  
-}
-
-int EvrSetPrescaler(volatile struct MrfErRegs *pEr, int presc, u32 div)
-{
-  if (presc >= 0 && presc < EVR_MAX_PRESCALERS)
-    {
-      pEr->Prescaler[presc] = be32_to_cpu(div);
-
-      return be32_to_cpu(pEr->Prescaler[presc]);
-    }
-  return -1;
-}
-
-int EvrSetExtEvent(volatile struct MrfErRegs *pEr, int ttlin, int code, int enable)
-{
-  int fpctrl;
-
-  if (ttlin < 0 || ttlin > EVR_MAX_FPIN_MAP)
-    return -1;
-
-  fpctrl = be32_to_cpu(pEr->FPInMap[ttlin]);
-  if (code >= 0 && code <= EVR_MAX_EVENT_CODE)
-    {
-      fpctrl &= ~(EVR_MAX_EVENT_CODE << C_EVR_FPIN_EXTEVENT_BASE);
-      fpctrl |= code << C_EVR_FPIN_EXTEVENT_BASE;
-    }
-  fpctrl &= ~(1 << C_EVR_FPIN_EXT_ENABLE);
-  if (enable)
-    fpctrl |= (1 << C_EVR_FPIN_EXT_ENABLE);
-
-  pEr->FPInMap[ttlin] = be32_to_cpu(fpctrl);
-  if (pEr->FPInMap[ttlin] == be32_to_cpu(fpctrl))
-    return 0;
-  return -1;
-}
-
-int EvrSetBackEvent(volatile struct MrfErRegs *pEr, int ttlin, int code, int enable)
-{
-  int fpctrl;
-
-  if (ttlin < 0 || ttlin > EVR_MAX_FPIN_MAP)
-    return -1;
-
-  fpctrl = be32_to_cpu(pEr->FPInMap[ttlin]);
-  if (code >= 0 && code <= EVR_MAX_EVENT_CODE)
-    {
-      fpctrl &= ~(EVR_MAX_EVENT_CODE << C_EVR_FPIN_BACKEVENT_BASE);
-      fpctrl |= code << C_EVR_FPIN_BACKEVENT_BASE;
-    }
-  fpctrl &= ~(1 << C_EVR_FPIN_BACKEV_ENABLE);
-  if (enable)
-    fpctrl |= (1 << C_EVR_FPIN_BACKEV_ENABLE);
-
-  pEr->FPInMap[ttlin] = be32_to_cpu(fpctrl);
-  if (pEr->FPInMap[ttlin] == be32_to_cpu(fpctrl))
-    return 0;
-  return -1;
-}
-
-int EvrSetBackDBus(volatile struct MrfErRegs *pEr, int ttlin, int dbus)
-{
-  int fpctrl;
-
-  if (ttlin < 0 || ttlin > EVR_MAX_FPIN_MAP)
-    return -1;
-
-  if (dbus < 0 || dbus > 255)
-    return -1;
-
-  fpctrl = be32_to_cpu(pEr->FPInMap[ttlin]);
-  fpctrl &= ~(255 << C_EVR_FPIN_BACKDBUS_BASE);
-  fpctrl |= dbus << C_EVR_FPIN_BACKDBUS_BASE;
-
-  pEr->FPInMap[ttlin] = be32_to_cpu(fpctrl);
-  if (pEr->FPInMap[ttlin] == be32_to_cpu(fpctrl))
-    return 0;
-  return -1;
-
-}
-
-int EvrSetTxDBufMode(volatile struct MrfErRegs *pEr, int enable)
-{
-  if (enable)
-    pEr->TxDataBufControl = be32_to_cpu(1 << C_EVR_TXDATABUF_MODE);
-  else
-    pEr->TxDataBufControl = 0;
-
-  return EvrGetTxDBufStatus(pEr);
-}
-
-int EvrGetTxDBufStatus(volatile struct MrfErRegs *pEr)
-{
-  return be32_to_cpu(pEr->TxDataBufControl);
-}
-
-int EvrSendTxDBuf(volatile struct MrfErRegs *pEr, char *dbuf, int size)
-{
-  int stat;
-
-  stat = EvrGetTxDBufStatus(pEr);
-  /*  printf("EvgSendDBuf: stat %08x\n", stat); */
-  /* Check that DBUF mode enabled */
-  if (!(stat & (1 << C_EVR_TXDATABUF_MODE)))
-    return -1;
-  /* Check that previous transfer is completed */
-  if (!(stat & (1 << C_EVR_TXDATABUF_COMPLETE)))
-    return -1;
-  /* Check that size is valid */
-  if (size & 3 || size > EVR_MAX_BUFFER || size < 4)
-    return -1;
-
-  memcpy((void *) &pEr->TxDatabuf[0], (void *) dbuf, size);
-
-  /* Enable and set size */
-  stat &= ~((EVR_MAX_BUFFER-1) | (1 << C_EVR_TXDATABUF_TRIGGER));
-  stat |= (1 << C_EVR_TXDATABUF_ENA) | size;
-  /*  printf("EvgSendDBuf: stat %08x\n", stat); */
-  pEr->TxDataBufControl = be32_to_cpu(stat);
-  /*  printf("EvgSendDBuf: stat %08x\n", be32_to_cpu(pEr->DataBufControl)); */
-
-  /* Trigger */
-  pEr->TxDataBufControl = be32_to_cpu(stat | (1 << C_EVR_TXDATABUF_TRIGGER));
-  /*  printf("EvgSendDBuf: stat %08x\n", be32_to_cpu(pEr->DataBufControl)); */
-
-  return size;
 }
 
 int EvrGetFormFactor(volatile struct MrfErRegs *pEr)

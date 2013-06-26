@@ -291,108 +291,71 @@ epicsStatus ErProcess (erRecord  *pRec)
     * Lock the card structure while we are processing the record.
     */
     epicsMutexLock (pCard->CardLock);
-
-   /*---------------------
-    * If the card is being disabled, do it now
-    * before processing any of the other record fields.
-    */
-    if (!pRec->enab & ErMasterEnableGet(pCard))
-        ErMasterEnableSet (pCard, epicsFalse);
   
    /*---------------------
     * Update the delayed pulse generator outputs first
     * Set the programmable delay (DG) output parameters (Enable, Delay, Width, Prescaler, Polarity)
     */
-    ErSetDg (pCard, 0, pRec->dg0e, pRec->dg0d, pRec->dg0w, pRec->dg0c, pRec->dg0p);
-    ErSetDg (pCard, 1, pRec->dg1e, pRec->dg1d, pRec->dg1w, pRec->dg1c, pRec->dg1p);
-    ErSetDg (pCard, 2, pRec->dg2e, pRec->dg2d, pRec->dg2w, pRec->dg2c, pRec->dg2p);
-    ErSetDg (pCard, 3, pRec->dg3e, pRec->dg3d, pRec->dg3w, pRec->dg3c, pRec->dg3p);
-    ErSetDg (pCard, 4, pRec->dg4e, pRec->dg4d, pRec->dg4w, pRec->dg4c, pRec->dg4p);
-    ErSetDg (pCard, 5, pRec->dg5e, pRec->dg5d, pRec->dg5w, pRec->dg5c, pRec->dg5p);
-    ErSetDg (pCard, 6, pRec->dg6e, pRec->dg6d, pRec->dg6w, pRec->dg6c, pRec->dg6p);
-    ErSetDg (pCard, 7, pRec->dg7e, pRec->dg7d, pRec->dg7w, pRec->dg7c, pRec->dg7p);
-    ErSetDg (pCard, 8, pRec->dg8e, pRec->dg8d, pRec->dg8w, pRec->dg8c, pRec->dg8p);
-    ErSetDg (pCard, 9, pRec->dg9e, pRec->dg9d, pRec->dg9w, pRec->dg9c, pRec->dg9p);
-    ErSetDg (pCard, 10, pRec->dgae, pRec->dgad, pRec->dgaw, pRec->dgac, pRec->dgap);
-    ErSetDg (pCard, 11, pRec->dgbe, pRec->dgbd, pRec->dgbw, pRec->dgbc, pRec->dgbp);
-  
-   /*---------------------
-    * Set the trigger event output enables
-    */
-    ErSetTrg (pCard, 0, pRec->trg0);
-    ErSetTrg (pCard, 1, pRec->trg1);
-    ErSetTrg (pCard, 2, pRec->trg2);
-    ErSetTrg (pCard, 3, pRec->trg3);
-    ErSetTrg (pCard, 4, pRec->trg4);
-    ErSetTrg (pCard, 5, pRec->trg5);
-    ErSetTrg (pCard, 6, pRec->trg6);
-
-   /*---------------------
-    * Set the event clock prescaler.
-    */
-    ErSetTickPre (pCard, pRec->pres);
-    
-   /*---------------------
-    * Set the programmable width (OTP) output parameters (Enable, Delay, Width,and  Polarity)
-    */
-    ErSetOtp (pCard, 0,  pRec->otp0, pRec->ot0d, pRec->ot0w, pRec->ot0p);
-    ErSetOtp (pCard, 1,  pRec->otp1, pRec->ot1d, pRec->ot1w, pRec->ot1p);
-    ErSetOtp (pCard, 2,  pRec->otp2, pRec->ot2d, pRec->ot2w, pRec->ot2p);
-    ErSetOtp (pCard, 3,  pRec->otp3, pRec->ot3d, pRec->ot3w, pRec->ot3p);
-    ErSetOtp (pCard, 4,  pRec->otp4, pRec->ot4d, pRec->ot4w, pRec->ot4p);
-    ErSetOtp (pCard, 5,  pRec->otp5, pRec->ot5d, pRec->ot5w, pRec->ot5p);
-    ErSetOtp (pCard, 6,  pRec->otp6, pRec->ot6d, pRec->ot6w, pRec->ot6p);
-    ErSetOtp (pCard, 7,  pRec->otp7, pRec->ot7d, pRec->ot7w, pRec->ot7p);
-    ErSetOtp (pCard, 8,  pRec->otp8, pRec->ot8d, pRec->ot8w, pRec->ot8p);
-    ErSetOtp (pCard, 9,  pRec->otp9, pRec->ot9d, pRec->ot9w, pRec->ot9p);
-    ErSetOtp (pCard, 10, pRec->otpa, pRec->otad, pRec->otaw, pRec->otap);
-    ErSetOtp (pCard, 11, pRec->otpb, pRec->otbd, pRec->otbw, pRec->otbp);
-    ErSetOtp (pCard, 12, pRec->otpc, pRec->otcd, pRec->otcw, pRec->otcp);
-    ErSetOtp (pCard, 13, pRec->otpd, pRec->otdd, pRec->otdw, pRec->otdp);
-
-   /*---------------------
-    * Set the distributed bus (OTxB) enables
-    */
-    ErSetOtb (pCard, 0, pRec->ot0b);
-    ErSetOtb (pCard, 1, pRec->ot1b);
-    ErSetOtb (pCard, 2, pRec->ot2b);
-    ErSetOtb (pCard, 3, pRec->ot3b);
-    ErSetOtb (pCard, 4, pRec->ot4b);
-    ErSetOtb (pCard, 5, pRec->ot5b);
-    ErSetOtb (pCard, 6, pRec->ot6b);
-    ErSetOtb (pCard, 7, pRec->ot7b);
-
-   /*---------------------
-    * Set the level output (OTL) enables
-    */
-    ErSetOtl (pCard, 0, pRec->otl0);
-    ErSetOtl (pCard, 1, pRec->otl1);
-    ErSetOtl (pCard, 2, pRec->otl2);
-    ErSetOtl (pCard, 3, pRec->otl3);
-    ErSetOtl (pCard, 4, pRec->otl4);
-    ErSetOtl (pCard, 5, pRec->otl5);
-    ErSetOtl (pCard, 6, pRec->otl6);
-
-   /*---------------------
-    * Set the delayed interrupt parameters (Enable, Delay, Prescaler)
-    */
-    ErSetDirq (pCard, pRec->dvme, pRec->dvmd, pRec->dvmc);
-
-   /*---------------------
-    * Set the front panel output configuration
-    */
-    ErSetFPMap (pCard, 0, pRec->fps0);
-    ErSetFPMap (pCard, 1, pRec->fps1);
-    ErSetFPMap (pCard, 2, pRec->fps2);
-    ErSetFPMap (pCard, 3, pRec->fps3);
-    ErSetFPMap (pCard, 4, pRec->fps4);
-    ErSetFPMap (pCard, 5, pRec->fps5);
-    ErSetFPMap (pCard, 6, pRec->fps6);
-    ErSetFPMap (pCard, 7, pRec->fps7);
-    ErSetFPMap (pCard, 8, pRec->fps8);
-    ErSetFPMap (pCard, 9, pRec->fps9);
-    ErSetFPMap (pCard, 10, pRec->fpsa);
-    ErSetFPMap (pCard, 11, pRec->fpsb);
+    if (pRec->ip0e) {
+        if (pRec->dg0e || pRec->ld0e)
+            ErSetDg (pCard, 0, pRec->dg0e, pRec->dg0d, pRec->dg0w, pRec->dg0c, pRec->dg0p);
+        pRec->ld0e = pRec->dg0e;
+    }
+    if (pRec->ip1e) {
+        if (pRec->dg1e || pRec->ld1e)
+            ErSetDg (pCard, 1, pRec->dg1e, pRec->dg1d, pRec->dg1w, pRec->dg1c, pRec->dg1p);
+        pRec->ld1e = pRec->dg1e;
+    }
+    if (pRec->ip2e) {
+        if (pRec->dg2e || pRec->ld2e)
+            ErSetDg (pCard, 2, pRec->dg2e, pRec->dg2d, pRec->dg2w, pRec->dg2c, pRec->dg2p);
+        pRec->ld2e = pRec->dg2e;
+    }
+    if (pRec->ip3e) {
+        if (pRec->dg3e || pRec->ld3e)
+            ErSetDg (pCard, 3, pRec->dg3e, pRec->dg3d, pRec->dg3w, pRec->dg3c, pRec->dg3p);
+        pRec->ld3e = pRec->dg3e;
+    }
+    if (pRec->ip4e) {
+        if (pRec->dg4e || pRec->ld4e)
+            ErSetDg (pCard, 4, pRec->dg4e, pRec->dg4d, pRec->dg4w, pRec->dg4c, pRec->dg4p);
+        pRec->ld4e = pRec->dg4e;
+    }
+    if (pRec->ip5e) {
+        if (pRec->dg5e || pRec->ld5e)
+            ErSetDg (pCard, 5, pRec->dg5e, pRec->dg5d, pRec->dg5w, pRec->dg5c, pRec->dg5p);
+        pRec->ld5e = pRec->dg5e;
+    }
+    if (pRec->ip6e) {
+        if (pRec->dg6e || pRec->ld6e)
+            ErSetDg (pCard, 6, pRec->dg6e, pRec->dg6d, pRec->dg6w, pRec->dg6c, pRec->dg6p);
+        pRec->ld6e = pRec->dg6e;
+    }
+    if (pRec->ip7e) {
+        if (pRec->dg7e || pRec->ld7e)
+            ErSetDg (pCard, 7, pRec->dg7e, pRec->dg7d, pRec->dg7w, pRec->dg7c, pRec->dg7p);
+        pRec->ld7e = pRec->dg7e;
+    }
+    if (pRec->ip8e) {
+        if (pRec->dg8e || pRec->ld8e)
+            ErSetDg (pCard, 8, pRec->dg8e, pRec->dg8d, pRec->dg8w, pRec->dg8c, pRec->dg8p);
+        pRec->ld8e = pRec->dg8e;
+    }
+    if (pRec->ip9e) {
+        if (pRec->dg9e || pRec->ld9e)
+            ErSetDg (pCard, 9, pRec->dg9e, pRec->dg9d, pRec->dg9w, pRec->dg9c, pRec->dg9p);
+        pRec->ld9e = pRec->dg9e;
+    }
+    if (pRec->ipae) {
+        if (pRec->dgae || pRec->ldae)
+            ErSetDg (pCard, 10, pRec->dgae, pRec->dgad, pRec->dgaw, pRec->dgac, pRec->dgap);
+        pRec->ldae = pRec->dgae;
+    }
+    if (pRec->ipbe) {
+        if (pRec->dgbe || pRec->ldbe)
+            ErSetDg (pCard, 11, pRec->dgbe, pRec->dgbd, pRec->dgbw, pRec->dgbc, pRec->dgbp);
+        pRec->ldbe = pRec->dgbe;
+    }
 
    /*---------------------
     * Enable or Disable Receive Link Frame Error Interrupts
@@ -411,13 +374,6 @@ epicsStatus ErProcess (erRecord  *pRec)
     }
     pRec->taxi = pCard->RxvioCount;
     pRec->fpgv = ErGetFpgaVersion (pCard);
- 
-   /*---------------------
-    * If the card is being enabled, do it now that all the other fields
-    * have been processed.
-    */
-    if (pRec->enab & !ErMasterEnableGet(pCard))
-        ErMasterEnableSet (pCard, epicsTrue);
 
    /*---------------------
     * We might have changed something, so need to update!

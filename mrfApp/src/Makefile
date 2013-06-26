@@ -60,9 +60,6 @@ devMrfErLib_DBD += devMrfEr.dbd
 #---------------------
 # Build the Event Receiver Library
 #
-PROD_IOC_vxWorks    += devMrfErLib
-LIBRARY_IOC_RTEMS   += devMrfEr
-LIBRARY_IOC_vxWorks += devMrfEr
 ifeq ($(EVR_DRIVER_SUPPORT_LINUX), YES)
 LIBRARY_IOC_Linux   += devMrfEr
 endif
@@ -72,22 +69,6 @@ devMrfEr_OBJS       += devMrfEr
 devMrfEr_OBJS       += erRecord
 devMrfEr_OBJS       += ereventRecord
 
-# RTEMS source
-devMrfEr_OBJS_RTEMS += drvMrfEr
-ifeq ($(BSP_SUPPORTS_PCI), YES)
-devMrfEr_OBJS_RTEMS += devLibPMC
-devMrfEr_OBJS_RTEMS += plx9080_eeprom.c
-devMrfEr_OBJS_RTEMS += evrEEPROMFixup
-endif
-
-# VxWorks source
-devMrfEr_OBJS_vxWorks += drvMrfEr
-ifeq ($(BSP_SUPPORTS_PCI), YES)
-devMrfEr_OBJS_vxWorks += devLibPMC
-devMrfEr_OBJS_vxWorks += plx9080_eeprom.c
-devMrfEr_OBJS_vxWorks += evrEEPROMFixup
-endif
-
 # Linux source
 ifeq ($(EVR_DRIVER_SUPPORT_LINUX), YES)
 devMrfEr_OBJS_Linux += drvLinuxEvr
@@ -96,23 +77,14 @@ endif
 devMrfErLib_OBJS += $(devMrfEr_OBJS)
 devMrfErLib_SRCS += devMrfErLib_registerRecordDeviceDriver.cpp
 
-OBJS_IOC_vxWorks += $(devMrfEr_OBJS)
-
 #---------------------
 # Build the Library for the MRF driver level access
 #
-PROD_IOC_vxWorks	+= drvMrfLib
-LIBRARY_IOC_RTEMS  	+= drvMrf
-LIBRARY_IOC_vxWorks	+= drvMrf
 ifeq ($(EVR_DRIVER_SUPPORT_LINUX), YES)
 LIBRARY_IOC_Linux	+= drvMrf
 endif
 
 # Source objects for MRF driver Library
-drvMrf_OBJS_RTEMS	+= mrfVme64x
-drvMrf_OBJS_RTEMS	+= $(CRCSR_PROBE_NAME)
-drvMrf_OBJS_vxWorks += mrfVme64x
-drvMrf_OBJS_vxWorks += $(CRCSR_PROBE_NAME)
 ifeq ($(EVR_DRIVER_SUPPORT_LINUX), YES)
 drvMrf_OBJS_Linux	+= drvLinux
 drvMrf_OBJS_Linux += evrIrqHandlerThread
@@ -128,7 +100,7 @@ OBJS_IOC_vxWorks 	+= $(drvMrf_OBJS)
 # Install include files
 #
 INC += mrfCommon.h
-INC += mrfVme64x.h
+# INC += mrfVme64x.h
 
 INC += drvMrfEr.h
 INC += devMrfEr.h

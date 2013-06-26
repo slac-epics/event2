@@ -27,7 +27,7 @@
 #include <asm/page.h>
 #include <asm/uaccess.h>
 
-#include "erapi.h"
+#include "evrmemmap.h"
 #include "pci_mrfev.h"
 
 #ifndef SA_SHIRQ

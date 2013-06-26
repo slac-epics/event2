@@ -34,6 +34,7 @@
 #include "erapi.h"
 
 #define DEVNODE_NAME_BASE	"/dev/er"
+#define DEVNODE_MINOR            '4'
 #ifdef EVENT_CLOCK_SPEED
     #define FR_SYNTH_WORD   EVENT_CLOCK_SPEED
 #else
@@ -471,7 +472,8 @@ static int ErConfigure (
 	}
 
 	/* Look for the EVR */
-	ret = snprintf(strDevice, strlen(DEVNODE_NAME_BASE) + 3, DEVNODE_NAME_BASE "%c3", Card + 'a');
+	ret = snprintf(strDevice, strlen(DEVNODE_NAME_BASE) + 3, DEVNODE_NAME_BASE "%c%c",
+                       Card + 'a', DEVNODE_MINOR);
 	if (ret < 0) {
 		errlogPrintf("%s@%d(snprintf): %s.\n", __func__, __LINE__, strerror(-ret));
 		epicsMutexUnlock(ErConfigureLock);
@@ -951,50 +953,6 @@ epicsStatus ErGetTicks(int Card, epicsUInt32 *Ticks)
 	*Ticks = (epicsUInt32)EvrGetTimestampCounter(pEr);
 	epicsMutexUnlock(pCard->CardLock);
 	return OK;
-}
-
-/**************************************************************************************************
-|* ErMasterEnableGet () -- Returns the State of the  Event Receiver Master Enable Bit
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      pCard  = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*
-|*-------------------------------------------------------------------------------------------------
-|* RETURNS:
-|*      state  = (epicsBoolean )  True if the card is enabled.
-|*                                False if the card is disabled.
-|*
-\**************************************************************************************************/
-epicsBoolean ErMasterEnableGet(ErCardStruct *pCard)
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	epicsBoolean ret;
-	
-	epicsMutexLock(pCard->CardLock);
-	if (EvrGetEnable(pEr)) ret = epicsTrue;
-		else ret = epicsFalse;
-	epicsMutexUnlock(pCard->CardLock);
-	return ret;
-}
-
-/**************************************************************************************************
-|* ErMasterEnableSet () -- Turn the Event Receiver Master Enable Bit On or Off
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      pCard   = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*
-|*      Enable  = (epicsBoolean ) True if we are to enable the card.
-|*                                False if we are to disable the card.
-|*
-\**************************************************************************************************/
-void ErMasterEnableSet(ErCardStruct *pCard, epicsBoolean Enable)
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	
-	epicsMutexLock(pCard->CardLock);
-	EvrEnable(pEr, Enable == epicsTrue ? 1 : 0);
-	epicsMutexUnlock(pCard->CardLock);
-	return;
 }
 
 /**************************************************************************************************
