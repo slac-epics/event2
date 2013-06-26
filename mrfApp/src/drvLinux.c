@@ -6,7 +6,6 @@
  * Released under the GPLv2 licence <http://www.gnu.org/licenses/gpl-2.0.html>
  */
 
-#include "mrfVme64x.h"
 #include <epicsExport.h>        /* EPICS Symbol exporting macro definitions                       */
 #include <registryFunction.h>   /* EPICS Registry support library                                 */
 #include <iocsh.h>              /* EPICS iocsh support library                                    */
