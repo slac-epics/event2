@@ -7,5 +7,6 @@ DIRS += driver
 DIRS += mrfApp
 DIRS += evrSupport
 DIRS += app
+DIRS += iocBoot
 
 include $(TOP)/configure/RULES_TOP
