@@ -13,6 +13,7 @@ epicsEnvSet( "ENGINEER", "Michael Browne (mcbrowne)" )
 epicsEnvSet( "LOCATION", "$(IOCNAME)" )
 epicsEnvSet( "IOCSH_PS1", "$(IOCNAME)> " )
 < envPaths
+epicsEnvSet("IOC",         "$(IOCNAME)")
 cd( "../.." )
 
 # Run common startup commands for linux soft IOC's
