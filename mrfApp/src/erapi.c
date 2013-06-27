@@ -72,22 +72,6 @@ int EvrClose(int fd)
   return close(fd);
 }
 
-int EvrGetEnable(volatile struct MrfErRegs *pEr)
-{
-  return be32_to_cpu(pEr->Control & be32_to_cpu(1 << C_EVR_CTRL_MASTER_ENABLE));
-}
-
-int EvrGetViolation(volatile struct MrfErRegs *pEr, int clear)
-{
-  int result;
-
-  result = be32_to_cpu(pEr->IrqFlag & be32_to_cpu(1 << C_EVR_IRQFLAG_VIOLATION));
-  if (clear && result)
-    pEr->IrqFlag = be32_to_cpu(result);
-
-  return result;
-}
-
 void EvrDumpStatus(volatile struct MrfErRegs *pEr)
 {
   int result;
@@ -135,105 +119,6 @@ void EvrDumpStatus(volatile struct MrfErRegs *pEr)
   DEBUG_PRINTF("\n");
   result = be32_to_cpu(pEr->DataBufControl);
   DEBUG_PRINTF("DataBufControl %08x\n", result);
-}
-
-int EvrDumpMapRam(volatile struct MrfErRegs *pEr, int ram)
-{
-  int code;
-  int intev;
-  int ptrig, pset, pclr;
-
-  for (code = 0; code <= EVR_MAX_EVENT_CODE; code++)
-    {
-      intev = be32_to_cpu(pEr->MapRam[ram][code].IntEvent);
-      ptrig = be32_to_cpu(pEr->MapRam[ram][code].PulseTrigger);
-      pset = be32_to_cpu(pEr->MapRam[ram][code].PulseSet);
-      pclr = be32_to_cpu(pEr->MapRam[ram][code].PulseClear);
-
-      if (intev ||
-	  ptrig ||
-	  pset ||
-	  pclr)
-	{
-	  DEBUG_PRINTF("Code 0x%02x (%3d): ", code, code);
-	  if (intev & (1 << C_EVR_MAP_SAVE_EVENT))
-	    DEBUG_PRINTF("SAVE ");
-	  if (intev & (1 << C_EVR_MAP_LATCH_TIMESTAMP))
-	    DEBUG_PRINTF("LTS ");
-	  if (intev & (1 << C_EVR_MAP_LED_EVENT))
-	    DEBUG_PRINTF("LED ");
-	  if (intev & (1 << C_EVR_MAP_FORWARD_EVENT))
-	    DEBUG_PRINTF("FWD ");
-	  if (intev & (1 << C_EVR_MAP_STOP_FIFO))
-	    DEBUG_PRINTF("STOPFIFO ");
-	  if (intev & (1 << C_EVR_MAP_HEARTBEAT_EVENT))
-	    DEBUG_PRINTF("HB ");
-	  if (intev & (1 << C_EVR_MAP_RESETPRESC_EVENT))
-	    DEBUG_PRINTF("RESPRSC ");
-	  if (intev & (1 << C_EVR_MAP_TIMESTAMP_RESET))
-	    DEBUG_PRINTF("RESTS ");
-	  if (intev & (1 << C_EVR_MAP_TIMESTAMP_CLK))
-	    DEBUG_PRINTF("TSCLK ");
-	  if (intev & (1 << C_EVR_MAP_SECONDS_1))
-	    DEBUG_PRINTF("SEC1 ");
-	  if (intev & (1 << C_EVR_MAP_SECONDS_0))
-	    DEBUG_PRINTF("SEC0 ");
-	  if (ptrig)
-	    DEBUG_PRINTF("Trig %08x", ptrig);
-	  if (pset)
-	    DEBUG_PRINTF("Set %08x", pset);
-	  if (pclr)
-	    DEBUG_PRINTF("Clear %08x", pclr);
-	  DEBUG_PRINTF("\n");
-	}
-    }
-  return 0;
-}
-
-int EvrClearFIFO(volatile struct MrfErRegs *pEr)
-{
-  int ctrl;
-
-  ctrl = be32_to_cpu(pEr->Control);
-  ctrl |= (1 << C_EVR_CTRL_RESET_EVENTFIFO);
-  pEr->Control = be32_to_cpu(ctrl);
-
-  return be32_to_cpu(pEr->Control);
-}
-
-int EvrGetFIFOEvent(volatile struct MrfErRegs *pEr, struct FIFOEvent *fe)
-{
-  int stat;
-
-  stat = be32_to_cpu(pEr->IrqFlag);
-  if (stat & (1 << C_EVR_IRQFLAG_EVENT))
-    {
-      fe->EventCode = be32_to_cpu(pEr->FIFOEvent);
-      fe->TimestampHigh = be32_to_cpu(pEr->FIFOSeconds);
-      fe->TimestampLow = be32_to_cpu(pEr->FIFOTimestamp);
-      return 0;
-    }
-  else
-    return -1;
-}
-
-int EvrDumpFIFO(volatile struct MrfErRegs *pEr)
-{
-  struct FIFOEvent fe;
-  int i;
-
-  do
-    {
-      i = EvrGetFIFOEvent(pEr, &fe);
-      if (!i)
-	{
-	  printf("Code %08x, %08x:%08x\n",
-		 fe.EventCode, fe.TimestampHigh, fe.TimestampLow);
-	}
-    }
-  while (!i);
-
-  return 0;
 }
 
 int EvrSetPulseParams(volatile struct MrfErRegs *pEr, int pulse, u32 presc,
@@ -337,15 +222,6 @@ int EvrSetPulseProperties(volatile struct MrfErRegs *pEr, int pulse, int polarit
   return 0;
 }
 
-int EvrSetUnivOutMap(volatile struct MrfErRegs *pEr, int output, int map)
-{
-  if (output < 0 || output >= EVR_MAX_UNIVOUT_MAP)
-    return -1;
-
-  pEr->UnivOutMap[output] = be16_to_cpu(map);
-  return 0;
-}
-
 void EvrDumpUnivOutMap(volatile struct MrfErRegs *pEr, int outputs)
 {
   int i;
@@ -354,30 +230,12 @@ void EvrDumpUnivOutMap(volatile struct MrfErRegs *pEr, int outputs)
     DEBUG_PRINTF("UnivOut[%d] %02x\n", i, be16_to_cpu(pEr->UnivOutMap[i]));
 }
 
-int EvrSetFPOutMap(volatile struct MrfErRegs *pEr, int output, int map)
-{
-  if (output < 0 || output >= EVR_MAX_FPOUT_MAP)
-    return -1;
-
-  pEr->FPOutMap[output] = be16_to_cpu(map);
-  return 0;
-}
-
 void EvrDumpFPOutMap(volatile struct MrfErRegs *pEr, int outputs)
 {
   int i;
 
   for (i = 0; i < outputs; i++)
     DEBUG_PRINTF("FPOut[%d] %02x\n", i, be16_to_cpu(pEr->FPOutMap[i]));
-}
-
-int EvrSetTBOutMap(volatile struct MrfErRegs *pEr, int output, int map)
-{
-  if (output < 0 || output >= EVR_MAX_TBOUT_MAP)
-    return -1;
-
-  pEr->TBOutMap[output] = be16_to_cpu(map);
-  return 0;
 }
 
 void EvrDumpTBOutMap(volatile struct MrfErRegs *pEr, int outputs)
@@ -402,90 +260,7 @@ void EvrIrqAssignHandler(volatile struct MrfErRegs *pEr, int fd,
       EvrIrqHandlerThreadCreate(&h, fd);
 }
 
-int EvrGetIrqFlags(volatile struct MrfErRegs *pEr)
-{
-  return be32_to_cpu(pEr->IrqFlag);
-}
-
-int EvrClearIrqFlags(volatile struct MrfErRegs *pEr, int mask)
-{
-  pEr->IrqFlag = be32_to_cpu(mask);
-  return be32_to_cpu(pEr->IrqFlag);
-}
-
-int EvrSetPulseIrqMap(volatile struct MrfErRegs *pEr, int map)
-{
-  pEr->PulseIrqMap = be32_to_cpu(map);
-  return 0;
-}
-
-void EvrClearDiagCounters(volatile struct MrfErRegs *pEr)
-{
-  pEr->DiagReset = 0xffffffff;
-  pEr->DiagReset = 0x0;
-}
-
-void EvrEnableDiagCounters(volatile struct MrfErRegs *pEr, int enable)
-{
-  if (enable)
-    pEr->DiagCE = 0xffffffff;
-  else
-    pEr->DiagCE = 0;
-}
-
-u32 EvrGetDiagCounter(volatile struct MrfErRegs *pEr, int idx)
-{
-  return be32_to_cpu(pEr->DiagCounter[idx]);
-}
-
-void EvrDumpHex(volatile struct MrfErRegs *pEr)
-{
-  u32 *p = (u32 *) pEr;
-  int i,j;
-
-  for (i = 0; i < 0x600; i += 0x20)
-    {
-      printf("%08x: ", i);
-      for (j = 0; j < 8; j++)
-	printf("%08x ", be32_to_cpu(*p++));
-      printf("\n");
-    }
-}
-
-int EvrSetDBufMode(volatile struct MrfErRegs *pEr, int enable)
-{
-  if (enable)
-    pEr->DataBufControl = be32_to_cpu(1 << C_EVR_DATABUF_MODE);
-  else
-    pEr->DataBufControl = 0;
-
-  return EvrGetDBufStatus(pEr);
-}
-
-int EvrGetDBufStatus(volatile struct MrfErRegs *pEr)
-{
-  return be32_to_cpu(pEr->DataBufControl);
-}
-
-int EvrReceiveDBuf(volatile struct MrfErRegs *pEr, int enable)
-{
-  if (enable)
-    pEr->DataBufControl |= be32_to_cpu(1 << C_EVR_DATABUF_LOAD);
-  else
-    pEr->DataBufControl |= be32_to_cpu(1 << C_EVR_DATABUF_STOP);
-
-  return EvrGetDBufStatus(pEr);
-}
-
 int EvrGetTimestampCounter(volatile struct MrfErRegs *pEr)
 {
   return be32_to_cpu(pEr->TimestampEventCounter);
-}
-
-int EvrGetFormFactor(volatile struct MrfErRegs *pEr)
-{
-  int stat;
-  
-  stat = be32_to_cpu(pEr->FPGAVersion);
-  return ((stat >> 24) & 0x0f);
 }

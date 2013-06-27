@@ -149,7 +149,7 @@ struct MrfErRegs {
   struct MapRamItemStruct MapRam[EVR_MAPRAMS][EVR_MAX_EVENT_CODE+1];
                                             /* 4000-4FFF: Map RAM 1 */
                                             /* 5000-5FFF: Map RAM 2 */
-  char Resv0x6000[0x2000];
+  char Resv0x6000[0x2000];                  /* 6000-7FFF: Reserved padding to 8K boundary */
 };
 
 /* -- Control Register bit mappings */

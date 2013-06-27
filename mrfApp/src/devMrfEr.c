@@ -586,11 +586,52 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
                 printf ("ErEventProc(%s) event number changed %d-%d\n", 
                               pRec->name, pRec->lenm, pRec->enm);
 
-           /* Clear the entry for the previous event number */ 
-            if ((pRec->lenm < EVR_NUM_EVENTS) && (pRec->lenm > 0)) {
-                pCard->ErEventTab[pRec->lenm] = 0;
-                LoadRam = epicsTrue;
-            }/*end if previous event number was valid*/
+            /* Check to see if the new event number is already used */
+            if ((pRec->enm < EVR_NUM_EVENTS) && (pRec->enm > 0)
+                && pCard->ErEventTab[pRec->enm] != 0 ) {
+                /*----------------
+                 * The new event number is already being used by a different erevent record
+                 * Force this record to keep it's prior event number
+                 */
+                errlogPrintf( "ErEventProcess Error: Event %d already in use!\n", pRec->enm );
+                pRec->enm = pRec->lenm;
+
+                /* This call needed as recGblSetSevr() doesn't post events for pField NULL */
+                /* db_post_events( pRec, &pRec->enm, DBE_VALUE | DBE_LOG ); */
+
+                /*----------------
+                 * Clear the output mask for our old event number
+                 */
+                if ((pRec->lenm < EVR_NUM_EVENTS) && (pRec->lenm > 0)) {
+                    pCard->ErEventTab[pRec->lenm] = 0;
+                    LoadRam = epicsTrue;
+                }/*end if LENM was valid*/
+
+                /*---------------------
+                 * Disable the event and set LENM to an invalid code in order to:
+                 * a) Inhibit further processing until ENAB goes back to "Enabled", and
+                 * b) Force a RAM re-load when ENAB does go back to "Enabled".
+                 */
+                Mask		= 0;
+                pRec->enab	= epicsFalse;
+                pRec->lenm	= -1;
+                recGblSetSevr(	pRec, STATE_ALARM, MAJOR_ALARM	);
+            } else {
+                /* Clear the entry for the previous event number */ 
+                if ((pRec->lenm < EVR_NUM_EVENTS) && (pRec->lenm > 0)) {
+                    pCard->ErEventTab[pRec->lenm] = 0;
+                    LoadRam = epicsTrue;
+                }/*end if previous event number was valid*/
+
+                if ((pRec->enm < EVR_NUM_EVENTS) && (pRec->enm > 0)) {
+                    /*
+                     * Update the record desc field with the description
+                     * for this event code
+                     */
+                    strncpy( &pRec->desc[0], &pCard->EventCodeDesc[pRec->enm][0],
+                             MAX_STRING_SIZE+1 );
+                }
+            }
 
             pRec->lenm = pRec->enm;
             LoadMask = epicsTrue;
@@ -772,6 +813,12 @@ epicsStatus ErEpicsEventInitRec (eventRecord *pRec)
                           "devMrfEr::ErEpicsEventInitRec() invalid signal number in INP field");
         return(S_dev_badCard);
     }/*end if event number is invalid*/
+
+    /*
+     * Keep a copy of the event code description for
+     * later use when the ereventRecord handles changing event codes
+     */
+    strncpy( pCard->EventCodeDesc[Event], pRec->desc, MAX_STRING_SIZE+1 );
 
    /*---------------------
     * Store the address of the IOSCANPVT structure that corresponds

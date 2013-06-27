@@ -169,6 +169,7 @@ void ErIrqHandler(int fd, int flags)
 {
 	struct ErCardStruct *pCard;
 	struct MrfErRegs *pEr;
+        struct EvrQueues *pEq;
 	int i;
 	epicsMutexLock(ErCardListLock);
 	for (pCard = (ErCardStruct *)ellFirst(&ErCardList);
@@ -185,33 +186,51 @@ void ErIrqHandler(int fd, int flags)
                  */
 
 		pEr = pCard->pEr;
+		pEq = (struct EvrQueues *)&pEr[1];
 
                 irqCount++;
 
                 /* This should always be here 2ms before the fiducial event */
 		if(flags & EVR_IRQFLAG_DATABUF) {
-			int databuf_sts = EvrGetDBufStatus(pEr);
-			if(databuf_sts & (1<<C_EVR_DATABUF_CHECKSUM))
-				if (pCard->DevErrorFunc != NULL)
-					(*pCard->DevErrorFunc)(pCard, ERROR_DBUF_CHECKSUM);
-			if (pCard->DevDBuffFunc != NULL) {
-				pCard->DBuffSize = (databuf_sts & ((1<<(C_EVR_DATABUF_SIZEHIGH+1))-1));
-				for (i=0;  i < pCard->DBuffSize>>2;  i++)
-					pCard->DataBuffer[i] = be32_to_cpu(pEr->Databuf[i]);
-				EvrReceiveDBuf(pEr, 1);	/* That means we only re-enable it if 
-							   someone cares (DevDBuffFunc set) */
-				(*pCard->DevDBuffFunc)(pCard, pCard->DBuffSize, pCard->DataBuffer);
-			}
+                    long long drp = pEq->dwp - 1; /* Read the latest! */
+                    if (drp != pCard->drp) {
+                        int idx = drp & (MAX_EVR_DBQ - 1);
+                        int databuf_sts = pEq->dbq[idx].status;
+
+                        if(databuf_sts & (1<<C_EVR_DATABUF_CHECKSUM)) {
+                            if (pCard->DevErrorFunc != NULL)
+                                (*pCard->DevErrorFunc)(pCard, ERROR_DBUF_CHECKSUM);
+                        } else {
+                            if (pCard->DevDBuffFunc != NULL) {
+                                pCard->DBuffSize = (databuf_sts & ((1<<(C_EVR_DATABUF_SIZEHIGH+1))-1));
+                                memcpy(pCard->DataBuffer, pEq->dbq[idx].data, pCard->DBuffSize);
+                                (*pCard->DevDBuffFunc)(pCard, pCard->DBuffSize, pCard->DataBuffer);
+                            }
+                        }
+                        /* TBD - Check if we skipped some? */
+                        pCard->drp = drp;
+                    } else {
+                        /* We must have skipped one earlier, but caught up? */
+                    }
 		}
 
 		if(flags & EVR_IRQFLAG_EVENT) {
-			struct FIFOEvent fe;
-			for(i=0; i < EVR_FIFO_EVENT_LIMIT; i++) {
-				if(EvrGetFIFOEvent(pEr, &fe) < 0)
-					break;
-				if(pCard->DevEventFunc != NULL)
-					(*pCard->DevEventFunc)(pCard, fe.EventCode, fe.TimestampHigh);
-			}
+                    long long erplimit = pEq->ewp;     /* Pointer to the latest! */
+                    long long erp      = pCard->erp;   /* Where we are now. */
+                    if (erplimit - erp > MAX_EVR_EVTQ / 2) {
+                        /* Wow, we're far behind! Catch up a bit, but flag an error. */
+                        erp = erplimit - MAX_EVR_EVTQ / 2;
+                        flags |= EVR_IRQFLAG_FIFOFULL;
+                    }
+                    for(i=0; erp < erplimit && i < EVR_FIFO_EVENT_LIMIT; erp++) {
+                        struct FIFOEvent *fe = &pEq->evtq[erp & (MAX_EVR_EVTQ - 1)];
+                        if (pCard->ErEventTab[fe->EventCode] & (1 << 15)) {
+                            if (pCard->DevEventFunc != NULL)
+                               (*pCard->DevEventFunc)(pCard, fe->EventCode, fe->TimestampHigh);
+                            i++;
+                        }
+                    }
+                    pCard->erp = erp;
 		}
 
 		if(flags & EVR_IRQFLAG_PULSE) {
@@ -374,6 +393,8 @@ static int ErConfigure (
 		return ERROR;
 	}
 	memset(pCard, 0, sizeof(struct ErCardStruct));
+        pCard->drp = -1;
+        pCard->erp = 0;
 	pCard->Cardno = Card;
 	pCard->CardLock = epicsMutexCreate();
 	if (pCard->CardLock == 0) {
@@ -519,28 +540,6 @@ void ErEventIrq(ErCardStruct *pCard, epicsBoolean Enable)
 		if (pCard->IrqVector & EVR_IRQFLAG_FIFOFULL)
 			mask ^= EVR_IRQFLAG_FIFOFULL;
 	}
-	ErEnableIrq_nolock(pCard, mask);
-	epicsMutexUnlock(pCard->CardLock);
-	return;
-}
-
-/**************************************************************************************************
-|* ErFlushFifo () -- Flush the Event FIFO
-|*-------------------------------------------------------------------------------------------------
-|* INPUT PARAMETERS:
-|*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*
-\**************************************************************************************************/
-void ErFlushFifo(ErCardStruct *pCard)
-{
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-	int mask;
-
-	epicsMutexLock(pCard->CardLock);
-	mask=pCard->IrqVector;
-	ErEnableIrq_nolock(pCard, mask & (~EVR_IRQFLAG_FIFOFULL));
-	EvrClearFIFO(pEr);
-	EvrClearIrqFlags(pEr, EVR_IRQFLAG_FIFOFULL);
 	ErEnableIrq_nolock(pCard, mask);
 	epicsMutexUnlock(pCard->CardLock);
 	return;

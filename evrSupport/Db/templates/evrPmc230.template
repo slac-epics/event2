@@ -6,17 +6,6 @@
 # 1 = Extended Delay Trigger 1 (DG1)
 # 2 = Extended Delay Trigger 2 (DG2)
 # 3 = Extended Delay Trigger 3 (DG3)
-# 4 = Trigger 0 (TRG0)
-# 5 = Trigger 1 (TRG1)
-# 11 = Programmable Width Pulse 0 (OTP0)
-# 12 = Programmable Width Pulse 1 (OTP1)
-# 13 = Programmable Width Pulse 2 (OTP2)
-# 14 = Programmable Width Pulse 3 (OTP3)
-# 63 = Disabled
-#
-# These days, all we seem to be using is the extended delay triggers though.
-# Better to disable the others, especially since this won't work well with the
-# SLAC EVR.
 #
 record(er, "$(DEV):CTRL")
 {
@@ -24,81 +13,29 @@ record(er, "$(DEV):CTRL")
   field(DTYP, "MRF Event Receiver")
   field(OUT, "#C$(CARD) S0 @")
   field(PINI, "YES")
-  field(ENAB, "YES")
-  field(FPS0, "0")
-  field(FPS1, "1")
-  field(FPS2, "2")
-  field(FPS3, "3")
-  field(TRG0, "Disabled")
-  field(TRG1, "Disabled")
-  field(OTP0, "Disabled")
-  field(OTP1, "Disabled")
-  field(OTP2, "Disabled")
-  field(OTP3, "Disabled")
-  field(OT0D, "120" )
-  field(OT1D, "120" )
-  field(OT2D, "120" )
-  field(OT3D, "120" )
-  field(OT0W, "0" )
-  field(OT1W, "0" )
-  field(OT2W, "0" )
-  field(OT3W, "0" )
 #Extended Delay Triggers
+  field(IP0E, "$(IP0E)")
   field(DG0E, "$(DG0E)")
-  field(DG1E, "$(DG1E)")
-  field(DG2E, "$(DG2E)")
   field(DG0W, "$(DG0W)")
-  field(DG1W, "$(DG1W)")
-  field(DG2W, "$(DG2W)")
   field(DG0D, "$(DG0D)")
-  field(DG1D, "$(DG1D)")
-  field(DG2D, "$(DG2D)")
   field(DG0C, "$(DG0C)")
-  field(DG1C, "$(DG1C)")
-  field(DG2C, "$(DG2C)")
   field(DG0P, "$(DG0P)")
+
+  field(IP1E, "$(IP1E)")
+  field(DG1E, "$(DG1E)")
+  field(DG1W, "$(DG1W)")
+  field(DG1D, "$(DG1D)")
+  field(DG1C, "$(DG1C)")
   field(DG1P, "$(DG1P)")
+
+  field(IP2E, "$(IP2E)")
+  field(DG2E, "$(DG2E)")
+  field(DG2W, "$(DG2W)")
+  field(DG2D, "$(DG2D)")
+  field(DG2C, "$(DG2C)")
   field(DG2P, "$(DG2P)")
 
-  field(PRES, "1")
   field(FLNK, "$(EVRFLNK)")
-}
-
-record(bi, "$(DEV):LINK")
-{
-  field(DESC, "$(DEV) LnkSt")
-  field(DTYP, "MRF Event Receiver")
-  field(INP,  "#C$(CARD) S0 @")
-  field(PINI, "YES")
-  field(SCAN, "1 second")
-  field(ZSV, "MAJOR")
-  field(ZNAM, "OFF")
-  field(ONAM, "ON")
-}
-
-record(calc, "$(DEV):_CALC_STATUS")
-{
-  field(DESC, "Calc evr Status")
-  field(CALC, "L=0?0:E+1")
-  field(INPL, "$(DEV):LINK CPP MS")
-  field(INPE, "$(DEV):CTRL.ENAB CPP MS")
-  field(FLNK, "$(DEV):STATUS PP MS")
-}
-
-record(mbbi, "$(DEV):STATUS")
-{
-  field(DESC, "evr Status")
-  field(INP, "$(DEV):_CALC_STATUS NPP MS")
-  field(ZRVL, "0")
-  field(ZRST, "FAIL")
-  field(ZRSV, "MAJOR")
-  field(ONVL, "1")
-  field(ONST, "OFF")
-  field(ONSV, "MINOR")
-  field(TWVL, "2")
-  field(TWST, "ON")
-  field(TWSV, "NO_ALARM")
-  field(UNSV, "INVALID")
 }
 
 record(stringout, "$(DEV):FP0L")

@@ -332,6 +332,9 @@ struct ErCardStruct {
     epicsUInt32     DataBuffer [EVR_MAX_BUFFER/4];   /* Buffer for data stream                    */
     char            intMsg     [EVR_INT_MSG_LEN];    /* Buffer for interrupt debug messages       */
     char            FormFactor;              /* "VME_EVR" or "PMC_EVR" */
+    char	    EventCodeDesc[EVR_NUM_EVENTS][MAX_STRING_SIZE+1];	/* Event code description */
+    long long       drp;                     /* Last data buffer read pointer */
+    long long       erp;                     /* Next event read pointer */
 };/*ErCardStruct*/
 
 #endif
