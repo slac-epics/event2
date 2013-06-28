@@ -113,6 +113,12 @@ epicsUInt16 ErEnableIrq_nolock (ErCardStruct *pCard, epicsUInt16 Mask)
                 ioctl(pCard->Slot, EV_IOCIRQMASK, &pCard->IrqVector);
 		ret = OK;
 	}
+        /*
+         * If events are off, reset so we'll jump into the middle of the queue
+         * when we turn them back on.
+         */
+        if (!(pCard->IrqVector & EVR_IRQFLAG_EVENT))
+            pCard->erp = -1;
 	return ret;
 }
 
@@ -215,8 +221,10 @@ void ErIrqHandler(int fd, int flags)
 		}
 
 		if(flags & EVR_IRQFLAG_EVENT) {
-                    long long erplimit = pEq->ewp;     /* Pointer to the latest! */
+                    long long erplimit = pEq->ewp;     /* Pointer to the next! */
                     long long erp      = pCard->erp;   /* Where we are now. */
+                    if (erp == -1)
+                        erp = erplimit - 1;            /* If just starting, jump to where we are now. */
                     if (erplimit - erp > MAX_EVR_EVTQ / 2) {
                         /* Wow, we're far behind! Catch up a bit, but flag an error. */
                         erp = erplimit - MAX_EVR_EVTQ / 2;
@@ -394,7 +402,7 @@ static int ErConfigure (
 	}
 	memset(pCard, 0, sizeof(struct ErCardStruct));
         pCard->drp = -1;
-        pCard->erp = 0;
+        pCard->erp = -1;
 	pCard->Cardno = Card;
 	pCard->CardLock = epicsMutexCreate();
 	if (pCard->CardLock == 0) {
