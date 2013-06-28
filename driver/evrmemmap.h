@@ -75,7 +75,7 @@ struct FIFOEvent {
 };
 
 struct DBufInfo {
-  char data[2048];
+  u32  data[512];
   u32  status;
 };
 

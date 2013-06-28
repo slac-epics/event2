@@ -687,9 +687,14 @@ irqreturn_t ev_interrupt(int irq, void *dev_id, struct pt_regs *regs)
             if (!(databuf_sts & (1<<C_EVR_DATABUF_CHECKSUM))) {
                 /* If no checksum error, grab the buffer too. */
                 int size = (databuf_sts & ((1<<(C_EVR_DATABUF_SIZEHIGH+1))-1));
+                u32 *dd   = evrq->dbq[idx].data;
+                u32 *ds   = pEr->Databuf;
 
                 for (i = 0;  i < (size >> 2);  i++)
-                    evrq->dbq[idx].data[i] = be32_to_cpu(pEr->Databuf[i]);
+                    dd[i] = be32_to_cpu(ds[i]);
+#if 0
+                printk(KERN_ALERT "D%d: %08x %08x.%08x\n", idx, dd[0], dd[7], dd[8]);
+#endif
             }
             evrq->dwp++;
             /* TBD - barrier? */
