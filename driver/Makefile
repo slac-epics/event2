@@ -56,8 +56,9 @@ PWD := $(shell pwd)
 
 realclean clean:: modclean
 
-modules:
+modules: modclean
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+	cp pci_mrfevr.ko pci_mrfevr.ko.`uname -r`
 
 modclean:
 	-rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions Module.*

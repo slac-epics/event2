@@ -91,7 +91,7 @@ file fiducial.db
 # Do we need this? Yes, otherwise we don't get timestamps!
 file evrEventAll.db
 {
-	{   DEVICE=$(IOC), EVRFLNK="$(EVR):Triggers"   }
+	{   DEVICE=$(EVR), EVRFLNK="$(EVR):Triggers"   }
 }
 
 #

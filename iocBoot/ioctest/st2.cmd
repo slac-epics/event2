@@ -29,7 +29,7 @@ ErDebugLevel( 0 )
 ErConfigure( 0, 0, 0, 0, $(EVRTYPE) )
 
 # Load EVR record instances
-dbLoadRecords( "db/evrSLACTest.db", "IOC=$(IOCBASE),EVR=$(EVRBASE),$(EVRCHANNELS)" )
+dbLoadRecords( "db/evrTest.db", "IOC=$(IOCBASE),EVR=$(EVRBASE),$(EVRCHANNELS)" )
 
 # Initialize the IOC and start processing records
 iocInit()

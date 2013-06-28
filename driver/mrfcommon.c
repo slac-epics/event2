@@ -1,3 +1,4 @@
+#define DEBUG
 /*
   mrfcommon.c -- Micro-Research Event Generator/Event Receiver
                  Linux 2.6 driver common functions
@@ -34,6 +35,11 @@ MODULE_LICENSE("GPL");
 
 #ifndef DEVICE_NAME
 #define DEVICE_NAME "pci_mrf"
+#endif
+#ifdef DEBUG
+#define DPF(a) printk a
+#else
+#define DBF(a)
 #endif
 
 struct mrf_dev mrf_devices[MAX_MRF_DEVICES];
@@ -207,10 +213,9 @@ int ev_open(struct inode *inode, struct file *filp)
                   pEr->EvCntPresc = be32_to_cpu(1);
                   pEr->FracDiv = be32_to_cpu(CLOCK_119000_MHZ);
                   for (j = 0; j < 12; j++) {
-                      if(pLinuxErCard->ErCard.FormFactor == EVR_FORM_PMC)
+                      if(form == EVR_FORM_PMC)
                           pEr->FPOutMap[j] = be16_to_cpu(j);
-                      else if(pLinuxErCard->ErCard.FormFactor == EVR_FORM_CPCI ||
-                              pLinuxErCard->ErCard.FormFactor == EVR_FORM_SLAC)
+                      else if(form == EVR_FORM_CPCI || form == EVR_FORM_SLAC)
                           pEr->UnivOutMap[j] = be16_to_cpu(j);
                   }
               }
@@ -337,7 +342,7 @@ ssize_t ev_write(struct file *filp, const char __user *buf, size_t count,
   struct mrf_dev *ev_device = shared->parent;
 
 #ifdef DEBUG
-  printk(KERN_INFO DEVICE_NAME ": write %d bytes.\n", count);
+  printk(KERN_INFO DEVICE_NAME ": write %d bytes.\n", (int) count);
 #endif
 
   if (down_interruptible(&ev_device->sem))
@@ -540,7 +545,7 @@ int ev_fasync(int fd, struct file *filp, int mode)
 
 int ev_plx_irq_enable(struct mrf_dev *ev_device)
 {
-  if (ev_device->slac) {
+  if (SLAC_EVR(ev_device)) {
     volatile struct MrfErRegs *pEv = ev_device->pEv;
     pEv->pcieInt = 0x01000000;
     barrier();
@@ -558,7 +563,7 @@ int ev_plx_irq_enable(struct mrf_dev *ev_device)
 
 int ev_plx_irq_disable(struct mrf_dev *ev_device)
 {
-  if (ev_device->slac) {
+  if (SLAC_EVR(ev_device)) {
     volatile struct MrfErRegs *pEv = ev_device->pEv;
     pEv->pcieInt = 0;
     barrier();
@@ -615,6 +620,7 @@ int ev_ioctl(struct inode *inode, struct file *filp,
         if (copy_from_user(&shared->irqmask, (u32 *)arg, sizeof(shared->irqmask))) {
           return -EACCES;
         }
+        printk(KERN_ALERT "Setting IRQ for fd%d to 0x%08x\n", shared->idx, shared->irqmask);
         set_irq_mask(ev_device);
         ret = 0;
       } else
@@ -646,7 +652,7 @@ irqreturn_t ev_interrupt(int irq, void *dev_id, struct pt_regs *regs)
 
     /* We use shared interrupts: return immediately if irq is not from our
        device. */
-    if (ev_device->slac) {
+    if (SLAC_EVR(ev_device)) {
         if (!(pEv->pcieInt & 0x02000000))
             return IRQ_NONE;
     } else {
@@ -666,15 +672,16 @@ irqreturn_t ev_interrupt(int irq, void *dev_id, struct pt_regs *regs)
         volatile struct MrfErRegs *pEr = ev_device->pEv;
         int flags = be32_to_cpu(pEr->IrqFlag);
         int i;
-
+        printk(KERN_ALERT "I%08x\n", flags);
         /* Clear everything but FIFOFULL. */
         if(flags & ~EVR_IRQFLAG_FIFOFULL)
             pEr->IrqFlag = be32_to_cpu(flags & ~EVR_IRQFLAG_FIFOFULL); 
-
+        printk(KERN_ALERT "1 %p\n", evrq);
         if(flags & EVR_IRQFLAG_DATABUF) {
             int databuf_sts = be32_to_cpu(pEr->DataBufControl);
             long long nextbp = evrq->dwp + 1;
             int idx = nextbp & (MAX_EVR_DBQ - 1);
+            printk(KERN_ALERT "2\n");
 
             evrq->dbq[idx].status = databuf_sts;
             if (!(databuf_sts & (1<<C_EVR_DATABUF_CHECKSUM))) {
@@ -692,7 +699,7 @@ irqreturn_t ev_interrupt(int irq, void *dev_id, struct pt_regs *regs)
             else
                 pEr->DataBufControl |= be32_to_cpu(1 << C_EVR_DATABUF_STOP);
         }
-
+        printk(KERN_ALERT "3\n");
         if(flags & EVR_IRQFLAG_EVENT) {
             long long nextbp;
             int idx;
@@ -702,6 +709,7 @@ irqreturn_t ev_interrupt(int irq, void *dev_id, struct pt_regs *regs)
             do {
                 nextbp = evrq->ewp + 1;
                 idx = nextbp & (MAX_EVR_EVTQ - 1);
+                printk(KERN_ALERT "idx = %d\n", idx);
                 evrq->evtq[idx].EventCode = be32_to_cpu(pEr->FIFOEvent);
                 evrq->evtq[idx].TimestampHigh = be32_to_cpu(pEr->FIFOSeconds);
                 evrq->evtq[idx].TimestampLow = be32_to_cpu(pEr->FIFOTimestamp);
@@ -858,11 +866,18 @@ void set_irq_mask(struct mrf_dev *ev_device)
 {
     int i;
     u32 mask = 0;
+    volatile struct MrfErRegs * pEr = (struct MrfErRegs *)ev_device->pEv;
 
     for (i = 0; i < MAX_EVR_OPENS; i++)
         if (ev_device->shared[i].parent)
             mask |= ev_device->shared[i].irqmask;
-    ((struct MrfErRegs *)ev_device->pEv)->IrqEnable = be32_to_cpu(mask);
+    printk(KERN_ALERT "New IrqEnable = 0x%08x\n", mask);
+    pEr->IrqEnable = be32_to_cpu(mask);
+    if (EVR_IRQFLAG_DATABUF & mask) {
+        pEr->DataBufControl |= be32_to_cpu(1 << C_EVR_DATABUF_LOAD);
+    } else {
+        pEr->DataBufControl |= be32_to_cpu(1 << C_EVR_DATABUF_STOP);
+    }
 }
 
 void set_event_table(struct mrf_dev *ev_device)

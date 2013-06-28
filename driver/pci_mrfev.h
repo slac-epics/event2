@@ -8,7 +8,7 @@
 */
 #include<linux/spinlock.h>
 
-#define DEVICE_MINOR_NUMBERS      4
+#define DEVICE_MINOR_NUMBERS      5
 #define MAX_MRF_DEVICES           8
 #define MAX_EVR_OPENS             4
 #define EVR_FIFO_EVENT_LIMIT    256
@@ -32,7 +32,7 @@
 /* SLAC values */
 #define PCI_VENDOR_ID_XILINX_PCIE   0x1A4A
 #define PCI_DEVICE_ID_XILINX_PCIE   0x2010
-#define IS_SLAC_EVR(pdi) ((pdi)->vendor == PCI_VENDOR_ID_XILINX_PCIE && \
+#define PDI_IS_SLAC(pdi) ((pdi)->vendor == PCI_VENDOR_ID_XILINX_PCIE && \
                           (pdi)->device == PCI_DEVICE_ID_XILINX_PCIE && \
                           (pdi)->subvendor == PCI_ANY_ID && \
                           (pdi)->subdevice == PCI_ANY_ID)
@@ -50,7 +50,7 @@
 #define DEVICE_SHEV   4
 
 #define DEVICE_FIRST_MRF   0
-#define DEVICE_FIRST_SLAC  4
+#define DEVICE_FIRST_SLAC  3
 #define DEVICE_LAST        4
 
 /* Define the maximum number of words in EEPROM */
@@ -119,11 +119,13 @@ struct mrf_dev {
   int              irq;            /* Interrupt line */
   struct fasync_struct *async_queue;
   int              vmas;
-  int              device_first;
-  void             *slac;          /* Memory for the memory-mapped queues, if a SLAC EVR */
-  void             *evrq;          /* Page-aligned memory for the queues. */
+  int              device_first;   /* Also used to differentiate SLAC from MRF!!! */
+  void            *qmem;           /* Memory for the memory-mapped queues, if shared */
+  void            *evrq;           /* Page-aligned memory for the queues. */
   struct shared_mrf shared[MAX_EVR_OPENS];
 };
+#define SLAC_EVR(pEr) ((pEr)->device_first)
+#define MRF_EVR(pEr)  (!(pEr)->device_first)
 
 struct MrfErRegs;
 

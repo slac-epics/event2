@@ -47,16 +47,19 @@ record(sub, "$(DEV):FIDUCIALRATE") {
   field(HOPR, "360")
 }
 
-record(erevent, "$(DEV):FIDUCIALCTRL") {
-  field(DESC, "Fiducial Event Control")
-  field(PINI, "YES")
-  field(DTYP, "MRF Event Receiver")
-  field(OUT, "#C0 S0 @")
-  field(ENAB, "Enabled")
-  field(ENM, "1")
-  field(VME,  "1")
-  field(FLNK, "$(EVRFLNK)")
-}
+#
+# This record also exists in fiducial.db.  We have to kill it somewhere.
+#
+#record(erevent, "$(DEV):FIDUCIALCTRL") {
+#  field(DESC, "Fiducial Event Control")
+#  field(PINI, "YES")
+#  field(DTYP, "MRF Event Receiver")
+#  field(OUT, "#C0 S0 @")
+#  field(ENAB, "Enabled")
+#  field(ENM, "1")
+#  field(VME,  "1")
+#  field(FLNK, "$(EVRFLNK)")
+#}
 
 #! Further lines contain data used by VisualDCT
 #! View(86,0,1.1)

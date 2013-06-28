@@ -127,20 +127,18 @@ static int pci_evr_probe(struct pci_dev *pcidev, const struct pci_device_id *dev
     }
 
   ev_device = &mrf_devices[id->driver_data];
-  if (IS_SLAC_EVR(id)) {
+  if (PDI_IS_SLAC(id)) {
     ev_device->device_first = DEVICE_FIRST_SLAC;
-    ev_device->slac = kmalloc(sizeof(struct EvrQueues) + PAGE_SIZE, GFP_KERNEL);
-    if (!ev_device->slac) {
-      printk(KERN_WARNING DEVICE_NAME ": no memory available.\n");
-      return -ENOMEM;
-    }
-    memset(ev_device->slac, 0, sizeof(struct EvrQueues) + PAGE_SIZE);
-    ev_device->evrq = (void *)((long long)(ev_device->slac + PAGE_SIZE - 1) & PAGE_MASK);
   } else {
-    ev_device->slac = 0;
     ev_device->device_first = DEVICE_FIRST_MRF;
-    ev_device->slac = NULL;
   }
+  ev_device->qmem = kmalloc(sizeof(struct EvrQueues) + PAGE_SIZE, GFP_KERNEL);
+  if (!ev_device->qmem) {
+    printk(KERN_WARNING DEVICE_NAME ": no memory available.\n");
+    return -ENOMEM;
+  }
+  memset(ev_device->qmem, 0, sizeof(struct EvrQueues) + PAGE_SIZE);
+  ev_device->evrq = (void *)((long long)(ev_device->qmem + PAGE_SIZE - 1) & PAGE_MASK);
   ev_device->vmas = 0;
 
   /* Allocate device numbers for character device. */
@@ -185,7 +183,7 @@ static int pci_evr_probe(struct pci_dev *pcidev, const struct pci_device_id *dev
   /* Here we enable device before we can do any accesses to device. */
   pci_enable_device(pcidev);
 
-  if (ev_device->slac) {
+  if (SLAC_EVR(ev_device)) {
     evr_base_start = pci_resource_start(pcidev, 0);
     evr_base_end = pci_resource_end(pcidev, 0);
     ev_device->mrEv = evr_base_start;
@@ -246,7 +244,7 @@ static void pci_evr_remove(struct pci_dev *pcidev)
   struct mrf_dev *ev_device = NULL;
 
   for (i = 0; i < MAX_MRF_DEVICES; i++)
-    if ((mrf_devices[i].slac ? mrf_devices[i].mrEv : mrf_devices[i].mrLC)
+    if ((SLAC_EVR(&mrf_devices[i]) ? mrf_devices[i].mrEv : mrf_devices[i].mrLC)
         == pci_resource_start(pcidev, 0))
       {
 	ev_device = &mrf_devices[i];
@@ -259,12 +257,11 @@ static void pci_evr_remove(struct pci_dev *pcidev)
     }
   else
     {
-      if (ev_device->slac)
-        kfree(ev_device->slac);
+      kfree(ev_device->qmem);
       /* Release memory regions for BAR0 and BAR2 */
       iounmap(ev_device->pEv);
       release_mem_region(ev_device->mrEv, ev_device->lenEv);
-      if (!ev_device->slac) {
+      if (MRF_EVR(ev_device)) {
         iounmap(ev_device->pLC);
         release_mem_region(ev_device->mrLC, ev_device->lenLC);
       }
