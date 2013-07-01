@@ -24,6 +24,11 @@ recordtype(erevent) {
 		promptgroup(GUI_OUTPUT)
 		interest(1)
 	}
+	field(IPV, DBF_INLINK) {
+		prompt("Idiot Proof Vector")
+		promptgroup(GUI_INPUTS)
+		interest(1)
+	}
 	field(ENAB,DBF_MENU) {
 		prompt("Enable")
 		promptgroup(GUI_DISPLAY)

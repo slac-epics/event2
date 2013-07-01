@@ -13,6 +13,7 @@
 /* Function prototypes */
 int EvrOpen(struct MrfErRegs **pEr, char *device_name);
 int EvrClose(int fd);
+int EvrGetViolation(volatile struct MrfErRegs *pEr);
 void EvrDumpStatus(volatile struct MrfErRegs *pEr);
 int EvrSetPulseParams(volatile struct MrfErRegs *pEr, int pulse, u32 presc,
 		      u32 delay, u32 width);

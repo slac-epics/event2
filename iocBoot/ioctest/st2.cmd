@@ -3,7 +3,7 @@
 # This is a sample st.cmd file for the EVR.
 
 epicsEnvSet("IOCNAME",     "ioc-evr-tst2")
-epicsEnvSet("EVRTYPE",     "2")
+epicsEnvSet("EVRTYPE",     "1")
 epicsEnvSet("EVRBASE",     "TST:2:EVR")
 epicsEnvSet("IOCBASE",     "TST:2:IOC")
 epicsEnvSet("EVRCHANNELS", "IP2E=Enabled,IP2E=Enabled")

@@ -21,5 +21,6 @@ record(erevent, "$(DEV):$(NAME)CTRL")
   field(OUTC, "$(P12)")
   field(OUTD, "$(P13)")
   field(VME,  "$(VME)")
+  field(IPV,  "$(DEV):CTRL.IPOV CPP NMS")
   field(FLNK, "$(EVRFLNK)")
 }

@@ -23,6 +23,7 @@
 #include <linux/mm.h>
 #include <linux/kdev_t.h>
 #include <linux/interrupt.h>
+#include <linux/timer.h>
 
 #include <asm/page.h>
 #include <asm/uaccess.h>
@@ -40,6 +41,7 @@ MODULE_LICENSE("GPL");
 #define DEVICE_NAME           "mrfevr"
 
 extern struct mrf_dev mrf_devices[MAX_MRF_DEVICES];
+static struct timer_list mrf_timer;
 
 /*
   File operations for Event Boards
@@ -294,10 +296,26 @@ int ev_assign_irq(struct mrf_dev *ev_device)
   return result;
 }
 
+void mrf_callback(unsigned long data)
+{
+    int i;
+
+    mod_timer(&mrf_timer, jiffies + msecs_to_jiffies(1000));
+    for (i = 0; i < MAX_MRF_DEVICES; i++) {
+        if (mrf_devices[i].mrEv != 0) {
+            volatile struct MrfErRegs *pEr = (struct MrfErRegs *)mrf_devices[i].pEv;
+            pEr->IrqFlag = be32_to_cpu(1 << C_EVR_IRQFLAG_VIOLATION);
+        }
+    }
+}
+
 static int __init pci_evr_init(void)
 {
   /* Allocate and clear memory for all devices. */
   memset(mrf_devices, 0, sizeof(struct mrf_dev)*MAX_MRF_DEVICES);
+
+  setup_timer(&mrf_timer, mrf_callback, 0);
+  mod_timer(&mrf_timer, jiffies + msecs_to_jiffies(1000));
 
   printk(KERN_ALERT "Event Receiver PCI driver init.\n");
   return pci_register_driver(&evr_driver);    
@@ -306,6 +324,9 @@ static int __init pci_evr_init(void)
 static void __exit pci_evr_exit(void)
 {
   printk(KERN_ALERT "Event Receiver PCI driver exiting.\n");
+
+  del_timer(&mrf_timer);
+
   pci_unregister_driver(&evr_driver);
 }  
 

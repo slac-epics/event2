@@ -89,8 +89,10 @@
 #include <ereventRecord.h>      /* Event Receiver Event (EREVENT) record structure                */
 #include <eventRecord.h>        /* Standard EPICS Event Record structure                          */
 #include <biRecord.h>           /* Standard EPICS Event Record structure                          */
-#include <erDefs.h>             /* Common Event Receiver (ER) definitions                         */
+#include <caeventmask.h>
+#include <dbEvent.h>
 
+#include <erDefs.h>             /* Common Event Receiver (ER) definitions                         */
 #include <devMrfEr.h>           /* MRF Event Receiver device support layer interface              */
 #include <drvMrfEr.h>           /* MRF Event Receiver driver support layer interface              */
 
@@ -252,9 +254,6 @@ epicsStatus ErInitRecord (erRecord *pRec)
 |*     - Programmable delay output (DG) enable, delay, width, prescaler, and polarity.
 |*     - Delayed interrupt (DVME) enable, delay, and prescaler.
 |*     - Front panel output configuration registers.
-|*     - Receiver frame error interrupt enable/disable.
-|*     - Receiver frame error count (TAXI)
-|*     - Receiver frame error status (PLOK)
 |*     - Event Receiver firmware version (FPGV)
 |*
 |*-------------------------------------------------------------------------------------------------
@@ -271,6 +270,7 @@ LOCAL_RTN
 epicsStatus ErProcess (erRecord  *pRec)
 {
     ErCardStruct   *pCard;
+    unsigned int ipov = 0;
 
    /*---------------------
     * Output a debug message if the debug flag is set.
@@ -296,88 +296,96 @@ epicsStatus ErProcess (erRecord  *pRec)
     * Update the delayed pulse generator outputs first
     * Set the programmable delay (DG) output parameters (Enable, Delay, Width, Prescaler, Polarity)
     */
+    ipov = 0;
     if (pRec->ip0e) {
         if (pRec->dg0e || pRec->ld0e)
             ErSetDg (pCard, 0, pRec->dg0e, pRec->dg0d, pRec->dg0w, pRec->dg0c, pRec->dg0p);
         pRec->ld0e = pRec->dg0e;
+        ipov |= 1;
     }
     if (pRec->ip1e) {
         if (pRec->dg1e || pRec->ld1e)
             ErSetDg (pCard, 1, pRec->dg1e, pRec->dg1d, pRec->dg1w, pRec->dg1c, pRec->dg1p);
         pRec->ld1e = pRec->dg1e;
+        ipov |= 1 << 1;
     }
     if (pRec->ip2e) {
         if (pRec->dg2e || pRec->ld2e)
             ErSetDg (pCard, 2, pRec->dg2e, pRec->dg2d, pRec->dg2w, pRec->dg2c, pRec->dg2p);
         pRec->ld2e = pRec->dg2e;
+        ipov |= 1 << 2;
     }
     if (pRec->ip3e) {
         if (pRec->dg3e || pRec->ld3e)
             ErSetDg (pCard, 3, pRec->dg3e, pRec->dg3d, pRec->dg3w, pRec->dg3c, pRec->dg3p);
         pRec->ld3e = pRec->dg3e;
+        ipov |= 1 << 3;
     }
     if (pRec->ip4e) {
         if (pRec->dg4e || pRec->ld4e)
             ErSetDg (pCard, 4, pRec->dg4e, pRec->dg4d, pRec->dg4w, pRec->dg4c, pRec->dg4p);
         pRec->ld4e = pRec->dg4e;
+        ipov |= 1 << 4;
     }
     if (pRec->ip5e) {
         if (pRec->dg5e || pRec->ld5e)
             ErSetDg (pCard, 5, pRec->dg5e, pRec->dg5d, pRec->dg5w, pRec->dg5c, pRec->dg5p);
         pRec->ld5e = pRec->dg5e;
+        ipov |= 1 << 5;
     }
     if (pRec->ip6e) {
         if (pRec->dg6e || pRec->ld6e)
             ErSetDg (pCard, 6, pRec->dg6e, pRec->dg6d, pRec->dg6w, pRec->dg6c, pRec->dg6p);
         pRec->ld6e = pRec->dg6e;
+        ipov |= 1 << 6;
     }
     if (pRec->ip7e) {
         if (pRec->dg7e || pRec->ld7e)
             ErSetDg (pCard, 7, pRec->dg7e, pRec->dg7d, pRec->dg7w, pRec->dg7c, pRec->dg7p);
         pRec->ld7e = pRec->dg7e;
+        ipov |= 1 << 7;
     }
     if (pRec->ip8e) {
         if (pRec->dg8e || pRec->ld8e)
             ErSetDg (pCard, 8, pRec->dg8e, pRec->dg8d, pRec->dg8w, pRec->dg8c, pRec->dg8p);
         pRec->ld8e = pRec->dg8e;
+        ipov |= 1 << 8;
     }
     if (pRec->ip9e) {
         if (pRec->dg9e || pRec->ld9e)
             ErSetDg (pCard, 9, pRec->dg9e, pRec->dg9d, pRec->dg9w, pRec->dg9c, pRec->dg9p);
         pRec->ld9e = pRec->dg9e;
+        ipov |= 1 << 9;
     }
     if (pRec->ipae) {
         if (pRec->dgae || pRec->ldae)
             ErSetDg (pCard, 10, pRec->dgae, pRec->dgad, pRec->dgaw, pRec->dgac, pRec->dgap);
         pRec->ldae = pRec->dgae;
+        ipov |= 1 << 10;
     }
     if (pRec->ipbe) {
         if (pRec->dgbe || pRec->ldbe)
             ErSetDg (pCard, 11, pRec->dgbe, pRec->dgbd, pRec->dgbw, pRec->dgbc, pRec->dgbp);
         pRec->ldbe = pRec->dgbe;
+        ipov |= 1 << 11;
     }
 
-   /*---------------------
-    * Enable or Disable Receive Link Frame Error Interrupts
-    */
-    ErTaxiIrq (pCard, pRec->rxve);
-
-   /*---------------------
-    * Set various record fields with the status of the receive link frame error,
-    * the frame error count, and the current FPGA version.  Process error count
-    * reset request.
-    */
-    if (pRec->rxvr) {
-      pRec->rxvr = 0;
-      pCard->RxvioCount = 0;
+    if (pRec->ipov != ipov) {
+        pRec->ipov = ipov;
+        db_post_events(pRec, &pRec->ipov, DBE_VALUE);
     }
-    pRec->taxi = pCard->RxvioCount;
+
     pRec->fpgv = ErGetFpgaVersion (pCard);
 
+#if 0
    /*---------------------
     * We might have changed something, so need to update!
+    *
+    * MCB - Actually, I don't think so.  This only touches pulse generators, not the
+    * event table!
     */
     ErUpdateRam (pCard, pCard->ErEventTab);
+#endif
 
    /*---------------------
     * Unlock the card mutex, mark the record "processed", and return success
@@ -528,7 +536,7 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
     epicsBoolean   LoadRam  = epicsFalse;       /* True if need ro re-load the Event Map RAM      */
     epicsUInt16    Mask = 0;                    /* New output mask for this event                 */
     ErCardStruct  *pCard;                       /* Pointer to Event Receiver card structure       */
-  
+
    /*---------------------
     * Get the card structure.
     * Abort if we don't have a valid card structure.
@@ -557,6 +565,10 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
     * If the record is enabled, see if the event number or output mask have changed.
     */
     if (pRec->enab) {
+       epicsUInt32 ipv;
+       long status=dbGetLink(&pRec->ipv,DBR_ULONG,&ipv,0,0);
+       if (!RTN_SUCCESS(status)) /* Ow.  This isn't good. */
+           ipv = 0;
 
        /*---------------------
         * Build the output mask for this event.
@@ -576,6 +588,7 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
         if (pRec->outb != 0) Mask |= EVR_MAP_CHAN_11;
         if (pRec->outc != 0) Mask |= EVR_MAP_CHAN_12;
         if (pRec->outd != 0) Mask |= EVR_MAP_CHAN_13;
+        Mask &= ipv;
         if (pRec->vme  != 0) Mask |= EVR_MAP_INTERRUPT;
 
        /*---------------------
@@ -863,6 +876,153 @@ epicsStatus ErEpicsEventGetIoScan (int cmd, eventRecord *pRec, IOSCANPVT *pPvt)
 
 }/*end ErEpicsEventGetIoScan()*/
 
+/**************************************************************************************************/
+/*                         EPICS Binary Input Record Device Support Routines                      */
+/*                         to check for taxi violation                                            */
+
+/**************************************************************************************************/
+/*  Prototype Definitions for EPICS Binary Input Record Device Support Functions                  */
+/**************************************************************************************************/
+
+LOCAL_RTN epicsStatus ErEpicsBiInitRec  (biRecord*);
+LOCAL_RTN epicsStatus ErEpicsBiProcess  (biRecord*);
+
+/**************************************************************************************************/
+/*  Device Support Entry Table (DSET)                                                             */
+/**************************************************************************************************/
+
+static ErDsetStruct devMrfErEpicsBi = {
+    5,                                  /* Number of entries in the Device Support Entry Table    */
+    (DEVSUPFUN)NULL,                    /* -- No device report routine                            */
+    (DEVSUPFUN)NULL,                    /* -- No device initialization routine                    */
+    (DEVSUPFUN)ErEpicsBiInitRec,        /* Record initialization routine                          */
+    (DEVSUPFUN)NULL,                    /* -- No I/O interrupt information routine                */
+    (DEVSUPFUN)ErEpicsBiProcess         /* Record processing routine                              */
+};
+
+epicsExportAddress (dset, devMrfErEpicsBi);
+
+/**************************************************************************************************
+|* ErEpicsBiInitRec () -- EPICS Binary Input Record Initialization Routine
+|*-------------------------------------------------------------------------------------------------
+|*
+|* This routine is called from the EPICS iocInit() routine. It is called once for each EPICS
+|* bi record in the database.
+|*
+|* Note that this is a regular EPICS bi record and not an ER or EG event record.
+|* The regular EPICS bi records is used to check for taxi violation without
+|* processing the Event Receiver record which has much higher overhead.  This record is
+|* especially useful when the taxi violation interrupt is disabled.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*   o Validate the record's card number by making sure it was configured in the startup script
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      pRec   = (biRecord *) Pointer to the EPICS bi record structure.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      0              = Record initialization was successfull.
+|*      S_dev_badCard  = Specified card was invalid.
+|*
+\**************************************************************************************************/
+
+LOCAL_RTN
+epicsStatus ErEpicsBiInitRec (biRecord *pRec)
+{
+   /*---------------------
+    * Local variables
+    */
+    int            Card;	/* Event Receiver card number for this record                     */
+    ErCardStruct  *pCard;       /* Pointer to the Event Receiver card structure for this record   */
+
+   /*---------------------
+    * Extract the Event Receiver card number (card) from the record's output link.
+    */
+    Card = pRec->inp.value.vmeio.card;
+
+   /*---------------------
+    * Output a debug message if the debug flag is set.
+    */
+    if (ErDebug)
+        printf ("ErEpicsBiInitRec(%s) Card %d\n",
+                      pRec->name, Card);
+
+   /*---------------------
+    * Make sure the card number is valid
+    * by obtaining the address of its card structure
+    */
+    pRec->dpvt = NULL;
+    if (NULL == (pCard = ErGetCardStruct(Card))) {
+        recGblRecordError(S_dev_badCard, (void *)pRec, 
+                          "devMrfEr::ErEpicsBiInitRec() invalid card number in INP field");
+        return(S_dev_badCard);
+    }/*end if card number is invalid*/
+
+    pRec->dpvt = (void *)pCard; /* Save the address of the card structure */
+    return (0);
+
+}/*end ErEpicsBiInitRec()*/
+
+/**************************************************************************************************
+|* ErEpicsBiProcess () -- Binary Input Record Processing Routine
+|*-------------------------------------------------------------------------------------------------
+|*
+|* This routine is called from the "bi" record's record processing routine.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*   o Make sure we have a valid Event Receiver Card Structure in the DPVT field.  If not,
+|*     set the record's PACT field so that we won't be processed again.
+|*   o Lock the card structure to keep other record processing routines from interferring with us.
+|*   o Call ErCheckTaxi to get binary value.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      pRec   = (biRecord *) Pointer to the "bi" record structure.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      Always returns 2 (don't convert)
+|*
+\**************************************************************************************************/
+
+LOCAL_RTN
+epicsStatus ErEpicsBiProcess (biRecord  *pRec)
+{
+   /*---------------------
+    * Local variables
+    */
+    ErCardStruct  *pCard;                       /* Pointer to Event Receiver card structure       */
+  
+   /*---------------------
+    * Get the card structure.
+    * Abort if we don't have a valid card structure.
+    */
+    if (NULL == (pCard = (ErCardStruct *)pRec->dpvt)) {
+        pRec->pact = epicsTrue;
+        return (-1);
+    }/*end if did not have a valid card structure*/
+
+   /*---------------------
+    * Lock the event receiver card structure while we process this record
+    */
+    epicsMutexLock (pCard->CardLock);
+
+    pRec->val = ErCheckTaxi (pCard)?0:1;
+    pRec->udf = 0;
+
+   /*---------------------
+    * Unlock the Event Record card structure
+    */
+    epicsMutexUnlock (pCard->CardLock);
+
+    return (2);
+
+}/*end ErEpicsBiProcess()*/
+
 /**************************************************************************************************
 |* ErDevEventFunc () -- Device Support Layer Interrupt-Level Event Handling Routine
 |*-------------------------------------------------------------------------------------------------
@@ -972,8 +1132,6 @@ void ErDevErrorFunc (ErCardStruct *pCard, int ErrorNum)
     * Receiver Link Frame (Taxi) Error
     */
     case ERROR_TAXI:
-        pRec->rxve = 0;
-        pRec->taxi = pCard->RxvioCount;
         if(ErDebug) {
             epicsSnprintf (pCard->intMsg, EVR_INT_MSG_LEN,
                            "ER Card %d Receiver Link (Taxi) Error.  Error repetition %d...\n",

@@ -10,6 +10,7 @@ record( erevent, "$(DEV):$(NAME)CTRL" )
   field( OUT1, "$(P1)" )
   field( OUT2, "$(P2)" )
   field( VME,  "$(IRQ)" )
+  field( IPV,  "$(DEV):CTRL.IPOV CPP NMS")
   field(FLNK, "$(EVRFLNK)")
 }
 

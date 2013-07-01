@@ -38,6 +38,12 @@ recordtype(er) {
                 interest(1)
 		size(40)
         }
+	field(IPOV,DBF_ULONG) {
+		prompt("IP Out Vector")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		interest(1)
+	}
 	field(DG0E,DBF_MENU) {
 		prompt("DG 0 Enable")
 		promptgroup(GUI_DISPLAY)
@@ -619,22 +625,14 @@ recordtype(er) {
 		special(SPC_NOMOD)
 		interest(1)
 	}
-	field(LTAX,DBF_LONG) {
-		prompt("Last Taxi Violation")
-		special(SPC_NOMOD)
-		interest(1)
-	}
-	field(RXVE,DBF_MENU) {
-		prompt("RX violation IRQ Enable")
+	field(ENAB,DBF_MENU) {
+		prompt("Master Enable")
 		promptgroup(GUI_DISPLAY)
 		pp(TRUE)
 		interest(1)
-		menu(erTRG0)
-		}
-	field(RXVR,DBF_CHAR) {
-		prompt("RX violation counter reset")
-		pp(TRUE)
-		interest(1)
+		menu(menuYesNo)
+		special(SPC_NOMOD)
+		initial(1)
 	}
 }
 

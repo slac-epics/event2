@@ -72,6 +72,11 @@ int EvrClose(int fd)
   return close(fd);
 }
 
+int EvrGetViolation(volatile struct MrfErRegs *pEr)
+{
+  return be32_to_cpu(pEr->IrqFlag & be32_to_cpu(1 << C_EVR_IRQFLAG_VIOLATION));
+}
+
 void EvrDumpStatus(volatile struct MrfErRegs *pEr)
 {
   int result;

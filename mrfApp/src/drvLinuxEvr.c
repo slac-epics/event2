@@ -438,6 +438,30 @@ static int ErConfigure (
 /*                                                                                                */
 
 /**************************************************************************************************
+|* ErCheckTaxi () -- Check to See if We Have A Receive Link Framing Error (TAXI)
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
+|* 
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      status    = (epicsBoolean)   True if a framing error was present.
+|*                                   False if a framing error was not present.
+|*
+\**************************************************************************************************/
+epicsBoolean ErCheckTaxi(ErCardStruct *pCard)
+{
+	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
+	epicsBoolean ret = epicsFalse;
+	
+	epicsMutexLock(pCard->CardLock);
+	if (EvrGetViolation(pEr))
+		ret = epicsTrue;
+	epicsMutexUnlock(pCard->CardLock);
+	return ret;
+}
+
+/**************************************************************************************************
 |* ErDebugLevel () -- Set the Event Receiver Debug Flag to the Desired Level.
 |*-------------------------------------------------------------------------------------------------
 |* INPUT PARAMETERS:

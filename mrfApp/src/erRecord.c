@@ -144,8 +144,6 @@ STATIC long ErInitRec(struct erRecord *pRec, int pass)
     if( pDset->initRec != NULL) 
       return(*pDset->initRec)(pRec);
   }
-  pRec->taxi = 0;
-  pRec->ltax = 0;
 
   return(0);
 }
@@ -224,10 +222,6 @@ STATIC void ErMonitor(struct erRecord *pRec)
   monitor_mask |= (DBE_VALUE | DBE_LOG);
   db_post_events(pRec, &pRec->val, monitor_mask);
 
-  if (pRec->taxi != pRec->ltax) {
-    pRec->ltax = pRec->taxi;
-    db_post_events(pRec, &pRec->taxi, monitor_mask);
-  }
   return;
 }
 static long get_graphic_double(struct dbAddr *paddr, struct dbr_grDouble *pgd)
