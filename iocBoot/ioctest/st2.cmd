@@ -6,7 +6,7 @@ epicsEnvSet("IOCNAME",     "ioc-evr-tst2")
 epicsEnvSet("EVRTYPE",     "1")
 epicsEnvSet("EVRBASE",     "TST:2:EVR")
 epicsEnvSet("IOCBASE",     "TST:2:IOC")
-epicsEnvSet("EVRCHANNELS", "IP2E=Enabled,IP2E=Enabled")
+epicsEnvSet("EVRCHANNELS", "IP1E=Enabled")
 
 #############################################################
 epicsEnvSet( "ENGINEER", "Michael Browne (mcbrowne)" )

@@ -20,6 +20,7 @@ file evrPmc230.template
 		FP1L,	DG1E,      IP1E,	        DG1P,		DG1W,	DG1D,	DG1C,
 		FP2L,	DG2E,      IP2E,	        DG2P,		DG2W,	DG2D,	DG2C,
 		FP3L,	DG3E,      IP3E,	        DG3P,		DG3W,	DG3D,	DG3C,
+	        FP4L, FP5L, FP6L, FP7L, FP8L, FP9L, FPAL, FPBL,
 	}
 
 # The descriptions will be set in st.cmd.
@@ -28,6 +29,7 @@ file evrPmc230.template
 		"",	Disabled,  "\$(IP1E=Disabled)", Normal,		10,	650,	119,
 		"",	Disabled,  "\$(IP2E=Disabled)", Normal,		10,	650,	119,
 		""	Disabled,  "\$(IP3E=Disabled)", Inverted,	5000,	0,	119,
+	        "", "", "", "", "", "", "", "",
 	} 
 }
 

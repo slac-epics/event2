@@ -1,28 +1,27 @@
 #!/bin/csh
 # This assumes the edm environment is set up, and we are passed two arguments: EVR and IOC.
+set evr = $1
+set ioc = $2
 set all = (0 1 2 3 4 5 6 7 8 9 A B)
+set use = (1 2 3 4 8 8 8 8 12 12 12 12)
 set cnt = 0
-set ours = "EVR=$1,IOC=$2"
+if (X$ioc == X) then
+    set plist = "EVR=$evr"
+else
+    set plist = "EVR=$evr,IOC=$ioc"
+endif
 set off = ""
 foreach i ($all)
-    if (X`caget -nt ${1}:CTRL.IP${i}E` == X1) then
-	set ours = $ours,N${cnt}=$i
+    if (X`caget -nt ${evr}:CTRL.IP${i}E` == X1) then
+	set plist = $plist,N${cnt}=$i
         @ cnt = $cnt + 1
     else
         set off = $i
     endif
 end
-if ($cnt <= 4) then
-    set use = 4
-else
-    if ($cnt <= 8) then
-        set use = 8
-    else
-        set use = 12
-    endif
-endif
-while ($cnt < $use)
-    set ours = $ours,N${cnt}=$off
+@ u = $use[$cnt]
+while ($cnt < $u)
+    set plist = $plist,N${cnt}=$off
     @ cnt = $cnt + 1
 end
-edm -x -eolc -m $ours evrscreens/evr$use.edl >& /dev/null
+edm -x -eolc -m $plist evrscreens/evr$u.edl >& /dev/null
