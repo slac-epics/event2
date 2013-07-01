@@ -317,13 +317,13 @@ static int __init pci_evr_init(void)
   setup_timer(&mrf_timer, mrf_callback, 0);
   mod_timer(&mrf_timer, jiffies + msecs_to_jiffies(1000));
 
-  printk(KERN_ALERT "Event Receiver PCI driver init.\n");
+  printk(KERN_ALERT "Event Receiver PCI driver 2.0 init.\n");
   return pci_register_driver(&evr_driver);    
 }
 
 static void __exit pci_evr_exit(void)
 {
-  printk(KERN_ALERT "Event Receiver PCI driver exiting.\n");
+  printk(KERN_ALERT "Event Receiver PCI driver 2.0 exiting.\n");
 
   del_timer(&mrf_timer);
 

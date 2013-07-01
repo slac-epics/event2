@@ -33,9 +33,7 @@
 #define PCI_VENDOR_ID_XILINX_PCIE   0x1A4A
 #define PCI_DEVICE_ID_XILINX_PCIE   0x2010
 #define PDI_IS_SLAC(pdi) ((pdi)->vendor == PCI_VENDOR_ID_XILINX_PCIE && \
-                          (pdi)->device == PCI_DEVICE_ID_XILINX_PCIE && \
-                          (pdi)->subvendor == PCI_ANY_ID && \
-                          (pdi)->subdevice == PCI_ANY_ID)
+                          (pdi)->device == PCI_DEVICE_ID_XILINX_PCIE)
 
 #define MODULE_VENDOR_ID_NOCONF     PCI_VENDOR_ID_PLX
 #define MODULE_DEVICE_ID_NOCONF     PCI_DEVICE_ID_PLX_9030
