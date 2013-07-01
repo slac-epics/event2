@@ -1,5 +1,5 @@
 record(event, "$(DEV):$(NAME)EV") {
-  field(DESC, "$(NAME) Event")
+  field(DESC, "$(LNAME)")
   field(DTYP, "MRF Event Receiver")
   field(INP, "#C0 S$(ID) @")
   field(SCAN, "I/O Intr")
@@ -36,10 +36,4 @@ record(sub, "$(DEV):$(NAME)RATE") {
   field(LOW,  "$(LOW)")
   field(LSV,  "MINOR")
   field(HOPR, "$(HIHI)")
-}
-
-record (stringout, "$(DEV):$(NAME)NAME") {
-  field(DESC, "$(NAME) Name")
-  field(PINI, "YES")
-  field(VAL,  "$(LNAME)")
 }

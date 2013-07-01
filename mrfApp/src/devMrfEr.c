@@ -829,7 +829,7 @@ epicsStatus ErEpicsEventInitRec (eventRecord *pRec)
 
     /*
      * Keep a copy of the event code description for
-     * later use when the ereventRecord handles changing event codes
+     * later use when the ereventRecord handles changing event codes.
      */
     strncpy( pCard->EventCodeDesc[Event], pRec->desc, MAX_STRING_SIZE+1 );
 
