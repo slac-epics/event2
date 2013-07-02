@@ -688,7 +688,7 @@ irqreturn_t ev_interrupt(int irq, void *dev_id, struct pt_regs *regs)
                 /* If no checksum error, grab the buffer too. */
                 int size = (databuf_sts & ((1<<(C_EVR_DATABUF_SIZEHIGH+1))-1));
                 u32 *dd   = evrq->dbq[idx].data;
-                u32 *ds   = pEr->Databuf;
+                volatile u32 *ds   = pEr->Databuf;
 
                 for (i = 0;  i < (size >> 2);  i++)
                     dd[i] = be32_to_cpu(ds[i]);
