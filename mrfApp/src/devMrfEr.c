@@ -643,6 +643,7 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
                      */
                     strncpy( &pRec->desc[0], &pCard->EventCodeDesc[pRec->enm][0],
                              MAX_STRING_SIZE+1 );
+                    db_post_events(pRec, &pRec->desc, DBE_VALUE);
                 }
             }
 
