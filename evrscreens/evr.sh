@@ -12,7 +12,7 @@ else
 endif
 set off = ""
 foreach i ($all)
-    if (X`caget -nt ${evr}:CTRL.IP${i}E` == X1) then
+    if (X`caget -t ${evr}:CTRL.IP${i}E | grep Enabled` == XEnabled) then
 	set plist = $plist,N${cnt}=$i
         @ cnt = $cnt + 1
     else
