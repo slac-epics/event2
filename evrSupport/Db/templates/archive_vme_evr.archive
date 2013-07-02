@@ -6,11 +6,8 @@
 $(EVR):LINK    1  monitor
 
 # Capture these once/sec
-#$(EVR):CTRL 1 
-#$(EVR):CTRL.ENAB 1 
 $(EVR):FIDUCIALCTRL 1 
 $(EVR):FIDUCIALDIAG 1 
-# Why 2 CTRL PV's???
 $(EVR):CTRL 1
 $(EVR):EVENT1 1
 $(EVR):EVENT10 1
@@ -91,15 +88,6 @@ $(EVR):EVENT13RATE 10
 $(EVR):EVENT14RATE 10
 
 # Don't exect these to change much.  Just monitor
-$(EVR):CTRL.ENAB 30	monitor 
-$(EVR):CTRL.FPS0 30	monitor 
-$(EVR):CTRL.FPS1 30	monitor 
-$(EVR):CTRL.FPS2 30	monitor 
-$(EVR):CTRL.FPS3 30	monitor 
-$(EVR):CTRL.FPS4 30	monitor 
-$(EVR):CTRL.FPS5 30	monitor 
-$(EVR):CTRL.FPS6 30	monitor 
-$(EVR):CTRL.TAXI 30	monitor 
 $(EVR):EVENT10NAME 30	monitor
 $(EVR):EVENT11NAME 30	monitor
 $(EVR):EVENT12NAME 30	monitor
@@ -126,81 +114,29 @@ $(EVR):TREF 30 monitor
 
 # Archive event controls
 $(EVR):CTRL.DG0E 1 monitor
+$(EVR):CTRL.IP0E 1 monitor
 $(EVR):CTRL.DG0P 1 monitor
 $(EVR):CTRL.DG0D 1 monitor
 $(EVR):CTRL.DG0W 1 monitor
 $(EVR):CTRL.DG0C 1 monitor
 $(EVR):CTRL.DG1E 1 monitor
+$(EVR):CTRL.IP1E 1 monitor
 $(EVR):CTRL.DG1P 1 monitor
 $(EVR):CTRL.DG1D 1 monitor
 $(EVR):CTRL.DG1W 1 monitor
 $(EVR):CTRL.DG1C 1 monitor
 $(EVR):CTRL.DG2E 1 monitor
+$(EVR):CTRL.IP2E 1 monitor
 $(EVR):CTRL.DG2P 1 monitor
 $(EVR):CTRL.DG2D 1 monitor
 $(EVR):CTRL.DG2W 1 monitor
 $(EVR):CTRL.DG2C 1 monitor
 $(EVR):CTRL.DG3E 1 monitor
+$(EVR):CTRL.IP3E 1 monitor
 $(EVR):CTRL.DG3P 1 monitor
 $(EVR):CTRL.DG3W 1 monitor
 $(EVR):CTRL.DG3D 1 monitor
 $(EVR):CTRL.DG3C 1 monitor
-$(EVR):CTRL.OTP0 1 monitor
-$(EVR):CTRL.OT0P 1 monitor
-$(EVR):CTRL.OT0W 1 monitor
-$(EVR):CTRL.OT0D 1 monitor
-$(EVR):CTRL.OTP1 1 monitor
-$(EVR):CTRL.OT1P 1 monitor
-$(EVR):CTRL.OT1W 1 monitor
-$(EVR):CTRL.OT1D 1 monitor
-$(EVR):CTRL.OTP2 1 monitor
-$(EVR):CTRL.OT2P 1 monitor
-$(EVR):CTRL.OT2W 1 monitor
-$(EVR):CTRL.OT2D 1 monitor
-$(EVR):CTRL.OTP3 1 monitor
-$(EVR):CTRL.OT3P 1 monitor
-$(EVR):CTRL.OT3W 1 monitor
-$(EVR):CTRL.OT3D 1 monitor
-$(EVR):CTRL.OTP4 1 monitor
-$(EVR):CTRL.OT4P 1 monitor
-$(EVR):CTRL.OT4W 1 monitor
-$(EVR):CTRL.OT4D 1 monitor
-$(EVR):CTRL.OTP5 1 monitor
-$(EVR):CTRL.OT5P 1 monitor
-$(EVR):CTRL.OT5W 1 monitor
-$(EVR):CTRL.OT5D 1 monitor
-$(EVR):CTRL.OTP6 1 monitor
-$(EVR):CTRL.OT6P 1 monitor
-$(EVR):CTRL.OT6W 1 monitor
-$(EVR):CTRL.OT6D 1 monitor
-$(EVR):CTRL.OTP7 1 monitor
-$(EVR):CTRL.OT7P 1 monitor
-$(EVR):CTRL.OT7W 1 monitor
-$(EVR):CTRL.OT7D 1 monitor
-$(EVR):CTRL.OTP8 1 monitor
-$(EVR):CTRL.OT8P 1 monitor
-$(EVR):CTRL.OT8W 1 monitor
-$(EVR):CTRL.OT8D 1 monitor
-$(EVR):CTRL.OTP9 1 monitor
-$(EVR):CTRL.OT9P 1 monitor
-$(EVR):CTRL.OT9W 1 monitor
-$(EVR):CTRL.OT9D 1 monitor
-$(EVR):CTRL.OTPA 1 monitor
-$(EVR):CTRL.OTAP 1 monitor
-$(EVR):CTRL.OTAW 1 monitor
-$(EVR):CTRL.OTAD 1 monitor
-$(EVR):CTRL.OTPB 1 monitor
-$(EVR):CTRL.OTBP 1 monitor
-$(EVR):CTRL.OTBW 1 monitor
-$(EVR):CTRL.OTBD 1 monitor
-$(EVR):CTRL.OTPC 1 monitor
-$(EVR):CTRL.OTCP 1 monitor
-$(EVR):CTRL.OTCW 1 monitor
-$(EVR):CTRL.OTCD 1 monitor
-$(EVR):CTRL.OTPD 1 monitor
-$(EVR):CTRL.OTDP 1 monitor
-$(EVR):CTRL.OTDW 1 monitor
-$(EVR):CTRL.OTDD 1 monitor
 $(EVR):EVENT1CTRL.OUT0 1 monitor
 $(EVR):EVENT2CTRL.OUT0 1 monitor
 $(EVR):EVENT3CTRL.OUT0 1 monitor
@@ -397,6 +333,7 @@ $(EVR):EVENT11CTRL.OUTD  1 monitor
 $(EVR):EVENT12CTRL.OUTD  1 monitor
 $(EVR):EVENT13CTRL.OUTD  1 monitor
 $(EVR):EVENT14CTRL.OUTD  1 monitor
+$(EVR):EVENT1CTRL.VME 1 monitor
 $(EVR):EVENT1CTRL.VME 1 monitor
 $(EVR):EVENT2CTRL.VME 1 monitor
 $(EVR):EVENT3CTRL.VME 1 monitor

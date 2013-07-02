@@ -88,11 +88,6 @@ $(EVR):EVENT13RATE 10
 $(EVR):EVENT14RATE 10
 
 # Don't exect these to change much.  Just monitor
-$(EVR):CTRL.ENAB 30	monitor 
-$(EVR):CTRL.FPS0 30	monitor 
-$(EVR):CTRL.FPS1 30	monitor 
-$(EVR):CTRL.FPS2 30	monitor 
-$(EVR):CTRL.TAXI 30	monitor 
 $(EVR):EVENT10NAME 30	monitor
 $(EVR):EVENT11NAME 30	monitor
 $(EVR):EVENT12NAME 30	monitor

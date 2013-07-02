@@ -42,7 +42,7 @@ $(EVR):EVENT14CTRL.ENM          3600 monitor
 $(EVR):EVENT14CTRL.ENAB         3600 monitor
 $(EVR):EVENT14CTRL.VME          3600 monitor
 
-$(EVR):CTRL.FPS0                3600 monitor
+$(EVR):CTRL.IP0E                3600 monitor
 $(EVR):CTRL.DG0E                3600 monitor
 $(EVR):CTRL.DG0P                3600 monitor
 $(EVR):CTRL.DG0W                3600 monitor
@@ -63,7 +63,7 @@ $(EVR):EVENT12CTRL.OUT0         3600 monitor
 $(EVR):EVENT13CTRL.OUT0         3600 monitor
 $(EVR):EVENT14CTRL.OUT0         3600 monitor
 
-$(EVR):CTRL.FPS1                3600 monitor
+$(EVR):CTRL.IP1E                3600 monitor
 $(EVR):CTRL.DG1E                3600 monitor
 $(EVR):CTRL.DG1P                3600 monitor
 $(EVR):CTRL.DG1W                3600 monitor
@@ -84,7 +84,7 @@ $(EVR):EVENT12CTRL.OUT1         3600 monitor
 $(EVR):EVENT13CTRL.OUT1         3600 monitor
 $(EVR):EVENT14CTRL.OUT1         3600 monitor
 
-$(EVR):CTRL.FPS2                3600 monitor
+$(EVR):CTRL.IP2E                3600 monitor
 $(EVR):CTRL.DG2E                3600 monitor
 $(EVR):CTRL.DG2P                3600 monitor
 $(EVR):CTRL.DG2W                3600 monitor
@@ -105,7 +105,7 @@ $(EVR):EVENT12CTRL.OUT2         3600 monitor
 $(EVR):EVENT13CTRL.OUT2         3600 monitor
 $(EVR):EVENT14CTRL.OUT2         3600 monitor
 
-$(EVR):CTRL.FPS3                3600 monitor
+$(EVR):CTRL.IP3E                3600 monitor
 $(EVR):CTRL.DG3E                3600 monitor
 $(EVR):CTRL.DG3P                3600 monitor
 $(EVR):CTRL.DG3W                3600 monitor
@@ -126,7 +126,7 @@ $(EVR):EVENT12CTRL.OUT3         3600 monitor
 $(EVR):EVENT13CTRL.OUT3         3600 monitor
 $(EVR):EVENT14CTRL.OUT3         3600 monitor
 
-$(EVR):CTRL.FPS4                3600 monitor
+$(EVR):CTRL.IP4E                3600 monitor
 $(EVR):CTRL.DG4E                3600 monitor
 $(EVR):CTRL.DG4P                3600 monitor
 $(EVR):CTRL.DG4W                3600 monitor
@@ -147,7 +147,7 @@ $(EVR):EVENT12CTRL.OUT4         3600 monitor
 $(EVR):EVENT13CTRL.OUT4         3600 monitor
 $(EVR):EVENT14CTRL.OUT4         3600 monitor
 
-$(EVR):CTRL.FPS5                3600 monitor
+$(EVR):CTRL.IP5E                3600 monitor
 $(EVR):CTRL.DG5E                3600 monitor
 $(EVR):CTRL.DG5P                3600 monitor
 $(EVR):CTRL.DG5W                3600 monitor
@@ -168,7 +168,7 @@ $(EVR):EVENT12CTRL.OUT5         3600 monitor
 $(EVR):EVENT13CTRL.OUT5         3600 monitor
 $(EVR):EVENT14CTRL.OUT5         3600 monitor
 
-$(EVR):CTRL.FPS6                3600 monitor
+$(EVR):CTRL.IP6E                3600 monitor
 $(EVR):CTRL.DG6E                3600 monitor
 $(EVR):CTRL.DG6P                3600 monitor
 $(EVR):CTRL.DG6W                3600 monitor
@@ -189,7 +189,7 @@ $(EVR):EVENT12CTRL.OUT6         3600 monitor
 $(EVR):EVENT13CTRL.OUT6         3600 monitor
 $(EVR):EVENT14CTRL.OUT6         3600 monitor
 
-$(EVR):CTRL.FPS7                3600 monitor
+$(EVR):CTRL.IP7E                3600 monitor
 $(EVR):CTRL.DG7E                3600 monitor
 $(EVR):CTRL.DG7P                3600 monitor
 $(EVR):CTRL.DG7W                3600 monitor
@@ -210,7 +210,7 @@ $(EVR):EVENT12CTRL.OUT7         3600 monitor
 $(EVR):EVENT13CTRL.OUT7         3600 monitor
 $(EVR):EVENT14CTRL.OUT7         3600 monitor
 
-$(EVR):CTRL.FPS8                3600 monitor
+$(EVR):CTRL.IP8E                3600 monitor
 $(EVR):CTRL.DG8E                3600 monitor
 $(EVR):CTRL.DG8P                3600 monitor
 $(EVR):CTRL.DG8W                3600 monitor
@@ -231,7 +231,7 @@ $(EVR):EVENT12CTRL.OUT8         3600 monitor
 $(EVR):EVENT13CTRL.OUT8         3600 monitor
 $(EVR):EVENT14CTRL.OUT8         3600 monitor
 
-$(EVR):CTRL.FPS9                3600 monitor
+$(EVR):CTRL.IP9E                3600 monitor
 $(EVR):CTRL.DG9E                3600 monitor
 $(EVR):CTRL.DG9P                3600 monitor
 $(EVR):CTRL.DG9W                3600 monitor
@@ -252,7 +252,7 @@ $(EVR):EVENT12CTRL.OUT9         3600 monitor
 $(EVR):EVENT13CTRL.OUT9         3600 monitor
 $(EVR):EVENT14CTRL.OUT9         3600 monitor
 
-$(EVR):CTRL.FPSA                3600 monitor
+$(EVR):CTRL.IPAE                3600 monitor
 $(EVR):CTRL.DGAE                3600 monitor
 $(EVR):CTRL.DGAP                3600 monitor
 $(EVR):CTRL.DGAW                3600 monitor
@@ -273,7 +273,7 @@ $(EVR):EVENT12CTRL.OUTA         3600 monitor
 $(EVR):EVENT13CTRL.OUTA         3600 monitor
 $(EVR):EVENT14CTRL.OUTA         3600 monitor
 
-$(EVR):CTRL.FPSB                3600 monitor
+$(EVR):CTRL.IPBE                3600 monitor
 $(EVR):CTRL.DGBE                3600 monitor
 $(EVR):CTRL.DGBP                3600 monitor
 $(EVR):CTRL.DGBW                3600 monitor
