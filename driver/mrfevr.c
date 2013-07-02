@@ -302,7 +302,7 @@ void mrf_callback(unsigned long data)
 
     mod_timer(&mrf_timer, jiffies + msecs_to_jiffies(1000));
     for (i = 0; i < MAX_MRF_DEVICES; i++) {
-        if (mrf_devices[i].mrEv != 0) {
+        if (mrf_devices[i].mrEv != 0 && mrf_devices[i].access_device == DEVICE_SHEV) {
             volatile struct MrfErRegs *pEr = (struct MrfErRegs *)mrf_devices[i].pEv;
             pEr->IrqFlag = be32_to_cpu(1 << C_EVR_IRQFLAG_VIOLATION);
         }

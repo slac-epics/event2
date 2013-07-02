@@ -2373,7 +2373,7 @@ x 16
 y 88
 w 88
 h 24
-controlPv "$(EVR):EVENT1NAME"
+controlPv "$(EVR):EVENT1CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2392,7 +2392,7 @@ x 16
 y 120
 w 88
 h 24
-controlPv "$(EVR):EVENT2NAME"
+controlPv "$(EVR):EVENT2CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2411,7 +2411,7 @@ x 16
 y 152
 w 88
 h 24
-controlPv "$(EVR):EVENT3NAME"
+controlPv "$(EVR):EVENT3CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2430,7 +2430,7 @@ x 16
 y 184
 w 88
 h 24
-controlPv "$(EVR):EVENT4NAME"
+controlPv "$(EVR):EVENT4CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2449,7 +2449,7 @@ x 16
 y 216
 w 88
 h 24
-controlPv "$(EVR):EVENT5NAME"
+controlPv "$(EVR):EVENT5CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2468,7 +2468,7 @@ x 16
 y 248
 w 88
 h 24
-controlPv "$(EVR):EVENT6NAME"
+controlPv "$(EVR):EVENT6CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2487,7 +2487,7 @@ x 16
 y 280
 w 88
 h 24
-controlPv "$(EVR):EVENT7NAME"
+controlPv "$(EVR):EVENT7CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2506,7 +2506,7 @@ x 16
 y 312
 w 88
 h 24
-controlPv "$(EVR):EVENT8NAME"
+controlPv "$(EVR):EVENT8CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2525,7 +2525,7 @@ x 16
 y 344
 w 88
 h 24
-controlPv "$(EVR):EVENT9NAME"
+controlPv "$(EVR):EVENT9CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2544,7 +2544,7 @@ x 16
 y 376
 w 88
 h 24
-controlPv "$(EVR):EVENT10NAME"
+controlPv "$(EVR):EVENT10CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2563,7 +2563,7 @@ x 16
 y 408
 w 88
 h 24
-controlPv "$(EVR):EVENT11NAME"
+controlPv "$(EVR):EVENT11CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2582,7 +2582,7 @@ x 16
 y 440
 w 88
 h 24
-controlPv "$(EVR):EVENT12NAME"
+controlPv "$(EVR):EVENT12CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2601,7 +2601,7 @@ x 16
 y 472
 w 88
 h 24
-controlPv "$(EVR):EVENT13NAME"
+controlPv "$(EVR):EVENT13CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2620,7 +2620,7 @@ x 16
 y 504
 w 88
 h 24
-controlPv "$(EVR):EVENT14NAME"
+controlPv "$(EVR):EVENT14CTRL.DESC"
 fgColor index 14
 fgAlarm
 bgColor index 12
@@ -2658,7 +2658,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT14CTRL.OUT0"
+controlPv "$(EVR):EVENT14CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -2680,7 +2680,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT13CTRL.OUT0"
+controlPv "$(EVR):EVENT13CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -2702,7 +2702,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT12CTRL.OUT0"
+controlPv "$(EVR):EVENT12CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -2724,7 +2724,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT11CTRL.OUT0"
+controlPv "$(EVR):EVENT11CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -2746,7 +2746,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT10CTRL.OUT0"
+controlPv "$(EVR):EVENT10CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -2768,7 +2768,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT9CTRL.OUT0"
+controlPv "$(EVR):EVENT9CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -2790,7 +2790,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT8CTRL.OUT0"
+controlPv "$(EVR):EVENT8CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -2812,7 +2812,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT7CTRL.OUT0"
+controlPv "$(EVR):EVENT7CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -2834,7 +2834,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT6CTRL.OUT0"
+controlPv "$(EVR):EVENT6CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -2856,7 +2856,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT5CTRL.OUT0"
+controlPv "$(EVR):EVENT5CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -2878,7 +2878,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT4CTRL.OUT0"
+controlPv "$(EVR):EVENT4CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -2900,7 +2900,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT3CTRL.OUT0"
+controlPv "$(EVR):EVENT3CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -2922,7 +2922,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT2CTRL.OUT0"
+controlPv "$(EVR):EVENT2CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -2944,7 +2944,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT1CTRL.OUT0"
+controlPv "$(EVR):EVENT1CTRL.OUT$(N0)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3005,7 +3005,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT14CTRL.OUT1"
+controlPv "$(EVR):EVENT14CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3027,7 +3027,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT13CTRL.OUT1"
+controlPv "$(EVR):EVENT13CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3049,7 +3049,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT12CTRL.OUT1"
+controlPv "$(EVR):EVENT12CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3071,7 +3071,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT11CTRL.OUT1"
+controlPv "$(EVR):EVENT11CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3093,7 +3093,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT10CTRL.OUT1"
+controlPv "$(EVR):EVENT10CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3115,7 +3115,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT9CTRL.OUT1"
+controlPv "$(EVR):EVENT9CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3137,7 +3137,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT8CTRL.OUT1"
+controlPv "$(EVR):EVENT8CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3159,7 +3159,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT7CTRL.OUT1"
+controlPv "$(EVR):EVENT7CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3181,7 +3181,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT6CTRL.OUT1"
+controlPv "$(EVR):EVENT6CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3203,7 +3203,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT5CTRL.OUT1"
+controlPv "$(EVR):EVENT5CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3225,7 +3225,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT4CTRL.OUT1"
+controlPv "$(EVR):EVENT4CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3247,7 +3247,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT3CTRL.OUT1"
+controlPv "$(EVR):EVENT3CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3269,7 +3269,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT2CTRL.OUT1"
+controlPv "$(EVR):EVENT2CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3291,7 +3291,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT1CTRL.OUT1"
+controlPv "$(EVR):EVENT1CTRL.OUT$(N1)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3352,7 +3352,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT14CTRL.OUT2"
+controlPv "$(EVR):EVENT14CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3374,7 +3374,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT13CTRL.OUT2"
+controlPv "$(EVR):EVENT13CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3396,7 +3396,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT12CTRL.OUT2"
+controlPv "$(EVR):EVENT12CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3418,7 +3418,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT11CTRL.OUT2"
+controlPv "$(EVR):EVENT11CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3440,7 +3440,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT10CTRL.OUT2"
+controlPv "$(EVR):EVENT10CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3462,7 +3462,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT9CTRL.OUT2"
+controlPv "$(EVR):EVENT9CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3484,7 +3484,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT8CTRL.OUT2"
+controlPv "$(EVR):EVENT8CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3506,7 +3506,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT7CTRL.OUT2"
+controlPv "$(EVR):EVENT7CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3528,7 +3528,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT6CTRL.OUT2"
+controlPv "$(EVR):EVENT6CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3550,7 +3550,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT5CTRL.OUT2"
+controlPv "$(EVR):EVENT5CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3572,7 +3572,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT4CTRL.OUT2"
+controlPv "$(EVR):EVENT4CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3594,7 +3594,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT3CTRL.OUT2"
+controlPv "$(EVR):EVENT3CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3616,7 +3616,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT2CTRL.OUT2"
+controlPv "$(EVR):EVENT2CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3638,7 +3638,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT1CTRL.OUT2"
+controlPv "$(EVR):EVENT1CTRL.OUT$(N2)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3699,7 +3699,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT14CTRL.OUT3"
+controlPv "$(EVR):EVENT14CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3721,7 +3721,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT13CTRL.OUT3"
+controlPv "$(EVR):EVENT13CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3743,7 +3743,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT12CTRL.OUT3"
+controlPv "$(EVR):EVENT12CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3765,7 +3765,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT11CTRL.OUT3"
+controlPv "$(EVR):EVENT11CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3787,7 +3787,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT10CTRL.OUT3"
+controlPv "$(EVR):EVENT10CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3809,7 +3809,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT9CTRL.OUT3"
+controlPv "$(EVR):EVENT9CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3831,7 +3831,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT8CTRL.OUT3"
+controlPv "$(EVR):EVENT8CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3853,7 +3853,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT7CTRL.OUT3"
+controlPv "$(EVR):EVENT7CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3875,7 +3875,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT6CTRL.OUT3"
+controlPv "$(EVR):EVENT6CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3897,7 +3897,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT5CTRL.OUT3"
+controlPv "$(EVR):EVENT5CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3919,7 +3919,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT4CTRL.OUT3"
+controlPv "$(EVR):EVENT4CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3941,7 +3941,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT3CTRL.OUT3"
+controlPv "$(EVR):EVENT3CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3963,7 +3963,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT2CTRL.OUT3"
+controlPv "$(EVR):EVENT2CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -3985,7 +3985,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT1CTRL.OUT3"
+controlPv "$(EVR):EVENT1CTRL.OUT$(N3)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4046,7 +4046,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT14CTRL.OUT4"
+controlPv "$(EVR):EVENT14CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4068,7 +4068,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT13CTRL.OUT4"
+controlPv "$(EVR):EVENT13CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4090,7 +4090,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT12CTRL.OUT4"
+controlPv "$(EVR):EVENT12CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4112,7 +4112,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT11CTRL.OUT4"
+controlPv "$(EVR):EVENT11CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4134,7 +4134,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT10CTRL.OUT4"
+controlPv "$(EVR):EVENT10CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4156,7 +4156,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT9CTRL.OUT4"
+controlPv "$(EVR):EVENT9CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4178,7 +4178,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT8CTRL.OUT4"
+controlPv "$(EVR):EVENT8CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4200,7 +4200,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT7CTRL.OUT4"
+controlPv "$(EVR):EVENT7CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4222,7 +4222,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT6CTRL.OUT4"
+controlPv "$(EVR):EVENT6CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4244,7 +4244,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT5CTRL.OUT4"
+controlPv "$(EVR):EVENT5CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4266,7 +4266,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT4CTRL.OUT4"
+controlPv "$(EVR):EVENT4CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4288,7 +4288,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT3CTRL.OUT4"
+controlPv "$(EVR):EVENT3CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4310,7 +4310,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT2CTRL.OUT4"
+controlPv "$(EVR):EVENT2CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4332,7 +4332,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT1CTRL.OUT4"
+controlPv "$(EVR):EVENT1CTRL.OUT$(N4)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4393,7 +4393,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT14CTRL.OUT5"
+controlPv "$(EVR):EVENT14CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4415,7 +4415,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT13CTRL.OUT5"
+controlPv "$(EVR):EVENT13CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4437,7 +4437,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT12CTRL.OUT5"
+controlPv "$(EVR):EVENT12CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4459,7 +4459,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT11CTRL.OUT5"
+controlPv "$(EVR):EVENT11CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4481,7 +4481,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT10CTRL.OUT5"
+controlPv "$(EVR):EVENT10CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4503,7 +4503,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT9CTRL.OUT5"
+controlPv "$(EVR):EVENT9CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4525,7 +4525,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT8CTRL.OUT5"
+controlPv "$(EVR):EVENT8CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4547,7 +4547,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT7CTRL.OUT5"
+controlPv "$(EVR):EVENT7CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4569,7 +4569,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT6CTRL.OUT5"
+controlPv "$(EVR):EVENT6CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4591,7 +4591,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT5CTRL.OUT5"
+controlPv "$(EVR):EVENT5CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4613,7 +4613,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT4CTRL.OUT5"
+controlPv "$(EVR):EVENT4CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4635,7 +4635,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT3CTRL.OUT5"
+controlPv "$(EVR):EVENT3CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4657,7 +4657,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT2CTRL.OUT5"
+controlPv "$(EVR):EVENT2CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4679,7 +4679,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT1CTRL.OUT5"
+controlPv "$(EVR):EVENT1CTRL.OUT$(N5)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4740,7 +4740,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT14CTRL.OUT6"
+controlPv "$(EVR):EVENT14CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4762,7 +4762,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT13CTRL.OUT6"
+controlPv "$(EVR):EVENT13CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4784,7 +4784,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT12CTRL.OUT6"
+controlPv "$(EVR):EVENT12CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4806,7 +4806,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT11CTRL.OUT6"
+controlPv "$(EVR):EVENT11CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4828,7 +4828,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT10CTRL.OUT6"
+controlPv "$(EVR):EVENT10CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4850,7 +4850,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT9CTRL.OUT6"
+controlPv "$(EVR):EVENT9CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4872,7 +4872,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT8CTRL.OUT6"
+controlPv "$(EVR):EVENT8CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4894,7 +4894,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT7CTRL.OUT6"
+controlPv "$(EVR):EVENT7CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4916,7 +4916,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT6CTRL.OUT6"
+controlPv "$(EVR):EVENT6CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4938,7 +4938,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT5CTRL.OUT6"
+controlPv "$(EVR):EVENT5CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4960,7 +4960,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT4CTRL.OUT6"
+controlPv "$(EVR):EVENT4CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -4982,7 +4982,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT3CTRL.OUT6"
+controlPv "$(EVR):EVENT3CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5004,7 +5004,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT2CTRL.OUT6"
+controlPv "$(EVR):EVENT2CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5026,7 +5026,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT1CTRL.OUT6"
+controlPv "$(EVR):EVENT1CTRL.OUT$(N6)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5087,7 +5087,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT14CTRL.OUT7"
+controlPv "$(EVR):EVENT14CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5109,7 +5109,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT13CTRL.OUT7"
+controlPv "$(EVR):EVENT13CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5131,7 +5131,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT12CTRL.OUT7"
+controlPv "$(EVR):EVENT12CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5153,7 +5153,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT11CTRL.OUT7"
+controlPv "$(EVR):EVENT11CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5175,7 +5175,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT10CTRL.OUT7"
+controlPv "$(EVR):EVENT10CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5197,7 +5197,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT9CTRL.OUT7"
+controlPv "$(EVR):EVENT9CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5219,7 +5219,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT8CTRL.OUT7"
+controlPv "$(EVR):EVENT8CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5241,7 +5241,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT7CTRL.OUT7"
+controlPv "$(EVR):EVENT7CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5263,7 +5263,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT6CTRL.OUT7"
+controlPv "$(EVR):EVENT6CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5285,7 +5285,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT5CTRL.OUT7"
+controlPv "$(EVR):EVENT5CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5307,7 +5307,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT4CTRL.OUT7"
+controlPv "$(EVR):EVENT4CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5329,7 +5329,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT3CTRL.OUT7"
+controlPv "$(EVR):EVENT3CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5351,7 +5351,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT2CTRL.OUT7"
+controlPv "$(EVR):EVENT2CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5373,7 +5373,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT1CTRL.OUT7"
+controlPv "$(EVR):EVENT1CTRL.OUT$(N7)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5434,7 +5434,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT14CTRL.OUT8"
+controlPv "$(EVR):EVENT14CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5456,7 +5456,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT13CTRL.OUT8"
+controlPv "$(EVR):EVENT13CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5478,7 +5478,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT12CTRL.OUT8"
+controlPv "$(EVR):EVENT12CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5500,7 +5500,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT11CTRL.OUT8"
+controlPv "$(EVR):EVENT11CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5522,7 +5522,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT10CTRL.OUT8"
+controlPv "$(EVR):EVENT10CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5544,7 +5544,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT9CTRL.OUT8"
+controlPv "$(EVR):EVENT9CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5566,7 +5566,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT8CTRL.OUT8"
+controlPv "$(EVR):EVENT8CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5588,7 +5588,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT7CTRL.OUT8"
+controlPv "$(EVR):EVENT7CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5610,7 +5610,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT6CTRL.OUT8"
+controlPv "$(EVR):EVENT6CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5632,7 +5632,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT5CTRL.OUT8"
+controlPv "$(EVR):EVENT5CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5654,7 +5654,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT4CTRL.OUT8"
+controlPv "$(EVR):EVENT4CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5676,7 +5676,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT3CTRL.OUT8"
+controlPv "$(EVR):EVENT3CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5698,7 +5698,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT2CTRL.OUT8"
+controlPv "$(EVR):EVENT2CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5720,7 +5720,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT1CTRL.OUT8"
+controlPv "$(EVR):EVENT1CTRL.OUT$(N8)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5781,7 +5781,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT14CTRL.OUT9"
+controlPv "$(EVR):EVENT14CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5803,7 +5803,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT13CTRL.OUT9"
+controlPv "$(EVR):EVENT13CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5825,7 +5825,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT12CTRL.OUT9"
+controlPv "$(EVR):EVENT12CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5847,7 +5847,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT11CTRL.OUT9"
+controlPv "$(EVR):EVENT11CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5869,7 +5869,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT10CTRL.OUT9"
+controlPv "$(EVR):EVENT10CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5891,7 +5891,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT9CTRL.OUT9"
+controlPv "$(EVR):EVENT9CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5913,7 +5913,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT8CTRL.OUT9"
+controlPv "$(EVR):EVENT8CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5935,7 +5935,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT7CTRL.OUT9"
+controlPv "$(EVR):EVENT7CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5957,7 +5957,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT6CTRL.OUT9"
+controlPv "$(EVR):EVENT6CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -5979,7 +5979,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT5CTRL.OUT9"
+controlPv "$(EVR):EVENT5CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6001,7 +6001,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT4CTRL.OUT9"
+controlPv "$(EVR):EVENT4CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6023,7 +6023,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT3CTRL.OUT9"
+controlPv "$(EVR):EVENT3CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6045,7 +6045,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT2CTRL.OUT9"
+controlPv "$(EVR):EVENT2CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6067,7 +6067,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT1CTRL.OUT9"
+controlPv "$(EVR):EVENT1CTRL.OUT$(N9)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6128,7 +6128,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT14CTRL.OUTA"
+controlPv "$(EVR):EVENT14CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6150,7 +6150,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT13CTRL.OUTA"
+controlPv "$(EVR):EVENT13CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6172,7 +6172,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT12CTRL.OUTA"
+controlPv "$(EVR):EVENT12CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6194,7 +6194,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT11CTRL.OUTA"
+controlPv "$(EVR):EVENT11CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6216,7 +6216,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT10CTRL.OUTA"
+controlPv "$(EVR):EVENT10CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6238,7 +6238,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT9CTRL.OUTA"
+controlPv "$(EVR):EVENT9CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6260,7 +6260,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT8CTRL.OUTA"
+controlPv "$(EVR):EVENT8CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6282,7 +6282,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT7CTRL.OUTA"
+controlPv "$(EVR):EVENT7CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6304,7 +6304,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT6CTRL.OUTA"
+controlPv "$(EVR):EVENT6CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6326,7 +6326,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT5CTRL.OUTA"
+controlPv "$(EVR):EVENT5CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6348,7 +6348,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT4CTRL.OUTA"
+controlPv "$(EVR):EVENT4CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6370,7 +6370,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT3CTRL.OUTA"
+controlPv "$(EVR):EVENT3CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6392,7 +6392,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT2CTRL.OUTA"
+controlPv "$(EVR):EVENT2CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6414,7 +6414,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT1CTRL.OUTA"
+controlPv "$(EVR):EVENT1CTRL.OUT$(N10)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6475,7 +6475,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT14CTRL.OUTB"
+controlPv "$(EVR):EVENT14CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6497,7 +6497,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT13CTRL.OUTB"
+controlPv "$(EVR):EVENT13CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6519,7 +6519,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT12CTRL.OUTB"
+controlPv "$(EVR):EVENT12CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6541,7 +6541,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT11CTRL.OUTB"
+controlPv "$(EVR):EVENT11CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6563,7 +6563,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT10CTRL.OUTB"
+controlPv "$(EVR):EVENT10CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6585,7 +6585,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT9CTRL.OUTB"
+controlPv "$(EVR):EVENT9CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6607,7 +6607,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT8CTRL.OUTB"
+controlPv "$(EVR):EVENT8CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6629,7 +6629,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT7CTRL.OUTB"
+controlPv "$(EVR):EVENT7CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6651,7 +6651,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT6CTRL.OUTB"
+controlPv "$(EVR):EVENT6CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6673,7 +6673,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT5CTRL.OUTB"
+controlPv "$(EVR):EVENT5CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6695,7 +6695,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT4CTRL.OUTB"
+controlPv "$(EVR):EVENT4CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6717,7 +6717,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT3CTRL.OUTB"
+controlPv "$(EVR):EVENT3CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6739,7 +6739,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT2CTRL.OUTB"
+controlPv "$(EVR):EVENT2CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
@@ -6761,7 +6761,7 @@ offColor index 3
 inconsistentColor index 46
 topShadowColor index 1
 botShadowColor index 14
-controlPv "$(EVR):EVENT1CTRL.OUTB"
+controlPv "$(EVR):EVENT1CTRL.OUT$(N11)"
 3d
 font "courier-bold-r-10.0"
 objType "controls"
