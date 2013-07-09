@@ -163,7 +163,7 @@ int evrPattern(int timeout, epicsUInt32 *mpsModifier_p)
       if (deltaTime >= evrDeltaTimeMax) {
         invalidTimeCount++;
         if (invalidTimeCount % 10000 == 0)
-            printf("Delta Time = %d, > %d\n", deltaTime, evrDeltaTimeMax);
+            printf("Delta Time = %ld, > %ld\n", deltaTime, evrDeltaTimeMax);
         if (ntpStatus) {
           patternErrCount = 0;
         } else {
@@ -247,7 +247,7 @@ int evrPattern(int timeout, epicsUInt32 *mpsModifier_p)
   Ret:  0 = no match, 1 = match
   
 =============================================================================*/ 
-
+#if 0
 int evrPatternCheck(unsigned long  beamCode,    unsigned long  timeSlot,
                     evrModifier_ta inclusion_a, evrModifier_ta exclusion_a,
                     evrModifier_ta modifier_a)
@@ -271,6 +271,7 @@ int evrPatternCheck(unsigned long  beamCode,    unsigned long  timeSlot,
   }
   return (matches);
 }
+#endif
 
 /*=============================================================================
 
@@ -363,7 +364,7 @@ static long evrPatternProc(longSubRecord *psub)
 
   psub->val = PATTERN_INVALID_TIMESTAMP;
   status = evrTimeGetFromPipeline(&currentTime, (evrTimeId_te)psub->z,
-                                  (epicsUInt32 *)&psub->d, &psub->val,
+                                  &psub->d, &psub->val,
                                   &psub->k,
                                   &psub->a, &psub->b);
   /* Parse out beamcode, timeslot, and pulse ID */

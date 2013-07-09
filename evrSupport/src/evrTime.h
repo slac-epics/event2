@@ -114,7 +114,7 @@ extern int bsa_debug_mask;
 
 /* For modifier array */
 #define MAX_EVR_MODIFIER  6
-typedef epicsUInt32 evrModifier_ta[MAX_EVR_MODIFIER];
+typedef unsigned long evrModifier_ta[MAX_EVR_MODIFIER];
   
 /* Event codes - see mrfCommon.h for reserved internal event codes      */
 #define EVENT_FIDUCIAL          1        /* Fiducial event code         */

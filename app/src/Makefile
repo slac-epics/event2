@@ -9,7 +9,7 @@ include $(TOP)/configure/CONFIG
 # Build an ioc application
 # Use PROD_IOC_RTEMS for RTEMS only
 # Use PROD_IOC_Linux for Linux only
-PROD_IOC_Linux = evrIoc evrTest
+PROD_IOC_Linux = evrIoc evrTest evrDiag
 
 # ipimbIoc.dbd will be created and installed
 DBD += evrIoc.dbd
@@ -37,6 +37,10 @@ evrIoc_LIBS += $(EPICS_BASE_IOC_LIBS)
 evrTest_SRCS_DEFAULT += evrTest.c
 evrTest_LIBS += drvMrf
 evrTest_LIBS += $(EPICS_BASE_IOC_LIBS)
+
+evrDiag_SRCS_DEFAULT += evrDiag.c
+evrDiag_LIBS += drvMrf
+evrDiag_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 #===========================
 

@@ -12,7 +12,6 @@
 
 #define EVR_FIFO_EVENT_LIMIT 256
 int fd;
-struct MrfErRegs *pEr;
 struct EvrQueues *pEq;
 int irqCount = 0;
 long long mydrp = -1;
@@ -117,15 +116,16 @@ int main(int argc,char *argv[])
     int haveevent = 0;
     int dbuf = 0;
     int i;
+    void *mem;
 
     memset(ErEventTab, 0, sizeof(ErEventTab));
-    fd = EvrOpen(&pEr, "/dev/era4");
+    fd = EvrOpen(&mem, "/dev/era4");
+    pEq = (struct EvrQueues *) mem;
     if (fd < 0) {
         perror("evrTest");
         exit(1);
     }
-    pEq = (struct EvrQueues *)&pEr[1];
-    EvrIrqAssignHandler(pEr, fd, ErIrqHandler);
+    EvrIrqAssignHandler(fd, ErIrqHandler);
 
     if (argc > 1) {
         for (i = 1; i < argc; i++) {

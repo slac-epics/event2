@@ -7,6 +7,7 @@
 
 */
 #include<linux/spinlock.h>
+#include "evrmemmap.h"
 
 #define DEVICE_MINOR_NUMBERS      5
 #define MAX_MRF_DEVICES           8
@@ -78,7 +79,7 @@ struct shared_mrf {
     u32             pendingirq;  /* IRQs still to be delivered. */
     u16             evttab[256]; /* The events this client wants to see. */
     wait_queue_head_t waitq;
-    spinlock_t      lock;    
+    spinlock_t      lock;
 };
 
 struct mrf_dev {
@@ -120,6 +121,7 @@ struct mrf_dev {
   int              device_first;   /* Also used to differentiate SLAC from MRF!!! */
   void            *qmem;           /* Memory for the memory-mapped queues, if shared */
   void            *evrq;           /* Page-aligned memory for the queues. */
+  char             pulse[EVR_MAX_PULSES];
   struct shared_mrf shared[MAX_EVR_OPENS];
 };
 #define SLAC_EVR(pEr) ((pEr)->device_first)

@@ -315,7 +315,7 @@ struct ErCardStruct {
     epicsInt16      Slot;                   /* Slot number where card was found                   */
     epicsInt32      IrqVector;              /* IRQ Vector 21nov2006 dayle chg'd from 16 to accom PMC*/
     epicsInt32      IrqLevel;               /* Interrupt level                                    */
-    void           *pEr;                    /* Pointer to the event receiver register map         */
+    void           *pEq;                    /* Pointer to the event receiver register map         */
     epicsMutexId    CardLock;               /* Mutex to lock acces to the card                    */
     DEV_EVENT_FUNC  DevEventFunc;           /* Pointer to device-support event handling routine   */
     DEV_ERROR_FUNC  DevErrorFunc;           /* Pointer to device-support error handling routine   */
@@ -335,6 +335,7 @@ struct ErCardStruct {
     char	    EventCodeDesc[EVR_NUM_EVENTS][MAX_STRING_SIZE+1];	/* Event code description */
     long long       drp;                     /* Last data buffer read pointer */
     long long       erp;                     /* Next event read pointer */
+    epicsUInt32     FPGAVersion;             /* The board version register */
 };/*ErCardStruct*/
 
 #endif

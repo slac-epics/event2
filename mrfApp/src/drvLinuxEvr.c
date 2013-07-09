@@ -79,10 +79,10 @@ char *	FormFactorToString( int formFactor )
 }
 
 
-int ErGetFormFactor( struct MrfErRegs	*	pEr )
+int ErGetFormFactor( int fd )
 {
 	int		formFactor;
-	int		id = (be32_to_cpu(pEr->FPGAVersion)>>24) & 0x0F;
+	int		id = (READ_EVR_REGISTER(fd, FPGAVersion)>>24) & 0x0F;
         /*
          * This is actually a bit silly.  We're translating from one constant
          * to another.
@@ -174,7 +174,6 @@ int irqCount = 0;
 void ErIrqHandler(int fd, int flags)
 {
 	struct ErCardStruct *pCard;
-	struct MrfErRegs *pEr;
         struct EvrQueues *pEq;
 	int i;
 	epicsMutexLock(ErCardListLock);
@@ -191,8 +190,7 @@ void ErIrqHandler(int fd, int flags)
                  * Found our card!!
                  */
 
-		pEr = pCard->pEr;
-		pEq = (struct EvrQueues *)&pEr[1];
+		pEq = pCard->pEq;
 
                 irqCount++;
 
@@ -300,8 +298,8 @@ static int ErConfigure (
 	int		actualFormFactor;
 	char strDevice[strlen(DEVNODE_NAME_BASE) + 3];
 	struct ErCardStruct *pCard;
-	struct MrfErRegs *pEr;
-    u32		FPGAVersion;
+	void   *pEq;
+        u32	FPGAVersion;
 
 	epicsMutexLock(ErCardListLock);
 	/* If not already done, initialize the driver structures */
@@ -336,7 +334,7 @@ static int ErConfigure (
 		epicsMutexUnlock(ErConfigureLock);
 		return ERROR;
 	}
-	fdEvr = EvrOpen(&pEr, strDevice);
+	fdEvr = EvrOpen(&pEq, strDevice);
 	if (fdEvr < 0) {
 		errlogPrintf("%s@%d(EvrOpen) Error: %s opening %s\n", __func__, __LINE__, strerror(errno), strDevice );
 		epicsMutexUnlock(ErConfigureLock);
@@ -344,7 +342,7 @@ static int ErConfigure (
 	}
 
 	/* Check the firmware version */
-	FPGAVersion = be32_to_cpu(pEr->FPGAVersion);
+	FPGAVersion = READ_EVR_REGISTER(fdEvr, FPGAVersion);
 	printf( "PMC EVR Found with Firmware Revision 0x%04X\n", FPGAVersion );
 	switch ( FPGAVersion )
 	{
@@ -375,7 +373,7 @@ static int ErConfigure (
 	}
 
 	ret = 0;
-	actualFormFactor = ErGetFormFactor( pEr );
+	actualFormFactor = ErGetFormFactor( fdEvr );
 	if ( FormFactor == actualFormFactor )
 	{
 		printf( "Found a %s %s\n",
@@ -386,7 +384,8 @@ static int ErConfigure (
 		printf( "Configured for %s form factor, but %s has %s form factor.\n",
 				FormFactorToString( FormFactor ), strDevice,
 				FormFactorToString( actualFormFactor ) );
-		errlogPrintf("%s: wrong form factor %d, signature is 0x%08x.\n", __func__, FormFactor, be32_to_cpu(pEr->FPGAVersion));
+		errlogPrintf("%s: wrong form factor %d, signature is 0x%08x.\n", __func__,
+                             FormFactor, FPGAVersion);
 		EvrClose(fdEvr);
 		epicsMutexUnlock(ErConfigureLock);
 		return ERROR;
@@ -421,11 +420,11 @@ static int ErConfigure (
 		if this fails we cannot release the linked list link, instead we
 		we set Cardno to an invalid value */
 	epicsMutexLock(pCard->CardLock);
-	pCard->pEr = (void *)pEr;
+	pCard->pEq = (void *)pEq;
 	pCard->Slot = fdEvr;	/* we steal this irrelevant field */
-	/* Set the clock divider. For now it is a fixed value */
+        pCard->FPGAVersion = FPGAVersion;
 	ErEnableIrq_nolock(pCard, EVR_IRQ_OFF);
-	EvrIrqAssignHandler(pEr, fdEvr, ErIrqHandler);
+	EvrIrqAssignHandler(fdEvr, ErIrqHandler);
 	pCard->IrqLevel = 1;	/* Tell the interrupt handler this interrupt is enabled */
 	pCard->FormFactor = FormFactor;
 	epicsMutexUnlock(pCard->CardLock);
@@ -451,11 +450,10 @@ static int ErConfigure (
 \**************************************************************************************************/
 epicsBoolean ErCheckTaxi(ErCardStruct *pCard)
 {
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
 	epicsBoolean ret = epicsFalse;
 	
 	epicsMutexLock(pCard->CardLock);
-	if (EvrGetViolation(pEr))
+	if (EvrGetViolation(pCard->Slot))
 		ret = epicsTrue;
 	epicsMutexUnlock(pCard->CardLock);
 	return ret;
@@ -613,14 +611,9 @@ ErCardStruct *ErGetCardStruct(int Card)
 \**************************************************************************************************/
 epicsUInt16 ErGetFpgaVersion(ErCardStruct *pCard)
 {	
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
 	epicsUInt32 version;
 
-	if ( pEr == NULL )
-		errlogPrintf( "%s: NULL EVR structure pointer\n", __func__ );
-
-	/* no need for a lock, this is a read only register */
-	version = be32_to_cpu(pEr->FPGAVersion);
+	version = pCard->FPGAVersion;
 	return ((version >> 16) & 0xFF00) | (version & 0xFF);
 }
 
@@ -647,11 +640,9 @@ epicsUInt16 ErGetFpgaVersion(ErCardStruct *pCard)
 GLOBAL_RTN
 epicsUInt32 ErGetSecondsSR (ErCardStruct *pCard)
 {
-    struct MrfErRegs	*	pEr = (struct MrfErRegs *)pCard->pEr;
-	
-	/* no need for a lock, this is a read only register */
-	epicsUInt32		secondsSR = be32_to_cpu(pEr->SecondsShift);
-	return secondsSR;
+    /* no need for a lock, this is a read only register */
+    epicsUInt32		secondsSR = READ_EVR_REGISTER(pCard->Slot, SecondsShift);
+    return secondsSR;
 
 }/*end ErGetSecondsSR()*/
 
@@ -670,11 +661,10 @@ epicsUInt32 ErGetSecondsSR (ErCardStruct *pCard)
 \**************************************************************************************************/
 epicsBoolean ErGetRamStatus(ErCardStruct *pCard, int RamNumber)
 {
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
 	epicsUInt32 ctrl;
 	
 	epicsMutexLock(pCard->CardLock);
-	ctrl = be32_to_cpu(pEr->Control);
+	ctrl = READ_EVR_REGISTER(pCard->Slot, Control);
 	epicsMutexUnlock(pCard->CardLock);
 	return ((ctrl>>C_EVR_CTRL_MAP_RAM_SELECT) & 1) == (RamNumber-1) ? 
 			epicsTrue : epicsFalse;
@@ -710,14 +700,12 @@ epicsBoolean ErGetRamStatus(ErCardStruct *pCard, int RamNumber)
 \**************************************************************************************************/
 epicsStatus ErGetTicks(int Card, epicsUInt32 *Ticks)
 {
-	struct MrfErRegs *pEr;
 	ErCardStruct *pCard = ErGetCardStruct(Card);
 
 	if(pCard == NULL)
 		return ERROR;
-	pEr = (struct MrfErRegs *)pCard->pEr;
 	epicsMutexLock(pCard->CardLock);
-	*Ticks = (epicsUInt32)EvrGetTimestampCounter(pEr);
+	*Ticks = (epicsUInt32)EvrGetTimestampCounter(pCard->Slot);
 	epicsMutexUnlock(pCard->CardLock);
 	return OK;
 }
@@ -809,8 +797,6 @@ void ErSetDg(ErCardStruct *pCard, int Channel, epicsBoolean Enable,
 			epicsUInt32 Delay, epicsUInt32 Width, 
 			epicsUInt16 Prescaler, epicsBoolean Pol)
 {
-	struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
-
 	if ( ErDebug >= 1 )
 		printf( "%s: EVR %d-%d %s DG %d: pre=%u, del=%u, wid=%u, pol=%s.\n",
 				__func__, pCard->Cardno, pCard->Slot,
@@ -827,14 +813,13 @@ void ErSetDg(ErCardStruct *pCard, int Channel, epicsBoolean Enable,
 
 	epicsMutexLock(pCard->CardLock);
 	if(Enable) {
-		EvrSetPulseParams(pEr, Channel, Prescaler, Delay, Width);
-		EvrSetPulseProperties(pEr, Channel, Pol, 0, 0, 1, 1);
+            EvrSetPulseParams(pCard->Slot, Channel, Prescaler, Delay, Width, Pol, 1);
 	} else {
-		EvrSetPulseProperties(pEr, Channel, Pol, 0, 0, 0, 0);
+            EvrSetPulseParams(pCard->Slot, Channel, 0, 0, 0, Pol, 0);
 	}
 
 	if ( ErDebug >= 2 )
-		EvrDumpPulses( pEr, 10 );
+		EvrDumpPulses( pCard->Slot, 10 );
 
 	epicsMutexUnlock(pCard->CardLock);
 	return;
@@ -913,46 +898,36 @@ epicsStatus ErDrvReport (int level)
 	for (pCard = (ErCardStruct *)ellFirst(&ErCardList);
 		pCard != NULL;
 		pCard = (ErCardStruct *)ellNext(&pCard->Link)) {
-		struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
 		NumCards++;
 
 		printf ("\n-------------------- EVR#%d Hardware Report --------------------\n", pCard->Cardno);
-		printf("	Form factor %s.\n", FormFactorToString( ErGetFormFactor(pEr) ) );
+		printf("	Form factor %s.\n", FormFactorToString( ErGetFormFactor(pCard->Slot) ) );
 		printf("	Firmware Version = %4.4X.\n", ErGetFpgaVersion(pCard));
-		printf ("	Address = %p.\n", pCard->pEr);
+		printf ("	Address = %p.\n", pCard->pEq);
 		printf ("	%d Frame Errors\n", pCard->RxvioCount);
-		EvrDumpStatus( pEr );
-		EvrDumpPulses(		pEr, 10 );
-                switch(ErGetFormFactor(pEr)) {
-                case VME_EVR:
-                    EvrDumpFPOutMap(	pEr, 8 );
-                    EvrDumpUnivOutMap(	pEr, 4 );
-                    EvrDumpTBOutMap(	pEr, 16 );
-                    break;
-                case CPCI_EVR:
-                    EvrDumpUnivOutMap(	pEr, 10 );
-                    break;
-                case SLAC_EVR:
-                    EvrDumpUnivOutMap(	pEr, 12 );
-                    break;
-                }
+		EvrDumpStatus( pCard->Slot );
+		EvrDumpPulses(		pCard->Slot, 10 );
                 if (level >= 2) {
-                    struct MrfErRegs *pEr = (struct MrfErRegs *)pCard->pEr;
                     u32 ie, trig, set, clear;
+                    struct MapRamItemStruct MapRam[EVR_MAX_EVENT_CODE+1];
+                    
                     if (ErGetRamStatus(pCard, 1))
                         ram = 1;
                     else
                         ram = 0;
                     printf("Active ram: %d\n", ram);
-                    printf("  Index     IntEvent  Trigger     Set      Clear\n");
-                    printf("----------  --------  --------  --------  --------\n");
-                    for (i = 0; i < EVR_MAX_EVENT_CODE; i++) {
-                        ie    = be32_to_cpu(pEr->MapRam[ram][i].IntEvent);
-                        trig  = be32_to_cpu(pEr->MapRam[ram][i].PulseTrigger);
-                        set   = be32_to_cpu(pEr->MapRam[ram][i].PulseSet);
-                        clear = be32_to_cpu(pEr->MapRam[ram][i].PulseClear);
-                        if (ie || trig || set || clear) {
-                            printf("%3d (0x%02x)  %08x  %08x  %08x  %08x\n", i, i, ie, trig, set, clear);
+                    if (!READ_EVR_REGION32(pCard->Slot, MapRam[ram], (u32 *)MapRam, sizeof(MapRam))) {
+                        printf("  Index     IntEvent  Trigger     Set      Clear\n");
+                        printf("----------  --------  --------  --------  --------\n");
+                        for (i = 0; i < EVR_MAX_EVENT_CODE; i++) {
+                            ie    = MapRam[i].IntEvent;
+                            trig  = MapRam[i].PulseTrigger;
+                            set   = MapRam[i].PulseSet;
+                            clear = MapRam[i].PulseClear;
+                            if (ie || trig || set || clear) {
+                                printf("%3d (0x%02x)  %08x  %08x  %08x  %08x\n",
+                                       i, i, ie, trig, set, clear);
+                            }
                         }
                     }
                     printf("\n");

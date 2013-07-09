@@ -25,6 +25,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#define DEFINE_READ_EVR
 #include "erapi.h"
 
 extern void EvrIrqHandlerThreadCreate(void (**handler) (int, int), int);
@@ -36,7 +37,7 @@ extern void EvrIrqHandlerThreadCreate(void (**handler) (int, int), int);
 #define DEBUG_PRINTF printf
 unsigned int	erapiDebug	= 1;
 
-int EvrOpen(struct MrfErRegs **pEr, char *device_name)
+int EvrOpen(void **pEq, char *device_name)
 {
   int fd;
 
@@ -48,13 +49,12 @@ int EvrOpen(struct MrfErRegs **pEr, char *device_name)
   if (fd != -1)
     {
       /* Memory map Event Receiver registers */
-      *pEr = (struct MrfErRegs *) mmap(0, EVR_MEM_WINDOW, PROT_READ | PROT_WRITE,
-					MAP_SHARED, fd, 0);
+      *pEq = (void *) mmap(0, EVR_SH_MEM_WINDOW, PROT_READ, MAP_SHARED, fd, 0);
 #ifdef DEBUG
-  DEBUG_PRINTF("EvrOpen: mmap returned %p, errno %d\n", *pEr,
-	       errno);
+      DEBUG_PRINTF("EvrOpen: mmap returned %p, errno %d\n", *pEq,
+                   errno);
 #endif
-      if (*pEr == MAP_FAILED)
+      if (*pEq == MAP_FAILED)
 	{
 	  close(fd);
 	  return -1;
@@ -68,27 +68,27 @@ int EvrClose(int fd)
 {
   int result;
 
-  result = munmap(0, EVR_MEM_WINDOW);
+  result = munmap(0, EVR_SH_MEM_WINDOW);
   return close(fd);
 }
 
-int EvrGetViolation(volatile struct MrfErRegs *pEr)
+int EvrGetViolation(int fd)
 {
-  return be32_to_cpu(pEr->IrqFlag & be32_to_cpu(1 << C_EVR_IRQFLAG_VIOLATION));
+  return READ_EVR_REGISTER(fd, IrqFlag) & (1 << C_EVR_IRQFLAG_VIOLATION);
 }
 
-void EvrDumpStatus(volatile struct MrfErRegs *pEr)
+void EvrDumpStatus(int fd)
 {
   int result;
 
-  result = be32_to_cpu(pEr->Status);
+  result = READ_EVR_REGISTER(fd, Status);
   DEBUG_PRINTF("Status %08x ", result);
   if (result & (1 << C_EVR_STATUS_LEGACY_VIO))
     DEBUG_PRINTF("LEGVIO ");
   if (result & (1 << C_EVR_STATUS_FIFO_STOPPED))
     DEBUG_PRINTF("FIFOSTOP ");
   DEBUG_PRINTF("\n");
-  result = be32_to_cpu(pEr->Control);
+  result = READ_EVR_REGISTER(fd, Control);
   DEBUG_PRINTF("Control %08x: ", result);
   if (result & (1 << C_EVR_CTRL_MASTER_ENABLE))
     DEBUG_PRINTF("MSEN ");
@@ -105,7 +105,7 @@ void EvrDumpStatus(volatile struct MrfErRegs *pEr)
   if (result & (1 << C_EVR_CTRL_MAP_RAM_SELECT))
     DEBUG_PRINTF("MAPSEL ");
   DEBUG_PRINTF("\n");
-  result = be32_to_cpu(pEr->IrqFlag);
+  result = READ_EVR_REGISTER(fd, IrqFlag);
   DEBUG_PRINTF("IRQ Flag %08x: ", result);
   if (result & (1 << C_EVR_IRQ_MASTER_ENABLE))
     DEBUG_PRINTF("IRQEN ");
@@ -122,50 +122,45 @@ void EvrDumpStatus(volatile struct MrfErRegs *pEr)
   if (result & (1 << C_EVR_IRQFLAG_VIOLATION))
     DEBUG_PRINTF("VIO ");
   DEBUG_PRINTF("\n");
-  result = be32_to_cpu(pEr->DataBufControl);
+  result = READ_EVR_REGISTER(fd, DataBufControl);
   DEBUG_PRINTF("DataBufControl %08x\n", result);
 }
 
-int EvrSetPulseParams(volatile struct MrfErRegs *pEr, int pulse, u32 presc,
-		      u32 delay, u32 width)
+int EvrSetPulseParams(int fd, int pulse, u32 presc, u32 delay, u32 width,
+                      int polarity, int enable)
 {
+  struct EvrIoctlPulse p;
   if (pulse < 0 || pulse >= EVR_MAX_PULSES)
     return -1;
-
-  pEr->Pulse[pulse].Prescaler = be32_to_cpu(presc);
-  pEr->Pulse[pulse].Delay = be32_to_cpu(delay);
-  pEr->Pulse[pulse].Width = be32_to_cpu(width);
-  if ( erapiDebug	>= 1 )
-  {
-	/*
-	 * Sanity check on prescaler value (due to fixed bug in generator allocation)
-	 * Prescaler value is readable on generators 0-1
-	 * A MRF firmware bug prevents reading prescaler on generators 2-3
-	 * Generators 4-9 do not support prescaling and always read back 0
-	 */
-	if ( pulse < 3 )
-	{
-	  if ( be32_to_cpu(pEr->Pulse[pulse].Prescaler) != presc )
-		printf( "%s Pulse %d: Unable to update prescaler from %d to %d\n", __func__,
-				pulse, be32_to_cpu(pEr->Pulse[pulse].Prescaler), presc );
-	  else if ( presc != 0 )
-		printf( "%s Pulse %d: Success! prescaler is now %d\n", __func__, pulse, presc );
-	}
-  }
-  return 0;
+  p.Id              = pulse;
+  p.Pulse.Prescaler = presc;
+  p.Pulse.Delay     = delay;
+  p.Pulse.Width     = width;
+  p.Pulse.Control   = 0;
+  if (polarity == 1)
+    p.Pulse.Control |= (1 << C_EVR_PULSE_POLARITY);
+  if (enable == 1)
+    p.Pulse.Control |= (1 << C_EVR_PULSE_MAP_TRIG_ENA) | (1 << C_EVR_PULSE_ENA);
+  if (ioctl(fd, EV_IOCPULSE, &p)) {
+      perror("Programming pulse failed");
+      return -1;
+  } else
+      return 0;
 }
 
-void EvrDumpPulses(volatile struct MrfErRegs *pEr, int pulses)
+void EvrDumpPulses(int fd, int pulses)
 {
   int i, control;
+  struct PulseStruct p[EVR_MAX_PULSES];
+
+  if (READ_EVR_REGION32(fd, Pulse, (u32 *)p, sizeof(struct PulseStruct) * pulses))
+    return;
 
   for (i = 0; i < pulses; i++)
     {
       DEBUG_PRINTF("Pulse %02x Presc %08x Delay %08x Width %08x", i,
-		   be32_to_cpu(pEr->Pulse[i].Prescaler), 
-		   be32_to_cpu(pEr->Pulse[i].Delay), 
-		   be32_to_cpu(pEr->Pulse[i].Width));
-      control = be32_to_cpu(pEr->Pulse[i].Control);
+		   p[i].Prescaler, p[i].Delay, p[i].Width);
+      control = p[i].Control;
       DEBUG_PRINTF(" Output %d", control & (1 << C_EVR_PULSE_OUT) ? 1 : 0);
       if (control & (1 << C_EVR_PULSE_POLARITY))
 	DEBUG_PRINTF(" NEG");
@@ -181,78 +176,7 @@ void EvrDumpPulses(volatile struct MrfErRegs *pEr, int pulses)
     }
 }
 
-int EvrSetPulseProperties(volatile struct MrfErRegs *pEr, int pulse, int polarity,
-			  int map_reset_ena, int map_set_ena, int map_trigger_ena,
-			  int enable)
-{
-  int result;
-
-  if (pulse < 0 || pulse >= EVR_MAX_PULSES)
-    return -1;
-
-  result = be32_to_cpu(pEr->Pulse[pulse].Control);
-
-  /* 0 clears, 1 sets, others don't change */
-  if (polarity == 0)
-    result &= ~(1 << C_EVR_PULSE_POLARITY);
-  if (polarity == 1)
-    result |= (1 << C_EVR_PULSE_POLARITY);
-
-  if (map_reset_ena == 0)
-    result &= ~(1 << C_EVR_PULSE_MAP_RESET_ENA);
-  if (map_reset_ena == 1)
-    result |= (1 << C_EVR_PULSE_MAP_RESET_ENA);
-
-  if (map_set_ena == 0)
-    result &= ~(1 << C_EVR_PULSE_MAP_SET_ENA);
-  if (map_set_ena == 1)
-    result |= (1 << C_EVR_PULSE_MAP_SET_ENA);
-
-  if (map_trigger_ena == 0)
-    result &= ~(1 << C_EVR_PULSE_MAP_TRIG_ENA);
-  if (map_trigger_ena == 1)
-    result |= (1 << C_EVR_PULSE_MAP_TRIG_ENA);
-
-  if (enable == 0)
-    result &= ~(1 << C_EVR_PULSE_ENA);
-  if (enable == 1)
-    result |= (1 << C_EVR_PULSE_ENA);
-
-#ifdef DEBUG
-  DEBUG_PRINTF("Pulse[%d].Control %08x\n", pulse, result);
-#endif
-
-  pEr->Pulse[pulse].Control = be32_to_cpu(result);
-
-  return 0;
-}
-
-void EvrDumpUnivOutMap(volatile struct MrfErRegs *pEr, int outputs)
-{
-  int i;
-
-  for (i = 0; i < outputs; i++)
-    DEBUG_PRINTF("UnivOut[%d] %02x\n", i, be16_to_cpu(pEr->UnivOutMap[i]));
-}
-
-void EvrDumpFPOutMap(volatile struct MrfErRegs *pEr, int outputs)
-{
-  int i;
-
-  for (i = 0; i < outputs; i++)
-    DEBUG_PRINTF("FPOut[%d] %02x\n", i, be16_to_cpu(pEr->FPOutMap[i]));
-}
-
-void EvrDumpTBOutMap(volatile struct MrfErRegs *pEr, int outputs)
-{
-  int i;
-
-  for (i = 0; i < outputs; i++)
-    DEBUG_PRINTF("TBOut[%d] %02x\n", i, be16_to_cpu(pEr->TBOutMap[i]));
-}
-
-void EvrIrqAssignHandler(volatile struct MrfErRegs *pEr, int fd,
-			 void (*handler)(int, int))
+void EvrIrqAssignHandler(int fd, void (*handler)(int, int))
 {
   static int have_thread = 0;
   static void (*h)(int, int) = NULL;
@@ -265,7 +189,7 @@ void EvrIrqAssignHandler(volatile struct MrfErRegs *pEr, int fd,
       EvrIrqHandlerThreadCreate(&h, fd);
 }
 
-int EvrGetTimestampCounter(volatile struct MrfErRegs *pEr)
+int EvrGetTimestampCounter(int fd)
 {
-  return be32_to_cpu(pEr->TimestampEventCounter);
+  return READ_EVR_REGISTER(fd, TimestampEventCounter);
 }

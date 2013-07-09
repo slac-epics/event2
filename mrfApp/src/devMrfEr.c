@@ -1122,7 +1122,10 @@ void ErDevErrorFunc (ErCardStruct *pCard, int ErrorNum)
     * Local Variables
     */
     int        Card = pCard->Cardno;            /* Card number of the offending board             */
+#if 0
+    /* Do we really not need this? */
     erRecord  *pRec = (erRecord *)pCard->pRec;  /* Address of this board's ER record              */
+#endif
 
    /*---------------------
     * Decide how to handle the error based on the specified error code

@@ -11,7 +11,8 @@
   Note: Byte ordering is big-endian.
  */
 
-#define EVR_MEM_WINDOW      ((sizeof(struct MrfErRegs) + sizeof(struct EvrQueues) + PAGE_SIZE) & PAGE_MASK)
+#define EVR_MEM_WINDOW      ((sizeof(struct MrfErRegs) + PAGE_SIZE) & PAGE_MASK)
+#define EVR_SH_MEM_WINDOW   ((sizeof(struct EvrQueues) + PAGE_SIZE) & PAGE_MASK)
 
 #ifndef u16
 #define u16 unsigned short
@@ -51,6 +52,11 @@ struct PulseStruct {
   u32  Width;
 };
 
+struct EvrIoctlPulse {
+  u32                Id;
+  struct PulseStruct Pulse;
+};
+
 struct CMLStruct {
   /* Bit patterns contain pattern bits in the 20 lowest bit locations */
   u32  Pattern00; /* bit pattern for low state */
@@ -83,9 +89,9 @@ struct DBufInfo {
 #define MAX_EVR_EVTQ 1024
 #define MAX_EVR_DBQ     4
 struct EvrQueues {
-  struct FIFOEvent evtq[MAX_EVR_EVTQ];
-  struct DBufInfo  dbq[MAX_EVR_DBQ];
-  long long ewp;
+  struct FIFOEvent evtq[MAX_EVR_EVTQ];     /* 12K */
+  struct DBufInfo  dbq[MAX_EVR_DBQ];       /*  8K + 16 */
+  long long ewp;                           /*  20 */
   long long dwp;
   int  fifofull;
 };
@@ -266,16 +272,90 @@ struct MrfErRegs {
 #define C_EVR_FPIN_BACKEV_ENABLE   25
 
 #define EV_IOC_MAGIC 220
+#define EVR_MAX_READ 0x1000
 #define EV_IOCRESET   _IO(EV_IOC_MAGIC, 0)
 #define EV_IOCIRQEN   _IO(EV_IOC_MAGIC, 1)
 #define EV_IOCIRQDIS  _IO(EV_IOC_MAGIC, 2)
 #define EV_IOCIRQMASK _IO(EV_IOC_MAGIC, 3)
 #define EV_IOCEVTTAB  _IO(EV_IOC_MAGIC, 4)
+#define EV_IOCPULSE   _IO(EV_IOC_MAGIC, 5)
+#define EV_IOCREAD32  _IO(EV_IOC_MAGIC, 6)
+#define EV_IOCREAD16  _IO(EV_IOC_MAGIC, 7)
 
-#define EV_IOC_MAX   5
+#define EV_IOC_MAX   8
 
 /* The bits 27-24 of the FPGAVersion register tell us the form factor. */
 #define EVR_FORM_CPCI  0
 #define EVR_FORM_PMC   1
 #define EVR_FORM_VME   2
 #define EVR_FORM_SLAC 15
+
+/*
+ * These are user space macros.  They are controlled by INLINE_READ_EVR 
+ * (which should be "inline", blank, or undefined), and DEFINE_READ_EVR 
+ * (which should be defined or undefined).
+ */
+
+#ifndef INLINE_READ_EVR
+#define INLINE_READ_EVR
+#endif
+#ifdef DEFINE_READ_EVR
+INLINE_READ_EVR int __read_evr_region32(int fd, int offset, void *buf, int size)
+{
+    ((u32 *)buf)[0] = offset;
+    ((u32 *)buf)[1] = size;
+    if (ioctl(fd, EV_IOCREAD32, buf) < 0) {
+        char buf[128];
+        sprintf(buf, "READ EVR at offset %d failed", offset);
+        perror(buf);
+        return -1;
+    }
+    return 0;
+}
+
+INLINE_READ_EVR int __read_evr_region16(int fd, int offset, void *buf, int size)
+{
+    ((u16 *)buf)[0] = offset;
+    ((u16 *)buf)[1] = size;
+    if (ioctl(fd, EV_IOCREAD16, buf) < 0) {
+        char buf[128];
+        sprintf(buf, "READ EVR at offset %d failed", offset);
+        perror(buf);
+        return -1;
+    }
+    return 0;
+}
+
+INLINE_READ_EVR u32 __read_evr_register(int fd, int offset)
+{
+    u32 args[2];
+    if (__read_evr_region32(fd, offset, args, sizeof(u32))) {
+        return 0; /* Exit? */
+    } else {
+        return args[0];
+    }
+}
+
+INLINE_READ_EVR u16 __read_evr_register16(int fd, int offset)
+{
+    u16 args[2];
+    if (__read_evr_region16(fd, offset, args, sizeof(u16))) {
+        return 0; /* Exit? */
+    } else {
+        return args[0];
+    }
+}
+#else
+INLINE_READ_EVR int __read_evr_region32(int fd, int offset, void *buf, int size);
+INLINE_READ_EVR int __read_evr_region16(int fd, int offset, void *buf, int size);
+INLINE_READ_EVR u32 __read_evr_register(int fd, int offset);
+#endif
+
+#define READ_EVR_REGISTER(fd, rname)             \
+    __read_evr_register(fd, offsetof(struct MrfErRegs, rname))
+#define READ_EVR_REGISTER16(fd, rname)             \
+    __read_evr_register16(fd, offsetof(struct MrfErRegs, rname))
+#define READ_EVR_REGION32(fd, rname, buf, size)  \
+    __read_evr_region32(fd, offsetof(struct MrfErRegs, rname), buf, size)
+#define READ_EVR_REGION16(fd, rname, buf, size)  \
+    __read_evr_region16(fd, offsetof(struct MrfErRegs, rname), buf, size)

@@ -29,7 +29,6 @@
 #include <asm/page.h>
 #include <asm/uaccess.h>
 
-#include "evrmemmap.h"
 #include "pci_mrfev.h"
 MODULE_LICENSE("GPL");
 
@@ -247,6 +246,7 @@ int ev_open(struct inode *inode, struct file *filp)
 int ev_release(struct inode *inode, struct file *filp)
 {
   int result = 0;
+  int i;
   struct shared_mrf *shared = (struct shared_mrf *) filp->private_data;
   struct mrf_dev *ev_device = shared->parent;
 
@@ -303,6 +303,10 @@ int ev_release(struct inode *inode, struct file *filp)
       set_irq_mask(ev_device);
       set_event_table(ev_device);
       shared->parent = ev_device;
+      for (i = 0; i < EVR_MAX_PULSES; i++)
+          if (ev_device->pulse[i] == shared->idx)
+              ev_device->pulse[i] = -1;
+      /* Fall through! */
     case DEVICE_EV:
       /* Remove from list of asynchronously notified filps */ 
       ev_fasync(-1, filp, 0);
@@ -484,26 +488,19 @@ int ev_remap_mmap(struct file *filp, struct vm_area_struct *vma)
       return -EPERM;
     }
 
-  if (ev_device->access_device == DEVICE_EV) {
-    if (vsize > ev_device->lenEv)
-      {
-        printk(KERN_NOTICE DEVICE_NAME ": mmap vsize %08x, ev_device->lenEv %08x\n",
-	       (unsigned int) vsize, (unsigned int) ev_device->lenEv);
-        return -EINVAL;
-      }
-  } else {
-    if (vsize > EVR_MEM_WINDOW)
-      {
-        printk(KERN_NOTICE DEVICE_NAME ": mmap vsize %08x, ev_device->lenEv %08x regsize %08lx qsize %08lx\n",
-	       (unsigned int) vsize, (unsigned int) ev_device->lenEv,
-               sizeof(struct MrfErRegs), sizeof(struct EvrQueues));
-        return -EINVAL;
-      }
+  if (offset) {
+      printk(KERN_NOTICE DEVICE_NAME ": mmap offset %ld is not zero!\n", offset);
+      return -EINVAL;
   }
 
-  if (offset < sizeof(struct MrfErRegs)) { /* At least some register space! */
-      unsigned long psize = sizeof(struct MrfErRegs) - offset;    /* Size of region from offset to end */
-      unsigned long physical = ((unsigned long) ev_device->mrEv) + offset;
+  if (ev_device->access_device == DEVICE_EV) {
+    if (vsize > ev_device->lenEv) {
+      printk(KERN_NOTICE DEVICE_NAME ": mmap vsize %08x, ev_device->lenEv %08x\n",
+             (unsigned int) vsize, (unsigned int) ev_device->lenEv);
+      return -EINVAL;
+    } else {
+      unsigned long psize = sizeof(struct MrfErRegs);    /* Size of region from offset to end */
+      unsigned long physical = (unsigned long) ev_device->mrEv;
       if (vsize < psize) /* Maybe we don't want to map the entire register space? */
           psize = vsize;
 #if LINUX_VERSION_CODE > 0x020609
@@ -515,19 +512,20 @@ int ev_remap_mmap(struct file *filp, struct vm_area_struct *vma)
 #endif  
       if (result)
           return -EAGAIN;
-      offset += psize;    /* Remove the part of the memory space that we've mapped in here. */
-      vsize  -= psize;
-      start  += psize;
-  }
-
-  if (vsize > 0) {   /* If we still want more, it has to be from the kernel memory! */
-      offset -= sizeof(struct MrfErRegs);
+    }
+  } else {
+    if (vsize > EVR_SH_MEM_WINDOW) {
+      printk(KERN_NOTICE DEVICE_NAME ": mmap vsize %08x, qsize %08lx\n",
+             (unsigned int) vsize, sizeof(struct EvrQueues));
+      return -EINVAL;
+    } else {
       /* Map this read only!! */
       result = remap_pfn_range(vma, start,
-                               __pa(ev_device->evrq + offset) >> PAGE_SHIFT,
+                               __pa(ev_device->evrq) >> PAGE_SHIFT,
                                vsize, PAGE_READONLY);
       if (result)
           return -EAGAIN;
+    }
   }
   
   vma->vm_ops = &ev_remap_vm_ops;
@@ -635,6 +633,104 @@ int ev_ioctl(struct inode *inode, struct file *filp,
         }
         set_event_table(ev_device);
         ret = 0;
+      } else
+        ret = -ENOTTY;
+      break;
+
+    case EV_IOCPULSE:
+      if (ev_device->access_device == DEVICE_SHEV) {
+        struct EvrIoctlPulse p;
+        if (copy_from_user(&p, (struct EvrIoctlPulse *)arg, sizeof(struct EvrIoctlPulse))) {
+          return -EACCES;
+        }
+        if (p.Id < 0 || p.Id >= EVR_MAX_PULSES)
+          return -ENOTTY;
+        if (ev_device->pulse[p.Id] == -1) {
+          /* If this pulse is unused, claim it! */
+          ev_device->pulse[p.Id] = shared->idx;
+        } else if (ev_device->pulse[p.Id] != shared->idx) {
+          /* If this pulse is claimed by someone else, fail! */
+          return -EBUSY;
+        }
+        {
+          volatile struct MrfErRegs *pEr = ev_device->pEv;
+          pEr->Pulse[p.Id].Control = be32_to_cpu(p.Pulse.Control);
+          if (p.Pulse.Control & (1 << C_EVR_PULSE_ENA)) {
+            DPF((KERN_ALERT "Programming pulse %d for %d: ps=%d, d=%d, w=%d, pol=%s\n",
+                 p.Id, shared->idx, p.Pulse.Prescaler, p.Pulse.Delay, p.Pulse.Width,
+                 (p.Pulse.Control & (1 << C_EVR_PULSE_POLARITY)) ? "NEG" : "POS"));
+            /* If we're enabling, program the times too. */
+            pEr->Pulse[p.Id].Prescaler = be32_to_cpu(p.Pulse.Prescaler);
+            pEr->Pulse[p.Id].Delay = be32_to_cpu(p.Pulse.Delay);
+            pEr->Pulse[p.Id].Width = be32_to_cpu(p.Pulse.Width);
+          } else {
+            DPF((KERN_ALERT "Disabling pulse %d for %d.\n", p.Id, shared->idx));
+            /*
+             * I'm of two minds about this.  If we disable a pulse, are we
+             * releasing it, or is it always ours?
+             */
+            ev_device->pulse[p.Id] = -1;
+          }
+        }
+      } else
+        ret = -ENOTTY;
+      break;
+
+    case EV_IOCREAD32:
+      if (ev_device->access_device == DEVICE_SHEV) {
+        volatile u32 *pEr = ev_device->pEv;
+        u32 buf[EVR_MAX_READ/sizeof(u32)];
+        u32 offset, size, i, limit;
+
+        if (copy_from_user(buf, (u32 *)arg, sizeof(u32) * 2)) {
+          return -EACCES;
+        }
+        /* Args: offset, size */
+        offset = buf[0];
+        size   = buf[1];
+        /* Offset and size must be aligned, and the read can't exceed EVR_MAX_READ. */
+        if ((offset % sizeof(u32)) || (size % sizeof(u32)) || size > EVR_MAX_READ) {
+            return -ENOTTY;
+        }
+        /* No reading the event queue! */
+        if ((offset < 0x7c) && (offset + size) > 0x70) {
+            return -ENOTTY;
+        }
+        offset = offset / sizeof(u32);
+        limit  = size   / sizeof(u32);
+        for (i = 0; i < limit; i++)
+            buf[i] = be32_to_cpu(pEr[offset + i]);
+        if (copy_to_user((u32 *)arg, buf, size)) {
+            return -EFAULT;
+        }
+      } else
+        ret = -ENOTTY;
+      break;
+
+    case EV_IOCREAD16:
+      if (ev_device->access_device == DEVICE_SHEV) {
+        volatile u16 *pEr = ev_device->pEv;
+        u16 buf[EVR_MAX_READ/sizeof(u16)];
+        u16 offset, size, i, limit;
+
+        if (copy_from_user(buf, (u16 *)arg, sizeof(u16) * 2)) {
+          return -EACCES;
+        }
+        /* Args: offset, size */
+        offset = buf[0];
+        size   = buf[1];
+        /* Offset and size must be aligned, and the read can't exceed EVR_MAX_READ. */
+        if ((offset % sizeof(u16)) || (size % sizeof(u16)) || size > EVR_MAX_READ)
+            return -ENOTTY;
+        /* No reading the event queue! */
+        if ((offset < 0x7c) && (offset + size) > 0x70)
+            return -ENOTTY;
+        offset = offset / sizeof(u16);
+        limit  = size   / sizeof(u16);
+        for (i = 0; i < limit; i++)
+            buf[i] = be16_to_cpu(pEr[offset + i]);
+        if (copy_to_user((u16 *)arg, buf, size))
+            return -EFAULT;
       } else
         ret = -ENOTTY;
       break;

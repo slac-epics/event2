@@ -28,7 +28,6 @@
 #include <asm/page.h>
 #include <asm/uaccess.h>
 
-#include "evrmemmap.h"
 #include "pci_mrfev.h"
 
 #ifndef SA_SHIRQ
@@ -233,6 +232,9 @@ static int pci_evr_probe(struct pci_dev *pcidev, const struct pci_device_id *dev
       init_waitqueue_head(&ev_device->shared[i].waitq);
       spin_lock_init(&ev_device->shared[i].lock);
   }
+
+  for (i = 0; i < EVR_MAX_PULSES; i++)
+      ev_device->pulse[i] = -1;
 
   ErInitializeRams(ev_device->pEv);
   ((struct MrfErRegs *)ev_device->pEv)->IrqEnable = 0;
