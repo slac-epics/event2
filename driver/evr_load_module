@@ -1,0 +1,44 @@
+#!/bin/sh
+
+/sbin/insmod /reg/g/pcds/package/epics/3.14/modules/event2/latest/driver/evr_driver.ko.`uname -r` || exit 1
+/sbin/modprobe pci_mrfevg || exit 1
+
+majors=$(awk "\$2==\"mrfevr\" {print \$1}" /proc/devices)
+
+echo "Found" $(echo $majors | wc -w) "Event Receivers."
+echo "Creating device nodes..."
+
+device=1
+for major in $majors; do
+    dev=$(echo $device | awk '{ printf "%c", 96+ $1}')
+    device=$((++device))
+    rm -f /dev/er$dev[0-4]
+    echo "Creating nodes /dev/er"$dev"[0-4] for major" $major
+    mknod '/dev/er'$dev'0' c $major 0
+    mknod '/dev/er'$dev'1' c $major 1
+    mknod '/dev/er'$dev'2' c $major 2
+    mknod '/dev/er'$dev'3' c $major 3
+    mknod '/dev/er'$dev'4' c $major 4
+    chgrp ps-ioc '/dev/er'$dev[0-4]
+    chmod g+w '/dev/er'$dev'3'
+    chmod g+w '/dev/er'$dev'4'
+done
+
+majors=$(awk "\$2==\"mrfevg\" {print \$1}" /proc/devices)
+
+echo "Found" $(echo $majors | wc -w) "Event Generators."
+echo "Creating device nodes..."
+
+device=1
+for major in $majors; do
+    dev=$(echo $device | awk '{ printf "%c", 96+ $1}')
+    device=$((++device))
+    rm -f /dev/eg$dev[0-3]
+    echo "Creating nodes /dev/eg"$dev"[0-3] for major" $major
+    mknod '/dev/eg'$dev'0' c $major 0
+    mknod '/dev/eg'$dev'1' c $major 1
+    mknod '/dev/eg'$dev'2' c $major 2
+    mknod '/dev/eg'$dev'3' c $major 3
+    chgrp ps-ioc '/dev/eg'$dev[0-3]
+    chmod g+w '/dev/eg'$dev'3'
+done

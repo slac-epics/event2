@@ -26,9 +26,9 @@ ifneq ($(KERNELRELEASE),)
 # This should only be invoked if we are compiling the kernel modules.
 #
 
-pci_mrfevr-objs := jtag.o eeprom.o local_conf.o mrfcommon.o mrfevr.o evrram.o
+evr_driver-objs := jtag.o eeprom.o local_conf.o mrfcommon.o mrfevr.o evrram.o
 
-obj-m := pci_mrfevr.o
+obj-m := evr_driver.o
 
 else
 #
@@ -58,7 +58,7 @@ realclean clean:: modclean
 
 modules: modclean
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
-	cp pci_mrfevr.ko pci_mrfevr.ko.`uname -r`
+	cp evr_driver.ko evr_driver.ko.`uname -r`
 
 modclean:
 	-rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions Module.*
