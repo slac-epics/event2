@@ -61,7 +61,7 @@ modules: modclean
 	cp evr_device.ko evr_device.ko.`uname -r`
 
 modclean:
-	-rm -rf *.o *~ core .depend .*.cmd *.ko *.ko.* *.mod.c .tmp_versions Module.* module*
+	-rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions Module.* module*
 
 .PHONY: modules modules_install clean
 
