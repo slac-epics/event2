@@ -24,7 +24,6 @@
 #include <linux/mm.h>
 #include <linux/kdev_t.h>
 #include <linux/interrupt.h>
-#include <linux/version.h>
 
 #include <asm/page.h>
 #include <asm/uaccess.h>
@@ -456,15 +455,30 @@ void ev_vma_close(struct vm_area_struct *vma)
   ev_device->vmas--;
 }
 
+#if LINUX_VERSION_CODE < 0x020617
+/*
+ * nopage was changed to fault circa 2.6.23.  This version might be off by one, but
+ * close enough.  All we want to do is fail here anyway, so...
+ */
 struct page *ev_vma_nopage(struct vm_area_struct *vma, unsigned long address, int *type)
 {
     return NOPAGE_SIGBUS;
 }
+#else
+int ev_vma_fault(struct vm_area_struct *vma, struct vm_fault *vmf)
+{
+    return VM_FAULT_SIGBUS;
+}
+#endif
 
 static struct vm_operations_struct ev_remap_vm_ops = {
   .open = ev_vma_open,
   .close = ev_vma_close,
+#if LINUX_VERSION_CODE < 0x020617
   .nopage = ev_vma_nopage,
+#else
+  .fault = ev_vma_fault,
+#endif
 };
 
 /*
@@ -742,7 +756,11 @@ int ev_ioctl(struct inode *inode, struct file *filp,
   return ret;
 }
 
+#if LINUX_VERSION_CODE < 0x020617
 irqreturn_t ev_interrupt(int irq, void *dev_id, struct pt_regs *regs)
+#else
+irqreturn_t ev_interrupt(int irq, void *dev_id)
+#endif
 {
     struct mrf_dev *ev_device = (struct mrf_dev *) dev_id;
     volatile struct MrfErRegs *pEv = ev_device->pEv;

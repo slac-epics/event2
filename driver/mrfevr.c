@@ -37,7 +37,7 @@
 
 MODULE_LICENSE("GPL");
 
-#define DEVICE_NAME           "mrfevr"
+#define DEVICE_NAME           "evr_driver"
 
 extern struct mrf_dev mrf_devices[MAX_MRF_DEVICES];
 static struct timer_list mrf_timer;
@@ -182,7 +182,10 @@ static int pci_evr_probe(struct pci_dev *pcidev, const struct pci_device_id *dev
     }
 
   /* Here we enable device before we can do any accesses to device. */
-  pci_enable_device(pcidev);
+  if (pci_enable_device(pcidev)) {
+    printk(KERN_WARNING "%s: Could not enable device \n", DEVICE_NAME);
+    return -1;
+  } 
 
   if (SLAC_EVR(ev_device)) {
     evr_base_start = pci_resource_start(pcidev, 0);

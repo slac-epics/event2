@@ -7,6 +7,7 @@
 
 */
 #include<linux/spinlock.h>
+#include<linux/version.h>
 #include "evrmemmap.h"
 
 #define DEVICE_MINOR_NUMBERS      5
@@ -144,7 +145,12 @@ long ev_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
 #endif
 int ev_fasync(int fd, struct file *filp, int mode);
 int ev_remap_mmap(struct file *filp, struct vm_area_struct *vma);
+#if LINUX_VERSION_CODE < 0x020617
+/* Interrupt handlers lost a parameter at some point between 2.6.18 and 2.6.35. */
 irqreturn_t ev_interrupt(int irq, void *dev_id, struct pt_regs *regs);
+#else
+irqreturn_t ev_interrupt(int irq, void *dev_id);
+#endif
 
 #define PLX9030_INTCSR_LINTI1_ENA  0x0001 /* LINTi1 enable */
 #define PLX9030_INTCSR_LINTI1_POL  0x0002 /* LINTi1 polarity, 1 = active high */
