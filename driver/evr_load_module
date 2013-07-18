@@ -1,9 +1,9 @@
 #!/bin/sh
 
-/sbin/insmod /reg/g/pcds/package/epics/3.14/modules/event2/latest/driver/evr_driver.ko.`uname -r` || exit 1
+/sbin/insmod /reg/g/pcds/package/epics/3.14/modules/event2/latest/driver/evr_device.ko.`uname -r` || exit 1
 /sbin/modprobe pci_mrfevg || exit 1
 
-majors=$(awk "\$2==\"mrfevr\" {print \$1}" /proc/devices)
+majors=$(awk "\$2==\"evr_device\" {print \$1}" /proc/devices)
 
 echo "Found" $(echo $majors | wc -w) "Event Receivers."
 echo "Creating device nodes..."

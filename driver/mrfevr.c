@@ -37,7 +37,7 @@
 
 MODULE_LICENSE("GPL");
 
-#define DEVICE_NAME           "evr_driver"
+#define DEVICE_NAME           "evr_device"
 
 extern struct mrf_dev mrf_devices[MAX_MRF_DEVICES];
 static struct timer_list mrf_timer;

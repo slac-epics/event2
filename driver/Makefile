@@ -26,9 +26,9 @@ ifneq ($(KERNELRELEASE),)
 # This should only be invoked if we are compiling the kernel modules.
 #
 
-evr_driver-objs := jtag.o eeprom.o local_conf.o mrfcommon.o mrfevr.o evrram.o
+evr_device-objs := jtag.o eeprom.o local_conf.o mrfcommon.o mrfevr.o evrram.o
 
-obj-m := evr_driver.o
+obj-m := evr_device.o
 
 else
 #
@@ -58,10 +58,10 @@ realclean clean:: modclean
 
 modules: modclean
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
-	cp evr_driver.ko evr_driver.ko.`uname -r`
+	cp evr_device.ko evr_device.ko.`uname -r`
 
 modclean:
-	-rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions Module.*
+	-rm -rf *.o *~ core .depend .*.cmd *.ko *.ko.* *.mod.c .tmp_versions Module.* module*
 
 .PHONY: modules modules_install clean
 
