@@ -24,10 +24,10 @@ DB_INSTALLS += evrEventCtrl.template
 # ARCHIVE += <file>.substitutions
 # ARCHIVE += <file>.template
 #
-ARCHIVE_INSTALLS += archive_evr.archive
-ARCHIVE_INSTALLS += archive_evr_SLAC.archive
-ARCHIVE_INSTALLS += archive_pmc_evr.archive
-ARCHIVE_INSTALLS += archive_vme_evr.archive
+ARCHIVE_INSTALLS += archive_evr.tpl-arch
+ARCHIVE_INSTALLS += archive_evr_SLAC.tpl-arch
+ARCHIVE_INSTALLS += archive_pmc_evr.tpl-arch
+ARCHIVE_INSTALLS += archive_vme_evr.tpl-arch
 
 #----------------------------------------------------
 # Create and install (or just install)
