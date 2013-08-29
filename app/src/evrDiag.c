@@ -41,6 +41,9 @@ struct regs {
     { "PS1",                    0x0104, 4 },
     { "PS2",                    0x0108, 4 },
     { "Pulse",                  0x0200, 0x200 },
+    { "FPOutMap",               0x0400, 0x40 },
+    { "UnivOutMap",             0x0440, 0x40 },
+    { "TBOutMap",               0x0480, 0x80 },
     { "UO0",                    0x0440, 2 },
     { "UO1",                    0x0442, 2 },
     { "UO2",                    0x0444, 2 },
@@ -73,6 +76,7 @@ struct regs *findname(char *name)
 int fd;
 struct MapRamItemStruct mr[EVR_MAX_EVENT_CODE+1];
 struct PulseStruct pp[EVR_MAX_PULSES];
+unsigned short map[0x40];
 
 int main (int argc, char **argv )
 {
@@ -105,6 +109,14 @@ int main (int argc, char **argv )
     } else if (r->size == 4) {
         val = __read_evr_register(fd, off);
         printf("%s (%d) -> 0x%08x (%d)\n", argv[2], off, val, val);
+    } else if (r->size == 0x40 || r->size == 0x80) {
+        /* Must be an output map! */
+        if (__read_evr_region16(fd, off, map, r->size * sizeof(unsigned short))) {
+            printf("Cannot read %s?!?\n", r->name);
+            exit(0);
+        }
+        for (i = 0; i < r->size / sizeof(unsigned short); i++)
+            printf("%2d: %04x (%d)\n", i, (int) map[i], (int) map[i]);
     } else if (r->size == 0x1000) {
         /* Must be a MapRam! */
         if (r->offset & 0x40000000) {

@@ -212,7 +212,7 @@ int ev_open(struct inode *inode, struct file *filp)
                   pEr->Control |= be32_to_cpu(1 << C_EVR_CTRL_MASTER_ENABLE);
                   pEr->EvCntPresc = be32_to_cpu(1);
                   pEr->FracDiv = be32_to_cpu(CLOCK_119000_MHZ);
-                  for (j = 0; j < 12; j++) {
+                  for (j = 11; j >= 0; j--) {
                       if(form == EVR_FORM_PMC)
                           pEr->FPOutMap[j] = be16_to_cpu(j);
                       else if(form == EVR_FORM_CPCI || form == EVR_FORM_SLAC)
