@@ -1,6 +1,6 @@
 TOP = ..
 include $(TOP)/configure/CONFIG
-pwdDIRS := $(DIRS) mrfApi
+DIRS := $(DIRS) mrfApi
 DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard *src*))
 DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard *Src*))
 #DIRS := $(DIRS) $(filter-out $(DIRS), $(wildcard *db*))
