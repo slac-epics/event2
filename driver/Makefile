@@ -58,7 +58,7 @@ realclean clean:: modclean
 
 modules: modclean
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
-	cp evr_device.ko evr_device.ko.`uname -r`
+	cp evr_device.ko evr_device.ko.`uname -r`.`arch`
 
 modclean:
 	-rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions Module.* module*

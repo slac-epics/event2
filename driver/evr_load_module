@@ -1,9 +1,10 @@
 #!/bin/sh
 
 # Very bad things happen if we already have an EVR driver loaded.
+/sbin/rmmod evr_device
 /sbin/rmmod pci_mrfevr
 /sbin/rmmod pcie_evr
-/sbin/insmod /reg/g/pcds/package/epics/3.14/modules/event2/latest/driver/evr_device.ko.`uname -r` || exit 1
+/sbin/insmod /reg/g/pcds/package/epics/3.14/modules/event2/latest/driver/evr_device.ko.`uname -r`.`arch` || exit 1
 /sbin/modprobe pci_mrfevg || exit 1
 
 majors=$(awk "\$2==\"evr_device\" {print \$1}" /proc/devices)
