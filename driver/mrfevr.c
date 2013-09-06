@@ -224,6 +224,23 @@ static int pci_evr_probe(struct pci_dev *pcidev, const struct pci_device_id *dev
         ev_device->pEv = ioremap_nocache(evr_base_start,
 					 ev_device->lenEv);
       }
+
+    /* Check the firmware version, and abort if we can't deal with it! */
+    if (((struct MrfErRegs *)ev_device->pEv)->FPGAVersion == be32_to_cpu(BAD_EVR_FIRMWARE_REV)) {
+      printk(KERN_ALERT "Unsupported MRF EVR with firmware version 0x%08x, ignoring!\n",
+             BAD_EVR_FIRMWARE_REV);
+      kfree(ev_device->qmem);
+      /* Release memory regions for BAR0 and BAR2 */
+      iounmap(ev_device->pEv);
+      release_mem_region(ev_device->mrEv, ev_device->lenEv);
+      iounmap(ev_device->pLC);
+      release_mem_region(ev_device->mrLC, ev_device->lenLC);
+      pci_disable_device(pcidev);
+      cdev_del(&ev_device->cdev);
+      unregister_chrdev_region(MKDEV(ev_device->major, 0), DEVICE_MINOR_NUMBERS);
+      ev_device->mrLC = 0;
+      return -EIO;
+    }
   }
 
   /* Check the interrupt line */

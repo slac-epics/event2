@@ -37,6 +37,9 @@
 #define PDI_IS_SLAC(pdi) ((pdi)->vendor == PCI_VENDOR_ID_XILINX_PCIE && \
                           (pdi)->device == PCI_DEVICE_ID_XILINX_PCIE)
 
+/* This is the FPGAVersion of an old, RTEMS-only version of the firmware. */
+#define BAD_EVR_FIRMWARE_REV        0x0000F305
+
 #define MODULE_VENDOR_ID_NOCONF     PCI_VENDOR_ID_PLX
 #define MODULE_DEVICE_ID_NOCONF     PCI_DEVICE_ID_PLX_9030
 #define MODULE_SUBVENDOR_ID_NOCONF  0
