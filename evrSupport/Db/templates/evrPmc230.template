@@ -40,58 +40,58 @@ record(er, "$(DEV):CTRL")
 
 record(stringout, "$(DEV):FP4L")
 {
-  field(DESC, "$(FP4L)")
+  field(DESC, "$(FP4L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP4L)")
+  field(VAL,  "$(FP4L=)")
 }
 
 record(stringout, "$(DEV):FP5L")
 {
-  field(DESC, "$(FP5L)")
+  field(DESC, "$(FP5L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP5L)")
+  field(VAL,  "$(FP5L=)")
 }
 
 record(stringout, "$(DEV):FP6L")
 {
-  field(DESC, "$(FP6L)")
+  field(DESC, "$(FP6L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP6L)")
+  field(VAL,  "$(FP6L=)")
 }
 
 record(stringout, "$(DEV):FP7L")
 {
-  field(DESC, "$(FP7L)")
+  field(DESC, "$(FP7L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP7L)")
+  field(VAL,  "$(FP7L=)")
 }
 
 record(stringout, "$(DEV):FP8L")
 {
-  field(DESC, "$(FP8L)")
+  field(DESC, "$(FP8L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP8L)")
+  field(VAL,  "$(FP8L=)")
 }
 
 record(stringout, "$(DEV):FP9L")
 {
-  field(DESC, "$(FP9L)")
+  field(DESC, "$(FP9L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP9L)")
+  field(VAL,  "$(FP9L=)")
 }
 
 record(stringout, "$(DEV):FPAL")
 {
-  field(DESC, "$(FPAL)")
+  field(DESC, "$(FPAL=)")
   field(PINI, "YES")
-  field(VAL,  "$(FPAL)")
+  field(VAL,  "$(FPAL=)")
 }
 
 record(stringout, "$(DEV):FPBL")
 {
-  field(DESC, "$(FPBL)")
+  field(DESC, "$(FPBL=)")
   field(PINI, "YES")
-  field(VAL,  "$(FPBL)")
+  field(VAL,  "$(FPBL=)")
 }
 
 record(bi, "$(DEV):LINK")
