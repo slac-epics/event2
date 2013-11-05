@@ -20,8 +20,11 @@ DB += evrEventAll.db
 DB += evrPattern.db
 DB += evrPatternProc.db
 DB += evrPatternAll.db
+DB += evrDevInfo.db
 # LCLS templates
 DB += fiducial.db
+
+REQ += autosave_evrDevInfo.tpl-req
 
 include $(TOP)/configure/RULES
 #----------------------------------------
