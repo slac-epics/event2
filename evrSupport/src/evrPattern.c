@@ -690,6 +690,7 @@ static int evrTriggerProc(longSubRecord *psub)
     psub->j = find_trigger(pRec->dg9e, EVR_MAP_CHAN_9, pCard, psub->lj, &psub->v);
     psub->k = find_trigger(pRec->dgae, EVR_MAP_CHAN_10, pCard, psub->lk, &psub->w);
     psub->l = find_trigger(pRec->dgbe, EVR_MAP_CHAN_11, pCard, psub->ll, &psub->x);
+    psub->val++;
     return 0;
 }
 
