@@ -1,0 +1,255 @@
+# The SLAC EVR has 12 outputs.  Let's set this up to enable everything.
+#
+record(er, "$(DEV):CTRL")
+{
+  field(DESC, "$(DEV) Control")
+  field(DTYP, "MRF Event Receiver")
+  field(OUT,  "#C$(CARD) S0 @")
+  field(PINI, "YES")
+
+#Extended Delay Triggers
+  field(IP0E, "$(IP0E)")
+  field(DG0E, "$(DG0E)")
+  field(DG0W, "$(DG0W)")
+  field(DG0D, "$(DG0D)")
+  field(DG0C, "$(DG0C)")
+  field(DG0P, "$(DG0P)")
+
+  field(IP1E, "$(IP1E)")
+  field(DG1E, "$(DG1E)")
+  field(DG1W, "$(DG1W)")
+  field(DG1D, "$(DG1D)")
+  field(DG1C, "$(DG1C)")
+  field(DG1P, "$(DG1P)")
+
+  field(IP2E, "$(IP2E)")
+  field(DG2E, "$(DG2E)")
+  field(DG2W, "$(DG2W)")
+  field(DG2D, "$(DG2D)")
+  field(DG2C, "$(DG2C)")
+  field(DG2P, "$(DG2P)")
+
+  field(IP3E, "$(IP3E)")
+  field(DG3E, "$(DG3E)")
+  field(DG3W, "$(DG3W)")
+  field(DG3D, "$(DG3D)")
+  field(DG3C, "$(DG3C)")
+  field(DG3P, "$(DG3P)")
+
+  field(IP4E, "$(IP4E)")
+  field(DG4E, "$(DG4E)")
+  field(DG4W, "$(DG4W)")
+  field(DG4D, "$(DG4D)")
+  field(DG4C, "$(DG4C)")
+  field(DG4P, "$(DG4P)")
+
+  field(IP5E, "$(IP5E)")
+  field(DG5E, "$(DG5E)")
+  field(DG5W, "$(DG5W)")
+  field(DG5D, "$(DG5D)")
+  field(DG5C, "$(DG5C)")
+  field(DG5P, "$(DG5P)")
+
+  field(IP6E, "$(IP6E)")
+  field(DG6E, "$(DG6E)")
+  field(DG6W, "$(DG6W)")
+  field(DG6D, "$(DG6D)")
+  field(DG6C, "$(DG6C)")
+  field(DG6P, "$(DG6P)")
+
+  field(IP7E, "$(IP7E)")
+  field(DG7E, "$(DG7E)")
+  field(DG7W, "$(DG7W)")
+  field(DG7D, "$(DG7D)")
+  field(DG7C, "$(DG7C)")
+  field(DG7P, "$(DG7P)")
+
+  field(IP8E, "$(IP8E)")
+  field(DG8E, "$(DG8E)")
+  field(DG8W, "$(DG8W)")
+  field(DG8D, "$(DG8D)")
+  field(DG8C, "$(DG8C)")
+  field(DG8P, "$(DG8P)")
+
+  field(IP9E, "$(IP9E)")
+  field(DG9E, "$(DG9E)")
+  field(DG9W, "$(DG9W)")
+  field(DG9D, "$(DG9D)")
+  field(DG9C, "$(DG9C)")
+  field(DG9P, "$(DG9P)")
+
+  field(IPAE, "$(IPAE)")
+  field(DGAE, "$(DGAE)")
+  field(DGAW, "$(DGAW)")
+  field(DGAD, "$(DGAD)")
+  field(DGAC, "$(DGAC)")
+  field(DGAP, "$(DGAP)")
+
+  field(IPBE, "$(IPBE)")
+  field(DGBE, "$(DGBE)")
+  field(DGBW, "$(DGBW)")
+  field(DGBD, "$(DGBD)")
+  field(DGBC, "$(DGBC)")
+  field(DGBP, "$(DGBP)")
+
+  field(FLNK, "$(EVRFLNK)")
+}
+
+record(bi, "$(DEV):LINK")
+{
+  field(DESC, "$(DEV) LnkSt")
+  field(DTYP, "MRF Event Receiver")
+  field(INP,  "#C$(CARD) S0 @")
+  field(PINI, "YES")
+  field(SCAN, "1 second")
+  field(ZSV, "MAJOR")
+  field(ZNAM, "OFF")
+  field(ONAM, "ON")
+}
+
+record(calc, "$(DEV):_CALC_STATUS")
+{
+  field(DESC, "Calc evr Status")
+  field(CALC, "L=0?0:2")
+  field(INPL, "$(DEV):LINK CPP MS")
+  field(FLNK, "$(DEV):STATUS PP MS")
+}
+
+record(mbbi, "$(DEV):STATUS")
+{
+  field(DESC, "evr Status")
+  field(INP, "$(DEV):_CALC_STATUS NPP MS")
+  field(ZRVL, "0")
+  field(ZRST, "FAIL")
+  field(ZRSV, "MAJOR")
+  field(ONVL, "1")
+  field(ONST, "OFF")
+  field(ONSV, "MINOR")
+  field(TWVL, "2")
+  field(TWST, "ON")
+  field(TWSV, "NO_ALARM")
+  field(UNSV, "INVALID")
+}
+
+record(stringout, "$(DEV):FP0L")
+{
+  field(DESC, "$(FP0L)")
+  field(PINI, "YES")
+  field(VAL,  "$(FP0L)")
+}
+
+record(stringout, "$(DEV):FP1L")
+{
+  field(DESC, "$(FP1L)")
+  field(PINI, "YES")
+  field(VAL,  "$(FP1L)")
+}
+
+record(stringout, "$(DEV):FP2L")
+{
+  field(DESC, "$(FP2L)")
+  field(PINI, "YES")
+  field(VAL,  "$(FP2L)")
+}
+
+record(stringout, "$(DEV):FP3L")
+{
+  field(DESC, "$(FP3L)")
+  field(PINI, "YES")
+  field(VAL,  "$(FP3L)")
+}
+
+record(stringout, "$(DEV):FP4L")
+{
+  field(DESC, "$(FP4L)")
+  field(PINI, "YES")
+  field(VAL,  "$(FP4L)")
+}
+
+record(stringout, "$(DEV):FP5L")
+{
+  field(DESC, "$(FP5L)")
+  field(PINI, "YES")
+  field(VAL,  "$(FP5L)")
+}
+
+record(stringout, "$(DEV):FP6L")
+{
+  field(DESC, "$(FP6L)")
+  field(PINI, "YES")
+  field(VAL,  "$(FP6L)")
+}
+
+record(stringout, "$(DEV):FP7L")
+{
+  field(DESC, "$(FP7L)")
+  field(PINI, "YES")
+  field(VAL,  "$(FP7L)")
+}
+
+record(stringout, "$(DEV):FP8L")
+{
+  field(DESC, "$(FP8L)")
+  field(PINI, "YES")
+  field(VAL,  "$(FP8L)")
+}
+
+record(stringout, "$(DEV):FP9L")
+{
+  field(DESC, "$(FP9L)")
+  field(PINI, "YES")
+  field(VAL,  "$(FP9L)")
+}
+
+record(stringout, "$(DEV):FPAL")
+{
+  field(DESC, "$(FPAL)")
+  field(PINI, "YES")
+  field(VAL,  "$(FPAL)")
+}
+
+record(stringout, "$(DEV):FPBL")
+{
+  field(DESC, "$(FPBL)")
+  field(PINI, "YES")
+  field(VAL,  "$(FPBL)")
+}
+
+record(ai, "$(DEV):LINKERRCNT")
+{
+  field(DESC, "$(DEV) Link Errs")
+  field(INP,  "$(DEV):CTRL.TAXI MS")
+  field(SCAN, "2 second")
+}
+
+record(calc, "$(DEV):LINKERR")
+{
+  field(DESC, "EVR Recent Link Errors")
+  field(INPA, "$(DEV):LINKERRCNT MS")
+  field(INPB, "$(DEV):LINKERR.LA")
+  field(SCAN, "2 second")
+  field(CALC, "A<B?A:A-B")
+  field(HIHI, "2")
+  field(HIGH, "1")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+}
+
+record(bo, "$(DEV):LINKERRRST")
+{
+  field(DESC, "EVR Err Count Reset")
+  field(OUT,  "$(DEV):CTRL.RXVR PP")
+  field(PINI, "YES")
+  field(DOL,  "1")
+  field(OMSL, "closed_loop")
+  field(ZNAM, "NoReset")
+  field(ONAM, "Reset")
+  field(FLNK, "$(DEV):LINKERRRSTTOD")
+}
+
+record(stringin, "$(DEV):LINKERRRSTTOD")
+{
+  field(DESC, "EVR Err Count Reset Time")
+  field(DTYP, "Soft Timestamp")
+  field(INP,  "@%m/%d/%y %H:%M:%S")
+}

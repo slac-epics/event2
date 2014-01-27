@@ -1,0 +1,2 @@
+$(BASE):_INFO.DESC
+$(BASE):_INFO.VAL

@@ -1,0 +1,14 @@
+The longSub record value fields a-z are unsigned long, *not*
+EpicsUInt32.
+
+This produces a problem in evrPatternProc, when we pass in a pointer
+to the "d" field to evrTimeGetFromPipeline and expect it to be treated
+as an evrModifier_ta, which is an array of 6 EpicsUInt32.
+
+In the actual pattern, evrMessagePattern_ts, the modifier_a field *is*
+an array of epicsUInt32.  The right thing seems to happen in
+evrTimeGetFromPipeline though, where these will be expanded.
+
+We have the same issue with evrMessageCounts and
+evrMessageCountsFiducial, so all of these have been changed to
+unsigned long as well.

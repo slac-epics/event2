@@ -1,0 +1,10 @@
+#
+# Defines coming in: BASE, EVR, TRIG, NAME.
+#
+
+record(stringout, "$(BASE):_INFO")
+{
+  field(DESC, "$(NAME)")
+  field(PINI, "YES")
+  field(VAL,  "$(EVR):$(TRIG)")
+}

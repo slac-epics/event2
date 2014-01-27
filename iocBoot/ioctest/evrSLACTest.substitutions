@@ -1,0 +1,119 @@
+#
+# Event Substitutions file for IPIMB IOC
+# Set event specific variations here.
+# Set EVR and IOC in dbLoadRecords()
+# Example:
+# dbLoadRecords( "db/evr-ipimb.db", "IOC=TST:R06:IOC:19,EVR=AMO:R06:EVR:19" )
+#
+file evrSLAC.template
+{
+#		Device	Card EVR_Change_FLNK
+#			FP*L		Trigger name
+#			DG*E		{Enabled|Disabled}
+#			DG*P		{Normal|Inverted}
+#			DG*W		{Width}
+#			DG*D		{Delay}
+#			DG*C		{ScaleFactor}
+	pattern
+	{	DEV,	CARD, EVRFLNK,
+		FP0L,	DG0E,      IP0E,	         DG0P,		DG0W,	DG0D,	DG0C,
+		FP1L,	DG1E,      IP1E,	         DG1P,		DG1W,	DG1D,	DG1C,
+		FP2L,	DG2E,      IP2E,	         DG2P,		DG2W,	DG2D,	DG2C,
+		FP3L,	DG3E,      IP3E,	         DG3P,		DG3W,	DG3D,	DG3C,
+		FP4L,	DG4E,      IP4E,	         DG4P,		DG4W,	DG4D,	DG4C,
+		FP5L,	DG5E,      IP5E,	         DG5P,		DG5W,	DG5D,	DG5C,
+		FP6L,	DG6E,      IP6E,	         DG6P,		DG6W,	DG6D,	DG6C,
+		FP7L,	DG7E,      IP7E,	         DG7P,		DG7W,	DG7D,	DG7C,
+		FP8L,	DG8E,      IP8E,	         DG8P,		DG8W,	DG8D,	DG8C,
+		FP9L,	DG9E,      IP9E,	         DG9P,		DG9W,	DG9D,	DG9C,
+		FPAL,	DGAE,      IPAE,	         DGAP,		DGAW,	DGAD,	DGAC,
+		FPBL,	DGBE,      IPBE,	         DGBP,		DGBW,	DGBD,	DGBC,
+	}
+
+# The descriptions will be set in st.cmd.
+	{	$(EVR),	0, "$(EVR):Triggers",
+		"",	Disabled,  "\$(IP0E=Disabled)",  Normal,	10,	650,	119,
+		"",	Disabled,  "\$(IP1E=Disabled)",  Normal,	10,	650,	119,
+		"",	Disabled,  "\$(IP2E=Disabled)",  Normal,	10,	650,	119,
+		"",	Disabled,  "\$(IP3E=Disabled)",  Normal,	10,	650,	119,
+		"",	Disabled,  "\$(IP4E=Disabled)",  Normal,	10,	650,	119,
+		"",	Disabled,  "\$(IP5E=Disabled)",  Normal,	10,	650,	119,
+		"",	Disabled,  "\$(IP6E=Disabled)",  Normal,	10,	650,	119,
+		"",	Disabled,  "\$(IP7E=Disabled)",  Normal,	10,	650,	119,
+		"",	Disabled,  "\$(IP8E=Disabled)",  Normal,	10,	650,	119,
+		"",	Disabled,  "\$(IP9E=Disabled)",  Normal,	10,	650,	119,
+		"",	Disabled,  "\$(IPAE=Disabled)",  Normal,	10,	650,	119,
+		"",	Disabled,  "\$(IPBE=Disabled)",  Normal,	10,	650,	119,
+	} 
+}
+
+
+#	DEV	Name of EVR
+#	CARD	EVR card number starting at 0 (matches card number in ErConfigure).
+#	NAME	EVENT1 to EVENT14 - instantiate all 14 records even if you only use a few events.
+#	ID	Event code number.  Must match an event code in evgTest.substitutions.
+#	P0 to P2 - trigger state for channels 0 to 2
+#		(0 = disabled for the event code, 1 = enabled for the event code)
+#	IRQ	Controls whether an IRQ happens when this event code occurs.
+#		(0 = no IRQ, 1 = IRQ)
+#		Must be set to 1 if you want event record processing using the event code.
+file evrPmcEvent.template
+{
+#	  Device    Card  <----------------------------  Event -------------------------->       
+	pattern
+	{ DEV,		CARD,	NAME,    ID,  P0,P1,P2,IRQ, LNAME,         EVRFLNK }
+# UNIQ UP900 camera does not support triggers faster than 15Hz
+#	{ $(EVR),	0,	EVENT1,	 140,  0, 0, 0, 1, "Beam Full",    "$(EVR):Triggers" }
+#	{ $(EVR),	0,	EVENT2,	 141,  0, 0, 0, 0, "Beam & 60Hz",  "$(EVR):Triggers" }
+#	{ $(EVR),	0,	EVENT3,	 142,  1, 1, 1, 1, "Beam & 30Hz",  "$(EVR):Triggers" }
+#	{ $(EVR),	0,	EVENT8,	 40,   0, 0, 0, 0, "120Hz",        "$(EVR):Triggers" }
+#	{ $(EVR),	0,	EVENT9,	 41,   0, 0, 0, 0, "60Hz",         "$(EVR):Triggers" }
+#	{ $(EVR),	0,	EVENT10, 42,   0, 0, 0, 0, "30Hz",         "$(EVR):Triggers" }
+	{ $(EVR),	0,	EVENT1,	 143,  0, 0, 0, 0, "Beam & 10Hz",  "$(EVR):Triggers" }
+	{ $(EVR),	0,	EVENT2,	 144,  0, 0, 0, 0, "Beam & 5Hz",   "$(EVR):Triggers" }
+	{ $(EVR),	0,	EVENT3,	 145,  0, 0, 0, 0, "Beam & 1Hz",   "$(EVR):Triggers" }
+	{ $(EVR),	0,	EVENT4,	 146,  0, 0, 0, 0, "Beam & 0.5Hz", "$(EVR):Triggers" }
+	{ $(EVR),	0,	EVENT5,  43,   0, 0, 0, 0, "10Hz",         "$(EVR):Triggers" }
+	{ $(EVR),	0,	EVENT6,  44,   0, 0, 0, 0, "5Hz",          "$(EVR):Triggers" }
+	{ $(EVR),	0,	EVENT7,  45,   0, 0, 0, 0, "1Hz",          "$(EVR):Triggers" }
+	{ $(EVR),	0,	EVENT8,  46,   0, 0, 0, 0, "0.5Hz",        "$(EVR):Triggers" }
+ 	{ $(EVR),	0,	EVENT9,  13,   0, 0, 0, 0, "TS1 10Hz",     "$(EVR):Triggers" }
+ 	{ $(EVR),	0,	EVENT10, 14,   0, 0, 0, 0, "TS1 5Hz",      "$(EVR):Triggers" }
+ 	{ $(EVR),	0,	EVENT11, 15,   0, 0, 0, 0, "TS1 1Hz",      "$(EVR):Triggers" }
+	{ $(EVR),	0,	EVENT12, 16,   0, 0, 0, 0, "TS1 0.5Hz",    "$(EVR):Triggers" }
+ 	{ $(EVR),	0,	EVENT13,150,   0, 0, 0, 0, "Burst",        "$(EVR):Triggers" }
+# 	{ $(EVR),	0,	EVENT14,201,   0, 0, 0, 0, "Modulo 36",    "$(EVR):Triggers" }
+ 	{ $(EVR),	0,	EVENT14,140,   0, 0, 0, 0, "Beam Full",    "$(EVR):Triggers" }
+}
+
+# For fiducial support
+file fiducial.db
+{
+	{
+		IOC="$(IOC)",
+		DEV="$(EVR)",
+		EVRFLNK="$(EVR):Triggers"
+		CARD="0"
+	}
+}
+
+#==============================================================================
+#
+#         evrEventAll.db - instantiates records for each event code.
+#         Associated display is evrEventDiags.edl.
+#       DEVICE  Name of the IOC, IOC:<loca>:<unit>
+#
+#==============================================================================
+# Do we need this? Yes, otherwise we don't get timestamps!
+file evrEventAll.db
+{
+	{   DEVICE=$(EVR), EVRFLNK="$(EVR):Triggers"   }
+}
+
+#
+# This is the record that tells us when the EVR has changed!
+#
+file evrTrigger.db
+{
+	{ EVR="$(EVR)", CARD="0", TU1="", TU2="", TU3="", TU4="" }
+}

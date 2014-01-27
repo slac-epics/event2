@@ -1,0 +1,42 @@
+This is MRF's pci_mrfev-1.0.2, with extra code to support the SLAC EVR
+and shared access.
+
+Both types of EVRs now have *4* minor devices.  The first two allow
+MRF EVR programming and are unused by the SLAC EVR.  The third is
+the usual register map used by the event module.  The fourth is
+just data buffer and event queues for sharing the EVR.
+
+The driver allows multiple opens in either mode, but not simultaneous
+opens in both modes.  (In EVR mode, interrupt handling is left to user
+space, but in shared EVR mode, the interrupt handling is done in the
+kernel and the results are reported to user space.)
+
+The queue structure mapped in by the shared device looks like:
+	struct FIFOEvent {
+	  u32 TimestampHigh;
+	  u32 TimestampLow;
+	  u32 EventCode;
+	};
+	
+	struct DBufInfo {
+	  char data[2048];
+	  u32  status;
+	};
+	
+	/* These must be powers of two!!! */
+	#define MAX_EVR_EVTQ 1024
+	#define MAX_EVR_DBQ     4
+	struct EvrQueues {
+	  struct FIFOEvent evtq[MAX_EVR_EVTQ];
+	  struct DBufInfo  dbq[MAX_EVR_DBQ];
+	  long long ewp;
+	  long long dwp;
+	  int fifofull;
+	};
+--------------------------------------------------------------
+This directory should probably be changed to writable after
+installation, and the symbolic link for the latest version,
+/reg/g/pcds/package/epics/3.14/modules/event2/latest, needs
+to be updated.  Then, for each kernel needed, you can just
+run "make modules" here.  evr_load_module is the load script.
+
