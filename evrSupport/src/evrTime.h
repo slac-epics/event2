@@ -114,7 +114,7 @@ extern int bsa_debug_mask;
 
 /* For modifier array */
 #define MAX_EVR_MODIFIER  6
-typedef unsigned long evrModifier_ta[MAX_EVR_MODIFIER];
+typedef epicsUInt32 evrModifier_ta[MAX_EVR_MODIFIER];
   
 /* Event codes - see mrfCommon.h for reserved internal event codes      */
 #define EVENT_FIDUCIAL          1        /* Fiducial event code         */
@@ -133,10 +133,10 @@ int evrTimeRegister       (FIDUCIALFUNCTION fiducialFunc,
 int evrTimeGetFromPipeline(epicsTimeStamp  *epicsTime_ps,
                            evrTimeId_te     id,
                            evrModifier_ta   modifier_a, 
-                           unsigned long   *patternStatus_p,
-                           unsigned long   *edefAvgDoneMask_p,
-                           unsigned long   *edefMinorMask_p,
-                           unsigned long   *edefMajorMask_p);
+                           epicsUInt32   *	patternStatus_p,
+                           epicsUInt32   *	edefAvgDoneMask_p,
+                           epicsUInt32   *	edefMinorMask_p,
+                           epicsUInt32   *	edefMajorMask_p);
 #if 0
 int evrTimeGetFromEdef    (unsigned int     edefIdx,
                            epicsTimeStamp  *edefTime_ps,

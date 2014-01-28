@@ -5,21 +5,15 @@ include $(TOP)/RELEASE_SITE
 # ===============================================================
 # Define the location and version of EPICS base
 # ===============================================================
-BASE_MODULE_VERSION=R3.14.9-0.3.0
-#
-# NOTE: Please do any development for R3.14.12-0.4.0 or newer
-# under $REPO/trunk/pcds/epics/modules/event/current
-#
+BASE_MODULE_VERSION=R3.14.12-0.4.0
 EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 
 # ===============================================================
 # Define the version(s) of any other needed modules 
 # ===============================================================
 # Example: IPAC_MODULE_VERSION=R2.8.4-0.2.0
-GENERALTIME_MODULE_VERSION=R1.2.2.2-1.1.0
-AUTOSAVE_MODULE_VERSION=R4.2.1.2-1.2.0
-MISCUTILS_MODULE_VERSION=R1.0.2.1-1.0.0
-GENSUB_MODULE_VERSION=R1.6.1.3-3.14.9
+MISCUTILS_MODULE_VERSION=R2.2.2-0.4.0
+GENSUB_MODULE_VERSION=R1.6.1.2-2.4.0
 
 # ============================================================
 # External Support module path definitions
@@ -35,7 +29,5 @@ GENSUB_MODULE_VERSION=R1.6.1.3-3.14.9
 # If your build fails, look for these paths in your build output
 # ============================================================
 # Example: IPAC=$(EPICS_MODULES)/ipac/$(IPAC_MODULE_VERSION)
-GENERALTIME=$(EPICS_MODULES)/generalTime/$(GENERALTIME_MODULE_VERSION)
-AUTOSAVE=$(EPICS_MODULES)/autosave/$(AUTOSAVE_MODULE_VERSION)
 MISCUTILS=$(EPICS_MODULES)/miscUtils/$(MISCUTILS_MODULE_VERSION)
 GENSUB=$(EPICS_MODULES)/genSub/$(GENSUB_MODULE_VERSION)

@@ -26,6 +26,7 @@
 #include <unistd.h>
 
 #define DEFINE_READ_EVR
+#define INLINE_READ_EVR static
 #include "erapi.h"
 
 extern void EvrIrqHandlerThreadCreate(void (**handler) (int, int), int);

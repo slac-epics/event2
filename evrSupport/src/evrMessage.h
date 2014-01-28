@@ -108,20 +108,20 @@ int evrMessageEnd       (unsigned int  messageIdx);
 int evrMessageReport    (unsigned int  messageIdx, char *messageName_a,
                          int interest);
 int evrMessageCounts    (unsigned int  messageIdx,
-                         unsigned long *updateCount_p,
-                         unsigned long *updateCountRollover_p,
-                         unsigned long *overwriteCount_p,
-                         unsigned long *noDataCount_p,
-                         unsigned long *writeErrorCount_p,
-                         unsigned long *checkSumErrorCount_p,
-                         unsigned long *procTimeStartMin_p,
-                         unsigned long *procTimeStartMax_p,
-                         unsigned long *procTimeDeltaAvg_p,
-                         unsigned long *procTimeDeltaMax_p);
+                         epicsUInt32 *updateCount_p,
+                         epicsUInt32 *updateCountRollover_p,
+                         epicsUInt32 *overwriteCount_p,
+                         epicsUInt32 *noDataCount_p,
+                         epicsUInt32 *writeErrorCount_p,
+                         epicsUInt32 *checkSumErrorCount_p,
+                         epicsUInt32 *procTimeStartMin_p,
+                         epicsUInt32 *procTimeStartMax_p,
+                         epicsUInt32 *procTimeDeltaAvg_p,
+                         epicsUInt32 *procTimeDeltaMax_p);
 int evrMessageCountsFiducial(unsigned int messageIdx,
-                         unsigned long *procTimeDelay_p,
-                         unsigned long *procTimeDelayMin_p,
-                         unsigned long *procTimeDelayMax_p);
+                         epicsUInt32 *procTimeDelay_p,
+                         epicsUInt32 *procTimeDelayMin_p,
+                         epicsUInt32 *procTimeDelayMax_p);
 int evrMessageCountReset   (unsigned int messageIdx);
 int evrMessageCheckSumError(unsigned int messageIdx);
 int evrMessageNoDataError  (unsigned int messageIdx);

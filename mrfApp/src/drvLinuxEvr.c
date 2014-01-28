@@ -32,6 +32,8 @@
 #include <endian.h>
 #include <unistd.h>
 #include <byteswap.h>
+#define DEFINE_READ_EVR
+#define INLINE_READ_EVR static
 #include "erapi.h"
 
 #define DEVNODE_NAME_BASE	"/dev/er"

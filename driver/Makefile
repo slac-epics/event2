@@ -54,7 +54,7 @@ include $(TOP)/configure/RULES
 KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
 
-realclean clean:: modclean
+realclean clean: modclean
 
 modules: modclean
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules

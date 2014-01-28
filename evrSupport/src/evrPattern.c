@@ -364,7 +364,7 @@ static long evrPatternProc(longSubRecord *psub)
 
   psub->val = PATTERN_INVALID_TIMESTAMP;
   status = evrTimeGetFromPipeline(&currentTime, (evrTimeId_te)psub->z,
-                                  &psub->d, &psub->val,
+                                  (epicsUInt32 *)&psub->d, &psub->val,
                                   &psub->k,
                                   &psub->a, &psub->b);
   /* Parse out beamcode, timeslot, and pulse ID */
@@ -638,7 +638,7 @@ static int evrTriggerInit(longSubRecord *psub)
 }
 
 static int find_trigger(epicsEnum16 enable, int mask, ErCardStruct  *pCard, unsigned long last,
-                        unsigned long *gen)
+                        epicsUInt32 *gen)
 {
     int i, j = -1, result = 0;
 

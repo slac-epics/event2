@@ -12,7 +12,7 @@ USR_ARCHIVEFLAGS += -V
 
 # See RULES.copy for more information on these variables.
 COPY_ONLY_IF_NON_LOCAL=1
-COPY_SUBDIR=iocBoot/ioc-mec-imb02
+COPY_SUBDIR=iocBoot/ioctest
 COPY_FILES=st.cmd
 
 DB += evrTest.db evrSLACTest.db

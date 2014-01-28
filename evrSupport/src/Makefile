@@ -44,7 +44,6 @@ evrSupport_SRCS += bsa.c
 evrSupport_SRCS += longSubRecord.c
 evrSupport_SRCS += bsaRecord.c
 evrSupport_SRCS += drvEvr.c
-evrSupport_LIBS += generalTime
 evrSupport_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 #===========================

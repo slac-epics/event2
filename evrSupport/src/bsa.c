@@ -71,6 +71,7 @@
 #include "ellLib.h"           /* linked list    */
 #include "dbScan.h"           /* IOSCANPVT      */
 #include "alarm.h"            /* INVALID_ALARM  */
+#include "errlog.h"           /* errlogPrintf        */
 #include "evrTime.h"          /* evrTimeGetFromEdef        */
 #include "evrPattern.h"       /* EDEF_MAX                  */
 #include "bsa.h"              /* prototypes in this file   */

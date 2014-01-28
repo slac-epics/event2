@@ -103,7 +103,7 @@ static long init_record(psub,pass)
     long	status = 0;
     struct link *plink;
     int i;
-    unsigned long  *pvalue;
+    epicsUInt32  *pvalue;
 
     if (pass==0) return(0);
 
@@ -315,8 +315,8 @@ static void monitor(psub)
 {
 	unsigned short	monitor_mask;
 	unsigned long   delta;
-	unsigned long   *pnew;
-	unsigned long   *pprev;
+	epicsUInt32   *pnew;
+	epicsUInt32   *pprev;
 	int             i;
 
         /* get previous stat and sevr  and new stat and sevr*/
@@ -361,7 +361,7 @@ static long fetch_values(psub)
 struct longSubRecord *psub;
 {
         struct link     *plink; /* structure of the link field  */
-        unsigned long   *pvalue;
+	epicsUInt32	*	pvalue;
         int             i;
 	long		status;
 

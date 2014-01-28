@@ -28,7 +28,6 @@ evrIoc_SRCS_DEFAULT += evrMain.cpp
 #evrIoc_SRCS += dbSubExample.c
 
 evrIoc_LIBS += genSub
-evrIoc_LIBS += generalTime
 evrIoc_LIBS += evrSupport
 evrIoc_LIBS += devMrfEr
 evrIoc_LIBS += drvMrf
