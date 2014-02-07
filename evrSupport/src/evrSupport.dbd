@@ -1,5 +1,7 @@
 include "evrTime.dbd"
 include "evrPattern.dbd"
+include "evrEvInvariantDelay.dbd"
+include "evrEvDesc.dbd"
 include "evrModifier5.dbd"
 include "bsa.dbd"
 #include "generalTimeNonVx.dbd"

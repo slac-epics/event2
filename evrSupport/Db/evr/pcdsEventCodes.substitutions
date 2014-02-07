@@ -1,0 +1,212 @@
+#==============================================================================
+#
+# Abs:  PCDS EVR Event Codes: Names, Delays, Count, Rate
+#
+# This file creates the records needed to support each of the
+# following event codes.   Include one instance below for each
+# event code that your EVR will need to support.
+#
+# This list was derived from LCLS group's evrEventAll.db along
+# with event codes needed for the event code sequencer support.
+#
+# Name: pcdsEventCodes.substitutions
+#
+#==============================================================================
+#
+
+#
+# This substitution creates records to support each event code we
+# might want to use.  In addition to providing a count, rate and timestamp
+# for each event code, it also keeps the description for the event code,
+# which is used by the driver to update the event control records
+# when the user updates the event code number assigned to a control.
+# Thus, when the user changes the event code on the event control
+# we can show the user the description for the new event code.
+file evrEventCode.template
+{
+#	 EVR-Name Code  Delay,      Alarm Limits        Description
+	pattern
+	{ DEV,  	ID,  DELY, HIHI,  HIGH,  LOW, LOLO, DESC     		}
+	{ $(DEV),  140, 11900, 120.5, 120.5, -1,   -1,  "Full Rate"    }
+	{ $(DEV),  141, 11901, 60.5,  60.5,  -1,   -1,  "Beam & 60Hz"  }
+	{ $(DEV),  142, 11902, 30.5,  30.5,  -1,   -1,  "Beam & 30Hz"  }
+	{ $(DEV),  143, 11903, 10.5,  10.5,  -1,   -1,  "Beam & 10Hz"  }
+	{ $(DEV),  144, 11904, 5.5,   5.5,   -1,   -1,  "Beam & 5Hz"   }
+	{ $(DEV),  145, 11905, 1.5,   1.5,   -1,   -1,  "Beam & 1Hz"   }
+	{ $(DEV),  146, 11906, 1.0,   1.0,   -1,   -1,  "Beam & 0.5Hz" }
+	{ $(DEV),  147, 11907, 120.5, 120.5, -1,   -1,  "Full N-1"    }
+	{ $(DEV),  148, 11908, 120.5, 120.5, -1,   -1,  "Full N-2"    }
+# LCLS Specialized Event Codes
+	{ $(DEV),  149, 11909, 120.5,  0.5,  -1,   -1,  "TCAV0"        }
+	{ $(DEV),  150, 11910, 120.5, 120.5, -1,   -1,  "Burst"        }
+	{ $(DEV),  151, 11911, 120.5, 120.5, -1,   -1,  "Klys Accel"   }
+	{ $(DEV),  152, 11912, 120.5, 120.5, -1,   -1,  "Klys Standby" }
+	{ $(DEV),  153, 11913, 120.5, 120.5, -1,   -1,  "Klys StdBy No TCAV0" }
+	{ $(DEV),  154, 11914, 10.5, 10.5,   -1,   -1,  "Klys Accel at 10Hz" }
+	{ $(DEV),  155, 11915, 120.5, 120.5, -1,   -1,  "Straight Ahead"     }
+	{ $(DEV),  156, 11916, 120.5,  0.5,  -1,   -1,  "TCAV3"        }
+	{ $(DEV),  157, 11917, 120.5, 120.5, -1,   -1,  "Klys StdBy No TCAV3" }
+	{ $(DEV),  158, 11918, 120.5, 120.5,  -1,  0.5,  "Pockels Cell" }
+	{ $(DEV),  159, 11919, 10.5, 10.5,   -1,   -1,  "Profile Monitors"   }
+	{ $(DEV),  160, 11920, 10.5, 10.5,   -1,   -1,  "TCAV3 OTR"    }
+	{ $(DEV),  161, 11921, 120.5, 120.5,  -1,   -1,  "LI25 Kicker (BXKIK)" }
+	{ $(DEV),  162, 11890, 120.5, 120.5,  -1,   -1,  "LTU  Kicker (BYKIK)" }
+	{ $(DEV),  163, 11922, 120.5, 120.5,  -1,   -1,  "A-line  Kicker" }
+	{ $(DEV),  164, 11923, 120.5, 120.5,  -1,   -1,  "Test Burst" }
+	{ $(DEV),  165, 11924, 120.5, 120.5,  -1,   -1,  "Spare" }
+# Beam-Independent Time Slot Triggers
+#   360Hz
+	{ $(DEV),    9, 12950, 360.5, 360.5, 359.5, 359.5, "360Hz"       }
+#   Modulo36 base event code
+	{ $(DEV),  201, 13000, 10.5, 10.5,  9.5,  9.5, "Modulo 36"    }
+#   120Hz
+	{ $(DEV),  10, 13001,  120.5, 120.5, 119.5, 119.5, "TS1 120Hz"    }
+	{ $(DEV),  20, 13002,  120.5, 120.5, 119.5, 119.5, "TS2 120Hz"    }
+	{ $(DEV),  30, 13003,  120.5, 120.5, 119.5, 119.5, "TS3 120Hz"    }
+	{ $(DEV),  40, 13004,  120.5, 120.5, 119.5, 119.5, "TS4 120Hz"    }
+	{ $(DEV),  50, 13005,  120.5, 120.5, 119.5, 119.5, "TS5 120Hz"    }
+	{ $(DEV),  60, 13006,  120.5, 120.5, 119.5, 119.5, "TS6 120Hz"    }
+#    60Hz
+	{ $(DEV),  11, 13011,  60.5, 60.5, 59.5, 59.5, "TS1 60Hz"     }
+	{ $(DEV),  21, 13012,  60.5, 60.5, 59.5, 59.5, "TS2 60Hz"     }
+	{ $(DEV),  31, 13013,  60.5, 60.5, 59.5, 59.5, "TS3 60Hz"     }
+	{ $(DEV),  41, 13014,  60.5, 60.5, 59.5, 59.5, "TS4 60Hz"     }
+	{ $(DEV),  51, 13015,  60.5, 60.5, 59.5, 59.5, "TS5 60Hz"     }
+	{ $(DEV),  61, 13016,  60.5, 60.5, 59.5, 59.5, "TS6 60Hz"     }
+#    30Hz
+	{ $(DEV),  12, 13021,  30.5, 30.5, 29.5, 29.5, "TS1 30Hz"     }
+	{ $(DEV),  22, 13022,  30.5, 30.5, 29.5, 29.5, "TS2 30Hz"     }
+	{ $(DEV),  32, 13023,  30.5, 30.5, 29.5, 29.5, "TS3 30Hz"     }
+	{ $(DEV),  42, 13024,  30.5, 30.5, 29.5, 29.5, "TS4 30Hz"     }
+	{ $(DEV),  52, 13025,  30.5, 30.5, 29.5, 29.5, "TS5 30Hz"     }
+	{ $(DEV),  62, 13026,  30.5, 30.5, 29.5, 29.5, "TS6 30Hz"     }
+#    10Hz
+	{ $(DEV),  13, 13031,  10.5, 10.5,  9.5,  9.5, "TS1 10Hz"     }
+	{ $(DEV),  23, 13032,  10.5, 10.5,  9.5,  9.5, "TS2 10Hz"     }
+	{ $(DEV),  33, 13033,  10.5, 10.5,  9.5,  9.5, "TS3 10Hz"     }
+	{ $(DEV),  43, 13034,  10.5, 10.5,  9.5,  9.5, "TS4 10Hz"     }
+	{ $(DEV),  53, 13035,  10.5, 10.5,  9.5,  9.5, "TS5 10Hz"     }
+	{ $(DEV),  63, 13036,  10.5, 10.5,  9.5,  9.5, "TS6 10Hz"     }
+#     5Hz
+	{ $(DEV),  14, 13041,  5.5,  5.5,  4.5,  4.5, "TS1 5Hz"      }
+	{ $(DEV),  24, 13042,  5.5,  5.5,  4.5,  4.5, "TS2 5Hz"      }
+	{ $(DEV),  34, 13043,  5.5,  5.5,  4.5,  4.5, "TS3 5Hz"      }
+	{ $(DEV),  44, 13044,  5.5,  5.5,  4.5,  4.5, "TS4 5Hz"      }
+	{ $(DEV),  54, 13045,  5.5,  5.5,  4.5,  4.5, "TS5 5Hz"      }
+	{ $(DEV),  64, 13046,  5.5,  5.5,  4.5,  4.5, "TS6 5Hz"      }
+#     1Hz
+	{ $(DEV),  15, 13051,  1.5,  1.5,  0.5,  0.5, "TS1 1Hz"      }
+	{ $(DEV),  25, 13052,  1.5,  1.5,  0.5,  0.5, "TS2 1Hz"      }
+	{ $(DEV),  35, 13053,  1.5,  1.5,  0.5,  0.5, "TS3 1Hz"      }
+	{ $(DEV),  45, 13054,  1.5,  1.5,  0.5,  0.5, "TS4 1Hz"      }
+	{ $(DEV),  55, 13055,  1.5,  1.5,  0.5,  0.5, "TS5 1Hz"      }
+	{ $(DEV),  65, 13056,  1.5,  1.5,  0.5,  0.5, "TS6 1Hz"      }
+#   0.5Hz
+	{ $(DEV),  16, 13061,  1.0,  1.0,  0.0,  0.0, "TS1 0.5Hz"    }
+	{ $(DEV),  26, 13062,  1.0,  1.0,  0.0,  0.0, "TS2 0.5Hz"    }
+	{ $(DEV),  36, 13063,  1.0,  1.0,  0.0,  0.0, "TS3 0.5Hz"    }
+	{ $(DEV),  46, 13064,  1.0,  1.0,  0.0,  0.0, "TS4 0.5Hz"    }
+	{ $(DEV),  56, 13065,  1.0,  1.0,  0.0,  0.0, "TS5 0.5Hz"    }
+	{ $(DEV),  66, 13066,  1.0,  1.0,  0.0,  0.0, "TS6 0.5Hz"    }
+}
+
+# We use a slightly different template for the event sequencer codes.
+# This template adds $(DEV):EventCode:$(ID):Name
+# which monitors $(EVG):1:NAME($ID) and uses it to update the local
+# event code descriptions for our sequencer events.
+# Thus, the EVG is the central place where all the experimental
+# EVR's can get event code descriptions, so we don't end up with
+# different descriptions for an event code on different EVR's.
+# We don't use this method for the standard event codes in the prior
+# section as we prefer the names above and don't allow the users
+# to change them.
+file evrEventCodeName.template
+{
+	pattern
+	{ DEV,  	ID,  DELY, HIHI,  HIGH,  LOW, LOLO, DESC     		}
+# Event Sequence Codes, Block 1
+	{ $(DEV),  67, 13067,  1.0,  1.0,  0.0,  0.0, "Available"		}
+	{ $(DEV),  68, 13068,  1.0,  1.0,  0.0,  0.0, "Available"		}
+	{ $(DEV),  69, 13069,  1.0,  1.0,  0.0,  0.0, "Available"		}
+	{ $(DEV),  70, 13070,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  71, 13071,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  72, 13072,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  73, 13073,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  74, 13074,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  75, 13075,  1.0,  1.0,  0.0,  0.0, "Available"		}
+	{ $(DEV),  76, 13076,  1.0,  1.0,  0.0,  0.0, "Available"		}
+	{ $(DEV),  77, 13077,  1.0,  1.0,  0.0,  0.0, "Available"		}
+	{ $(DEV),  78, 13078,  1.0,  1.0,  0.0,  0.0, "Available"		}
+	{ $(DEV),  79, 13079,  1.0,  1.0,  0.0,  0.0, "Available"		}
+	{ $(DEV),  80, 13080,  1.0,  1.0,  0.0,  0.0, "Available"		}
+	{ $(DEV),  81, 13081,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  82, 13082,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  83, 13083,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  84, 13084,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  85, 13085,  1.0,  1.0,  0.0,  0.0, "Available"		}
+	{ $(DEV),  86, 13086,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  87, 13087,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  88, 13088,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  89, 13089,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  90, 13090,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  91, 13091,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  92, 13092,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  93, 13093,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  94, 13094,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  95, 13095,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  96, 13096,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  97, 13097,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+	{ $(DEV),  98, 13098,  1.0,  1.0,  0.0,  0.0, "Available"    	}
+
+# Event Sequence Codes, Block 2
+	{ $(DEV), 167, 13167,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 168, 13168,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 169, 13169,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 170, 13170,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 171, 13171,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 172, 13172,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 173, 13173,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 174, 13174,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 175, 13175,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 176, 13176,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 177, 13177,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 178, 13178,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 179, 13179,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 180, 13180,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 181, 13181,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 182, 13182,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 183, 13183,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 184, 13184,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 185, 13185,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 186, 13186,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 187, 13187,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 188, 13188,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 189, 13189,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 190, 13190,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 191, 13191,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 192, 13192,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 193, 13193,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 194, 13194,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 195, 13195,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 196, 13196,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 197, 13197,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 198, 13198,  1.0,  1.0,  0.0,  0.0, "Available"    }
+
+# Event Sequence Codes, Block 3
+	{ $(DEV), 201, 13201,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 202, 13202,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 203, 13203,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 204, 13204,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 205, 13205,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 206, 13220,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 207, 13207,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 208, 13208,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 209, 13209,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 210, 13210,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 211, 13211,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 212, 13212,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 213, 13213,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 214, 13214,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 215, 13215,  1.0,  1.0,  0.0,  0.0, "Available"    }
+	{ $(DEV), 216, 13216,  1.0,  1.0,  0.0,  0.0, "Available"    }
+}

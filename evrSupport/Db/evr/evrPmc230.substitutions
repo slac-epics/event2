@@ -1,0 +1,117 @@
+#
+# Basic PMC EVR 230 Substitutions file
+#
+# This file also gets processed via msi to produce
+# $(EVENT)/db/evrPmc230.db
+# You can load that file directly from st.cmd if all
+# you need is a generic card 0 PMC EVR 230 instance.
+#
+# Example:
+# dbLoadRecords( "db/evrPmc230.db", "EVR=AMO:R06:EVR:19,CARD=0" )
+#
+# If you need to customize the initial starting database,
+# or create a non-std EVR database, this basic substitutions
+# file can be used as a starting point.
+
+# Need one instance of evrPmc230 for the card
+file evrPmc230.template
+{
+#       Device  Card
+#           FP*L        Trigger name
+#           DG*E        {Enabled|Disabled}
+#           DG*P        {Normal|Inverted}
+#           DG*W        {Width}
+#           DG*D        {Delay}
+#           DG*C        {ScaleFactor}
+    pattern
+    {   DEV,        EVRFLNK,
+        FP0L,       DG0E,       DG0P,   DG0W,   DG0D,   DG0C,   IP0E,
+        FP1L,       DG1E,       DG1P,   DG1W,   DG1D,   DG1C,   IP1E,
+        FP2L,       DG2E,       DG2P,   DG2W,   DG2D,   DG2C,   IP2E,
+        FP3L,       DG3E,       DG3P,   DG3W,   DG3D,   DG3C,   IP3E,
+    }
+
+    {   $(EVR),	    "$(EVR):Triggers",
+        "Spare",    Enabled,    Normal, 1000,   500,    119,    "\$(IP0E=Disabled)",
+        "Spare",    Enabled,    Normal, 1000,   750,    119,    "\$(IP1E=Disabled)",
+        "Spare",    Disabled,   Normal, 5000,   500,    119,    "\$(IP2E=Disabled)",
+        "Spare",    Disabled,   Normal, 5000,   500,    119,    "\$(IP3E=Disabled)",
+    } 
+}
+
+# Need three instances of evrDevTrig for 3 front panel outputs
+#
+# Required macros:
+#	EVR  - EVR PV prefix
+#	TRIG - Trigger PV prefix
+#	TCTL - Trigger control (enable) field, one of DG0E, DG1E, DG2E, OTP0, ..., OTPD
+#	TPOL - Trigger polarity field, one of DG0P, DG1P, DG2P, OT0P, ..., OTDP
+#	TWID - Trigger width field, one of DG0W, DG1W, DG2W, OT0W, ..., OTDW
+#	TDES - Trigger desired delay field, one of DG0D, DG1D, DG2D, OT0D, ..., OTDD
+#	TOUT - Trigger output field, one of OUT0, OUT1, OUT2, ..., OUTA, OUTB, OUTC, OUTD
+file evrDevTrig.db
+{
+	pattern
+	{	TRIG,			TCTL,	TPOL,	TWID,	TDES,	TOUT	}
+	{	$(EVR):TRIG0,	DG0E,	DG0P,	DG0W,	DG0D,	OUT0	}
+	{	$(EVR):TRIG1,	DG1E,	DG1P,	DG1W,	DG1D,	OUT1	}
+	{	$(EVR):TRIG2,	DG2E,	DG2P,	DG2W,	DG2D,	OUT2	}
+}
+
+
+#
+# Create 14 event controls
+#
+#   DEV     Name of EVR
+#   CARD    EVR card number starting at 0 (matches card number in ErConfigure).
+#   NAME    EVENT1 to EVENT14 - instantiate all 14 records even if you only use a few events.
+#   ID  Event code number.
+#   P0 to P2 - trigger state for channels 0 to 2
+#       (0 = disabled for the event code, 1 = enabled for the event code)
+#       Channels 0 to 2  are used for the front panel triggers.
+# 
+#   IRQ Controls whether an IRQ happens when this event code occurs.
+#       (0 = no IRQ, 1 = IRQ)
+#       Must be set to 1 if you want event record processing using the event code.
+#       Must be set to 1 if you have records with TSE fields set to the event code.
+file evrPmcEvent.template
+{
+#     Device    <----------------------------  Event -------------------------->       
+    pattern
+    { DEV,      NAME,    ID,  P0,P1,P2,IRQ, LNAME,			EVRFLNK           }
+    { $(EVR),   EVENT1, 140,  1, 1, 1, 1, "Beam Full",		"$(EVR):Triggers" }
+    { $(EVR),   EVENT2, 141,  0, 0, 0, 0, "Beam & 60Hz",	"$(EVR):Triggers" }
+    { $(EVR),   EVENT3, 142,  0, 0, 0, 0, "Beam & 30Hz",	"$(EVR):Triggers" }
+    { $(EVR),   EVENT4, 143,  0, 0, 0, 0, "Beam & 10Hz",	"$(EVR):Triggers" }
+    { $(EVR),   EVENT5, 144,  0, 0, 0, 0, "Beam & 5Hz",		"$(EVR):Triggers" }
+    { $(EVR),   EVENT6, 145,  0, 0, 0, 0, "Beam & 1Hz",		"$(EVR):Triggers" }
+    { $(EVR),   EVENT7, 146,  0, 0, 0, 0, "Beam & 0.5Hz",	"$(EVR):Triggers" }
+    { $(EVR),   EVENT8,  40,  0, 0, 0, 0, "120Hz",			"$(EVR):Triggers" }
+    { $(EVR),   EVENT9,  41,  0, 0, 0, 0, "60Hz",			"$(EVR):Triggers" }
+    { $(EVR),   EVENT10, 42,  0, 0, 0, 0, "30Hz",			"$(EVR):Triggers" }
+    { $(EVR),   EVENT11, 43,  0, 0, 0, 0, "10Hz",			"$(EVR):Triggers" }
+    { $(EVR),   EVENT12, 44,  0, 0, 0, 0, "5Hz",			"$(EVR):Triggers" }
+    { $(EVR),   EVENT13, 45,  0, 0, 0, 0, "1Hz",			"$(EVR):Triggers" }
+    { $(EVR),   EVENT14, 46,  0, 0, 0, 0, "0.5Hz",			"$(EVR):Triggers" }
+}
+
+# Need one instance of fiducialTimestamp.db for
+# pattern processing and fiduicial ID timestamping
+file fiducialTimestamp.db
+{
+    {
+        DEV=$(EVR),
+		EVRFLNK="$(EVR):Triggers",
+		LINK4="",
+		LINK5=""
+    }
+}
+
+#
+# Creates records to support the event sequencer
+# event codes for the LCLS accelerator and PCDS experiments
+file pcdsEventCodes.db
+{
+   { DEV="$(EVR)", EVG="EVNT:SYS0" }
+}
+

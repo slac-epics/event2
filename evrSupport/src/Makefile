@@ -28,6 +28,8 @@ DBDINC += longSubRecord
 DBDINC += bsaRecord
 
 DBD += evrSupport.dbd
+DBD += evrEvInvariantDelay.dbd
+DBD += evrEvDesc.dbd
 DBD += evrPattern.dbd
 DBD += evrModifier5.dbd
 DBD += evrTime.dbd
@@ -36,6 +38,8 @@ DBD += drvEvr.dbd
 
 LIBRARY_IOC = evrSupport
 
+evrSupport_SRCS += evrEvInvariantDelay.c
+evrSupport_SRCS += evrEvDesc.c
 evrSupport_SRCS += evrPattern.c
 evrSupport_SRCS += evrModifier5.c
 evrSupport_SRCS += evrTime.c

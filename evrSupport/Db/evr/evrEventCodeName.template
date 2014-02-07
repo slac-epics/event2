@@ -1,0 +1,63 @@
+#
+# Each EVR will need one instance of this template for
+# each event code it will support.
+# The event record should be I/O Intr so it runs only
+# when there's an interrupt for that event code.
+# The longSub Count record is passive, being processed
+# only when the event record sees an interrupt.
+
+record( event, "$(DEV):EventCode:$(ID)" )
+{
+  field( DESC,  "$(DESC)" )
+  field( DTYP,  "MRF Event Receiver" )
+  field( INP,   "#C$(CARD) S$(ID) @" )
+  field( PRIO,  "HIGH" )
+  field( SCAN,  "I/O Intr" )
+  field( FLNK,  "$(DEV):EventCode:$(ID):Count" )
+}
+
+# This record monitors the EVG event code name and
+# updates a copy in our EVR ErCardStruct for use
+# in updating the event control desc field when it's
+# event code changes. 
+record( stringout, "$(DEV):EventCode:$(ID):Name" )
+{
+  field( DESC,  "Follows EVG event name" )
+  field( SCAN,  "10 second" )
+  field( OMSL,  "closed_loop" )
+  field( DOL,   "$(EVG):1:NAME$(ID) CP NMS" )
+  field( DTYP,  "MRF Event Receiver" )
+  field( OUT,   "#C$(CARD) S$(ID) @" )
+  field( EVNT,  "$(ID)" )
+}
+
+record( longSub, "$(DEV):EventCode:$(ID):Count" )
+{
+  field( DESC, "Event Counter" )
+  field( SNAM, "evrTimeEvent" )
+  field( BRSV, "INVALID" )
+  field( INPA, "$(ID)" )
+}
+
+record( sub, "$(DEV):EventCode:$(ID):Rate" )
+{
+  field( DESC, "Event Rate" )
+  field( SNAM, "evrTimeRate" )
+  field( BRSV, "INVALID" )
+  field( SCAN, "Event" )
+  field( EVNT, "121" )
+  field( PRIO, "MEDIUM" )
+  field( INPD, "$(DELY)" )
+  field( INPE, "$(ID)" )
+  field( EGU,  "Hz" )
+  field( PREC, "1" )
+  field( HIHI, "$(HIHI)" )
+  field( HHSV, "MAJOR" )
+  field( HIGH, "$(HIGH)" )
+  field( HSV,  "MINOR" )
+  field( LOLO, "$(LOLO)" )
+  field( LLSV, "MAJOR" )
+  field( LOW,  "$(LOW)" )
+  field( LSV,  "MINOR" )
+  field( HOPR, "$(HIHI)" )
+}

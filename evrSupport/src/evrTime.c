@@ -1338,7 +1338,7 @@ epicsRegisterFunction(evrTimeRate);
 epicsRegisterFunction(evrTimeEvent);
 epicsRegisterFunction(evrTimeGetFiducial);
 
-void mcbtime(int arg1, int arg2)
+void evtdbg(int arg1, int arg2)
 {
     int doreset = 0;
     if (arg1 < 0) {

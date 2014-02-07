@@ -10,7 +10,5 @@ TARGETS = envPaths
 # Make sure these archive files are fully expanded
 USR_ARCHIVEFLAGS += -V
 
-DB += evrTest.db evrSLACTest.db
-
 include $(TOP)/configure/RULES
 include $(TOP)/configure/RULES.ioc-targets

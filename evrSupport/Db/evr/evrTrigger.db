@@ -10,8 +10,8 @@ record(longSub, "$(EVR):Triggers") {
 record(fanout, "$(EVR):TrigUpdate") {
   field(DESC, "$(EVR) Trig Fanout")
   field(PINI, "YES")
-  field(LNK1, "$(TU1)")
-  field(LNK2, "$(TU2)")
-  field(LNK3, "$(TU3)")
-  field(LNK4, "$(TU4)")
+  field(LNK1, "$(TU0)")
+  field(LNK2, "$(TU1)")
+  field(LNK3, "$(TU2)")
+  field(LNK4, "$(TU3)")
 }

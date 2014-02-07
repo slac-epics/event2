@@ -89,6 +89,8 @@
 #include <ereventRecord.h>      /* Event Receiver Event (EREVENT) record structure                */
 #include <eventRecord.h>        /* Standard EPICS Event Record structure                          */
 #include <biRecord.h>           /* Standard EPICS Event Record structure                          */
+#include <stringinRecord.h>		/* Standard EPICS stringin Record structure                      */
+#include <stringoutRecord.h>	/* Standard EPICS stringout Record structure                      */
 #include <caeventmask.h>
 #include <dbEvent.h>
 
@@ -636,6 +638,7 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
                     LoadRam = epicsTrue;
                 }/*end if previous event number was valid*/
 
+#if 0
                 if ((pRec->enm < EVR_NUM_EVENTS) && (pRec->enm > 0)) {
                     /*
                      * Update the record desc field with the description
@@ -645,6 +648,7 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
                              MAX_STRING_SIZE+1 );
                     db_post_events(pRec, &pRec->desc, DBE_VALUE);
                 }
+#endif
             }
 
             pRec->lenm = pRec->enm;
@@ -1023,6 +1027,338 @@ epicsStatus ErEpicsBiProcess (biRecord  *pRec)
     return (2);
 
 }/*end ErEpicsBiProcess()*/
+
+/**************************************************************************************************/
+/*                         EPICS stringout Record Device Support Routines                         */
+/**************************************************************************************************/
+/*  Prototype Definitions for EPICS stringout Record Device Support Functions                     */
+/**************************************************************************************************/
+
+LOCAL_RTN epicsStatus ErEpicsStringoutInitRec  (stringoutRecord*);
+LOCAL_RTN epicsStatus ErEpicsStringoutWrite    (stringoutRecord*);
+
+/**************************************************************************************************/
+/*  Device Support Entry Table (DSET)                                                             */
+/**************************************************************************************************/
+
+static ErDsetStruct devMrfErEpicsStringout =
+{
+    5,                                  /* Number of entries in the Device Support Entry Table    */
+    (DEVSUPFUN)NULL,                    /* -- No device report routine                            */
+    (DEVSUPFUN)NULL,                    /* -- No device initialization routine                    */
+    (DEVSUPFUN)ErEpicsStringoutInitRec,        /* Record initialization routine                          */
+    (DEVSUPFUN)NULL,                    /* -- No I/O interrupt information routine                */
+    (DEVSUPFUN)ErEpicsStringoutWrite    /* write_stringout routine                                */
+};
+
+epicsExportAddress (dset, devMrfErEpicsStringout);
+
+/**************************************************************************************************
+|* ErEpicsStringoutInitRec () -- EPICS stringout Record Initialization Routine
+|*-------------------------------------------------------------------------------------------------
+|*
+|* This routine is called from the EPICS iocInit() routine. It is called once for each EPICS
+|* stringout record in the database.
+|*
+|* Note that this is a regular EPICS stringout record and not an ER or EG event record.
+|* Currently the main use for these routines are to capture updates to the DBF_STRING
+|* records in the EVG which we use for the master copy of the event code names.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*   o Validate the record's card number by making sure it was configured in the startup script
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      pRec   = (stringoutRecord *) Pointer to the EPICS stringout record structure.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      0              = Record initialization was successful.
+|*      S_dev_badCard  = Specified card was invalid.
+|*
+\**************************************************************************************************/
+
+LOCAL_RTN
+epicsStatus ErEpicsStringoutInitRec (stringoutRecord *pRec)
+{
+   /*---------------------
+    * Local variables
+    */
+    int            Card;	/* Event Receiver card number for this record                     */
+    ErCardStruct  *pCard;   /* Pointer to the Event Receiver card structure for this record   */
+
+   /*---------------------
+    * Extract the Event Receiver card number (card) from the record's output link.
+    */
+    Card = pRec->out.value.vmeio.card;
+
+   /*---------------------
+    * Output a debug message if the debug flag is set.
+    */
+    if (ErDebug)
+        printf ("ErEpicsStringoutInitRec(%s) Card %d\n",
+                      pRec->name, Card);
+
+   /*---------------------
+    * Make sure the card number is valid
+    * by obtaining the address of its card structure
+    */
+    pRec->dpvt = NULL;
+    if (NULL == (pCard = ErGetCardStruct(Card))) {
+        recGblRecordError(S_dev_badCard, (void *)pRec, 
+                          "devMrfEr::ErEpicsStringoutInitRec() invalid card number in INP field");
+        return(S_dev_badCard);
+    }/*end if card number is invalid*/
+
+    pRec->dpvt = (void *)pCard; /* Save the address of the card structure */
+    return (0);
+
+}/*end ErEpicsStringoutInitRec()*/
+
+/**************************************************************************************************
+|* ErEpicsStringoutWrite () -- stringout write_string Routine
+|*-------------------------------------------------------------------------------------------------
+|*
+|* This routine is called from the "stringout" record's record processing routine.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*   o Make sure we have a valid Event Receiver Card Structure in the DPVT field.  If not,
+|*     set the record's PACT field so that we won't be processed again.
+|*   o Lock the card structure to keep other record processing routines from interferring with us.
+|*   o Capture updates to the event code names for later use
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      pRec   = (stringoutRecord *) Pointer to the "stringout" record structure.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      Always returns 2 (don't convert)
+|*
+\**************************************************************************************************/
+
+LOCAL_RTN
+epicsStatus ErEpicsStringoutWrite (stringoutRecord  *pRec)
+{
+    /*---------------------
+     * Local variables
+     */
+    ErCardStruct  *pCard;                       /* Pointer to Event Receiver card structure       */
+	int				Event;
+
+    /*---------------------
+     * Get the event number (signal)
+     */
+    Event = pRec->evnt;
+ 
+    /*---------------------
+     * Get the card structure.
+     * Abort if we don't have a valid card structure.
+     */
+    if (NULL == (pCard = (ErCardStruct *)pRec->dpvt)) {
+        pRec->pact = epicsTrue;
+        return (-1);
+    }/*end if did not have a valid card structure*/
+
+   /*---------------------
+    * Make sure the event number is in the correct range
+    */
+    if ((Event <= 0) || (Event > EVR_NUM_EVENTS)) {
+		/* User has entered an invalid event number
+		 * for this record.  Possibly a duplicate, in
+		 * which case the field is set to -1.
+		 * We don't set pact here as the user can fix this. */
+        return(-1);
+    }/*end if event number is invalid*/
+
+    /*---------------------
+     * Lock the event receiver card structure while we process this record
+     */
+    epicsMutexLock (pCard->CardLock);
+
+	/*
+	 * Keep a copy of the event code description for
+	 * later use when the ereventRecord handles changing event codes
+	 */
+	strncpy( &pCard->EventCodeDesc[Event][0], &pRec->val[0], MAX_STRING_SIZE+1 );
+
+    /*---------------------
+     * Unlock the Event Record card structure
+     */
+    epicsMutexUnlock (pCard->CardLock);
+
+    return (2);
+
+}/*end ErEpicsStringoutWrite()*/
+
+/**************************************************************************************************/
+/*                         EPICS stringin Record Device Support Routines                         */
+/**************************************************************************************************/
+/*  Prototype Definitions for EPICS stringin Record Device Support Functions                     */
+/**************************************************************************************************/
+
+LOCAL_RTN epicsStatus ErEpicsStringinInitRec(	stringinRecord	*	);
+LOCAL_RTN epicsStatus ErEpicsStringinRead(		stringinRecord	*	);
+
+/**************************************************************************************************/
+/*  Device Support Entry Table (DSET)                                                             */
+/**************************************************************************************************/
+
+static ErDsetStruct devMrfErEpicsStringin =
+{
+    5,                                  /* Number of entries in the Device Support Entry Table    */
+    (DEVSUPFUN)NULL,                    /* -- No device report routine                            */
+    (DEVSUPFUN)NULL,                    /* -- No device initialization routine                    */
+    (DEVSUPFUN)ErEpicsStringinInitRec,  /* Record initialization routine                          */
+    (DEVSUPFUN)NULL,                    /* -- No I/O interrupt information routine                */
+    (DEVSUPFUN)ErEpicsStringinRead		/* read_stringin routine                                  */
+};
+
+epicsExportAddress (dset, devMrfErEpicsStringin);
+
+/**************************************************************************************************
+|* ErEpicsStringinInitRec () -- EPICS stringin Record Initialization Routine
+|*-------------------------------------------------------------------------------------------------
+|*
+|* This routine is called from the EPICS iocInit() routine. It is called once for each EPICS
+|* stringin record in the database.
+|*
+|* Note that this is a regular EPICS stringin record and not an ER or EG event record.
+|* This record is useful for fetching the name of an event code
+|*
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*   o Validate the record's input link
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      pRec   = (stringinRecord *) Pointer to the EPICS stringin record structure.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      0              = Record initialization was successful.
+|*      S_dev_badCard  = Specified card was invalid.
+|*
+\**************************************************************************************************/
+
+LOCAL_RTN
+epicsStatus ErEpicsStringinInitRec (stringinRecord *pRec)
+{
+   /*---------------------
+    * Local variables
+    */
+    int            Card;	/* Event Receiver card number for this record                     */
+    ErCardStruct  *pCard;   /* Pointer to the Event Receiver card structure for this record   */
+
+   /*---------------------
+    * Extract the Event Receiver card number (card) from the record's input link.
+    */
+    Card = pRec->inp.value.vmeio.card;
+
+   /*---------------------
+    * Output a debug message if the debug flag is set.
+    */
+    if (ErDebug)
+        printf ("ErEpicsStringinInitRec(%s) Card %d\n",
+                      pRec->name, Card);
+
+   /*---------------------
+    * Make sure the card number is valid
+    * by obtaining the address of its card structure
+    */
+    pRec->dpvt = NULL;
+    if (NULL == (pCard = ErGetCardStruct(Card))) {
+        recGblRecordError(S_dev_badCard, (void *)pRec, 
+                          "devMrfEr::ErEpicsStringinInitRec() invalid card number in INP field");
+        return(S_dev_badCard);
+    }/*end if card number is invalid*/
+
+    pRec->dpvt = (void *)pCard; /* Save the address of the card structure */
+    return (0);
+
+}/*end ErEpicsStringinInitRec()*/
+
+/**************************************************************************************************
+|* ErEpicsStringinRead () -- stringin read_string Routine
+|*-------------------------------------------------------------------------------------------------
+|*
+|* This routine is called from the "stringin" record's record processing routine.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*   o Make sure we have a valid Event Receiver Card Structure in the DPVT field.  If not,
+|*     set the record's PACT field so that we won't be processed again.
+|*   o Lock the card structure to keep other record processing routines from interferring with us.
+|*   o Capture updates to the event code names for later use
+|*
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      pRec   = (stringinRecord *) Pointer to the "stringin" record structure.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      Always returns 2 (don't convert)
+|*
+\**************************************************************************************************/
+
+LOCAL_RTN
+epicsStatus ErEpicsStringinRead (stringinRecord  *pRec)
+{
+    /*---------------------
+     * Local variables
+     */
+    ErCardStruct  *pCard;                       /* Pointer to Event Receiver card structure       */
+	int				Event;
+
+    /*---------------------
+     * Get the event number (signal)
+     */
+    Event = pRec->evnt;
+ 
+    /*---------------------
+     * Get the card structure.
+     * Abort if we don't have a valid card structure.
+     */
+    if (NULL == (pCard = (ErCardStruct *)pRec->dpvt)) {
+        pRec->pact = epicsTrue;
+        return (-1);
+    }/*end if did not have a valid card structure*/
+
+   /*---------------------
+    * Make sure the event number is in the correct range
+    */
+    if ((Event <= 0) || (Event > EVR_NUM_EVENTS)) {
+		/* User has entered an invalid event number
+		 * for this record.  Possibly a duplicate, in
+		 * which case the field is set to -1.
+		 * We don't set pact here as the user can fix this. */
+        return(-1);
+    }/*end if event number is invalid*/
+
+    /*---------------------
+     * Lock the event receiver card structure while we process this record
+     */
+    epicsMutexLock (pCard->CardLock);
+
+	/*
+	 * Fetch the event code description
+	 */
+	strncpy( &pRec->val[0], &pCard->EventCodeDesc[Event][0], MAX_STRING_SIZE+1 );
+
+    /*---------------------
+     * Unlock the Event Record card structure
+     */
+    epicsMutexUnlock (pCard->CardLock);
+
+	if ( pRec->tpro )
+		printf( "ErEpicsStringinRead: %s updated to %s for EC %d\n",
+				pRec->name, pRec->val, pRec->evnt );
+
+    return (2);
+
+}/*end ErEpicsStringinRead()*/
 
 /**************************************************************************************************
 |* ErDevEventFunc () -- Device Support Layer Interrupt-Level Event Handling Routine

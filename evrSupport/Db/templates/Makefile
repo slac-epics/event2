@@ -14,7 +14,9 @@ include $(TOP)/configure/CONFIG
 # XTOD templates
 DB_INSTALLS += evrSLAC.template
 DB_INSTALLS += evrPmc230.template
+DB_INSTALLS += evrVme230.template
 DB_INSTALLS += evrPmcEvent.template
+DB_INSTALLS += evrVmeEvent.template
 DB_INSTALLS += evrEventCtrl.template
 
 #----------------------------------------------------

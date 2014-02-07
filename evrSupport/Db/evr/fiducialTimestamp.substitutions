@@ -1,0 +1,26 @@
+# This substitution file should be used by any IOC that need to use the 
+# EVR for basic time processing. It does not handle any triggering or
+# beam processing.
+# 	IOC=Name of the IOC
+#	CARD= EVR card #
+
+# 
+file evrPatternAll.db 
+{
+#	    Device        ,  SLC Pattern, EVR/Trigger     
+#	                                    Links       
+  pattern
+  { DEVICE,  LINK4,	  LINK5,	LINK6, 	        TREF   , TS1ST, TS2ND }
+  { $(DEV),  '$(LINK4=)', '$(LINK5=)',  '$(LINK6=)',   99882.4 ,   1  ,   4   }
+}
+
+file evrTrigger.db
+{
+	{
+		EVR = "$(DEV)",
+		TU0="\$(TU0=)",
+		TU1="\$(TU1=)",
+		TU2="\$(TU2=)",
+		TU3="\$(TU3=)",
+	}
+}
