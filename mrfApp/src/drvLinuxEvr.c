@@ -352,10 +352,13 @@ static int ErConfigure (
 	    printf( "ErConfigure: WARNING: Unknown firmware revision on PMC EVR!\n" );
 	    break;
 	case PMC_EVR_FIRMWARE_REV_SLAC1:
+	case PMC_EVR_FIRMWARE_REV_SLAC2:
 	case PMC_EVR_FIRMWARE_REV_LINUX1:
 	case PMC_EVR_FIRMWARE_REV_LINUX2:
 	case PMC_EVR_FIRMWARE_REV_LINUX3:
 	case PMC_EVR_FIRMWARE_REV_LINUX4:
+	case PMC_EVR_FIRMWARE_REV_LINUX5:
+	case PMC_EVR_FIRMWARE_REV_LINUX6:
 	    break;
 	case PMC_EVR_FIRMWARE_REV_VME1:
 	    fprintf ( stderr,

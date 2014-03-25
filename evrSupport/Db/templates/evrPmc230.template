@@ -15,27 +15,27 @@ record(er, "$(DEV):CTRL")
   field(PINI, "YES")
 #Extended Delay Triggers
   field(IP0E, "$(IP0E)")
-  field(DG0E, "$(DG0E)")
-  field(DG0W, "$(DG0W)")
-  field(DG0D, "$(DG0D)")
-  field(DG0C, "$(DG0C)")
-  field(DG0P, "$(DG0P)")
+  field(DG0E, "$(DG0E=Disabled)")
+  field(DG0W, "$(DG0W=1)")
+  field(DG0D, "$(DG0D=0)")
+  field(DG0C, "$(DG0C=119)")
+  field(DG0P, "$(DG0P=Normal)")
 
   field(IP1E, "$(IP1E)")
-  field(DG1E, "$(DG1E)")
-  field(DG1W, "$(DG1W)")
-  field(DG1D, "$(DG1D)")
-  field(DG1C, "$(DG1C)")
-  field(DG1P, "$(DG1P)")
+  field(DG1E, "$(DG1E=Disabled)")
+  field(DG1W, "$(DG1W=1)")
+  field(DG1D, "$(DG1D=0)")
+  field(DG1C, "$(DG1C=119)")
+  field(DG1P, "$(DG1P=Normal)")
 
   field(IP2E, "$(IP2E)")
-  field(DG2E, "$(DG2E)")
-  field(DG2W, "$(DG2W)")
-  field(DG2D, "$(DG2D)")
-  field(DG2C, "$(DG2C)")
-  field(DG2P, "$(DG2P)")
+  field(DG2E, "$(DG2E=Disabled)")
+  field(DG2W, "$(DG2W=1)")
+  field(DG2D, "$(DG2D=0)")
+  field(DG2C, "$(DG2C=119)")
+  field(DG2P, "$(DG2P=Normal)")
 
-  field(FLNK, "$(EVRFLNK)")
+  field(FLNK, "$(EVRFLNK=$(DEV):Triggers)")
 }
 
 record(stringout, "$(DEV):FP4L")
@@ -132,30 +132,30 @@ record(mbbi, "$(DEV):STATUS")
 
 record(stringout, "$(DEV):FP0L")
 {
-  field(DESC, "$(FP0L)")
+  field(DESC, "$(FP0L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP0L)")
+  field(VAL,  "$(FP0L=)")
 }
 
 record(stringout, "$(DEV):FP1L")
 {
-  field(DESC, "$(FP1L)")
+  field(DESC, "$(FP1L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP1L)")
+  field(VAL,  "$(FP1L=)")
 }
 
 record(stringout, "$(DEV):FP2L")
 {
-  field(DESC, "$(FP2L)")
+  field(DESC, "$(FP2L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP2L)")
+  field(VAL,  "$(FP2L=)")
 }
 
 record(stringout, "$(DEV):FP3L")
 {
-  field(DESC, "$(FP3L)")
+  field(DESC, "$(FP3L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP3L)")
+  field(VAL,  "$(FP3L=)")
 }
 
 record(ai, "$(DEV):LINKERRCNT")

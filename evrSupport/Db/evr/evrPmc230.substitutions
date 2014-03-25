@@ -79,20 +79,20 @@ file evrPmcEvent.template
 #     Device    <----------------------------  Event -------------------------->       
     pattern
     { DEV,      NAME,    ID,  P0,P1,P2,IRQ, LNAME,			EVRFLNK           }
-    { $(EVR),   EVENT1, 140,  1, 1, 1, 1, "Beam Full",		"$(EVR):Triggers" }
+    { $(EVR),   EVENT1, 140,  0, 0, 0, 0, "Beam Full",		"$(EVR):Triggers" }
     { $(EVR),   EVENT2, 141,  0, 0, 0, 0, "Beam & 60Hz",	"$(EVR):Triggers" }
     { $(EVR),   EVENT3, 142,  0, 0, 0, 0, "Beam & 30Hz",	"$(EVR):Triggers" }
     { $(EVR),   EVENT4, 143,  0, 0, 0, 0, "Beam & 10Hz",	"$(EVR):Triggers" }
     { $(EVR),   EVENT5, 144,  0, 0, 0, 0, "Beam & 5Hz",		"$(EVR):Triggers" }
     { $(EVR),   EVENT6, 145,  0, 0, 0, 0, "Beam & 1Hz",		"$(EVR):Triggers" }
     { $(EVR),   EVENT7, 146,  0, 0, 0, 0, "Beam & 0.5Hz",	"$(EVR):Triggers" }
-    { $(EVR),   EVENT8,  40,  0, 0, 0, 0, "120Hz",			"$(EVR):Triggers" }
-    { $(EVR),   EVENT9,  41,  0, 0, 0, 0, "60Hz",			"$(EVR):Triggers" }
-    { $(EVR),   EVENT10, 42,  0, 0, 0, 0, "30Hz",			"$(EVR):Triggers" }
-    { $(EVR),   EVENT11, 43,  0, 0, 0, 0, "10Hz",			"$(EVR):Triggers" }
-    { $(EVR),   EVENT12, 44,  0, 0, 0, 0, "5Hz",			"$(EVR):Triggers" }
-    { $(EVR),   EVENT13, 45,  0, 0, 0, 0, "1Hz",			"$(EVR):Triggers" }
-    { $(EVR),   EVENT14, 46,  0, 0, 0, 0, "0.5Hz",			"$(EVR):Triggers" }
+    { $(EVR),   EVENT8,  40,  0, 0, 0, 0, "120Hz",		"$(EVR):Triggers" }
+    { $(EVR),   EVENT9,  41,  0, 0, 0, 0, "60Hz",		"$(EVR):Triggers" }
+    { $(EVR),   EVENT10, 42,  0, 0, 0, 0, "30Hz",		"$(EVR):Triggers" }
+    { $(EVR),   EVENT11, 43,  0, 0, 0, 0, "10Hz",		"$(EVR):Triggers" }
+    { $(EVR),   EVENT12, 44,  0, 0, 0, 0, "5Hz",		"$(EVR):Triggers" }
+    { $(EVR),   EVENT13, 45,  0, 0, 0, 0, "1Hz",		"$(EVR):Triggers" }
+    { $(EVR),   EVENT14, 46,  0, 0, 0, 0, "0.5Hz",		"$(EVR):Triggers" }
 }
 
 # Need one instance of fiducialTimestamp.db for

@@ -87,9 +87,12 @@
 #define	PMC_EVR_FIRMWARE_REV_LINUX1	0x11000002
 #define	PMC_EVR_FIRMWARE_REV_LINUX2	0x11000003
 #define	PMC_EVR_FIRMWARE_REV_LINUX3	0x11000103
-#define PMC_EVR_FIRMWARE_REV_LINUX4     0x10000003
+#define PMC_EVR_FIRMWARE_REV_LINUX4	0x17000005
+#define PMC_EVR_FIRMWARE_REV_LINUX5	0x10000003
+#define	PMC_EVR_FIRMWARE_REV_LINUX6	0x11000303
 
 #define PMC_EVR_FIRMWARE_REV_SLAC1      0x1F000000
+#define PMC_EVR_FIRMWARE_REV_SLAC2	0x1FD00023
 
 /**************************************************************************************************/
 /*  Configuration Constants                                                                       */

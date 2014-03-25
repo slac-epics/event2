@@ -9,90 +9,90 @@ record(er, "$(DEV):CTRL")
 
 #Extended Delay Triggers
   field(IP0E, "$(IP0E)")
-  field(DG0E, "$(DG0E)")
-  field(DG0W, "$(DG0W)")
-  field(DG0D, "$(DG0D)")
-  field(DG0C, "$(DG0C)")
-  field(DG0P, "$(DG0P)")
+  field(DG0E, "$(DG0E=Disabled)")
+  field(DG0W, "$(DG0W=1)")
+  field(DG0D, "$(DG0D=0)")
+  field(DG0C, "$(DG0C=119)")
+  field(DG0P, "$(DG0P=Normal)")
 
   field(IP1E, "$(IP1E)")
-  field(DG1E, "$(DG1E)")
-  field(DG1W, "$(DG1W)")
-  field(DG1D, "$(DG1D)")
-  field(DG1C, "$(DG1C)")
-  field(DG1P, "$(DG1P)")
+  field(DG1E, "$(DG1E=Disabled)")
+  field(DG1W, "$(DG1W=1)")
+  field(DG1D, "$(DG1D=0)")
+  field(DG1C, "$(DG1C=119)")
+  field(DG1P, "$(DG1P=Normal)")
 
   field(IP2E, "$(IP2E)")
-  field(DG2E, "$(DG2E)")
-  field(DG2W, "$(DG2W)")
-  field(DG2D, "$(DG2D)")
-  field(DG2C, "$(DG2C)")
-  field(DG2P, "$(DG2P)")
+  field(DG2E, "$(DG2E=Disabled)")
+  field(DG2W, "$(DG2W=1)")
+  field(DG2D, "$(DG2D=0)")
+  field(DG2C, "$(DG2C=119)")
+  field(DG2P, "$(DG2P=Normal)")
 
   field(IP3E, "$(IP3E)")
-  field(DG3E, "$(DG3E)")
-  field(DG3W, "$(DG3W)")
-  field(DG3D, "$(DG3D)")
-  field(DG3C, "$(DG3C)")
-  field(DG3P, "$(DG3P)")
+  field(DG3E, "$(DG3E=Disabled)")
+  field(DG3W, "$(DG3W=1)")
+  field(DG3D, "$(DG3D=0)")
+  field(DG3C, "$(DG3C=119)")
+  field(DG3P, "$(DG3P=Normal)")
 
   field(IP4E, "$(IP4E)")
-  field(DG4E, "$(DG4E)")
-  field(DG4W, "$(DG4W)")
-  field(DG4D, "$(DG4D)")
-  field(DG4C, "$(DG4C)")
-  field(DG4P, "$(DG4P)")
+  field(DG4E, "$(DG4E=Disabled)")
+  field(DG4W, "$(DG4W=1)")
+  field(DG4D, "$(DG4D=0)")
+  field(DG4C, "$(DG4C=119)")
+  field(DG4P, "$(DG4P=Normal)")
 
   field(IP5E, "$(IP5E)")
-  field(DG5E, "$(DG5E)")
-  field(DG5W, "$(DG5W)")
-  field(DG5D, "$(DG5D)")
-  field(DG5C, "$(DG5C)")
-  field(DG5P, "$(DG5P)")
+  field(DG5E, "$(DG5E=Disabled)")
+  field(DG5W, "$(DG5W=1)")
+  field(DG5D, "$(DG5D=0)")
+  field(DG5C, "$(DG5C=119)")
+  field(DG5P, "$(DG5P=Normal)")
 
   field(IP6E, "$(IP6E)")
-  field(DG6E, "$(DG6E)")
-  field(DG6W, "$(DG6W)")
-  field(DG6D, "$(DG6D)")
-  field(DG6C, "$(DG6C)")
-  field(DG6P, "$(DG6P)")
+  field(DG6E, "$(DG6E=Disabled)")
+  field(DG6W, "$(DG6W=1)")
+  field(DG6D, "$(DG6D=0)")
+  field(DG6C, "$(DG6C=119)")
+  field(DG6P, "$(DG6P=Normal)")
 
   field(IP7E, "$(IP7E)")
-  field(DG7E, "$(DG7E)")
-  field(DG7W, "$(DG7W)")
-  field(DG7D, "$(DG7D)")
-  field(DG7C, "$(DG7C)")
-  field(DG7P, "$(DG7P)")
+  field(DG7E, "$(DG7E=Disabled)")
+  field(DG7W, "$(DG7W=1)")
+  field(DG7D, "$(DG7D=0)")
+  field(DG7C, "$(DG7C=119)")
+  field(DG7P, "$(DG7P=Normal)")
 
   field(IP8E, "$(IP8E)")
-  field(DG8E, "$(DG8E)")
-  field(DG8W, "$(DG8W)")
-  field(DG8D, "$(DG8D)")
-  field(DG8C, "$(DG8C)")
-  field(DG8P, "$(DG8P)")
+  field(DG8E, "$(DG8E=Disabled)")
+  field(DG8W, "$(DG8W=1)")
+  field(DG8D, "$(DG8D=0)")
+  field(DG8C, "$(DG8C=119)")
+  field(DG8P, "$(DG8P=Normal)")
 
   field(IP9E, "$(IP9E)")
-  field(DG9E, "$(DG9E)")
-  field(DG9W, "$(DG9W)")
-  field(DG9D, "$(DG9D)")
-  field(DG9C, "$(DG9C)")
-  field(DG9P, "$(DG9P)")
+  field(DG9E, "$(DG9E=Disabled)")
+  field(DG9W, "$(DG9W=1)")
+  field(DG9D, "$(DG9D=0)")
+  field(DG9C, "$(DG9C=119)")
+  field(DG9P, "$(DG9P=Normal)")
 
   field(IPAE, "$(IPAE)")
-  field(DGAE, "$(DGAE)")
-  field(DGAW, "$(DGAW)")
-  field(DGAD, "$(DGAD)")
-  field(DGAC, "$(DGAC)")
-  field(DGAP, "$(DGAP)")
+  field(DGAE, "$(DGAE=Disabled)")
+  field(DGAW, "$(DGAW=1)")
+  field(DGAD, "$(DGAD=0)")
+  field(DGAC, "$(DGAC=119)")
+  field(DGAP, "$(DGAP=Normal)")
 
   field(IPBE, "$(IPBE)")
-  field(DGBE, "$(DGBE)")
-  field(DGBW, "$(DGBW)")
-  field(DGBD, "$(DGBD)")
-  field(DGBC, "$(DGBC)")
-  field(DGBP, "$(DGBP)")
+  field(DGBE, "$(DGBE=Disabled)")
+  field(DGBW, "$(DGBW=1)")
+  field(DGBD, "$(DGBD=0)")
+  field(DGBC, "$(DGBC=119)")
+  field(DGBP, "$(DGBP=Normal)")
 
-  field(FLNK, "$(EVRFLNK)")
+  field(FLNK, "$(EVRFLNK=$(DEV):Triggers)")
 }
 
 record(bi, "$(DEV):LINK")
@@ -133,86 +133,86 @@ record(mbbi, "$(DEV):STATUS")
 
 record(stringout, "$(DEV):FP0L")
 {
-  field(DESC, "$(FP0L)")
+  field(DESC, "$(FP0L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP0L)")
+  field(VAL,  "$(FP0L=)")
 }
 
 record(stringout, "$(DEV):FP1L")
 {
-  field(DESC, "$(FP1L)")
+  field(DESC, "$(FP1L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP1L)")
+  field(VAL,  "$(FP1L=)")
 }
 
 record(stringout, "$(DEV):FP2L")
 {
-  field(DESC, "$(FP2L)")
+  field(DESC, "$(FP2L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP2L)")
+  field(VAL,  "$(FP2L=)")
 }
 
 record(stringout, "$(DEV):FP3L")
 {
-  field(DESC, "$(FP3L)")
+  field(DESC, "$(FP3L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP3L)")
+  field(VAL,  "$(FP3L=)")
 }
 
 record(stringout, "$(DEV):FP4L")
 {
-  field(DESC, "$(FP4L)")
+  field(DESC, "$(FP4L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP4L)")
+  field(VAL,  "$(FP4L=)")
 }
 
 record(stringout, "$(DEV):FP5L")
 {
-  field(DESC, "$(FP5L)")
+  field(DESC, "$(FP5L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP5L)")
+  field(VAL,  "$(FP5L=)")
 }
 
 record(stringout, "$(DEV):FP6L")
 {
-  field(DESC, "$(FP6L)")
+  field(DESC, "$(FP6L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP6L)")
+  field(VAL,  "$(FP6L=)")
 }
 
 record(stringout, "$(DEV):FP7L")
 {
-  field(DESC, "$(FP7L)")
+  field(DESC, "$(FP7L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP7L)")
+  field(VAL,  "$(FP7L=)")
 }
 
 record(stringout, "$(DEV):FP8L")
 {
-  field(DESC, "$(FP8L)")
+  field(DESC, "$(FP8L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP8L)")
+  field(VAL,  "$(FP8L=)")
 }
 
 record(stringout, "$(DEV):FP9L")
 {
-  field(DESC, "$(FP9L)")
+  field(DESC, "$(FP9L=)")
   field(PINI, "YES")
-  field(VAL,  "$(FP9L)")
+  field(VAL,  "$(FP9L=)")
 }
 
 record(stringout, "$(DEV):FPAL")
 {
-  field(DESC, "$(FPAL)")
+  field(DESC, "$(FPAL=)")
   field(PINI, "YES")
-  field(VAL,  "$(FPAL)")
+  field(VAL,  "$(FPAL=)")
 }
 
 record(stringout, "$(DEV):FPBL")
 {
-  field(DESC, "$(FPBL)")
+  field(DESC, "$(FPBL=)")
   field(PINI, "YES")
-  field(VAL,  "$(FPBL)")
+  field(VAL,  "$(FPBL=)")
 }
 
 record(ai, "$(DEV):LINKERRCNT")

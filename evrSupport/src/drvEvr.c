@@ -369,6 +369,8 @@ int evrInitialize()
 #ifdef EVR_DRIVER_SUPPORT
   /* Get first EVR in the list */
   pCard = ErGetCardStruct(0);
+  if (!pCard)
+      pCard = ErGetCardStruct(1);
   if (!pCard) {
     errlogPrintf("evrInitialize: cannot find an EVR module\n");
   /* Register the ISR functions in this file with the EVR */

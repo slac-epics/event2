@@ -51,11 +51,11 @@ record(erevent, "$(DEV):FIDUCIALCTRL") {
   field(DESC, "Fiducial Event Control")
   field(PINI, "YES")
   field(DTYP, "MRF Event Receiver")
-  field(OUT, "#C0 S0 @")
+  field(OUT, "#C$(CARD) S0 @")
   field(ENAB, "Enabled")
   field(ENM, "1")
   field(VME,  "1")
-  field(FLNK, "$(EVRFLNK)")
+  field(FLNK, "$(EVRFLNK=$(EVR):Triggers)")
 }
 
 #! Further lines contain data used by VisualDCT
