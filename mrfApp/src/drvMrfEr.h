@@ -331,6 +331,7 @@ struct ErCardStruct {
     epicsBoolean    DBuffError;             /* True if there was a data buffer error              */
     IOSCANPVT       DBuffReady;             /* Trigger record processing when data buffer ready   */
     epicsUInt16     ErEventTab [EVR_NUM_EVENTS];     /* Current view of the event mapping RAM     */
+    epicsUInt32     EnableMask;             /* Triggers that should actually be enabled           */
     IOSCANPVT       IoScanPvt  [EVENT_DELAYED_IRQ+1];/* Event-based record processing structures  */
     epicsUInt32     DataBuffer [EVR_MAX_BUFFER/4];   /* Buffer for data stream                    */
     char            intMsg     [EVR_INT_MSG_LEN];    /* Buffer for interrupt debug messages       */

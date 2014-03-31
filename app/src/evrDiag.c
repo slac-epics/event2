@@ -84,7 +84,7 @@ int main (int argc, char **argv )
     int off;
     unsigned int val;
     void *mem;
-    char *name = "/dev/era4";
+    char *name = getenv("EVRNAME");
     int i;
 
     if (argc != 2) {
@@ -92,6 +92,8 @@ int main (int argc, char **argv )
         return(1);
     }
 
+    if (!name)
+        name = "/dev/era4";
     fd = EvrOpen(&mem, name);
 
     if (!fd) {
@@ -105,10 +107,10 @@ int main (int argc, char **argv )
         exit(1);
     if (r->size == 2) {
         val = __read_evr_register16(fd, off);
-        printf("%s (%d) -> 0x%04x (%d)\n", argv[2], off, val, val);
+        printf("%s (%d) -> 0x%04x (%d)\n", argv[1], off, val, val);
     } else if (r->size == 4) {
         val = __read_evr_register(fd, off);
-        printf("%s (%d) -> 0x%08x (%d)\n", argv[2], off, val, val);
+        printf("%s (%d) -> 0x%08x (%d)\n", argv[1], off, val, val);
     } else if (r->size == 0x40 || r->size == 0x80) {
         /* Must be an output map! */
         if (__read_evr_region16(fd, off, map, r->size * sizeof(unsigned short))) {

@@ -38,6 +38,9 @@ DB += evrVme230.db
 DB += evrVme230RF.db
 DB += evrSLAC.db
 
+# A record to disable/enable a particular trigger.
+DB += evrTrigCtrl.db
+
 REQ += autosave_evrDevInfo.tpl-req
 
 include $(TOP)/configure/RULES

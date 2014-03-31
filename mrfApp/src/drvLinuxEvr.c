@@ -428,6 +428,7 @@ static int ErConfigure (
 	pCard->pEq = (void *)pEq;
 	pCard->Slot = fdEvr;	/* we steal this irrelevant field */
         pCard->FPGAVersion = FPGAVersion;
+        pCard->EnableMask = 0;
 	ErEnableIrq_nolock(pCard, EVR_IRQ_OFF);
 	EvrIrqAssignHandler(fdEvr, ErIrqHandler);
 	pCard->IrqLevel = 1;	/* Tell the interrupt handler this interrupt is enabled */
@@ -872,7 +873,12 @@ void ErTaxiIrq(ErCardStruct *pCard, epicsBoolean Enable)
 \**************************************************************************************************/
 void ErUpdateRam(ErCardStruct *pCard, epicsUInt16 *RamBuf)
 {
-    ioctl(pCard->Slot, EV_IOCEVTTAB, RamBuf);
+    int i;
+    epicsUInt16 buf[EVR_NUM_EVENTS];
+
+    for (i = 0; i < EVR_NUM_EVENTS; i++)
+        buf[i] = RamBuf[i] & pCard->EnableMask;
+    ioctl(pCard->Slot, EV_IOCEVTTAB, buf);
 }
 
 /**************************************************************************************************

@@ -1,0 +1,19 @@
+# Required macros:
+#       TRIG - Trigger base
+#	A, B, C, D - PVs to monitor.
+#       CALC - Calculation to force trigger change.
+#       OUT - 0/1 for disable/enable.
+#
+record( calcout, "$(TRIG):TCTL:$(NAME)" )
+{
+	field( DESC, "Trigger Calculation" )
+	field( CALC, "$(CALC=0)" )
+	field( INPA, "$(A=$(TRIG):TCTL) CPP NMS" )
+	field( INPB, "$(B=$(TRIG):TCTL) CPP NMS" )
+	field( INPC, "$(C=$(TRIG):TCTL) CPP NMS" )
+	field( INPD, "$(D=$(TRIG):TCTL) CPP NMS" )
+        field( OOPT, "Transition To Non-zero" )
+	field( DOPT, "Use OCAL" )
+	field( OCAL, "$(OUT=0)" )
+	field( OUT,  "$(TRIG):TCTL PP NMS" )
+}
