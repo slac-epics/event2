@@ -93,6 +93,7 @@
 
 #define PMC_EVR_FIRMWARE_REV_SLAC1      0x1F000000
 #define PMC_EVR_FIRMWARE_REV_SLAC2	0x1FD00023
+#define PMC_EVR_FIRMWARE_REV_SLAC3	0x1FD10023
 
 /**************************************************************************************************/
 /*  Configuration Constants                                                                       */
