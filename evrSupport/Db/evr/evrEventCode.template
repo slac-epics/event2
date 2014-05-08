@@ -21,6 +21,7 @@ record( longSub, "$(DEV):EventCode:$(ID):Count" )
   field( SNAM, "evrTimeEvent" )
   field( BRSV, "INVALID" )
   field( INPA, "$(ID)" )
+  field( TSE, "$(ID)" )
 }
 
 record( sub, "$(DEV):EventCode:$(ID):Rate" )
