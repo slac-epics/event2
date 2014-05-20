@@ -97,7 +97,7 @@ extern int lastfid;                             /* The last known fiducial, set 
 #define FID_ROLL_HI    (FID_MAX-FID_ROLL_LO)
 #define FID_ROLL(a,b)  ((b) < FID_ROLL_LO && (a) > FID_ROLL_HI)
 #define FID_GT(a,b)    (FID_ROLL(b, a) || ((a) > (b) && !FID_ROLL(a, b)))
-#define FID_DIFF(a,b)  ((FID_ROLL(b, a) ? FID_MAX : 0) + (a) - (b) - (FID_ROLL(a, b) ? FID_MAX : 0))
+#define FID_DIFF(a,b)  ((FID_ROLL(b, a) ? FID_MAX : 0) + (int)(a) - (int)(b) - (FID_ROLL(a, b) ? FID_MAX : 0))
   
 /* For time ID */
 typedef enum {
