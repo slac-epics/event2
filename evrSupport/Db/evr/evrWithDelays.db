@@ -1,0 +1,42 @@
+record(er, "$(DEV):CTRL") {
+  field(DESC, "$(DEV) Control")
+  field(DTYP, "MRF Event Receiver")
+  field(OUT, "#C$(CARD) S0 @")
+  field(PINI, "YES")
+  field(ENAB, "YES")
+  field(DG0W, "$(WIDTH)")
+  field(DG1W, "$(WIDTH)")
+  field(DG2W, "$(WIDTH)")
+  field(DG3W, "$(WIDTH)")
+  field(DG0D, "$(DELAY0)")
+  field(DG1D, "$(DELAY1)")
+  field(DG2D, "$(DELAY2)")
+  field(DG3D, "$(DELAY3)")
+  field(FLNK, "$(EVRFLNK=$(EVR):Triggers)")
+}
+record(bi, "$(DEV):LINK") {
+  field(DESC, "$(DEV) Link Status")
+  field(DTYP, "MRF Event Receiver")
+  field(INP,  "#C$(CARD) S0 @")
+  field(PINI, "YES")
+  field(SCAN, "2 second")
+  field(ZSV, "MAJOR")
+  field(ZNAM, "OFF")
+  field(ONAM, "ON")
+}
+record(ai, "$(DEV):LINKERRCNT") {
+  field(DESC, "$(DEV) Link Errors")
+  field(INP, "$(DEV):CTRL.TAXI MS")
+  field(SCAN, "2 second")
+}
+record(calc, "$(DEV):LINKERR") {
+  field(DESC, "EVR Recent Link Errors")
+  field(INPA, "$(DEV):LINKERRCNT MS")
+  field(INPB, "$(DEV):LINKERR.LA")
+  field(SCAN, "2 second")
+  field(CALC, "A>B?A-B:B-A")
+  field(HIHI, "2")
+  field(HIGH, "1")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+}

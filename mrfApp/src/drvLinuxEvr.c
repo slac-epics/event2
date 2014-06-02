@@ -1060,34 +1060,6 @@ LOCAL_RTN void ErDrvReportCall(const iocshArgBuf * args)
 	ErDrvReport((epicsInt32)args[0].ival);
 }
 
-/* iocsh command: fiddbg */
-LOCAL const iocshArg fiddbgArg0 = {"Level" , iocshArgInt};
-LOCAL const iocshArg *const fiddbgArgs[1] = {&fiddbgArg0};
-LOCAL const iocshFuncDef fiddbgDef = {"fiddbg", 1, fiddbgArgs};
-int fiddbg = 0;
-
-LOCAL_RTN void fiddbgCall(const iocshArgBuf * args)
-{
-    fiddbg = args[0].ival;
-    printf("Fiducial debugging mask is %d.\n", fiddbg);
-    fflush(stdout);
-}
-
-/* iocsh command: evtdbg */
-LOCAL const iocshArg evtdbgArg0 = {"ECstart" , iocshArgInt};
-LOCAL const iocshArg evtdbgArg1 = {"ECfinal" , iocshArgInt};
-LOCAL const iocshArg *const evtdbgArgs[2] = {&evtdbgArg0, &evtdbgArg1};
-LOCAL const iocshFuncDef evtdbgDef = {"evtdbg", 2, evtdbgArgs};
-extern void evtdbg(int, int);
-
-LOCAL_RTN void evtdbgCall(const iocshArgBuf * args)
-{
-    int ecstart = args[0].ival, ecfinal = args[1].ival;
-    if (ecfinal < abs(ecstart))
-        ecfinal = abs(ecstart);
-    evtdbg(ecstart, ecfinal);
-}
-
 /* Registration APIs */
 LOCAL void drvMrfErRegister()
 {
@@ -1098,7 +1070,5 @@ LOCAL void drvMrfErRegister()
 	iocshRegister(	&ErConfigureDef,	ErConfigureCall );
 	iocshRegister(	&ErDebugLevelDef,	ErDebugLevelCall );
 	iocshRegister(	&ErDrvReportDef,	ErDrvReportCall );
-	iocshRegister(	&fiddbgDef,	        fiddbgCall );
-	iocshRegister(	&evtdbgDef,	        evtdbgCall );
 }
 epicsExportRegistrar(drvMrfErRegister);

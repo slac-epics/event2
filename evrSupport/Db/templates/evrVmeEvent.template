@@ -20,17 +20,8 @@ record( erevent, "$(DEV):$(NAME)CTRL" )
   field( OUTB, "$(P11=0)" )
   field( OUTC, "$(P12=0)" )
   field( OUTD, "$(P13=0)" )
-  field( VME,  "$(IRQ=0)" )
-  field(FLNK, "$(EVRFLNK=$(EVR):Triggers)")
-}
-
-record( event, "$(DEV):$(NAME)" )
-{
-  field( DESC, "$(NAME) Event" )
-  field( DTYP, "MRF Event Receiver" )
-  field( INP, "#C$(CARD) S$(ID) @" )
-  field( PRIO, "HIGH" )
-  field( FLNK, "$(DEV):$(NAME)CNT" )
+  field( VME,  "$(IRQ=1)" )
+  field( FLNK, "$(EVRFLNK=$(DEV):Triggers)" )
 }
 
 record( longSub, "$(DEV):$(NAME)CNT" )
@@ -50,7 +41,6 @@ record( sub, "$(DEV):$(NAME)RATE" )
   field( SCAN, "Event" )
   field( EVNT, "121" )
   field( PRIO, "MEDIUM" )
-  field( INPD, "$(DELY=0)" )
   field( INPE, "$(DEV):$(NAME)CTRL.ENM NPP" )
   field( EGU,  "Hz" )
   field( PREC, "1" )
@@ -65,10 +55,9 @@ record( sub, "$(DEV):$(NAME)RATE" )
 record( stringin, "$(DEV):$(NAME)_NAME" )
 {
   field( DESC,  "Get event code name" )
-  field( VAL,  "$(LNAME)" )
   field( DTYP,  "MRF Event Receiver" )
   field( INP,   "#C$(CARD) S0 @" )
-  field( EVNT,  "$(ID)" )
+  field( EVNT,  "0" )
 }
 
 record( longout, "$(DEV):$(NAME)_ID" )
@@ -79,4 +68,28 @@ record( longout, "$(DEV):$(NAME)_ID" )
   field( DOL,	"$(DEV):$(NAME)CTRL.ENM NPP MS" )
   field( OUT,	"$(DEV):$(NAME)_NAME.EVNT" )
   field( FLNK,	"$(DEV):$(NAME)_NAME.EVNT PP MS" )
+}
+
+# Compute the number of enabled output triggers using this CTRL
+# (Total number of outputs enabled: OUT0, OUT1, OUT2, ...)
+record( longSub, "$(DEV):$(NAME)CTRL_N_OUTPUTS_ON" )
+{
+	field( INAM, "lsubCountNonZeroInit" )
+	field( SNAM, "lsubCountNonZero" )
+	field( DESC,  "# of ctrl outputs on" )
+	field( PINI,  "YES" )
+	field( INPA, "$(DEV):$(NAME)CTRL.OUT0 CPP NMS")
+	field( INPB, "$(DEV):$(NAME)CTRL.OUT1 CPP NMS")
+	field( INPC, "$(DEV):$(NAME)CTRL.OUT2 CPP NMS")
+	field( INPD, "$(DEV):$(NAME)CTRL.OUT3 CPP NMS")
+	field( INPE, "$(DEV):$(NAME)CTRL.OUT4 CPP NMS")
+	field( INPF, "$(DEV):$(NAME)CTRL.OUT5 CPP NMS")
+	field( INPG, "$(DEV):$(NAME)CTRL.OUT6 CPP NMS")
+	field( INPH, "$(DEV):$(NAME)CTRL.OUT7 CPP NMS")
+	field( INPI, "$(DEV):$(NAME)CTRL.OUT8 CPP NMS")
+	field( INPJ, "$(DEV):$(NAME)CTRL.OUT9 CPP NMS")
+	field( INPK, "$(DEV):$(NAME)CTRL.OUTA CPP NMS")
+	field( INPL, "$(DEV):$(NAME)CTRL.OUTB CPP NMS")
+	field( INPM, "$(DEV):$(NAME)CTRL.OUTC CPP NMS")
+	field( INPN, "$(DEV):$(NAME)CTRL.OUTD CPP NMS")
 }

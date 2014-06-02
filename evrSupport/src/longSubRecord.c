@@ -19,6 +19,10 @@
  *      Date:            08-20-08
  *      S.A.Allison - Renamed to longSubRecord.c, added
  *                    fields M to Z, and changed double to unsigned long.
+ *
+ *      Date:            03-14-13
+ *      K. Kim      - change unsinged long (for the record filed related variales) to epicsUInt32
+ *                    to avoid the 64 bit problem
  */
 
 
@@ -28,6 +32,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "epicsTypes.h"
 #include "dbDefs.h"
 #include "epicsPrint.h"
 #include "registryFunction.h"
@@ -136,7 +141,8 @@ static long init_record(psub,pass)
 	recGblRecordError(S_db_BadSub,(void *)psub,"recSub(init_record)");
 	return(S_db_BadSub);
     }
-    return(0);
+	/* 0 & status eliminates compiler warning about unused 'status' */
+    return(0 & status);
 }
 
 static long process(psub)
@@ -145,26 +151,36 @@ static long process(psub)
 	long		 status=0;
 	unsigned char	pact=psub->pact;
 
-        if(!psub->pact || !psub->sadr){
+	if(!psub->pact || !psub->sadr){
 		psub->pact = TRUE;
 		status = fetch_values(psub);
 		psub->pact = FALSE;
 	}
-        if(status==0) status = do_sub(psub);
+	if(status==0)
+		status = do_sub(psub);
+	if( psub->tpro )
+		printf( "%s: Process %s: value %d\n",
+				epicsThreadGetNameSelf(), psub->name, psub->val );
+
 	/* check if device support set pact */
-        if ( !pact && psub->pact ) return(0);
+	if ( !pact && psub->pact )
+		return(0);
 	/*previously we had different rules. Lets support old subs*/
-        psub->pact = TRUE;
-	if(status==1) return(0);
+	psub->pact = TRUE;
+	if(status==1)
+		return(0);
+
 	recGblGetTimeStamp(psub);
-        /* check for alarms */
-        checkAlarms(psub);
-        /* check event list */
-        monitor(psub);
-        /* process the forward scan link record */
-        recGblFwdLink(psub);
-        psub->pact = FALSE;
-        return(0);
+	/* check for alarms */
+	checkAlarms(psub);
+
+	/* check event list */
+	monitor(psub);
+
+	/* process the forward scan link record */
+	recGblFwdLink(psub);
+	psub->pact = FALSE;
+	return(0);
 }
 
 static long get_units(paddr,units)
@@ -268,9 +284,9 @@ static long get_alarm_double(paddr,pad)
 static void checkAlarms(psub)
     struct longSubRecord	*psub;
 {
-	unsigned long	val;
-	unsigned long	lalm, hihi, high, low, lolo;
-        unsigned long   hyst;
+	epicsUInt32	val;
+	epicsUInt32	lalm, hihi, high, low, lolo;
+        epicsUInt32   hyst;
 	unsigned short	hhsv, llsv, hsv, lsv;
 
 	if(psub->udf == TRUE ){
@@ -326,7 +342,7 @@ static void monitor(psub)
           delta = psub->mlst - psub->val;
         else
           delta = psub->val - psub->mlst;
-        if ((psub->mdel < 0) || (delta > (unsigned long)psub->mdel)) {
+        if ((psub->mdel < 0) || (delta > (epicsUInt32)psub->mdel)) {
                 /* post events for value change */
                 monitor_mask |= DBE_VALUE;
                 /* update last value monitored */
@@ -337,7 +353,7 @@ static void monitor(psub)
           delta = psub->alst - psub->val;
         else
           delta = psub->val - psub->alst;
-        if ((psub->adel < 0) || (delta > (unsigned long)psub->adel)) {
+        if ((psub->adel < 0) || (delta > (epicsUInt32)psub->adel)) {
                 /* post events on value field for archive change */
                 monitor_mask |= DBE_LOG;
                 /* update last archive value monitored */
@@ -360,16 +376,16 @@ static void monitor(psub)
 static long fetch_values(psub)
 struct longSubRecord *psub;
 {
-        struct link     *plink; /* structure of the link field  */
+	struct link	*	plink; /* structure of the link field  */
 	epicsUInt32	*	pvalue;
-        int             i;
-	long		status;
+	int             i;
+	long			status;
 
-        for(i=0, plink=&psub->inpa, pvalue=&psub->a; i<INP_ARG_MAX; i++, plink++, pvalue++) {
-		status=dbGetLink(plink,DBR_ULONG, pvalue,0,0);
-		if (!RTN_SUCCESS(status)) return(-1);
-        }
-        return(0);
+	for(i=0, plink=&psub->inpa, pvalue=&psub->a; i<INP_ARG_MAX; i++, plink++, pvalue++) {
+	status=dbGetLink(plink,DBR_ULONG, pvalue,0,0);
+	if (!RTN_SUCCESS(status)) return(-1);
+	}
+	return(0);
 }
 
 static long do_sub(psub)
@@ -377,7 +393,6 @@ struct longSubRecord *psub;  /* pointer to subroutine record  */
 {
 	long	status;
 	SUBFUNCPTR	psubroutine;
-
 
 	/* call the subroutine */
 	psubroutine = (SUBFUNCPTR)(psub->sadr);
@@ -387,7 +402,7 @@ struct longSubRecord *psub;  /* pointer to subroutine record  */
 	}
 	status = (*psubroutine)(psub);
 	if(status < 0){
-               	recGblSetSevr(psub,SOFT_ALARM,psub->brsv);
+		recGblSetSevr(psub,SOFT_ALARM,psub->brsv);
 	} else psub->udf = FALSE;
 	return(status);
 }

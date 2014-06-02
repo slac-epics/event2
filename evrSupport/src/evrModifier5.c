@@ -70,8 +70,8 @@
 static long evrModifier5(longSubRecord *psub)
 { 
   epicsUInt32	*	check_p = &psub->a;
-  unsigned long  value;
-  int            edefIdx;
+  unsigned long  	value;
+  int            	edefIdx;
 
   value = psub->u & MOD5_NOEDEF_MASK;
   for (edefIdx = 0; edefIdx < EDEF_MAX; edefIdx++, check_p++) {
@@ -109,7 +109,7 @@ static long evrModifier5(longSubRecord *psub)
 static long evrModifier5Bits(longSubRecord *psub)
 { 
   epicsUInt32	*	check_p = &psub->a;
-  int            edefIdx;
+  int				edefIdx;
   
   psub->val = psub->v;
   psub->u   = psub->v & MOD5_NOEDEF_MASK;

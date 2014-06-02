@@ -141,10 +141,27 @@ STATIC long ErEventProc(struct ereventRecord *pRec)
  ******************************************************************************/
 STATIC void ErEventMonitor(struct ereventRecord *pRec)
 {
-  unsigned short  monitor_mask;
+	unsigned short  monitor_mask;
 
-  monitor_mask = recGblResetAlarms(pRec);
-  monitor_mask |= (DBE_VALUE | DBE_LOG);
-  db_post_events(pRec, &pRec->val, monitor_mask);
-  return;
+	/* Handle monitor update events */
+	monitor_mask = recGblResetAlarms( pRec );
+	monitor_mask |= (DBE_VALUE | DBE_LOG);
+
+	/*
+	 * Passing a NULL pField to db_post_events() causes it to
+	 * send updates for all fields of this record.
+	 * This allows our gui to do proper updates of alarm status
+	 * for fields other than VAL
+	 */
+	db_post_events( pRec, NULL,			monitor_mask );
+
+	/* If specific pField updates are needed, add them here */
+	/* db_post_events( pRec, &pRec->val,	monitor_mask ); needed? */
+	/* db_post_events( pRec, &pRec->enm,	monitor_mask ); needed? */
+	/* db_post_events( pRec, &pRec->enab,	monitor_mask ); needed? */
+
+	if (pRec->tpro > 10)
+		printf( "ErEventProcess(%s): monitor_mask=%u, stat=%u, nsta=%u, sevr=%u, nsev=%u\n",
+				pRec->name, monitor_mask, pRec->stat, pRec->nsta, pRec->sevr, pRec->nsev );
+	return;
 }

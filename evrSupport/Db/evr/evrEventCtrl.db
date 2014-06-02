@@ -23,5 +23,43 @@ record(erevent, "$(DEV):$(NAME)CTRL") {
   field(SDIS, "$(DEV):$(NAME)CTRL.ENM")
   field(DISV, "1")
   field(DISS, "INVALID")
-  field(FLNK, "$(EVRFLNK)")
+  field(FLNK, "$(EVRFLNK=$(EVR):Triggers)")
+  info(autosaveFields, "ENM OUT0 OUT1 OUT2 OUT3 OUT4 OUT5 OUT6 OUT7 OUT8 OUT9 OUTA OUTB OUTC OUTD VME ENAB")
+}
+
+record(sub, "$(DEV):$(NAME)RATE") {
+  field(DESC, "$(NAME) Event Rate")
+  field(SNAM, "evrTimeRate")
+  field(BRSV, "INVALID")
+  field(SCAN, "Event")
+  field(EVNT, "121")
+  field(PRIO, "MEDIUM")
+  field(INPE, "$(DEV):$(NAME)CTRL.ENM MS")
+  field(EGU,  "Hz")
+  field(PREC, "1")
+  field(TSE, "-1")
+}
+
+
+record(aSub, "$(DEV):$(NAME)EVDESC") {
+  field(DESC, "$(NAME) EV Desc")
+  field(PINI, "YES")
+  field(SCAN, "Passive")
+  field(INAM, "aSubEvDescInit")
+  field(SNAM, "aSubEvDesc")
+  field(INPA, "$(DEV):$(NAME)CTRL.ENM CPP MS")
+  field(FTA,  "LONG")
+  field(INPB, "$(DEV):$(NAME)DESC")
+  field(FTB,  "STRING")
+  field(INPC, "EVNT:$(SYS=SYS0):1:NAME CPP MS")
+  field(FTC,  "STRING")
+  field(NOC,  "256")
+  field(OUTA, "$(DEV):$(NAME)DESC PP")
+  field(FTVA, "STRING")
+}
+
+record(stringin, "$(DEV):$(NAME)DESC") {
+  field(SCAN, "Passive")
+  field(PINI, "YES")
+  info(autosaveFields, "VAL")
 }

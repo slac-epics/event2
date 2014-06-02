@@ -3,12 +3,30 @@
 # <PVNAME> <PERIOD> [ monitor ]
 
 # Capture frequent changes to these
-$(EVR):LINK    1  monitor
+$(EVR):LINK      1  monitor
+$(EVR):STATUS    1  monitor
+$(EVR):CTRL.ENAB 1	monitor 
+$(EVR):CTRL.TAXI 1	monitor 
 
 # Capture these once/sec
-$(EVR):FIDUCIALCTRL 1 
-$(EVR):FIDUCIALDIAG 1 
-$(EVR):CTRL 1
+$(EVR):FIDUCIALCTRL.VAL 1 
+# field M is fiducial count, no need to archive
+# $(EVR):FIDUCIALDIAG.M	1
+$(EVR):FIDUCIALDIAG.N	1
+$(EVR):FIDUCIALDIAG.O	1
+$(EVR):FIDUCIALDIAG.P	1
+$(EVR):FIDUCIALDIAG.R	1
+$(EVR):FIDUCIALDIAG.S	1
+# field T is fiducial interrupt count, no need to archive
+# $(EVR):FIDUCIALDIAG.T	1
+$(EVR):FIDUCIALDIAG.U	1
+$(EVR):FIDUCIALDIAG.V	1
+$(EVR):FIDUCIALDIAG.VAL	1
+$(EVR):FIDUCIALDIAG.W	1
+$(EVR):FIDUCIALDIAG.X	1
+$(EVR):FIDUCIALDIAG.Y	1
+$(EVR):FIDUCIALDIAG.Z	1
+$(EVR):CTRL.VAL 1
 $(EVR):EVENT1 1
 $(EVR):EVENT10 1
 $(EVR):EVENT10CTRL 1
@@ -114,82 +132,30 @@ $(EVR):RESETCNT 30 monitor
 $(EVR):TREF 30 monitor
 
 # Archive event controls
+$(EVR):CTRL.IP0E 1 monitor
 $(EVR):CTRL.DG0E 1 monitor
 $(EVR):CTRL.DG0P 1 monitor
 $(EVR):CTRL.DG0D 1 monitor
 $(EVR):CTRL.DG0W 1 monitor
 $(EVR):CTRL.DG0C 1 monitor
+$(EVR):CTRL.IP1E 1 monitor
 $(EVR):CTRL.DG1E 1 monitor
 $(EVR):CTRL.DG1P 1 monitor
 $(EVR):CTRL.DG1D 1 monitor
 $(EVR):CTRL.DG1W 1 monitor
 $(EVR):CTRL.DG1C 1 monitor
+$(EVR):CTRL.IP2E 1 monitor
 $(EVR):CTRL.DG2E 1 monitor
 $(EVR):CTRL.DG2P 1 monitor
 $(EVR):CTRL.DG2D 1 monitor
 $(EVR):CTRL.DG2W 1 monitor
 $(EVR):CTRL.DG2C 1 monitor
+$(EVR):CTRL.IP3E 1 monitor
 $(EVR):CTRL.DG3E 1 monitor
 $(EVR):CTRL.DG3P 1 monitor
 $(EVR):CTRL.DG3W 1 monitor
 $(EVR):CTRL.DG3D 1 monitor
 $(EVR):CTRL.DG3C 1 monitor
-$(EVR):CTRL.OTP0 1 monitor
-$(EVR):CTRL.OT0P 1 monitor
-$(EVR):CTRL.OT0W 1 monitor
-$(EVR):CTRL.OT0D 1 monitor
-$(EVR):CTRL.OTP1 1 monitor
-$(EVR):CTRL.OT1P 1 monitor
-$(EVR):CTRL.OT1W 1 monitor
-$(EVR):CTRL.OT1D 1 monitor
-$(EVR):CTRL.OTP2 1 monitor
-$(EVR):CTRL.OT2P 1 monitor
-$(EVR):CTRL.OT2W 1 monitor
-$(EVR):CTRL.OT2D 1 monitor
-$(EVR):CTRL.OTP3 1 monitor
-$(EVR):CTRL.OT3P 1 monitor
-$(EVR):CTRL.OT3W 1 monitor
-$(EVR):CTRL.OT3D 1 monitor
-$(EVR):CTRL.OTP4 1 monitor
-$(EVR):CTRL.OT4P 1 monitor
-$(EVR):CTRL.OT4W 1 monitor
-$(EVR):CTRL.OT4D 1 monitor
-$(EVR):CTRL.OTP5 1 monitor
-$(EVR):CTRL.OT5P 1 monitor
-$(EVR):CTRL.OT5W 1 monitor
-$(EVR):CTRL.OT5D 1 monitor
-$(EVR):CTRL.OTP6 1 monitor
-$(EVR):CTRL.OT6P 1 monitor
-$(EVR):CTRL.OT6W 1 monitor
-$(EVR):CTRL.OT6D 1 monitor
-$(EVR):CTRL.OTP7 1 monitor
-$(EVR):CTRL.OT7P 1 monitor
-$(EVR):CTRL.OT7W 1 monitor
-$(EVR):CTRL.OT7D 1 monitor
-$(EVR):CTRL.OTP8 1 monitor
-$(EVR):CTRL.OT8P 1 monitor
-$(EVR):CTRL.OT8W 1 monitor
-$(EVR):CTRL.OT8D 1 monitor
-$(EVR):CTRL.OTP9 1 monitor
-$(EVR):CTRL.OT9P 1 monitor
-$(EVR):CTRL.OT9W 1 monitor
-$(EVR):CTRL.OT9D 1 monitor
-$(EVR):CTRL.OTPA 1 monitor
-$(EVR):CTRL.OTAP 1 monitor
-$(EVR):CTRL.OTAW 1 monitor
-$(EVR):CTRL.OTAD 1 monitor
-$(EVR):CTRL.OTPB 1 monitor
-$(EVR):CTRL.OTBP 1 monitor
-$(EVR):CTRL.OTBW 1 monitor
-$(EVR):CTRL.OTBD 1 monitor
-$(EVR):CTRL.OTPC 1 monitor
-$(EVR):CTRL.OTCP 1 monitor
-$(EVR):CTRL.OTCW 1 monitor
-$(EVR):CTRL.OTCD 1 monitor
-$(EVR):CTRL.OTPD 1 monitor
-$(EVR):CTRL.OTDP 1 monitor
-$(EVR):CTRL.OTDW 1 monitor
-$(EVR):CTRL.OTDD 1 monitor
 $(EVR):EVENT1CTRL.OUT0 1 monitor
 $(EVR):EVENT2CTRL.OUT0 1 monitor
 $(EVR):EVENT3CTRL.OUT0 1 monitor
@@ -414,3 +380,70 @@ $(EVR):EVENT11CTRL.ENM 1 monitor
 $(EVR):EVENT12CTRL.ENM 1 monitor
 $(EVR):EVENT13CTRL.ENM 1 monitor
 $(EVR):EVENT14CTRL.ENM 1 monitor
+
+$(EVR):TRIG0:TCTL	10	monitor
+$(EVR):TRIG0:TDES	10	monitor
+$(EVR):TRIG0:TOFFSET	10	monitor
+$(EVR):TRIG0:TPOL	10	monitor
+$(EVR):TRIG0:TWID	10	monitor
+
+$(EVR):TRIG1:TCTL	10	monitor
+$(EVR):TRIG1:TDES	10	monitor
+$(EVR):TRIG1:TOFFSET	10	monitor
+$(EVR):TRIG1:TPOL	10	monitor
+$(EVR):TRIG1:TWID	10	monitor
+
+$(EVR):TRIG2:TCTL	10	monitor
+$(EVR):TRIG2:TDES	10	monitor
+$(EVR):TRIG2:TOFFSET	10	monitor
+$(EVR):TRIG2:TPOL	10	monitor
+$(EVR):TRIG2:TWID	10	monitor
+
+$(EVR):TRIG0:EVENTCTRL.ENM		1	monitor
+$(EVR):TRIG0:EVENTCTRL.ENAB		1	monitor
+$(EVR):TRIG0:EVENTCTRL.VME		1	monitor
+$(EVR):TRIG0:EVENTCTRL.OUT0		1	monitor
+$(EVR):TRIG0:EVENTCTRL.OUT1		1	monitor
+$(EVR):TRIG0:EVENTCTRL.OUT2		1	monitor
+$(EVR):TRIG0:EVENTCTRL.OUT3		1	monitor
+$(EVR):TRIG0:EVENTCTRL.OUT4		1	monitor
+$(EVR):TRIG0:EVENTCTRL.OUT5		1	monitor
+$(EVR):TRIG0:EVENTCTRL.OUT6		1	monitor
+$(EVR):TRIG0:EVENTCTRL.OUT7		1	monitor
+$(EVR):TRIG0:EVENTCTRL.OUT8		1	monitor
+$(EVR):TRIG0:EVENTCTRL.OUT9		1	monitor
+$(EVR):TRIG0:EVENTCTRL.OUTA		1	monitor
+$(EVR):TRIG0:EVENTCTRL.OUTB		1	monitor
+
+$(EVR):TRIG1:EVENTCTRL.ENM		1	monitor
+$(EVR):TRIG1:EVENTCTRL.ENAB		1	monitor
+$(EVR):TRIG1:EVENTCTRL.VME		1	monitor
+$(EVR):TRIG1:EVENTCTRL.OUT0		1	monitor
+$(EVR):TRIG1:EVENTCTRL.OUT1		1	monitor
+$(EVR):TRIG1:EVENTCTRL.OUT2		1	monitor
+$(EVR):TRIG1:EVENTCTRL.OUT3		1	monitor
+$(EVR):TRIG1:EVENTCTRL.OUT4		1	monitor
+$(EVR):TRIG1:EVENTCTRL.OUT5		1	monitor
+$(EVR):TRIG1:EVENTCTRL.OUT6		1	monitor
+$(EVR):TRIG1:EVENTCTRL.OUT7		1	monitor
+$(EVR):TRIG1:EVENTCTRL.OUT8		1	monitor
+$(EVR):TRIG1:EVENTCTRL.OUT9		1	monitor
+$(EVR):TRIG1:EVENTCTRL.OUTA		1	monitor
+$(EVR):TRIG1:EVENTCTRL.OUTB		1	monitor
+
+$(EVR):TRIG2:EVENTCTRL.ENM		1	monitor
+$(EVR):TRIG2:EVENTCTRL.ENAB		1	monitor
+$(EVR):TRIG2:EVENTCTRL.VME		1	monitor
+$(EVR):TRIG2:EVENTCTRL.OUT0		1	monitor
+$(EVR):TRIG2:EVENTCTRL.OUT1		1	monitor
+$(EVR):TRIG2:EVENTCTRL.OUT2		1	monitor
+$(EVR):TRIG2:EVENTCTRL.OUT3		1	monitor
+$(EVR):TRIG2:EVENTCTRL.OUT4		1	monitor
+$(EVR):TRIG2:EVENTCTRL.OUT5		1	monitor
+$(EVR):TRIG2:EVENTCTRL.OUT6		1	monitor
+$(EVR):TRIG2:EVENTCTRL.OUT7		1	monitor
+$(EVR):TRIG2:EVENTCTRL.OUT8		1	monitor
+$(EVR):TRIG2:EVENTCTRL.OUT9		1	monitor
+$(EVR):TRIG2:EVENTCTRL.OUTA		1	monitor
+$(EVR):TRIG2:EVENTCTRL.OUTB		1	monitor
+

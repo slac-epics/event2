@@ -2,6 +2,9 @@ TOP=../../..
 include $(TOP)/configure/CONFIG
 #----------------------------------------
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
+USR_VPATH += ../../bsa
+USR_VPATH += ../../templates
+USR_VPATH += $(COMMON_DIR)
 
 #----------------------------------------------------
 #  Optimization of db files using dbst (DEFAULT: NO)
@@ -12,16 +15,24 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 #
 # EVR databases
+DB += evr.db
+DB += evr-pmc.db
+DB += evrWithDelays.db
+DB += evrWithExtDelays.db
+DB += evrPmc.template
 DB += evrEvent.db
 DB += evrEventCtrl.db
 DB += evrDevTrig.db
 DB += evrTrigger.db
-DB += evrEventAll.db
 # evrPattern support
 DB += evrPattern.db
 DB += evrPatternProc.db
+DB += evrEventAll.db
+DB += evrEventFACET.db
+DB += evrEventXTA.db
 DB += evrPatternAll.db
 DB += evrDevInfo.db
+DB += evrMod36.db
 # fiducialTimestamp timestamp support (includes patterns)
 DB += fiducialTimestamp.db
 
@@ -31,6 +42,7 @@ DB += evrEventCodeName.template
 
 # PCDS Event Code List
 DB += pcdsEventCodes.db
+DB += pcdsEventCodes.substitutions
 
 # Complete DB files for each of our common EVR boards
 DB += evrPmc230.db
@@ -41,7 +53,12 @@ DB += evrSLAC.db
 # A record to disable/enable a particular trigger.
 DB += evrTrigCtrl.db
 
-REQ += autosave_evrDevInfo.tpl-req
+# Sample substitution files for each
+# of our common EVR boards
+DB_INSTALLS += evrPmc230.substitutions
+DB_INSTALLS += evrVme230.substitutions
+DB_INSTALLS += evrVme230RF.substitutions
+DB_INSTALLS += evrSLAC.substitutions
 
 include $(TOP)/configure/RULES
 #----------------------------------------

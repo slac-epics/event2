@@ -22,5 +22,5 @@ record(erevent, "$(DEV):$(NAME)CTRL")
   field(OUTD, "$(P13)")
   field(VME,  "$(VME)")
   field(IPV,  "$(DEV):CTRL.IPOV CPP NMS")
-  field(FLNK, "$(EVRFLNK)")
+  field(FLNK, "$(EVRFLNK=$(EVR):Triggers)")
 }

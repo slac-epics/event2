@@ -1,0 +1,82 @@
+#
+# Basic PMC EVR 230 Event Substitutions file
+# Set event specific variations here.
+# Set EVR in dbLoadRecords()
+# Example:
+# dbLoadRecords( "db/evr.db", "EVR=AMO:R06:EVR:19" )
+#
+
+file evrPmc230.template
+{
+#		Device	Card
+#			FP*L		Trigger name
+#			DG*E		{Enabled|Disabled}
+#			DG*P		{Normal|Inverted}
+#			DG*W		{Width}
+#			DG*D		{Delay}
+#			DG*C		{ScaleFactor}
+	pattern
+	{	DEV,	CARD,
+		FP0L,	DG0E,		DG0P,	DG0W,		DG0D,	DG0C,
+		FP1L,	DG1E,		DG1P,	DG1W,		DG1D,	DG1C,
+		FP2L,	DG2E,		DG2P,	DG2W,		DG2D,	DG2C,
+		FP3L,	DG3E,		DG3P,	DG3W,		DG3D,	DG3C,
+	}
+
+	{	$(EVR),	0,
+		"<trig0Name>",	Disabled,	Inverted,	5000,	500,	119,
+		"<unassigned>",	Disabled,	Inverted,	5000,	500,	119,
+		"<unassigned>"	Disabled,	Inverted,	5000,	500,	119,
+		"<unassigned>"	Disabled,	Inverted,	5000,	500,	119,
+	} 
+}
+
+
+#	DEV		Name of EVR
+#	CARD	EVR card number starting at 0 (matches card number in ErConfigure).
+#	NAME	EVENT1 to EVENT14 - instantiate all 14 records even if you only use a few events.
+#	ID	Event code number.  Must match an event code in evgTest.substitutions.
+#	P0 to P2 - trigger state for channels 0 to 2
+#		(0 = disabled for the event code, 1 = enabled for the event code)
+#	IRQ	Controls whether an IRQ happens when this event code occurs.
+#		(0 = no IRQ, 1 = IRQ)
+#		Must be set to 1 if you want event record processing using the event code.
+file evrPmcEvent.template
+{
+#	  Device    Card  <----------------------------  Event -------------------------->       
+	pattern
+	{ DEV,		CARD,	NAME,    ID,  P0,P1,P2,IRQ, LNAME}
+	{ $(EVR),	0,		EVENT1,	 140,  0, 0, 0, 1, "Beam Full"     }
+	{ $(EVR),	0,		EVENT2,	 141,  0, 0, 0, 0, "Beam & 60Hz"   }
+	{ $(EVR),	0,		EVENT3,	 142,  0, 0, 0, 0, "Beam & 30Hz"   }
+	{ $(EVR),	0,		EVENT4,	 143,  0, 0, 0, 0, "Beam & 10Hz"   }
+	{ $(EVR),	0,		EVENT5,	 144,  0, 0, 0, 0, "Beam & 5Hz"    }
+	{ $(EVR),	0,		EVENT6,	 145,  0, 0, 0, 0, "Beam & 1Hz"    }
+	{ $(EVR),	0,		EVENT7,	 146,  0, 0, 0, 0, "Beam & 0.5Hz"  }
+	{ $(EVR),	0,		EVENT8,	 40,   0, 0, 0, 0, "120Hz"         }
+	{ $(EVR),	0,		EVENT9,	 41,   0, 0, 0, 0, "60Hz"          }
+	{ $(EVR),	0,		EVENT10, 42,   0, 0, 0, 0, "30Hz"          }
+	{ $(EVR),	0,		EVENT11, 43,   0, 0, 0, 0, "10Hz"          }
+	{ $(EVR),	0,		EVENT12, 44,   0, 0, 0, 0, "5Hz"           }
+	{ $(EVR),	0,		EVENT13, 45,   1, 1, 1, 1, "1Hz"           }
+	{ $(EVR),	0,		EVENT14, 46,   0, 0, 0, 0, "0.5Hz"         }
+}
+
+# Need one instance of fiducialTimestamp.db for
+# pattern processing and fiduicial ID timestamping
+file fiducialTimestamp.db
+{
+    {
+        DEV=$(EVR),
+    }
+}
+
+
+#
+# Creates records to support PCDS's standard set of
+# event codes for the LCLS accelerator and PCDS experiments
+file pcdsEventCodes.db
+{
+   { DEV="$(EVR)", CARD="0" }
+}
+

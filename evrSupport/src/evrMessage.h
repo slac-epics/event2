@@ -51,7 +51,7 @@ extern "C" {
 /* Defines for MODULO720 (2 second) Processing */
 #define MODULO720_COUNT 720   /* # of expected pulses for MOD720RESYNC */
 
-#ifdef _X86_
+#if defined(_X86_) || defined(_X86_64_)
 void Get_evrTicksPerUsec_for_X86(void);
 #endif
   
@@ -102,9 +102,11 @@ evrMessageReadStatus_te
     evrMessageRead      (unsigned int  messageIdx, evrMessage_tu *message_pu);
 int evrMessageWrite     (unsigned int  messageIdx, evrMessage_tu *message_pu);
 int evrMessageProcess   (unsigned int  messageIdx);
+int evrMessageClockCounter(unsigned int messageIdx, epicsUInt32 evrClockCounter);
 int evrMessageStart     (unsigned int  messageIdx);
 int evrMessageLap       (unsigned int  messageIdx);
 int evrMessageEnd       (unsigned int  messageIdx);
+int evrMessageQ         (unsigned int  messageIdx, int pend);
 int evrMessageReport    (unsigned int  messageIdx, char *messageName_a,
                          int interest);
 int evrMessageCounts    (unsigned int  messageIdx,
@@ -122,6 +124,13 @@ int evrMessageCountsFiducial(unsigned int messageIdx,
                          epicsUInt32 *procTimeDelay_p,
                          epicsUInt32 *procTimeDelayMin_p,
                          epicsUInt32 *procTimeDelayMax_p);
+int evrMessageCountsClockCounter(unsigned int messageIdx,
+                         epicsUInt32 *absoluteStartTime_p,
+                         epicsUInt32 *absoluteStartTimeMin_p,
+                         epicsUInt32 *absoluteStartTimeMax_p);
+int evrMessageCountsQ(unsigned int messageIdx,
+                      epicsUInt32  *qPend_p,
+                      epicsUInt32  *qPendMax_p);
 int evrMessageCountReset   (unsigned int messageIdx);
 int evrMessageCheckSumError(unsigned int messageIdx);
 int evrMessageNoDataError  (unsigned int messageIdx);

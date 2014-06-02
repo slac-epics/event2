@@ -10,8 +10,8 @@ file evrPatternAll.db
 #	    Device        ,  SLC Pattern, EVR/Trigger     
 #	                                    Links       
   pattern
-  { DEVICE,  LINK4,	  LINK5,	LINK6, 	        TREF   , TS1ST, TS2ND }
-  { $(DEV),  '$(LINK4=)', '$(LINK5=)',  '$(LINK6=)',   99882.4 ,   1  ,   4   }
+  { DEVICE,  LINK4,			LINK5,			TREF   , TS1ST, TS2ND }
+  { $(DEV),  '$(LINK4=)',	'$(LINK5=)',   100000.0 ,   1  ,   4   }
 }
 
 file evrTrigger.db

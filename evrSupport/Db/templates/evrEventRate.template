@@ -1,0 +1,36 @@
+record(event, "$(DEV):$(NAME)") {
+  field(DESC, "$(NAME) Event")
+  field(DTYP, "MRF Event Receiver")
+  field(INP,  "#C$(CARD) S$(ID) @")
+  field(SCAN, "I/O Intr")
+  field(PRIO, "HIGH")
+  field(VAL,  "$(ID)")
+  field(FLNK, "$(DEV):$(NAME)CNT")
+}
+
+record( longSub, "$(DEV):$(NAME)CNT") {
+  field( DESC, "$(NAME) Counter")
+  field( SNAM, "evrTimeEvent" )
+  field( BRSV, "INVALID" )
+  field( INPA, "$(DEV):$(NAME)CTRL.ENM NPP NMS")
+  field( SCAN, ".1 second" )
+}
+
+record(sub, "$(DEV):$(NAME)RATE") {
+  field(DESC, "$(NAME) Rate")
+  field(SNAM, "evrTimeRate")
+  field(BRSV, "INVALID")
+  field(SCAN, "Event")
+  field(EVNT, "121")
+  field(PRIO, "MEDIUM")
+  field(INPE, "$(DEV):$(NAME)CTRL.ENM MS")
+  field(EGU,  "Hz")
+  field(PREC, "1")
+}
+
+record (stringout, "$(DEV):$(NAME)NAME") {
+  field(DESC, "$(NAME) Name")
+  field(PINI, "YES")
+  field(VAL,  "$(LNAME)")
+}
+

@@ -57,7 +57,11 @@
 #include "alarm.h"            /* INVALID_ALARM             */
 
 
-#define  MAX_PATTERN_DELTA_TIME  100 /* sec */
+#if defined(__linux__) && !defined(ntp_adjtime)
+#define ntp_adjtime(arg) adjtimex((arg))
+#endif
+
+#define  MAX_PATTERN_DELTA_TIME  100 /* sec  or 10? */
 
 static unsigned long msgCount         = 0; /* # waveforms processed since boot/reset */ 
 static unsigned long msgRolloverCount = 0; /* # time msgCount reached EVR_MAX_INT    */ 
@@ -247,7 +251,7 @@ int evrPattern(int timeout, epicsUInt32 *mpsModifier_p)
   Ret:  0 = no match, 1 = match
   
 =============================================================================*/ 
-#if 0
+
 int evrPatternCheck(unsigned long  beamCode,    unsigned long  timeSlot,
                     evrModifier_ta inclusion_a, evrModifier_ta exclusion_a,
                     evrModifier_ta modifier_a)
@@ -271,7 +275,6 @@ int evrPatternCheck(unsigned long  beamCode,    unsigned long  timeSlot,
   }
   return (matches);
 }
-#endif
 
 /*=============================================================================
 
@@ -493,8 +496,6 @@ static long evrPatternSim(longSubRecord *psub)
   epicsTimeStamp         prev_time;
   double                 delta_time;
   int                    idx;
-  void evrEvent(void *pCard, epicsInt16 eventNum, epicsUInt32 timeNum);
-  void evrSend(void *pCard, epicsInt16 messageSize, void *message);
 
 /*------------- parse input into sub outputs ----------------------------*/
 
@@ -665,11 +666,21 @@ static int find_trigger(epicsEnum16 enable, int mask, ErCardStruct  *pCard, unsi
             break;
         }
     }
+
     if (result != last)
         (*gen)++;
     return result;
 }
 
+
+/*
+ * Input:
+ *     X - Card number
+ * Output:
+ *     A-L - Event number causing this output to trigger, 0 = no trigger,
+ *           512 = multiple triggers, 1024 = misconfigure (no IRQ).
+ *     M-X - Change counters for A-L, respectively.
+ */
 static int evrTriggerProc(longSubRecord *psub)
 {
     ErCardStruct  *pCard = ErGetCardStruct(psub->z);

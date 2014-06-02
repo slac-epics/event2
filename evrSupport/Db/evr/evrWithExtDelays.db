@@ -1,0 +1,86 @@
+record(er, "$(DEV):CTRL")
+{
+  field(DESC, "$(DEV) Control")
+  field(DTYP, "MRF Event Receiver")
+  field(OUT, "#C$(CARD) S0 @")
+  field(PINI, "YES")
+  field(ENAB, "YES")
+#Extended Delay Triggers
+  field(DG0E, "$(STATE)")
+  field(DG1E, "$(STATE)")
+  field(DG2E, "$(STATE)")
+  field(DG3E, "Enabled")
+  field(DG0W, "$(DG0W)")
+  field(DG1W, "$(DG1W)")
+  field(DG2W, "$(DG2W)")
+  field(DG3W, "$(WIDTH)")
+  field(DG0D, "$(DG0D)")
+  field(DG1D, "$(DG1D)")
+  field(DG2D, "$(DG2D)")
+  field(DG3D, "$(DELAY)")
+  field(DG0C, "$(DG0C)")
+  field(DG1C, "$(DG1C)")
+  field(DG2C, "$(DG2C)")
+  field(DG3C, "1")
+  field(DG0P, "$(DG0P)")
+  field(DG1P, "$(DG1P)")
+  field(DG2P, "$(DG2P)")
+  field(DG3P, "Normal")
+  field(FLNK, "$(EVRFLNK=$(EVR):Triggers)")
+}
+record(bi, "$(DEV):LINK")
+{
+  field(DESC, "$(DEV) Link Status")
+  field(DTYP, "MRF Event Receiver")
+  field(INP,  "#C$(CARD) S0 @")
+  field(PINI, "YES")
+  field(SCAN, "2 second")
+  field(ZSV, "MAJOR")
+  field(ZNAM, "OFF")
+  field(ONAM, "ON")
+}
+
+record(calc, "$(DEV):_CALC_STATUS")
+{
+  field(DESC, "Calc evr Status")
+  field(CALC, "L=0?0:E+1")
+  field(INPL, "$(DEV):LINK CPP MS")
+  field(INPE, "$(DEV):CTRL.ENAB CPP MS")
+  field(FLNK, "$(DEV):STATUS PP MS")
+}
+
+record(mbbi, "$(DEV):STATUS")
+{
+  field(DESC, "evr Status")
+  field(INP, "$(DEV):_CALC_STATUS NPP MS")
+  field(ZRVL, "0")
+  field(ZRST, "FAIL")
+  field(ZRSV, "MAJOR")
+  field(ONVL, "1")
+  field(ONST, "OFF")
+  field(ONSV, "MINOR")
+  field(TWVL, "2")
+  field(TWST, "ON")
+  field(TWSV, "NO_ALARM")
+  field(UNSV, "INVALID")
+}
+
+record(ai, "$(DEV):LINKERRCNT")
+{
+  field(DESC, "$(DEV) Link Errors")
+  field(INP, "$(DEV):CTRL.TAXI MS")
+  field(SCAN, "2 second")
+}
+
+record(calc, "$(DEV):LINKERR")
+{
+  field(DESC, "EVR Recent Link Errors")
+  field(INPA, "$(DEV):LINKERRCNT MS")
+  field(INPB, "$(DEV):LINKERR.LA")
+  field(SCAN, "2 second")
+  field(CALC, "A>B?A-B:B-A")
+  field(HIHI, "2")
+  field(HIGH, "1")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+}

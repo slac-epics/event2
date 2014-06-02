@@ -1,0 +1,8 @@
+#
+# EVR archive sample substitutions file
+#
+file archive_evr_SLAC.tpl-arch
+{
+	{	EVR	= $(EVR)	}
+}
+

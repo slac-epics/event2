@@ -1,0 +1,70 @@
+record(er, "$(EVR):CTRL") {
+  field(DESC, "$(EVR) Control")
+  field(DTYP, "MRF Event Receiver")
+  field(OUT, "#C$(C) S0 @")
+  field(PINI, "YES")
+  field(ENAB, "YES")
+  field(PRES, "1")
+#Extended Delay Triggers
+  field(DG0E, "$(DGE)")
+  field(DG1E, "$(DGE)")
+  field(DG2E, "$(DGE)")
+  field(DG3E, "$(DGE)")
+  field(DG0W, "$(DGW0)")
+  field(DG1W, "$(DGW1)")
+  field(DG2W, "$(DGW2)")
+  field(DG3W, "$(OTW)")
+  field(DG0D, "$(DGD0)")
+  field(DG1D, "$(DGD1)")
+  field(DG2D, "$(DGD2)")
+  field(DG3D, "$(OTD3)")
+  field(DG0C, "$(DGC0)")
+  field(DG1C, "$(DGC1)")
+  field(DG2C, "$(DGC2)")
+  field(DG3C, "1")
+  field(DG0P, "$(DGP0)")
+  field(DG1P, "$(DGP1)")
+  field(DG2P, "$(DGP2)")
+  field(DG3P, "Normal")
+}
+record(bi, "$(EVR):LINK") {
+  field(DESC, "$(EVR) Link Status")
+  field(DTYP, "MRF Event Receiver")
+  field(INP,  "#C$(C) S0 @")
+  field(PINI, "YES")
+  field(SCAN, "2 second")
+  field(ZSV, "MAJOR")
+  field(ZNAM, "OFF")
+  field(ONAM, "ON")
+}
+record(ai, "$(EVR):LINKERRCNT") {
+  field(DESC, "$(EVR) Link Errors")
+  field(INP, "$(EVR):CTRL.TAXI MS")
+  field(SCAN, "2 second")
+}
+record(calc, "$(EVR):LINKERR") {
+  field(DESC, "EVR Recent Link Errors")
+  field(INPA, "$(EVR):LINKERRCNT MS")
+  field(INPB, "$(EVR):LINKERR.LA")
+  field(SCAN, "2 second")
+  field(CALC, "A<B?A:A-B")
+  field(HIHI, "2")
+  field(HIGH, "1")
+  field(HHSV, "MAJOR")
+  field(HSV,  "MINOR")
+}
+record(bo, "$(EVR):LINKERRRST") {
+  field(DESC, "EVR Err Count Reset")
+  field(OUT, "$(EVR):CTRL.RXVR PP")
+  field(PINI, "YES")
+  field(DOL, "1")
+  field(OMSL, "closed_loop")
+  field(ZNAM, "NoReset")
+  field(ONAM, "Reset")
+  field(FLNK, "$(EVR):LINKERRRSTTOD")
+}
+record(stringin, "$(EVR):LINKERRRSTTOD") {
+  field(DESC, "EVR Err Count Reset Time")
+  field(DTYP, "Soft Timestamp")
+  field(INP, "@%m/%d/%y %H:%M:%S")
+}

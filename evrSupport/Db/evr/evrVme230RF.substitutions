@@ -46,21 +46,28 @@ file evrVme230.template
 # Required macros:
 #	EVR  - EVR PV prefix
 #	TRIG - Trigger PV prefix
+#	TYPE - Trigger type, DG for ext Delay pulse Generators, OT for OTP Triggers
 #	TCTL - Trigger control (enable) field, one of DG0E, DG1E, DG2E, OTP0, ..., OTPD
-#	TPOL - Trigger polarity field, one of DG0P, DG1P, DG2P, OT0P, ..., OTDP
-#	TWID - Trigger width field, one of DG0W, DG1W, DG2W, OT0W, ..., OTDW
-#	TDES - Trigger desired delay field, one of DG0D, DG1D, DG2D, OT0D, ..., OTDD
-#	TOUT - Trigger output field, one of OUT0, OUT1, OUT2, ..., OUTA, OUTB, OUTC, OUTD
 file evrDevTrig.db
 {
 	pattern
-	{	TRIG,			TCTL,	TPOL,	TWID,	TDES,	TOUT	}
-	{	$(EVR):TRIG0,	DG0E,	DG0P,	DG0W,	DG0D,	OUT0	}
-	{	$(EVR):TRIG1,	DG1E,	DG1P,	DG1W,	DG1D,	OUT1	}
-	{	$(EVR):TRIG2,	DG2E,	DG2P,	DG2W,	DG2D,	OUT2	}
-	{	$(EVR):TRIG3,	DG3E,	DG3P,	DG3W,	DG3D,	OUT3	}
+	{	N,	TRIG,				TYPE,	TCTL	}
+	{	0,	$(EVR):TRIG$(N),	DG,		DG$(N)E	}
+	{	1,	$(EVR):TRIG$(N),	DG,		DG$(N)E	}
+	{	2,	$(EVR):TRIG$(N),	DG,		DG$(N)E	}
+	{	3,	$(EVR):TRIG$(N),	OT,		OTP$(N)	}
 }
 
+# Make a set of event control records for each output trigger
+file evrPmcEvent.template
+{
+    pattern
+    { DEV,      	NAME,	ID,  P0,P1,P2,IRQ, EVRFLNK	}
+    { $(EVR):TRIG0,	EVENT,	140,  0, 0, 0, 1,	""	}
+    { $(EVR):TRIG1,	EVENT,	140,  0, 0, 0, 1,	""	}
+    { $(EVR):TRIG2,	EVENT,	140,  0, 0, 0, 1,	""	}
+    { $(EVR):TRIG3,	EVENT,	140,  0, 0, 0, 1,	""	}
+}
 
 #
 # Create 14 event controls

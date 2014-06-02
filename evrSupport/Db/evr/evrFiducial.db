@@ -9,7 +9,7 @@
 # includes these records via evrPatterAll.substitution
 # 
 
-record(longSub, "$(DEV):FIDUCIAL") {
+record(longSub, "$(DEV):FIDUCIAL:PROC") {
   field(DESC, "Fiducial Processing")
   field(INAM, "evrTimeProcInit")
   field(SNAM, "evrTimeProc")
@@ -24,7 +24,13 @@ record(fanout, "$(DEV):PATTERNFO") {
   field(LNK3, "$(DEV):MODIFIER5")
   field(LNK4, "$(LNK4)")
   field(LNK5, "$(LNK5)")
-  field(LNK6, "$(LNK6)")
+  field(LNK6, "$(DEV):Fiducial")
+}
+
+record( longin, "$(DEV):Fiducial")
+{
+  field( DESC, "Fiducial ID" )
+  field( INP,  "$(DEV):PATTERN.L NPP MS" )
 }
 
 record(longSub, "$(DEV):MODIFIER5") {
@@ -100,11 +106,11 @@ record(ao, "$(DEV):TREF") {
   field(DTYP, "Raw Soft Channel")
   field(OMSL, "supervisory")
   field(LINR, "SLOPE")
-  field(EGU, "nsec")
+  field(EGU, "ns")
   field(HOPR, "2.8E06")
   field(DRVH, "2.8E06")
   field(PINI, "YES")
-  field(ESLO, "8.40336692324359")
+  field(ESLO, "8.403361345")
   field(VAL, "$(VAL)")
   field(PREC, "0")
 }

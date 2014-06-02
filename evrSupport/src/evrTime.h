@@ -9,7 +9,7 @@
   Auth: 17 NOV-2006, drogind created 
  
 -----------------------------------------------------------------------------*/
-/* Following are contets of "copyright_SLAC.h" */
+/* Following are contents of "copyright_SLAC.h" */
 
 #ifndef COPYRIGHT_SLAC_H
 #define COPYRIGHT_SLAC_H
@@ -163,6 +163,7 @@ int evrTimeInit           (epicsInt32   firstTimeSlotIn,
                            epicsInt32   secondTimeSlotIn);
 int evrTime               (epicsUInt32  mpsModifier);
 int evrTimeCount          (unsigned int eventCode, unsigned int fiducial);
+long evrTimeEventProcessing(epicsInt16 eventNum);
 int evrTimePatternPutStart(evrMessagePattern_ts **pattern_pps,
                            unsigned long        **timeslot_pp,
                            unsigned long        **patternStatus_pp,
@@ -187,8 +188,10 @@ Argument:  next_event_to_watch...The event to watch from this call onwards
 */
 #define PEEK_PIPE_SIZE  10
 epicsUInt32 peek_fiducial (epicsUInt32*next_event_to_watch,epicsUInt32 *Ticks,epicsUInt32 );
+void evrEvent(	int    cardNo,	epicsInt16 eventNum,	epicsUInt32	timeNum	);
+void evrSend(	void * pCard,	epicsInt16 messageSize,	void	*	message	);
 
-extern int fiddbg; /* Temporary fiducial debug variable. */
+extern int fiddbg, fiddbgcnt; /* Temporary fiducial debug variable. */
 
 #ifdef __cplusplus
 }

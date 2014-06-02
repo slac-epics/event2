@@ -1,0 +1,94 @@
+#
+# This should be used for events for a second (or subsequent) EVR.
+# The problem is that evrTimeEvent only counts the first EVRs events,
+# so we need to count the others ourself.
+#
+record( erevent, "$(DEV):$(NAME)CTRL" )
+{
+  field( DESC, "$(NAME) Control" )
+  field( PINI, "YES" )
+  field( DTYP, "MRF Event Receiver" )
+  field( OUT, "#C$(CARD) S$(ID) @" )
+  field( ENAB, "Enabled" )
+  field( ENM, "$(ID)" )
+  field( OUT0, "$(P0=0)" )
+  field( OUT1, "$(P1=0)" )
+  field( OUT2, "$(P2=0)" )
+  field( VME,  "$(IRQ=0)" )
+  field(FLNK, "$(EVRFLNK=$(EVR):Triggers)")
+}
+
+record( event, "$(DEV):$(NAME)" )
+{
+  field( DESC, "$(NAME) Event" )
+  field( DTYP, "MRF Event Receiver" )
+  field( INP, "#C$(CARD) S$(ID) @" )
+  field( SCAN, "I/O Intr" )
+  field( PRIO, "HIGH" )
+  field( VAL,  "$(ID)" )
+  field( FLNK, "$(DEV):$(NAME)PRECNT" )
+}
+
+#
+# The precounter counts at full speed.
+#
+record(calc, "$(EVR):$(NAME)PRECNT") {
+  field(DESC, "$(NAME) Event Counter")
+  field(INPA, "$(EVR):$(NAME)PRECNT")
+  field(CALC, "A+1")
+  field(TSE,  "140")
+}
+
+#
+# The rest of these go at 0.5 Hz.
+#
+record(calc, "$(EVR):$(NAME)LCNT") {
+  field(DESC, "$(NAME) Event Counter")
+  field(INPA, "$(EVR):$(NAME)CNT")
+  field(CALC, "A")
+  field(TSE,  "140")
+  field(SCAN, "Event")
+  field(EVNT, "121")
+  field(FLNK, "$(EVR):$(NAME)CNT")
+}
+
+record(calc, "$(EVR):$(NAME)CNT") {
+  field(DESC, "$(NAME) Event Counter")
+  field(INPA, "$(EVR):$(NAME)PRECNT NPP")
+  field(CALC, "A")
+  field(TSE,  "140")
+  field(SCAN, "Passive")
+  field(FLNK, "$(EVR):$(NAME)RATE")
+}
+
+record(calc, "$(EVR):$(NAME)RATE") {
+  field(DESC, "$(NAME) Event Rate")
+  field(INPA, "$(EVR):$(NAME)CNT")
+  field(INPB, "$(EVR):$(NAME)LCNT")
+  field(CALC, "(A-B)/2")
+  field(TSE,  "140")
+}
+
+
+# This record returns a copy of the event code name
+# for the event code specified by it's EVNT field.
+# Update that field dynamically to fetch the name
+# for a different event code.
+record( stringin, "$(DEV):$(NAME)_NAME" )
+{
+  field( DESC,  "Get event code name" )
+  field( VAL,  "$(LNAME)" )
+  field( DTYP,  "MRF Event Receiver" )
+  field( INP,   "#C$(CARD) S$(ID) @" )
+  field( EVNT,  "$(ID)" )
+}
+
+record( longout, "$(DEV):$(NAME)_ID" )
+{
+  field( DESC,  "Event code for this control" )
+  field( SCAN,  ".5 second" )
+  field( OMSL,  "closed_loop" )
+  field( DOL,	"$(DEV):$(NAME)CTRL.ENM NPP MS" )
+  field( OUT,	"$(DEV):$(NAME)_NAME.EVNT" )
+  field( FLNK,	"$(DEV):$(NAME)_NAME.EVNT PP MS" )
+}

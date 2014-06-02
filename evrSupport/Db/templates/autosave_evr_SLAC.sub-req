@@ -1,0 +1,9 @@
+#
+# EVR autosave sample substitutions file
+#
+file autosave_evr_SLAC.tpl-req
+{
+	{	EVR	= $(EVR)	}
+}
+
+

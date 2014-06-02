@@ -1418,12 +1418,6 @@ void ErDevEventFunc (ErCardStruct *pCard, epicsInt16 EventNum, epicsUInt32 Time)
     */
     if (pCard->EventFunc != NULL)
         (*(USER_EVENT_FUNC)pCard->EventFunc)(pCard->Cardno, EventNum, Time);
-
-   /*---------------------
-    * Schedule processing for any event-driven records
-    */
-    scanIoRequest (pCard->IoScanPvt[EventNum]);
-
 }/*end ErDevEventFunc()*/
 
 /**************************************************************************************************/

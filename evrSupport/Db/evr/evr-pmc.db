@@ -1,0 +1,70 @@
+# On the PMC version of the EVR there are only 4 trigger outputs, no need to
+# enable everything...
+#
+# Variables:
+#	DEV        = Your EVR name
+#	TRIG_WIDTH = Width of all triggers generated.
+#	TRIG_DELAY = Delay to apply between event and trigger.
+# 		WARNING: TRIG_DELAY MUST BE NON-0 IF YOU USE DGX
+#	TRIG0_SRC = Source of the first trigger output on the PMC card (see below)
+#	TRIG1_SRC = Source of the second trigger output on the PMC card (see below)
+#	TRIG2_SRC = Source of the third trigger output on the PMC card (see below)
+#
+# For the trigger sources (TRIGX_SRC) the following are valid:
+# 0 = Extended Delay Trigger 0 (DG0)
+# 1 = Extended Delay Trigger 1 (DG1)
+# 2 = Extended Delay Trigger 2 (DG2)
+# 3 = Extended Delay Trigger 3 (DG3)
+# 4 = Trigger 0 (TRG0)
+# 5 = Trigger 1 (TRG1)
+# 11 = Programmable Width Pulse 0 (OTP0)
+# 12 = Programmable Width Pulse 1 (OTP1)
+# 13 = Programmable Width Pulse 2 (OTP2)
+# 14 = Programmable Width Pulse 3 (OTP3)
+# 63 = Disabled
+#
+# In your st.cmd you also need to include a call to ErConfigure:
+# > # Configure EVR if it exists.
+# > # Choose the proper configuration - PMC or VME.
+# > # Note - see README_evrTest for hardware setup and instructions for PMC 
+# > # one-time configuration.
+# > #    VME: ErConfigure(<instance>,<address>,<vector>,<level>,0)
+# > #    PMC: ErConfigure(<instance>,    0    ,    0   ,   0   ,1)
+# > #
+# > #    where instance = EVR instance, starting from 0, incrementing by 1
+# > #                     for each subsequent card
+# > #    and   address  = VME card address, starting from 0x300000, 
+# > #                     incrementing by 0x100000 for each subsequent card
+# > #                     (0 for PMC)
+# > #    and   vector   = VME interrupt vector, starting from 0x60, 
+# > #                     incrementing by 0x02 for each subsequent card
+# > #                     (0 for PMC)
+# > #    and   level    = VME interrupt level (set to 4 - can be the same 
+# > #                     for all EVRs)
+# > #                     (0 for PMC)
+# > #    and   0        = VME
+# > #       or 1        = PMC
+# > ErConfigure(0,0x000000,0x00,0,1)  # PMC type
+
+
+record(er, "$(DEV):CTRL")
+{
+  field(DESC, "$(DEV) Control")
+  field(DTYP, "MRF Event Receiver")
+  field(OUT, "#C$(CARD) S0 @")
+  field(PINI, "YES")
+  field(ENAB, "YES")
+  field(DG0E, "Enabled")
+  field(DG1E, "Enabled")
+  field(DG2E, "Enabled")
+  field(DG3E, "Enabled")
+  field(DG0W, "$(WIDTH)")
+  field(DG1W, "$(WIDTH)")
+  field(DG2W, "$(WIDTH)")
+  field(DG3W, "$(WIDTH)")
+  field(DG0D, "$(DELAY)")
+  field(DG1D, "$(DELAY)")
+  field(DG2D, "$(DELAY)")
+  field(DG3D, "$(DELAY)")
+  field(FLNK, "$(EVRFLNK=$(EVR):Triggers)")
+}

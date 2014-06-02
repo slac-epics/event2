@@ -1,4 +1,5 @@
-record(longSub, "$(EVR):Triggers") {
+record(longSub, "$(EVR):Triggers")
+{
   field(DESC, "Event Triggers")
   field(INAM, "evrTriggerInit")
   field(SNAM, "evrTriggerProc")
@@ -7,11 +8,12 @@ record(longSub, "$(EVR):Triggers") {
   field(Z, "$(CARD)")
 }
 
-record(fanout, "$(EVR):TrigUpdate") {
+record(fanout, "$(EVR):TrigUpdate")
+{
   field(DESC, "$(EVR) Trig Fanout")
   field(PINI, "YES")
-  field(LNK1, "$(TU0)")
-  field(LNK2, "$(TU1)")
-  field(LNK3, "$(TU2)")
-  field(LNK4, "$(TU3)")
+  field(LNK1, "$(TU0=)")
+  field(LNK2, "$(TU1=)")
+  field(LNK3, "$(TU2=)")
+  field(LNK4, "$(TU3=)")
 }
