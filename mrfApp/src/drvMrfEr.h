@@ -64,11 +64,7 @@
 #include <dbScan.h>             /* EPICS Database scan routines and definitions                   */
 
 #include <mrfCommon.h>          /* MRF Event system constants and definitions                     */
-
-/**************************************************************************************************/
-/*  Configuration Constants                                                                       */
-/**************************************************************************************************/
-
+#include <evrmemmap.h>          /* For EVR_NUM_PULSES */
 
 /*
  *  Firmware revisions
@@ -78,22 +74,21 @@
  * This firmware revision has been verified to use the VME compatible
  * register map and work with drvMrfEr.c
  */
-#define	PMC_EVR_FIRMWARE_REV_VME1	0xF305
+#define EVR_FIRMWARE_REV_VME1   0xF305
 
 /*
  * These firmware revisions are known to use the modular memory map
  * and are intended for use on linux based systems with drvLinuxEvr.c
  */
-#define	PMC_EVR_FIRMWARE_REV_LINUX1	0x11000002
-#define	PMC_EVR_FIRMWARE_REV_LINUX2	0x11000003
-#define	PMC_EVR_FIRMWARE_REV_LINUX3	0x11000103
-#define PMC_EVR_FIRMWARE_REV_LINUX4	0x17000005
-#define PMC_EVR_FIRMWARE_REV_LINUX5	0x10000003
-#define	PMC_EVR_FIRMWARE_REV_LINUX6	0x11000303
-
-#define PMC_EVR_FIRMWARE_REV_SLAC1      0x1F000000
-#define PMC_EVR_FIRMWARE_REV_SLAC2	0x1FD00023
-#define PMC_EVR_FIRMWARE_REV_SLAC3	0x1FD10023
+#define EVR_FIRMWARE_REV_LINUX1 0x11000002
+#define EVR_FIRMWARE_REV_LINUX2 0x11000003
+#define EVR_FIRMWARE_REV_LINUX3 0x11000103
+#define EVR_FIRMWARE_REV_LINUX4 0x17000005
+#define EVR_FIRMWARE_REV_LINUX5 0x10000003
+#define EVR_FIRMWARE_REV_LINUX6 0x11000303
+#define EVR_FIRMWARE_REV_SLAC1  0x1F000000
+#define EVR_FIRMWARE_REV_SLAC2  0x1FD00023
+#define EVR_FIRMWARE_REV_SLAC3  0x1FD10023
 
 /**************************************************************************************************/
 /*  Configuration Constants                                                                       */
@@ -113,7 +108,9 @@
 /*---------------------
  * Define the maximum size of the distributed data buffer
  */
+#ifndef	EVR_MAX_BUFFER
 #define EVR_MAX_BUFFER          MRF_MAX_DATA_BUFFER
+#endif /* EVR_MAX_BUFFER */
 
 /*---------------------
  * Define the maximum number of event receiver cards allowed
@@ -130,6 +127,8 @@
 /*  Event Receiver Hardware Limits                                                                */
 /**************************************************************************************************/
 
+/* Should this depend on the EVR model?             */
+/* i.e. EVR_NUM_DG_EVR230   4, EVR_NUM_DG_SLAC  12  */
 #define EVR_NUM_DG      12      /* Number of Programmable Delay (DG) channels                     */
 #define EVR_NUM_TRG      7      /* Number of Trigger Event (TRG) channels                         */
 #define EVR_NUM_OTL      7      /* Number of Level Output (OTL) channels                          */
@@ -155,6 +154,7 @@
 #define EVR_MAP_CHAN_13   0x2000        /* Enable Output Channel 13                               */
 #define EVR_MAP_TS_LATCH  0x4000        /* Enable Timestamp Latch on Event                        */
 #define EVR_MAP_INTERRUPT 0x8000        /* Enable Interrupt on Event                              */
+#define EVR_MAP_N_CHAN_MAX  16          /* Max number of output channels, including interrupt     */
 
 /**************************************************************************************************/
 /*  Error Numbers Passed To Event Receiver ERROR_FUNC Routines                                    */
@@ -266,7 +266,7 @@ void           ErDBuffIrq (ErCardStruct*, epicsBoolean);
 void           ErEventIrq (ErCardStruct*, epicsBoolean);
 void           ErFlushFifo (ErCardStruct*);
 ErCardStruct  *ErGetCardStruct (int);
-epicsUInt16    ErGetFpgaVersion (ErCardStruct*);
+epicsUInt32    ErGetFpgaVersion (ErCardStruct*);
 epicsUInt32    ErGetSecondsSR (ErCardStruct*);
 epicsBoolean   ErGetRamStatus (ErCardStruct*, int);
 epicsStatus    ErGetTicks (int, epicsUInt32*);
@@ -288,6 +288,9 @@ void           ErSetTickPre (ErCardStruct*, epicsUInt16);
 void           ErTaxiIrq (ErCardStruct*, epicsBoolean);
 void           ErProgramRam (ErCardStruct*, epicsUInt16*, int);
 void           ErUpdateRam (ErCardStruct*, epicsUInt16*);
+char        *  FormFactorToString(  int formFactor );
+int            FpgaVersionToFormFactor( epicsUInt32 fpgaVersion );
+
 
 /**************************************************************************************************/
 /*  Event Receiver Card Structure Definition                                                      */
@@ -304,6 +307,7 @@ typedef void (*DBUFF_FUNC) (void);
 #define PMC_EVR      (1)
 #define EMBEDDED_EVR (2)
 #define CPCI_EVR     (3)
+#define PCIE_EVR     (4)
 #define SLAC_EVR     (0xF)
 
 /*---------------------
@@ -312,9 +316,9 @@ typedef void (*DBUFF_FUNC) (void);
 struct ErCardStruct {
     ELLNODE         Link;                   /* Linked list node structure                         */
     void           *pRec;                   /* Pointer to the ER record                           */
-	/* Changed name from Card -> Cardno to make sure nobody uses
+    /* Changed name from Card -> Cardno to make sure nobody uses
      * this field with the old semantics.
-	 */
+     */
     epicsInt16      Cardno;                 /* Logical card number                                */
     epicsInt16      Slot;                   /* Slot number where card was found                   */
     epicsInt32      IrqVector;              /* IRQ Vector 21nov2006 dayle chg'd from 16 to accom PMC*/
@@ -332,12 +336,16 @@ struct ErCardStruct {
     epicsBoolean    DBuffError;             /* True if there was a data buffer error              */
     IOSCANPVT       DBuffReady;             /* Trigger record processing when data buffer ready   */
     epicsUInt16     ErEventTab [EVR_NUM_EVENTS];     /* Current view of the event mapping RAM     */
+    epicsUInt16     ErEventCnt[EVR_NUM_EVENTS][EVR_MAP_N_CHAN_MAX]; /* # of enabled events per ch */
     epicsUInt32     EnableMask;             /* Triggers that should actually be enabled           */
     IOSCANPVT       IoScanPvt  [EVENT_DELAYED_IRQ+1];/* Event-based record processing structures  */
     epicsUInt32     DataBuffer [EVR_MAX_BUFFER/4];   /* Buffer for data stream                    */
     char            intMsg     [EVR_INT_MSG_LEN];    /* Buffer for interrupt debug messages       */
     char            FormFactor;              /* "VME_EVR" or "PMC_EVR" */
-    char	    EventCodeDesc[EVR_NUM_EVENTS][MAX_STRING_SIZE+1];	/* Event code description */
+    char            EventCodeDesc[EVR_NUM_EVENTS][MAX_STRING_SIZE+1];   /* Event code description */
+    epicsUInt32     maxDelay [EVR_MAX_PULSES];   /* Max delay for each pulse gen	*/
+    epicsUInt32     maxPresc [EVR_MAX_PULSES];   /* Max prescale for each pulse gen	*/
+    epicsUInt32     maxWidth [EVR_MAX_PULSES];   /* Max width for each pulse gen	*/
     long long       drp;                     /* Last data buffer read pointer */
     long long       erp;                     /* Next event read pointer */
     epicsUInt32     FPGAVersion;             /* The board version register */

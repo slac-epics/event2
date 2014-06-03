@@ -16,6 +16,8 @@
  */
 
 #include <sys/ioctl.h>
+#define DEFINE_READ_EVR
+#define INLINE_READ_EVR static
 #define  EVR_DRIVER_SUPPORT_MODULE   /* Indicates we are in the driver support module environment */
 #include "drvMrfEr.h"
 #undef	EVR_MAX_BUFFER
@@ -32,8 +34,6 @@
 #include <endian.h>
 #include <unistd.h>
 #include <byteswap.h>
-#define DEFINE_READ_EVR
-#define INLINE_READ_EVR static
 #include "erapi.h"
 
 #define DEVNODE_NAME_BASE	"/dev/er"
@@ -351,17 +351,17 @@ static int ErConfigure (
 	default:
 	    printf( "ErConfigure: WARNING: Unknown firmware revision on PMC EVR!\n" );
 	    break;
-	case PMC_EVR_FIRMWARE_REV_SLAC1:
-	case PMC_EVR_FIRMWARE_REV_SLAC2:
-	case PMC_EVR_FIRMWARE_REV_SLAC3:
-	case PMC_EVR_FIRMWARE_REV_LINUX1:
-	case PMC_EVR_FIRMWARE_REV_LINUX2:
-	case PMC_EVR_FIRMWARE_REV_LINUX3:
-	case PMC_EVR_FIRMWARE_REV_LINUX4:
-	case PMC_EVR_FIRMWARE_REV_LINUX5:
-	case PMC_EVR_FIRMWARE_REV_LINUX6:
+	case EVR_FIRMWARE_REV_SLAC1:
+	case EVR_FIRMWARE_REV_SLAC2:
+	case EVR_FIRMWARE_REV_SLAC3:
+	case EVR_FIRMWARE_REV_LINUX1:
+	case EVR_FIRMWARE_REV_LINUX2:
+	case EVR_FIRMWARE_REV_LINUX3:
+	case EVR_FIRMWARE_REV_LINUX4:
+	case EVR_FIRMWARE_REV_LINUX5:
+	case EVR_FIRMWARE_REV_LINUX6:
 	    break;
-	case PMC_EVR_FIRMWARE_REV_VME1:
+	case EVR_FIRMWARE_REV_VME1:
 	    fprintf ( stderr,
 		   "\nErConfigure ERROR: This PMC EVR has firmware for a RTEMS based system\n"
 		   "and needs new firmware to be used under Linux!\n" );
@@ -525,6 +525,25 @@ epicsUInt16 ErEnableIrq (ErCardStruct *pCard, epicsUInt16 Mask)
 }
 
 /**************************************************************************************************
+|* ErFinishDrvInit () -- Complete the Event Receiver Board Driver Initialization
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      AfterRecordInit = (int)          0 if the routine is being called before record
+|*                                         initialization has started.
+|*                                       1 if the routine is being called after record
+|*                                         initialzation completes.
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      Always returns OK
+|*
+\**************************************************************************************************/
+epicsStatus ErFinishDrvInit(int AfterRecordInit)
+{
+	return OK;
+}
+
+/**************************************************************************************************
 |* ErDBuffIrq () -- Enable or Disable Event Receiver "Data Buffer Ready" Intrrupts
 |*-------------------------------------------------------------------------------------------------
 |* INPUT PARAMETERS:
@@ -616,12 +635,12 @@ ErCardStruct *ErGetCardStruct(int Card)
 |*      version   = (epicsUInt16)    The FPGA version of the requested Event Receiver Card.
 |*
 \**************************************************************************************************/
-epicsUInt16 ErGetFpgaVersion(ErCardStruct *pCard)
+epicsUInt32 ErGetFpgaVersion(ErCardStruct *pCard)
 {	
 	epicsUInt32 version;
 
 	version = pCard->FPGAVersion;
-	return ((version >> 16) & 0xFF00) | (version & 0xFF);
+	return version;
 }
 
 /**************************************************************************************************

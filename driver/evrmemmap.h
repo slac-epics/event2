@@ -1,3 +1,5 @@
+#ifndef EVRMEMMAP_H
+#define EVRMEMMAP_H
 /*
   erapi.h -- Definitions for Micro-Research Event Receiver
              Application Programming Interface
@@ -359,3 +361,4 @@ INLINE_READ_EVR u32 __read_evr_register(int fd, int offset);
     __read_evr_region32(fd, offsetof(struct MrfErRegs, rname), buf, size)
 #define READ_EVR_REGION16(fd, rname, buf, size)  \
     __read_evr_region16(fd, offsetof(struct MrfErRegs, rname), buf, size)
+#endif
