@@ -444,6 +444,17 @@ record( calcout, "$(TRIG):TDES_CALC_LOW" )
 	field( EGU,  "ns" )
 	field( PREC, "2" )
 	field( OUT,  "$(TRIG):TDES.LOW PP NMS" )
+	field( FLNK,  "$(TRIG):TDES_CALC_LOPR PP NMS" )
+}
+
+record( ao, "$(TRIG):TDES_CALC_LOPR" )
+{
+	field( DESC, "TDES low operator calc" )
+	field( OMSL, "closed_loop" )
+	field( DOL,  "$(TRIG):TDES_CALC_LOW NPP MS" )
+	field( EGU,  "ns" )
+	field( PREC, "2" )
+	field( OUT,  "$(TRIG):TDES.LOPR NPP NMS" )
 }
 
 # Grab the delay tick count for easy edm viewing w/ EGU of ticks

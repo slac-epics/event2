@@ -823,19 +823,19 @@ void ErSetDg(ErCardStruct *pCard, int Channel, epicsBoolean Enable,
 			epicsUInt32 Delay, epicsUInt32 Width, 
 			epicsUInt16 Prescaler, epicsBoolean Pol)
 {
-	if ( ErDebug >= 1 )
-		printf( "%s: EVR %d-%d %s DG %d: pre=%u, del=%u, wid=%u, pol=%s.\n",
-				__func__, pCard->Cardno, pCard->Slot,
-				( Enable ? "Enable" : "Disable" ),
-				Channel, Prescaler, Delay, Width,
-				( Pol ? "Nml" : "Inv" )	);
-
 	if( Channel < 0 || Channel >= EVR_NUM_DG ) {
 		errlogPrintf("%s: invalid parameter: Channel = %d.\n", __func__, Channel);
                 return;
 	}
-        if ( Channel >= MAX_DG ) /* Don't complain if SLAC-valid channel but we aren't SLAC! */
-            return;
+	if ( Channel >= MAX_DG ) /* Don't complain if SLAC-valid channel but we aren't SLAC! */
+		return;
+
+	if ( ErDebug >= 1 )
+		printf( "%s: EVR card %d, slot %d %s DG %2d: pre=%u, del=%u, wid=%u, pol=%s.\n",
+				__func__, pCard->Cardno, pCard->Slot,
+				( Enable ? "Enable " : "Disable" ),
+				Channel, Prescaler, Delay, Width,
+				( Pol ? "Inv" : "Nml" )	);
 
 	epicsMutexLock(pCard->CardLock);
 	if(Enable) {

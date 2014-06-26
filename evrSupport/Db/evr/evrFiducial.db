@@ -27,10 +27,25 @@ record(fanout, "$(DEV):PATTERNFO") {
   field(LNK6, "$(DEV):Fiducial")
 }
 
+# 120Hz fiducial PV
 record( longin, "$(DEV):Fiducial")
 {
   field( DESC, "Fiducial ID" )
   field( INP,  "$(DEV):PATTERN.L NPP MS" )
+  field( TSEL, "$(DEV):EventCode:40:Count.TIME" )
+}
+
+# 360Hz fiducial PV
+# The .NAME field reference is a filler, since we only grab the timestamp
+record( genSub, "$(DEV):360HzFiducial")
+{
+  field( DESC, "360Hz Fiducial ID" )
+  field( SNAM, "evrTimeGetFiducial" )
+  field( INPA, "$(DEV):EventCode:1:Count.NAME CP" )
+  field( TSE,  "-2" )
+# TODO: Make evrTimeGetFiducial support the TSEL link
+# It'll replace both the last two lines w/ this
+# field( TSEL, "$(DEV):EventCode:1:Count" )
 }
 
 record(longSub, "$(DEV):MODIFIER5") {
@@ -113,6 +128,53 @@ record(ao, "$(DEV):TREF") {
   field(ESLO, "8.403361345")
   field(VAL, "$(VAL)")
   field(PREC, "0")
+}
+
+# $(DEV):EventCode:1 moved here to evrFiducial.db from
+# being an evrEventCode.template substitution
+# so we can customize it for extracting the fiducial PV
+record( event, "$(DEV):EventCode:1" )
+{
+  field( DESC,  "Fiducial Event" )
+  field( DTYP,  "MRF Event Receiver" )
+  field( INP,   "#C$(CARD) S1 @" )
+  field( PRIO,  "HIGH" )
+  field( SCAN,  "I/O Intr" )
+  field( TSE,   "1" )
+  field( FLNK,  "$(DEV):EventCode:1:Count" )
+}
+
+record( longSub, "$(DEV):EventCode:1:Count" )
+{
+  field( DESC, "Fiducial Event Counter" )
+  field( SNAM, "evrTimeEvent" )
+  field( BRSV, "INVALID" )
+  field( INPA, "1" )
+  field( TSE,  "1" )
+  field( FLNK,  "$(DEV):360HzFiducial" )
+}
+
+record( sub, "$(DEV):EventCode:1:Rate" )
+{
+  field( DESC, "Event Rate" )
+  field( SNAM, "evrTimeRate" )
+  field( BRSV, "INVALID" )
+  field( SCAN, "Event" )
+  field( EVNT, "121" )
+  field( PRIO, "MEDIUM" )
+  field( INPD, "$(DELY=0)" )
+  field( INPE, "1" )
+  field( EGU,  "Hz" )
+  field( PREC, "1" )
+  field( HIHI, "$(HIHI=360.5)" )
+  field( HHSV, "MAJOR" )
+  field( HIGH, "$(HIGH=360.5)" )
+  field( HSV,  "MINOR" )
+  field( LOLO, "$(LOLO=359.5)" )
+  field( LLSV, "MAJOR" )
+  field( LOW,  "$(LOW=359.5)" )
+  field( LSV,  "MINOR" )
+  field( HOPR, "$(HIHI=360.5)" )
 }
 
 #! Further lines contain data used by VisualDCT

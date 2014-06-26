@@ -162,7 +162,10 @@ void evrSend(void *pCard, epicsInt16 messageSize, void *message)
  
   Name: evrEvent
 
-  Abs: Called by the ErIrqHandler to handle event code 1 (fiducial) processing.
+  Abs: Called by the ErIrqHandler to handle event code processing.
+       Handles both event code 1, the fiducial, and also other event codes.
+	   Under RTEMS, event code 1 is processed first.
+	   No such guarantee for RedHat linux
 
   Rem: Keep this routine to a minimum, so that CPU not blocked 
        too long processing each interrupt.
@@ -189,21 +192,26 @@ void evrEvent(int cardNo, epicsInt16 eventNum, epicsUInt32 timeNum)
       evrMessageNoDataError(EVR_MESSAGE_FIDUCIAL);
     }
   } else {
-#define USE_EVENT_MSG_Q 1
-#if USE_EVENT_MSG_Q
-    /*
-     * MCB - No.  This is conflicting with our usual way of doing things!
-     */
 	  /*---------------------
 	   * Schedule processing for any event-driven records
 	   */
   	  EventMessage eventMessage;
 	  eventMessage.eventNum  = eventNum;
 	  epicsMessageQueueSend( eventTaskQueue, &eventMessage, sizeof(eventMessage) );
-#endif	/* USE_EVENT_MSG_Q */
   }
 
   /* Increment the eventCode counter */
+  /* TODO: I'm not sure this is the right place to call this function
+   * For event code 1, we've just signaled the semaphore above, but as we're
+   * in interupt context here, this call to evrTimeCount() will always finish
+   * before the evrTask() calls evrTime() to advance the pattern buffers.
+   * For other event codes, it's a race to see if evrTask() can handle the
+   * pattern buffers before the other event code interrupts occur.
+   * This should rarely happen under RTEMS, but can easily happen under RedHat linux.
+   * The problem with moving this call is we don't have a way to pass timeNum, the fiducial timestamp
+   * from the event timestamp FIFO, on to be processed by the eventTaskQueue.
+   * Could it be as simple as adding a fiducial field to EventMessage?
+   */
   evrTimeCount((unsigned int)eventNum, (unsigned int) timeNum);
 }
 
@@ -279,7 +287,9 @@ static int evrTask()
 
     evrMessageLap(EVR_MESSAGE_FIDUCIAL);
     if (status == epicsEventWaitOK) {
+	  /* Note: evrPattern locks evrTimeRWMutex but releases it */
       evrPattern(0, &mpsModifier);/* N-3           */
+	  /* Note: evrTime also locks evrTimeRWMutex but under linux evrEventTask could run before it takes the lock */
       evrTime(mpsModifier);       /* Move pipeline */
       /* Call routines that the user has registered for 360hz processing */
       if (evrRWMutex_ps && (!epicsMutexLock(evrRWMutex_ps))) {
@@ -293,10 +303,9 @@ static int evrTask()
       }   
       evrMessageEnd(EVR_MESSAGE_FIDUCIAL);
 
-#if USE_EVENT_MSG_Q
-      /* MCB - No, this is done elsewhere! */
-      epicsMessageQueueSend(eventTaskQueue, &eventMessage, sizeof(eventMessage));
-#endif	/* USE_EVENT_MSG_Q */
+      /* Post fiducial eventMessage to eventTaskQueue */
+      epicsMessageQueueSend( eventTaskQueue, &eventMessage, sizeof(eventMessage) );
+
       messagePending = epicsMessageQueuePending(eventTaskQueue);
       evrMessageQ(EVR_MESSAGE_FIDUCIAL, messagePending);
 
@@ -348,10 +357,8 @@ static int evrRecord()
 }
 
 
-#if USE_EVENT_MSG_Q
 /*
- * MCB - No.  We are doing all of this at other points in the code, and we really don't
- * want to move it here.
+ * This thread drains the eventTaskQueue
  */
 static int evrEventTask(void)
 {
@@ -382,7 +389,6 @@ static int evrEventTask(void)
 
     return 0;
 }
-#endif	/* USE_EVENT_MSG_Q */
 
 /*=============================================================================
                                                          
@@ -454,15 +460,12 @@ int evrInitialize()
     return -1;
   }
 
-#if USE_EVENT_MSG_Q
-  /* MCB - We don't need this. */
   if(!epicsThreadCreate("evrEventTask", epicsThreadPriorityHigh,
                         epicsThreadGetStackSize(epicsThreadStackMedium),
                         (EPICSTHREADFUNC)evrEventTask,0)) {
     errlogPrintf("evrInitialize: unable to create the evrEvent task\n");
     return -1;
   }
-#endif	/* USE_EVENT_MSG_Q */
 
   if (!epicsThreadCreate("evrRecord", epicsThreadPriorityScanHigh+10,
                          epicsThreadGetStackSize(epicsThreadStackMedium),

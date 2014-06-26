@@ -338,70 +338,70 @@ epicsStatus ErProcess (erRecord  *pRec)
             enable |= 1 << 3;
         ipov |= 1 << 3;
     }
-    if (pRec->ip4e) {
-        if (pRec->dg4e || pRec->ld4e)
-            ErSetDg (pCard, 4, pRec->dg4e, pRec->dg4d, pRec->dg4w, pRec->dg4c, pRec->dg4p);
-        pRec->ld4e = pRec->dg4e;
-        if (pRec->dg4e)
-            enable |= 1 << 4;
-        ipov |= 1 << 4;
-    }
-    if (pRec->ip5e) {
-        if (pRec->dg5e || pRec->ld5e)
-            ErSetDg (pCard, 5, pRec->dg5e, pRec->dg5d, pRec->dg5w, pRec->dg5c, pRec->dg5p);
-        pRec->ld5e = pRec->dg5e;
-        if (pRec->dg5e)
-            enable |= 1 << 5;
-        ipov |= 1 << 5;
-    }
-    if (pRec->ip6e) {
-        if (pRec->dg6e || pRec->ld6e)
-            ErSetDg (pCard, 6, pRec->dg6e, pRec->dg6d, pRec->dg6w, pRec->dg6c, pRec->dg6p);
-        pRec->ld6e = pRec->dg6e;
-        if (pRec->dg6e)
-            enable |= 1 << 6;
-        ipov |= 1 << 6;
-    }
-    if (pRec->ip7e) {
-        if (pRec->dg7e || pRec->ld7e)
-            ErSetDg (pCard, 7, pRec->dg7e, pRec->dg7d, pRec->dg7w, pRec->dg7c, pRec->dg7p);
-        pRec->ld7e = pRec->dg7e;
-        if (pRec->dg7e)
-            enable |= 1 << 7;
-        ipov |= 1 << 7;
-    }
-    if (pRec->ip8e) {
-        if (pRec->dg8e || pRec->ld8e)
-            ErSetDg (pCard, 8, pRec->dg8e, pRec->dg8d, pRec->dg8w, pRec->dg8c, pRec->dg8p);
-        pRec->ld8e = pRec->dg8e;
-        if (pRec->dg8e)
-            enable |= 1 << 8;
-        ipov |= 1 << 8;
-    }
-    if (pRec->ip9e) {
-        if (pRec->dg9e || pRec->ld9e)
-            ErSetDg (pCard, 9, pRec->dg9e, pRec->dg9d, pRec->dg9w, pRec->dg9c, pRec->dg9p);
-        pRec->ld9e = pRec->dg9e;
-        if (pRec->dg9e)
-            enable |= 1 << 9;
-        ipov |= 1 << 9;
-    }
-    if (pRec->ipae) {
-        if (pRec->dgae || pRec->ldae)
-            ErSetDg (pCard, 10, pRec->dgae, pRec->dgad, pRec->dgaw, pRec->dgac, pRec->dgap);
-        pRec->ldae = pRec->dgae;
-        if (pRec->dgae)
-            enable |= 1 << 10;
-        ipov |= 1 << 10;
-    }
-    if (pRec->ipbe) {
-        if (pRec->dgbe || pRec->ldbe)
-            ErSetDg (pCard, 11, pRec->dgbe, pRec->dgbd, pRec->dgbw, pRec->dgbc, pRec->dgbp);
-        pRec->ldbe = pRec->dgbe;
-        if (pRec->dgbe)
-            enable |= 1 << 11;
-        ipov |= 1 << 11;
-    }
+	if (pRec->ip4e) {
+		if (pRec->dg4e || pRec->ld4e)
+			ErSetDg (pCard, 4, pRec->dg4e, pRec->dg4d, pRec->dg4w, pRec->dg4c, pRec->dg4p);
+		pRec->ld4e = pRec->dg4e;
+		if (pRec->dg4e)
+			enable |= 1 << 4;
+		ipov |= 1 << 4;
+	}
+	if (pRec->ip5e) {
+		if (pRec->dg5e || pRec->ld5e)
+			ErSetDg (pCard, 5, pRec->dg5e, pRec->dg5d, pRec->dg5w, pRec->dg5c, pRec->dg5p);
+		pRec->ld5e = pRec->dg5e;
+		if (pRec->dg5e)
+			enable |= 1 << 5;
+		ipov |= 1 << 5;
+	}
+	if (pRec->ip6e) {
+		if (pRec->dg6e || pRec->ld6e)
+			ErSetDg (pCard, 6, pRec->dg6e, pRec->dg6d, pRec->dg6w, pRec->dg6c, pRec->dg6p);
+		pRec->ld6e = pRec->dg6e;
+		if (pRec->dg6e)
+			enable |= 1 << 6;
+		ipov |= 1 << 6;
+	}
+	if (pRec->ip7e) {
+		if (pRec->dg7e || pRec->ld7e)
+			ErSetDg (pCard, 7, pRec->dg7e, pRec->dg7d, pRec->dg7w, pRec->dg7c, pRec->dg7p);
+		pRec->ld7e = pRec->dg7e;
+		if (pRec->dg7e)
+			enable |= 1 << 7;
+		ipov |= 1 << 7;
+	}
+	if (pRec->ip8e) {
+		if (pRec->dg8e || pRec->ld8e)
+			ErSetDg (pCard, 8, pRec->dg8e, pRec->dg8d, pRec->dg8w, pRec->dg8c, pRec->dg8p);
+		pRec->ld8e = pRec->dg8e;
+		if (pRec->dg8e)
+			enable |= 1 << 8;
+		ipov |= 1 << 8;
+	}
+	if (pRec->ip9e) {
+		if (pRec->dg9e || pRec->ld9e)
+			ErSetDg (pCard, 9, pRec->dg9e, pRec->dg9d, pRec->dg9w, pRec->dg9c, pRec->dg9p);
+		pRec->ld9e = pRec->dg9e;
+		if (pRec->dg9e)
+			enable |= 1 << 9;
+		ipov |= 1 << 9;
+	}
+	if (pRec->ipae) {
+		if (pRec->dgae || pRec->ldae)
+			ErSetDg (pCard, 10, pRec->dgae, pRec->dgad, pRec->dgaw, pRec->dgac, pRec->dgap);
+		pRec->ldae = pRec->dgae;
+		if (pRec->dgae)
+			enable |= 1 << 10;
+		ipov |= 1 << 10;
+	}
+	if (pRec->ipbe) {
+		if (pRec->dgbe || pRec->ldbe)
+			ErSetDg (pCard, 11, pRec->dgbe, pRec->dgbd, pRec->dgbw, pRec->dgbc, pRec->dgbp);
+		pRec->ldbe = pRec->dgbe;
+		if (pRec->dgbe)
+			enable |= 1 << 11;
+		ipov |= 1 << 11;
+	}
 
     if (pRec->ipov != ipov) {
         pRec->ipov = ipov;
@@ -1386,24 +1386,6 @@ void ErDevEventFunc (ErCardStruct *pCard, epicsInt16 EventNum, epicsUInt32 Time)
     */
     if (pCard->EventFunc != NULL)
         (*(USER_EVENT_FUNC)pCard->EventFunc)(pCard->Cardno, EventNum, Time);
-
-#define USE_EVENT_MSG_Q 1
-#if USE_EVENT_MSG_Q == 0
-   /*---------------------
-    * Schedule processing for any event-driven records
-	* This notifies EPICS base to add callback requests
-	* for all records whose SCAN field is Event and whose
-	* EVNT field is EventNum.
-    */
-    post_event( EventNum );
-
-   /*---------------------
-    * Schedule processing for our EVR card's I/O Scan records
-	* This adds callback requests
-	* for all eventRecord PV's whose SCAN field is "I/O Intr"
-    */
-    scanIoRequest (pCard->IoScanPvt[EventNum]);
-#endif	/* USE_EVENT_MSG_Q */
 
 }/*end ErDevEventFunc()*/
 

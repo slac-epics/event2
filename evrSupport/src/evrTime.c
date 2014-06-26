@@ -648,7 +648,7 @@ int evrTimeInit(epicsInt32 firstTimeSlotIn, epicsInt32 secondTimeSlotIn)
           memset(&evr_as[idx].pattern_s, 0, sizeof(evrMessagePattern_ts));
           evr_as[idx].pattern_s.time = mod720time;
           evr_as[idx].timeStatus     = epicsTimeERROR;
-          evr_aps[idx] = evr_as + idx;
+          evr_aps[idx] = &evr_as[idx];
         }
         /* Init EDEF pattern array */
         for (idx=0; idx<EDEF_MAX; idx++) {
@@ -1108,8 +1108,17 @@ static long evrTimeRate(subRecord *psub)
         ------------------- ----------- ---------- ----------------------------
         unsigned int        eventCode    read       Event Code
 
-  Rem:  This routine is called at interrupt level.
-  
+  Rem:  This routine is currently called from interrupt level by evrEvent(),
+  		which is called once for each event code interrupt.
+        When evrEvent() is called from the ISR for event code 1, the fiducial,
+		it signals a semaphore that the evrTask() thread is waiting on.
+		After evrTask() calls evrPattern() to extract the pattern and
+		evrTime() to advance the pipeline, it posts an eventMessage for event code 1
+		to the eventTaskQueue.
+		For other event codes, the eventMessage is posted directly from evrEvent in the interrupt context.
+        TODO: I think we need to move the call to evrTimeCount() for all event codes
+		from evrEvent() to evrEventTask() which processes all eventMessage's which
+		are posted to eventTaskQueue.
   Ret:  -1=Failed; 0 = Success
 
 ==============================================================================*/
@@ -1122,13 +1131,11 @@ int evrTimeCount(unsigned int eventCode, unsigned int fiducial)
         pevrTime->count++;
     else
         pevrTime->count = 1;
-#ifndef __rtems__foo
 	if( fiducial > PULSEID_MAX )
 		fiducial = PULSEID_INVALID;
     pevrTime->fidq[pevrTime->fidW] = fiducial;
     if (++pevrTime->fidW == MAX_TS_QUEUE)
         pevrTime->fidW = 0;
-#endif  /* __rtems__ */
     return epicsTimeOK;
   }
   return epicsTimeERROR;
@@ -1169,17 +1176,6 @@ static long evrTimeEvent(longSubRecord *psub)
         return epicsTimeERROR;
     }
 
-#define USE_EVENT_MSG_Q 1
-#if USE_EVENT_MSG_Q == 0
-    /*
-     * Only modify the event time if this is the FLNK of an event.
-     * We don't actually know this, but we assume it if we're passive.
-     */
-    if (psub->scan == SCAN_PASSIVE) {
-        evrTimeEventProcessing( psub->a );
-    }
-#endif  /* USE_EVENT_MSG_Q */
-
     if (!evrTimeRWMutex_ps || epicsMutexLock(evrTimeRWMutex_ps)) {
         return epicsTimeERROR;
     }
@@ -1207,7 +1203,7 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
 {
     evrTime_ts      	    *   pevrTime    	= NULL;
     static epicsTimeStamp   *   pLastGoodTS   	= NULL;
-    int                         curFiducial	= PULSEID_INVALID;
+    int                         curFiducial	    = PULSEID_INVALID;
     epicsTimeStamp              curTimeStamp	= mod720time;
     int                         curTimeStatus	= epicsTimeERROR;
     epicsTimeStamp              newTimeStamp	= mod720time;
@@ -1281,18 +1277,18 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
                 pevrTime->nFidQBad++;
             }
         else if (   curTimeStatus == epicsTimeOK
-                    &&  curFiducial	  == fidqFiducial	)
+                &&  curFiducial	  == fidqFiducial	)
             {
                 /*
                  * We're perfectly in sync.  Yay us.
                  */
                 pLastGoodTS		= &pevrTime->time;
-                newTimeStamp	= EVR_APS_TIME( evrTimeCurrent );
+                newTimeStamp	= curTimeStamp;
                 newTimeStatus	= epicsTimeOK;
                 pevrTime->nFidQOnTime++;
             }
-        else if (	EVR_APS_STATUS(  evrTimeNext1 )	== epicsTimeOK
-                        &&  EVR_APS_PULSEID( evrTimeNext1 ) == fidqFiducial	)
+        else if (   EVR_APS_STATUS(  evrTimeNext1 ) == epicsTimeOK
+                &&  EVR_APS_PULSEID( evrTimeNext1 ) == fidqFiducial )
             {
                 /*
                  * We're here a little early, and the other thread hasn't rotated
@@ -1305,7 +1301,7 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
             }
         else	if (	pLastGoodTS	  != NULL
 			||	(	curTimeStatus == epicsTimeOK
-                                        &&  curFiducial   != PULSEID_INVALID ) )
+				&&  curFiducial   != PULSEID_INVALID ) )
             {
                 /*
                  * fidq fiducial is valid, but doesn't match evrTimeCurrent or evrTimeNext1
@@ -1336,6 +1332,8 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
 #endif
 
                 /* Update fidq stats */
+				/* TODO: This isn't quite right, as we may be using lastGoodFiducial
+				 * from an earlier interrupt and thus our fidDiff can be zero here.  */
                 if( pevrTime->nFidQLateMin > fidDiff )
                     pevrTime->nFidQLateMin = fidDiff;
                 if( pevrTime->nFidQLateMax < fidDiff )
@@ -1517,6 +1515,13 @@ int evrTimePatternPutEnd(int modulo720Flag)
 
 long evrTimeGetFiducial(struct genSubRecord *psub)
 {
+#if 0
+    // TODO: Try this to use TSEL as the timestamp link
+	// It's the normal EPICS way of doing this and works
+	// for CA as well as local db links.
+	recGblGetTimeStamp( psub );
+	return psub->time.nsec & 0x1ffff;
+#else
     struct dbCommon *precord;
     if (!psub->dpvt) {
         struct dbAddr addr;
@@ -1529,6 +1534,7 @@ long evrTimeGetFiducial(struct genSubRecord *psub)
     if (psub->tse == epicsTimeEventDeviceTime)
         psub->time = precord->time;
     return precord->time.nsec & 0x1ffff;
+#endif
 }
 
 extern void eventDebug(int arg1, int arg2)

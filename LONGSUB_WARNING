@@ -1,5 +1,11 @@
 The longSub record value fields a-z are unsigned long, *not*
 EpicsUInt32.
+### NOTE: I don't think this is true.
+### Looks like they are now, and always have been epicsUInt32, and
+### a sizeof(epicsUInt32) printf shows 4 bytes.
+### However, it looks like mcb fixed the internal value handling in rev 10075,
+### 2/7/2012, which was previously using long instead of epicsUInt32.
+### bhill 6/25/2014
 
 This produces a problem in evrPatternProc, when we pass in a pointer
 to the "d" field to evrTimeGetFromPipeline and expect it to be treated

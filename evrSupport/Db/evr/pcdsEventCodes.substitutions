@@ -55,8 +55,8 @@ file evrEventCode.template
 	{ $(DEV),  164, 11923, 120.5, 120.5,  -1,   -1,  "Test Burst" }
 	{ $(DEV),  165, 11924, 120.5, 120.5,  -1,   -1,  "Spare" }
 # Beam-Independent Time Slot Triggers
-#   Fiducial
-	{ $(DEV),    1,     0, 360.5, 360.5, 359.5, 359.5, "Fiducial"    }
+#   Fiducial moved to evrFiducial.db
+#	{ $(DEV),    1,     0, 360.5, 360.5, 359.5, 359.5, "Fiducial"    }
 #   360Hz
 	{ $(DEV),    9, 12950, 360.5, 360.5, 359.5, 359.5, "360Hz"       }
 #   Modulo36 base event code
