@@ -46,8 +46,6 @@ DB += pcdsEventCodes.substitutions
 
 # Complete DB files for each of our common EVR boards
 DB += evrPmc230.db
-DB += evrVme230.db
-DB += evrVme230RF.db
 DB += evrSLAC.db
 
 # A record to disable/enable a particular trigger.
@@ -56,8 +54,6 @@ DB += evrTrigCtrl.db
 # Sample substitution files for each
 # of our common EVR boards
 DB_INSTALLS += evrPmc230.substitutions
-DB_INSTALLS += evrVme230.substitutions
-DB_INSTALLS += evrVme230RF.substitutions
 DB_INSTALLS += evrSLAC.substitutions
 
 include $(TOP)/configure/RULES
