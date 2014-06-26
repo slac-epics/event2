@@ -14,11 +14,9 @@ include $(TOP)/configure/CONFIG
 # XTOD templates
 DB_INSTALLS += basic-evr.substitutions
 DB_INSTALLS += evrPmc230.template
-DB_INSTALLS += evrVme230.template
 DB_INSTALLS += evrSLAC.template
 DB_INSTALLS += evrPmcEvent.template
 DB_INSTALLS += evrSlaveEvent.template
-DB_INSTALLS += evrVmeEvent.template
 DB_INSTALLS += evrEventCtrl.template
 DB_INSTALLS += evrEventRate.template
 DB_INSTALLS += evrFiducial.template
@@ -39,7 +37,6 @@ ARCHIVE += archive_evr_SLAC.archive
 ARCHIVE += archive_evr_SLAC.sub-arch
 ARCHIVE += archive_evr_SLAC.tpl-arch
 ARCHIVE += archive_pmc_evr.tpl-arch
-ARCHIVE += archive_vme_evr.tpl-arch
 
 #----------------------------------------------------
 # Create and install (or just install)
@@ -52,7 +49,6 @@ REQ += autosave_evr_SLAC.req
 REQ += autosave_evr_SLAC.sub-req
 REQ += autosave_evr_SLAC.tpl-req
 REQ += autosave_pmc_evr.tpl-req
-REQ += autosave_vme_evr.tpl-req
 
 include $(TOP)/configure/RULES
 #----------------------------------------
