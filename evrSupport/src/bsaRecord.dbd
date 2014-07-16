@@ -128,4 +128,8 @@ recordtype(bsa) {
                 promptgroup(GUI_OUTPUT)
                 interest(1)
         }
+	field(INC,DBF_LONG) {
+		prompt("Increment")
+		special(SPC_NOMOD)
+	}
 }

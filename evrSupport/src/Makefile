@@ -26,6 +26,7 @@ INC+=bsa.h
 
 DBDINC += longSubRecord
 DBDINC += bsaRecord
+DBDINC += bsacompressRecord
 
 DBD += evrSupport.dbd
 DBD += evrEvInvariantDelay.dbd
@@ -47,6 +48,7 @@ evrSupport_SRCS += evrMessage.c
 evrSupport_SRCS += bsa.c
 evrSupport_SRCS += longSubRecord.c
 evrSupport_SRCS += bsaRecord.c
+evrSupport_SRCS += bsacompressRecord.c
 evrSupport_SRCS += drvEvr.c
 evrSupport_LIBS += $(EPICS_BASE_IOC_LIBS)
 

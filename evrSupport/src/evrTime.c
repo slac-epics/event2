@@ -137,6 +137,7 @@ typedef struct {
 
 #ifdef BSA_DEBUG
 int bsa_debug_mask = 0; /* BSA debugging mask */
+int bsa_debug_level = 0;
 #endif
 
 /* evr_aps easy access macros */
@@ -154,7 +155,7 @@ unsigned long evrActiveFiducialTime = 0;
 
 /* Event definition (BSA) patterns */
 static evrTimeEdef_ts      edef_as[EDEF_MAX][MAX_EDEF_TIME];
-static int                 edef_idx[EDEF_MAX];     /* The next write location! */
+static unsigned int        edef_idx[EDEF_MAX];     /* The next write location! */
 
 /* Event code timestamps */
 static evrTime_ts          eventCodeTime_as[MRF_NUM_EVENTS+1];
@@ -366,8 +367,10 @@ int evrTimeGetFromEdefTime(unsigned int     edefIdx,
                            epicsTimeStamp  *edefTime_ps,
                            epicsTimeStamp  *edefTimeInit_ps,
                            int             *edefAvgDone_p,
-                           epicsEnum16     *edefSevr_p)
+                           epicsEnum16     *edefSevr_p,
+                           unsigned int    *edefGen_p)
 {
+  unsigned int first;
   int idx, i; 
   evrTimeEdef_ts *edef;
 
@@ -375,7 +378,8 @@ int evrTimeGetFromEdefTime(unsigned int     edefIdx,
   /* if the r/w mutex is valid, and we can lock with it, read requested time index */
   if (epicsMutexLock(evrTimeRWMutex_ps)) return epicsTimeERROR;
 
-  idx = (edef_idx[edefIdx] - 1) & MAX_EDEF_TIME_MASK; /* Back one == last written! */
+  first = edef_idx[edefIdx] - 1;      /* Back one == last written! */
+  idx = first & MAX_EDEF_TIME_MASK;
   edef = &edef_as[edefIdx][idx];
 
   for (i = 0; i < MAX_EDEF_TIME - 2; i++) {
@@ -384,9 +388,10 @@ int evrTimeGetFromEdefTime(unsigned int     edefIdx,
           *edefTimeInit_ps = edef->timeInit;
           *edefAvgDone_p   = edef->avgdone;
           *edefSevr_p      = edef->sevr;
+          *edefGen_p       = first - i;
           epicsMutexUnlock(evrTimeRWMutex_ps);
 #ifdef BSA_DEBUG
-          if ((1 << edefIdx) & bsa_debug_mask)
+          if (((1 << edefIdx) & bsa_debug_mask) && bsa_debug_level >= 2)
               printf("%08x:%08x BSA%d, slot %d.\n", edefTime_ps->secPastEpoch, edefTime_ps->nsec, edefIdx, idx);
 #endif
           return epicsTimeOK;
@@ -395,7 +400,7 @@ int evrTimeGetFromEdefTime(unsigned int     edefIdx,
                   (edef->time.nsec < edefTime_ps->nsec))) {
           epicsMutexUnlock(evrTimeRWMutex_ps);
 #ifdef BSA_DEBUG
-          if ((1 << edefIdx) & bsa_debug_mask) {
+          if (((1 << edefIdx) & bsa_debug_mask) && bsa_debug_level >= 2) {
               int idx2 = (edef_idx[edefIdx] - 1) & MAX_EDEF_TIME_MASK; /* Back one == last written! */
               evrTimeEdef_ts *edef2 = &edef_as[edefIdx][idx2];
 
@@ -413,7 +418,7 @@ int evrTimeGetFromEdefTime(unsigned int     edefIdx,
   }
   epicsMutexUnlock(evrTimeRWMutex_ps);
 #ifdef BSA_DEBUG
-  if ((1 << edefIdx) & bsa_debug_mask)
+  if (((1 << edefIdx) & bsa_debug_mask) && bsa_debug_level >= 2)
       printf("%08x:%08x BSA%d not found.\n", edefTime_ps->secPastEpoch, edefTime_ps->nsec, edefIdx);
 #endif
   return epicsTimeERROR; /* No match! */
@@ -801,7 +806,7 @@ int evrTime(epicsUInt32 mpsModifier)
           if (evr_ps->pattern_s.edefInitMask & edefMask) {
             edef->timeInit = evr_ps->pattern_s.time;
 #ifdef BSA_DEBUG
-            if (bsa_debug_mask & edefMask)
+            if ((bsa_debug_mask & edefMask) && bsa_debug_level >= 2)
                 printf("%08x:%08x EDEF%d slot %d, initialized.\n",
                        edef->timeInit.secPastEpoch, edef->timeInit.nsec, idx, idx2);
 #endif            
@@ -821,7 +826,7 @@ int evrTime(epicsUInt32 mpsModifier)
               edef->sevr = INVALID_ALARM;
             }
 #ifdef BSA_DEBUG
-            if (bsa_debug_mask & edefMask)
+            if ((bsa_debug_mask & edefMask) && bsa_debug_level >= 2)
                 printf("%08x:%08x EDEF%d slot %d, done=%d.\n", edef->time.secPastEpoch, edef->time.nsec, idx, idx2, edef->avgdone);
 #endif            
         }

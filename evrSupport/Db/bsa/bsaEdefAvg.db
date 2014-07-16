@@ -23,7 +23,7 @@ record(bsa, "$(DEV):$(SECN)$(MDID)") {
   field(RRES, "$(DEV):$(SECN)RMSHST$(MDID).RES")
 }
 
-record(compress, "$(DEV):$(SECN)HST$(MDID)") {
+record(bsacompress, "$(DEV):$(SECN)HST$(MDID)") {
   field(DESC, "$(SECN) Hst for EDEF $(DESC)")
   field(INP, "$(DEV):$(SECN)$(MDID)")
   field(ALG, "Circular Buffer")
@@ -36,7 +36,7 @@ record(compress, "$(DEV):$(SECN)HST$(MDID)") {
   field(FLNK, "$(DEV):$(SECN)CNTHST$(MDID)")
 }
 
-record(compress, "$(DEV):$(SECN)CNTHST$(MDID)") {
+record(bsacompress, "$(DEV):$(SECN)CNTHST$(MDID)") {
   field(DESC, "HST #Pulses avged-EDEF $(DESC)")
   field(INP, "$(DEV):$(SECN)$(MDID).CNT")
   field(ALG, "Circular Buffer")
@@ -47,7 +47,7 @@ record(compress, "$(DEV):$(SECN)CNTHST$(MDID)") {
   field(FLNK, "$(DEV):$(SECN)RMSHST$(MDID)")
 }
 
-record(compress, "$(DEV):$(SECN)RMSHST$(MDID)") {
+record(bsacompress, "$(DEV):$(SECN)RMSHST$(MDID)") {
   field(DESC, "HST RMS-EDEF $(DESC)")
   field(INP, "$(DEV):$(SECN)$(MDID).RMS")
   field(ALG, "Circular Buffer")

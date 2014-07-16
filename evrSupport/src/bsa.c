@@ -56,6 +56,7 @@
 
 #include <string.h>        /* strcmp */
 #include <stdlib.h>        /* calloc */
+#include <stdio.h>
 #include <math.h>          /* sqrt   */
 
 #include "bsaRecord.h"        /* for struct bsaRecord      */
@@ -87,6 +88,7 @@ typedef struct {
   double              val;       /* average value     */
   double              rms;       /* RMS of above      */
   int                 cnt;       /* # in average      */
+  int                 inc;       /* If not averaging, increment in EDEFs since last. */
   int                 readcnt;   /* # total readouts  */
   epicsTimeStamp      time;      /* time of average   */
   unsigned long       nochange;  /* Same time stamp counter */
@@ -102,7 +104,7 @@ typedef struct {
   IOSCANPVT           ioscanpvt; /* to process records using above fields */
   epicsEnum16         stat;      /* max status so far */
   epicsEnum16         sevr;      /* max severity so far*/
-
+  unsigned int        lastgen;   /* The last EDEF index we received. */
 } bsa_ts;
 
 /* BSA devices */
@@ -151,6 +153,7 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
   int             edefAvgDone;
   int             noAverage;
   int             idx;
+  unsigned int    edefGen;
   int             status = 0;
   epicsEnum16     edefSevr;
   bsa_ts         *bsa_ps;
@@ -165,16 +168,16 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
   for (idx = 0; idx < EDEF_MAX; idx++) {
     /* Get EDEF information. */
     if (evrTimeGetFromEdefTime(idx, secnTime_ps, &edefTimeInit_s,
-                               &edefAvgDone, &edefSevr)) {
+                               &edefAvgDone, &edefSevr, &edefGen)) {
       continue;
     }
     
     bsa_ps = &((bsaDevice_ts *)dev_ps)->bsa_as[idx];
     /* Check if the EDEF has initialized and wipe out old values if it has */
     if ((edefTimeInit_s.secPastEpoch != bsa_ps->timeInit.secPastEpoch) ||
-        (edefTimeInit_s.secPastEpoch != bsa_ps->timeInit.secPastEpoch)) {
+        (edefTimeInit_s.nsec != bsa_ps->timeInit.nsec)) {
 #ifdef BSA_DEBUG
-        if (bsa_debug_mask & (1 << idx))
+        if ((bsa_debug_mask & (1 << idx)) && bsa_debug_level >= 1)
             printf("%08x:%08x EDEF%d %s reset, old epoch %08x:%08x\n",
                    edefTimeInit_s.secPastEpoch, edefTimeInit_s.nsec, idx, name,
                    bsa_ps->timeInit.secPastEpoch, bsa_ps->timeInit.nsec);
@@ -242,13 +245,23 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
     if (edefAvgDone) { /* values when avg is done */
       bsa_ps->val  = bsa_ps->avg;
       bsa_ps->cnt  = bsa_ps->avgcnt;
-      bsa_ps->time = bsa_ps->timeData;
       if (bsa_ps->avgcnt <= 1) {
         bsa_ps->rms = 0.0;
+        bsa_ps->inc = (int)(edefGen - bsa_ps->lastgen);
+        /* We never skip very many of these.  If we do, we must be starting up! */
+        if (bsa_ps->inc > 3)
+            bsa_ps->inc = 1;
+#ifdef BSA_DEBUG
+        if (bsa_ps->inc != 1 && (bsa_debug_mask & (1 << idx)))
+            printf("%08x:%08x -> %08x:%08x for edef %d -> inc = %d!\n",
+                   bsa_ps->time.secPastEpoch, bsa_ps->time.nsec,
+                   bsa_ps->timeData.secPastEpoch, bsa_ps->timeData.nsec, idx, bsa_ps->inc);
+#endif
       } else {
         bsa_ps->rms = bsa_ps->var/(double)bsa_ps->avgcnt;
         bsa_ps->rms = sqrt(bsa_ps->rms);
       }
+      bsa_ps->time = bsa_ps->timeData;
       bsa_ps->avgcnt = 0;
       bsa_ps->avg    = 0;
       if (bsa_ps->ioscanpvt) {
@@ -256,12 +269,13 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
         else                  bsa_ps->readFlag = 1;
         scanIoRequest(bsa_ps->ioscanpvt);
 #ifdef BSA_DEBUG
-        if (bsa_debug_mask & (1 << idx))
+        if ((bsa_debug_mask & (1 << idx)) && bsa_debug_level >= 1)
             printf("%08x:%08x EDEF%d %s signaled.\n",
                    bsa_ps->time.secPastEpoch, bsa_ps->time.nsec, idx, name);
 #endif
       }
     }
+    bsa_ps->lastgen = edefGen;
   }
   epicsMutexUnlock(bsaRWMutex_ps);
   return status;
@@ -302,6 +316,9 @@ int bsaSecnInit(char  *secnName,
   if (!dev_ps) {
     dev_ps = calloc(1,sizeof(bsaDevice_ts));
     if (dev_ps) {
+      int i;
+      for (i = 0; i < EDEF_MAX; i++)
+          dev_ps->bsa_as[i].lastgen--;
       strcpy(dev_ps->name, secnName);
       ellAdd(&bsaDeviceList_s,&dev_ps->node);
     }
@@ -370,7 +387,7 @@ static long read_bsa(bsaRecord *pbsa)
 
   /* Lock and update */
 #ifdef BSA_DEBUG
-  if (bsa_debug_mask & (1 << (pbsa->edef - 1)))
+  if ((bsa_debug_mask & (1 << (pbsa->edef - 1))) && bsa_debug_level >= 1)
       printf("BSA%d %s res=%d, read=%d, reset=%d\n", pbsa->edef - 1, pbsa->name, pbsa->res, bsa_ps->readFlag, bsa_ps->reset);
 #endif
   if (bsa_ps && bsaRWMutex_ps && (!epicsMutexLock(bsaRWMutex_ps))) {
@@ -386,6 +403,11 @@ static long read_bsa(bsaRecord *pbsa)
       pbsa->val  = bsa_ps->val;
       pbsa->rms  = bsa_ps->rms;
       pbsa->cnt  = bsa_ps->cnt;
+      pbsa->inc  = bsa_ps->inc;
+#ifdef BSA_DEBUG
+      if (bsa_ps->inc > 1 && (bsa_debug_mask & (1 << (pbsa->edef - 1))))
+          printf("EDEF %d: inc == %d!\n", pbsa->edef - 1, pbsa->inc);
+#endif
       pbsa->time = bsa_ps->time;
       pbsa->noch = bsa_ps->nochange;
       pbsa->nore = bsa_ps->noread;
@@ -406,6 +428,7 @@ static long read_bsa(bsaRecord *pbsa)
     pbsa->val  = 0.0;
     pbsa->rms  = 0.0;
     pbsa->cnt  = 0;
+    pbsa->inc  = 0;
     epicsTimeGetEvent(&pbsa->time, 0);
     recGblSetSevr(pbsa,READ_ALARM,INVALID_ALARM);
   } else if (pbsa->cnt == 0) {
@@ -442,7 +465,7 @@ static long init_bsa_record(bsaRecord *pbsa)
 
   if ((pbsa->edef <= 0) || (pbsa->edef > EDEF_MAX)) {
     errlogPrintf("init_bsa_record (%s): Invalid EDEF %d\n",
-                 pbsa->name, pbsa->edef);
+                 pbsa->name, pbsa->edef - 1);
     return S_db_badField;
   }
   pbsa->dpvt = &((bsaDevice_ts *)pbsa->dpvt)->bsa_as[pbsa->edef-1];
@@ -537,14 +560,17 @@ epicsExportAddress(dset,devBsa);
 
 #ifdef BSA_DEBUG
 /* iocsh command: bsadebug */
-const iocshArg bsadebugArg0 = {"Level" , iocshArgInt};
-const iocshArg *const bsadebugArgs[1] = {&bsadebugArg0};
-const iocshFuncDef bsadebugDef = {"bsadebug", 1, bsadebugArgs};
+const iocshArg bsadebugArg0 = {"Mask" , iocshArgInt};
+const iocshArg bsadebugArg1 = {"Level" , iocshArgInt};
+const iocshArg *const bsadebugArgs[2] = {&bsadebugArg0, &bsadebugArg1};
+const iocshFuncDef bsadebugDef = {"bsadebug", 2, bsadebugArgs};
 
 void bsadebugCall(const iocshArgBuf * args)
 {
     printf("Changing bsa_debug_mask from 0x%05x to 0x%05x\n", bsa_debug_mask, args[0].ival);
+    printf("Changing bsa_debug_level from %d to %d\n", bsa_debug_level, args[1].ival);
     bsa_debug_mask = args[0].ival;
+    bsa_debug_level = args[1].ival;
 }
 #endif
 
