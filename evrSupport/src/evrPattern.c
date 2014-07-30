@@ -63,11 +63,11 @@
 
 #define  MAX_PATTERN_DELTA_TIME  100 /* sec  or 10? */
 
-static unsigned long msgCount         = 0; /* # waveforms processed since boot/reset */ 
-static unsigned long msgRolloverCount = 0; /* # time msgCount reached EVR_MAX_INT    */ 
+static unsigned long patternCount     = 0; /* # fiducial patterns processed since boot/reset */ 
+static unsigned long patternRollover  = 0; /* # time patternCount reached EVR_MAX_INT    */ 
 static unsigned long patternErrCount  = TIMESLOT_DIFF;
                                            /* # PATTERN errors in-a-row */
-static unsigned long invalidErrCount  = 0; /* # bad PATTERN waveforms   */
+static unsigned long invalidErrCount  = 0; /* # invalid PATTERN waveforms   */
 static unsigned long invalidMPSCount  = 0; /* # bad MPS modifiers       */
 static unsigned long syncErrCount     = 0; /* # out-of-sync patterns    */
 static unsigned long invalidTimeCount = 0; /* # invalid timestamps      */
@@ -99,7 +99,7 @@ unsigned long        evrDeltaTimeMax  = MAX_PATTERN_DELTA_TIME;
   
 =============================================================================*/ 
 
-int evrPattern(int timeout, epicsUInt32 *mpsModifier_p)
+int evrPattern(int fidMsgTimedOut, epicsUInt32 *mpsModifier_p)
 {
   evrMessagePattern_ts   *pattern_ps;
   evrMessageReadStatus_te evrMessageStatus;
@@ -116,12 +116,13 @@ int evrPattern(int timeout, epicsUInt32 *mpsModifier_p)
   int                     idx;
 
   /* Keep a count of messages and reset before overflow */
-  if (msgCount < EVR_MAX_INT) {
-    msgCount++;
+  if ( patternCount < EVR_MAX_INT ) {
+    patternCount++;
   } else {
-    msgRolloverCount++;
-    msgCount = 0;
+    patternRollover++;
+    patternCount = 0;
   }
+
   /* Get system time and check NTP status */
   epicsTimeGetCurrent(&currentTime);
 #ifdef	USE_NTP
@@ -134,17 +135,20 @@ int evrPattern(int timeout, epicsUInt32 *mpsModifier_p)
   if (evrTimePatternPutStart(&pattern_ps, &timeslot_p,
                              &patternStatus_p, &mod720time_ps))
     return -1;
+
   /* if we cannot read the message or the message has an invalid header */
   /*   set pattern to invalid, and                                      */
   /*   evr timestamp status to invalid                                  */
   prevTime = pattern_ps->time;
   evrMessageStatus = evrMessageRead(EVR_MESSAGE_PATTERN,
                                     (evrMessage_tu *)pattern_ps);
-  if (timeout || evrMessageStatus ||
+  if (fidMsgTimedOut || evrMessageStatus ||
       (pattern_ps->header_s.type    != EVR_MESSAGE_PATTERN) ||
-      (pattern_ps->header_s.version != EVR_MESSAGE_PATTERN_VERSION)) {
-    if (patternErrCount < TIMESLOT_DIFF) patternErrCount++;
-    if (timeout) {
+      (pattern_ps->header_s.version != EVR_MESSAGE_PATTERN_VERSION))
+  {
+    if (patternErrCount < TIMESLOT_DIFF)
+		patternErrCount++;
+    if (fidMsgTimedOut) {
       *patternStatus_p = PATTERN_TIMEOUT;
       patternErrCount  = TIMESLOT_DIFF;
       timeoutCount++;
@@ -171,12 +175,13 @@ int evrPattern(int timeout, epicsUInt32 *mpsModifier_p)
         if (ntpStatus) {
           patternErrCount = 0;
         } else {
-          if (patternErrCount < TIMESLOT_DIFF) patternErrCount++;
+          if (patternErrCount < TIMESLOT_DIFF)
+		  	patternErrCount++;
           *patternStatus_p = PATTERN_INVALID_TIMESTAMP;
         }
       } else
         patternErrCount = 0; /* It's different, but close enough for government work. */
-      
+ 
   } else {
     patternErrCount = 0;
   }
@@ -401,10 +406,11 @@ static long evrPatternProc(longSubRecord *psub)
      
   Outputs:
        C - Number of unsynchronized patterns
-       D - Number of waveforms processed by this subroutine
+       D - Number of fiducial patterns processed by this subroutine
        E - Number of times D has rolled over
-       F - Number of bad waveforms
+       F - Number of invalid pattern waveforms
            G,H,I,K,L,M,V,W,X,Z are pop'ed by a call to evrMessageCounts()
+		   They're also output by evrTimeDiag() to $(EVR):FIDUCIALDIAG.{T,U,V,W,X,Y,Z}
        G - Number of times ISR wrote a message
        H - Number of times G has rolled over
        I - Number of times ISR overwrote a message
@@ -414,7 +420,7 @@ static long evrPatternProc(longSubRecord *psub)
        M - Number of check sum errors
        N - abs(Event - System Time Diff) (# nsec)
        O - Number of timeouts
-       P - Spare
+       P - PatternErrCount
        Q - Number of invalid MPS modifiers
        R - NTP status, 0 = OK, 1 = Error
        S to U - Spares
@@ -433,13 +439,15 @@ static long evrPatternProc(longSubRecord *psub)
 static long evrPatternState(longSubRecord *psub)
 {
   psub->val = psub->a;
-  psub->d = msgCount;          /* # waveforms processed since boot/reset */
-  psub->e = msgRolloverCount;  /* # time msgCount reached EVR_MAX_INT    */
-  psub->f = invalidErrCount;
+  /* Don't use b, as it's the reset input */
   psub->c = syncErrCount;
+  psub->d = patternCount;       /* # fiducial patterns processed since boot/reset */
+  psub->e = patternRollover;    /* # time patternCount reached EVR_MAX_INT    */
+  psub->f = invalidErrCount;
   psub->j = invalidTimeCount;
   psub->n = deltaTimeMax;
   psub->o = timeoutCount;
+  psub->p = patternErrCount;	/* New output */
   psub->q = invalidMPSCount;
   psub->r = ntpStatus;
   evrMessageCounts(EVR_MESSAGE_PATTERN,
@@ -447,8 +455,8 @@ static long evrPatternState(longSubRecord *psub)
                    &psub->m,&psub->v,&psub->w,&psub->x,&psub->z);
   if (psub->b > 0) {
     psub->b               = 0;
-    msgCount              = 0;
-    msgRolloverCount      = 0;
+    patternCount          = 0;
+    patternRollover       = 0;
     invalidErrCount       = 0;
     syncErrCount          = 0;
     invalidTimeCount      = 0;

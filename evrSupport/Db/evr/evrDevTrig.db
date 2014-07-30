@@ -69,12 +69,13 @@ record( bo, "$(TRIG):TCTL" )
 {
 	field( DESC, "Trigger Control" )
 	field( DTYP, "Soft Channel" )
-	field( OUT, "$(EVR):CTRL.$(TCTL) PP" )
+	field( OUT,  "$(EVR):CTRL.$(TCTL) PP" )
 	field( ZNAM, "Disabled" )
 	field( ONAM, "Enabled" )
 	field( OMSL, "supervisory" )
-	field( VAL, "$(CTL=1)" )
+	field( VAL,  "$(CTL=1)" )
 	field( PINI, "YES" )
+	field( FLNK, "$(TRIG):FW_EC_SEQ" )
 	info( autosaveFields, "DESC VAL ZNAM ONAM ZSV OSV" )
 }
 

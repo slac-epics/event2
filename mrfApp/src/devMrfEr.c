@@ -507,7 +507,7 @@ epicsStatus ErEventInitRecord (ereventRecord *pRec)
     * Initialize the record structure
     */
     pRec->dpvt = (void *)pCard; /* Save the address of the card structure */
-    pRec->lenm = -1;      	/* Force setting on first process         */
+    pRec->lenm = -1;      		/* Force setting on first process         */
     pRec->lout = 0;             /* Clear the 'last' event mask            */
 
     return (0);
@@ -630,13 +630,14 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
                               pRec->name, pRec->lenm, pRec->enm);
 			/* Turn off the mask bits for the previous event number */ 
 			if ((pRec->lenm < EVR_NUM_EVENTS) && (pRec->lenm > 0)) {
-				ErUpdateEventTab( pCard, pRec->lenm, pRec->lout, 0 );	/* lout is prior Mask */
-				ErUpdateEventTab( pCard, pRec->enm,  0, Mask );
-				LoadRam = epicsTrue;
+				ErUpdateEventTab( pCard, pRec->lenm, pRec->lout, 0    );	/* lout is prior Mask */
+				ErUpdateEventTab( pCard, pRec->enm,  0,          Mask );
+            	pRec->lout	= Mask;
+				LoadRam		= epicsTrue;
 			}/*end if previous event number was valid*/
 
-            pRec->lenm = pRec->enm;
-            LoadMask = epicsTrue;
+            pRec->lenm	= pRec->enm;
+            LoadMask	= epicsTrue;
         }/*end if event number has changed*/
 
        /*---------------------
@@ -692,17 +693,17 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
     * If the event interrupt bit is specified, make sure Event FIFO interrupts are enabled.
     */
     if (LoadRam) {
-        if (DebugFlag >= 4)
+        if ( DebugFlag )
             printf ("ErEventProcess(%s) enabling IRQ\n", pRec->name);
 
         if (Mask & EVR_MAP_INTERRUPT)
             ErEventIrq (pCard, epicsTrue);
 
-        if (DebugFlag >= 4)
+        if ( DebugFlag )
             printf ("ErEventProcess(%s) updating Event RAM\n", pRec->name);
 
         ErUpdateRam (pCard, pCard->ErEventTab);
-        if (DebugFlag)
+        if ( DebugFlag )
 			printf ("ErEventProcess(%s) done updating Event RAM\n", pRec->name);
     }/*end if we should re-load the Event Mapping Ram*/
 
@@ -1404,7 +1405,7 @@ void ErDevEventFunc (ErCardStruct *pCard, epicsInt16 EventNum, epicsUInt32 Time)
 |*
 |*-------------------------------------------------------------------------------------------------
 |* FUNCTION:
-|* o For the specified eventy number, this routine decrements the event
+|* o For the specified event number, this routine decrements the event
 |*   table count for the old mask and increments the count for the new mask
 |*   Any non-zero counts are enabled in the master event table.
 |*
@@ -1434,8 +1435,10 @@ epicsStatus ErUpdateEventTab(
 		printf( "devMrfEr::ErUpdateEventTab( event num %d, old 0x%04X, new 0x%04X )\n",
 				EventNum, oldMask, newMask );
 
-	if ( (EventNum < 0) || (EventNum >= EVR_NUM_EVENTS) )
+	/* Make sure EventNum is valid, reserving event 0 for the fiducial */
+	if ( (EventNum <= 0) || (EventNum >= EVR_NUM_EVENTS) )
 		return -1;
+
 	for ( chan = 0; chan < EVR_MAP_N_CHAN_MAX; chan++ )
 	{
 		epicsUInt16	chanMask = 1 << chan;
@@ -1446,8 +1449,8 @@ epicsStatus ErUpdateEventTab(
 		if (pCard->ErEventCnt[EventNum][chan] > 0)
 			newEventTabMask |= chanMask;
 	}
-
 	pCard->ErEventTab[EventNum] = newEventTabMask;
+
     if ( ErDebug >= 1 )
         printf( "devMrfEr::ErUpdateEventTab: New mask for event num %d is 0x%04X\n", EventNum, newEventTabMask );
 	return 0;

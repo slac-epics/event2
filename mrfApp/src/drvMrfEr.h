@@ -154,6 +154,7 @@
 #define EVR_MAP_CHAN_13   0x2000        /* Enable Output Channel 13                               */
 #define EVR_MAP_TS_LATCH  0x4000        /* Enable Timestamp Latch on Event                        */
 #define EVR_MAP_INTERRUPT 0x8000        /* Enable Interrupt on Event                              */
+#define EVR_MAP_IRQ_CHAN	15          /* IRQ channel number in EVR MAP                          */
 #define EVR_MAP_N_CHAN_MAX  16          /* Max number of output channels, including interrupt     */
 
 /**************************************************************************************************/

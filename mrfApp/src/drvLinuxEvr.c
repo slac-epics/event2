@@ -923,12 +923,13 @@ void ErUpdateRam(ErCardStruct *pCard, epicsUInt16 *RamBuf)
 epicsStatus ErDrvReport (int level)
 {
 	int             NumCards = 0;       /* Number of configured cards we found                    */
-	ErCardStruct   *pCard;              /* Pointer to card structure                              */
-        int i, ram;
+	ErCardStruct *	pCard;              /* Pointer to card structure                              */
+	int				EventNum;
+	int				ram;
 
-	for (pCard = (ErCardStruct *)ellFirst(&ErCardList);
-		pCard != NULL;
-		pCard = (ErCardStruct *)ellNext(&pCard->Link)) {
+	for (	pCard = (ErCardStruct *)ellFirst(&ErCardList);
+			pCard != NULL;
+			pCard = (ErCardStruct *)ellNext(&pCard->Link)	) {
 		NumCards++;
 
 		printf ("\n-------------------- EVR#%d Hardware Report --------------------\n", pCard->Cardno);
@@ -938,31 +939,59 @@ epicsStatus ErDrvReport (int level)
 		printf ("	%d Frame Errors\n", pCard->RxvioCount);
 		EvrDumpStatus( pCard->Slot );
 		EvrDumpPulses(		pCard->Slot, 10 );
-                if (level >= 2) {
-                    u32 ie, trig, set, clear;
-                    struct MapRamItemStruct MapRam[EVR_MAX_EVENT_CODE+1];
-                    
-                    if (ErGetRamStatus(pCard, 1))
-                        ram = 1;
-                    else
-                        ram = 0;
-                    printf("Active ram: %d\n", ram);
-                    if (!READ_EVR_REGION32(pCard->Slot, MapRam[ram], (u32 *)MapRam, sizeof(MapRam))) {
-                        printf("  Index     IntEvent  Trigger     Set      Clear\n");
-                        printf("----------  --------  --------  --------  --------\n");
-                        for (i = 0; i < EVR_MAX_EVENT_CODE; i++) {
-                            ie    = MapRam[i].IntEvent;
-                            trig  = MapRam[i].PulseTrigger;
-                            set   = MapRam[i].PulseSet;
-                            clear = MapRam[i].PulseClear;
-                            if (ie || trig || set || clear) {
-                                printf("%3d (0x%02x)  %08x  %08x  %08x  %08x\n",
-                                       i, i, ie, trig, set, clear);
-                            }
-                        }
-                    }
-                    printf("\n");
-                }
+
+		/* Dump the active entries in ErEventTab */
+		printf( "ErEventTab[code]: 0x8000 is IRQ, 0x0001 is OUT0, 0x0002 is OUT1, ...\n" );
+		for (EventNum = 0; EventNum < EVR_NUM_EVENTS; EventNum++ )
+		{
+			if ( pCard->ErEventTab[EventNum] != 0 )
+			{
+				if (level == 0)
+					printf( "ErEventTab[%3d] = 0x%04x\n", EventNum, pCard->ErEventTab[EventNum] );
+				else
+				{
+					unsigned int chan;
+					printf( "ErEventTab[%3d] = 0x%04x", EventNum, pCard->ErEventTab[EventNum] );
+					for ( chan = 0; chan < EVR_MAP_N_CHAN_MAX; chan++ )
+					{
+						if( pCard->ErEventCnt[EventNum][chan] > 0 )
+						{
+							if ( chan == EVR_MAP_IRQ_CHAN )
+								printf( ", IRQ cnt=%d", pCard->ErEventCnt[EventNum][chan] );
+							else
+								printf( ", out%d cnt=%d", chan, pCard->ErEventCnt[EventNum][chan] );
+						}
+					}
+					printf( "\n" );
+				}
+			}
+		}
+		printf("\n");
+		if (level >= 2) {
+			u32 ie, trig, set, clear;
+			struct MapRamItemStruct MapRam[EVR_MAX_EVENT_CODE+1];
+			
+			if (ErGetRamStatus(pCard, 1))
+				ram = 1;
+			else
+				ram = 0;
+			printf("Active ram: %d\n", ram);
+			if (!READ_EVR_REGION32(pCard->Slot, MapRam[ram], (u32 *)MapRam, sizeof(MapRam))) {
+				printf("  Index     IntEvent  Trigger     Set      Clear\n");
+				printf("----------  --------  --------  --------  --------\n");
+				for (EventNum = 0; EventNum < EVR_MAX_EVENT_CODE; EventNum++) {
+					ie    = MapRam[EventNum].IntEvent;
+					trig  = MapRam[EventNum].PulseTrigger;
+					set   = MapRam[EventNum].PulseSet;
+					clear = MapRam[EventNum].PulseClear;
+					if (ie || trig || set || clear) {
+						printf("%3d (0x%02x)  %08x  %08x  %08x  %08x\n",
+							   EventNum, EventNum, ie, trig, set, clear);
+					}
+				}
+			}
+			printf("\n");
+		}
 	}
 	if(!NumCards)
 		printf ("  No Event Receiver cards were configured\n");

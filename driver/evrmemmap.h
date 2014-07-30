@@ -351,6 +351,7 @@ INLINE_READ_EVR u16 __read_evr_register16(int fd, int offset)
 INLINE_READ_EVR int __read_evr_region32(int fd, int offset, void *buf, int size);
 INLINE_READ_EVR int __read_evr_region16(int fd, int offset, void *buf, int size);
 INLINE_READ_EVR u32 __read_evr_register(int fd, int offset);
+INLINE_READ_EVR u16 __read_evr_register16(int fd, int offset);
 #endif
 
 #define READ_EVR_REGISTER(fd, rname)             \
