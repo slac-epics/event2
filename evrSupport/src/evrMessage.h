@@ -10,7 +10,6 @@
         06-Feb-2007, DRogind added edefAvgDoneMask to evrMessagePattern_ts
  
 -----------------------------------------------------------------------------*/
-#include "copyright_SLAC.h"    
 /*----------------------------------------------------------------------------- 
   Mod:  (newest to oldest)  
  
