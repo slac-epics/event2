@@ -84,6 +84,7 @@ extern "C" {
 #define MAX_EV_TRIGGERS        12
 
 extern int	evrGetLastFiducial( );				/* Returns lastfid, the last fiducial set by ISR */
+extern int lastfid;                             /* Keep this for a while to avoid compiler errors */
 
 
 /*
