@@ -1571,7 +1571,7 @@ extern void eventDebug(int arg1, int arg2)
         printf("    last time  = %08x.%08x\n",
                 pevrTime->fifotime[lidx].secPastEpoch,
                 pevrTime->fifotime[lidx].nsec);
-        printf("    lastfid    = 0x%05x\n", lastfid );
+        printf("    lastfid    = 0x%05x\n", evrGetLastFiducial() );
         printf("    Wr fidq[%d] = 0x%05x, Rd fidq[%d] = 0x%05x\n",
 					pevrTime->fidW, pevrTime->fidq[pevrTime->fidW],
 					pevrTime->fidR, pevrTime->fidq[pevrTime->fidR] );

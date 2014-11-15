@@ -125,6 +125,18 @@ static int evrReport( int interest )
   }
   return interest;
 }
+
+/*=============================================================================
+  Name: evrGetLastFiducial()
+
+  Abs: A simple routine to return the fiducial id for the most
+  	   recently received EVENT_FIDUCIAL.
+=============================================================================*/
+int evrGetLastFiducial( )
+{
+	return lastfid;
+}
+
 
 /*=============================================================================
  
