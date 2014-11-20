@@ -13,7 +13,6 @@ EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 # ===============================================================
 # Example: IPAC_MODULE_VERSION=R2.8.4-0.2.0
 MISCUTILS_MODULE_VERSION=R2.2.2-0.4.0
-GENSUB_MODULE_VERSION=R1.6.1.3-4.0.0
 
 # ============================================================
 # External Support module path definitions
@@ -30,4 +29,3 @@ GENSUB_MODULE_VERSION=R1.6.1.3-4.0.0
 # ============================================================
 # Example: IPAC=$(EPICS_MODULES)/ipac/$(IPAC_MODULE_VERSION)
 MISCUTILS=$(EPICS_MODULES)/miscUtils/$(MISCUTILS_MODULE_VERSION)
-GENSUB=$(EPICS_MODULES)/genSub/$(GENSUB_MODULE_VERSION)

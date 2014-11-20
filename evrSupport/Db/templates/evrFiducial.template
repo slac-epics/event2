@@ -4,7 +4,7 @@
 #	DEV			- EVR device prefix
 #	FID_NAME	- What do you want to name this fiducial value?
 #	TGT			- PV that you get the fiducial timestamp from
-record( genSub, "$(DEV):$(FID_NAME)" )
+record( aSub, "$(DEV):$(FID_NAME)" )
 {
 	field( DESC, "Current Fiducial" )
 	field( SCAN, "Passive" )

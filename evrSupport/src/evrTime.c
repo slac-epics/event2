@@ -66,7 +66,7 @@
 #include "alarm.h"            /* INVALID_ALARM             */
 #include "dbScan.h"           /* for post_event            */
 #include <dbAccess.h>         /* for dbNameToAddr          */
-#include <genSubRecord.h>
+#include <aSubRecord.h>
 #include <stdlib.h>
 
 #include "mrfCommon.h"        /* MRF_NUM_EVENTS */    
@@ -1504,21 +1504,21 @@ int evrTimePatternPutEnd(int modulo720Flag)
 
   Name: evrTimeGetFiducial
 
-  Abs:  Used in a genSub record to extract the fiducial from a record's timestamp.
+  Abs:  Used in a aSub record to extract the fiducial from a record's timestamp.
 
   Args: Type                Name        Access     Description
         ------------------- ----------- ---------- ----------------------------
-        struct genSubRecord* psub       read/write The genSub record.
+        struct aSubRecord* psub       read/write The aSub record.
 
   Rem:  INPA should be a DBLINK to the NAME field of the record with the desired
         timestamp.  The name is extracted into psub->a as a string, from which we
         then find the database record and store into psub->dpvt for quick access.
 
-  Ret:  Fiducial number, to be put into VAL field of genSub.
+  Ret:  Fiducial number, to be put into VAL field of aSub.
 
 ==============================================================================*/
 
-long evrTimeGetFiducial(struct genSubRecord *psub)
+long evrTimeGetFiducial(struct aSubRecord *psub)
 {
 #if 0
     // TODO: Try this to use TSEL as the timestamp link

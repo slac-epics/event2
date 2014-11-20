@@ -16,7 +16,6 @@ DBD += evrIoc.dbd
 
 # evrIoc.dbd will be made up from these files:
 evrIoc_DBD += base.dbd
-evrIoc_DBD += genSubRecord.dbd
 evrIoc_DBD += evrSupport.dbd
 evrIoc_DBD += devMrfEr.dbd
 
@@ -27,7 +26,6 @@ evrIoc_SRCS_DEFAULT += evrMain.cpp
 # Add locally compiled object code
 #evrIoc_SRCS += dbSubExample.c
 
-evrIoc_LIBS += genSub
 evrIoc_LIBS += evrSupport
 evrIoc_LIBS += devMrfEr
 evrIoc_LIBS += drvMrf
