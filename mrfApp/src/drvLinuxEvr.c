@@ -345,7 +345,7 @@ static int ErConfigure (
 
 	/* Check the firmware version */
 	FPGAVersion = READ_EVR_REGISTER(fdEvr, FPGAVersion);
-	printf( "PMC EVR Found with Firmware Revision 0x%04X\n", FPGAVersion );
+	printf( "EVR Found with Firmware Revision 0x%04X\n", FPGAVersion );
 	switch ( FPGAVersion )
 	{
 	default:
