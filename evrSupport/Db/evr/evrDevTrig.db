@@ -387,29 +387,47 @@ record( calcout, "$(TRIG):TDLY" )
 	field( EGU,  "ticks" )
 	field( LOW,  "-1e-9" )
 	field( LSV,  "MINOR" )
-	field( OUT,  "$(TRIG):TDES_TICKS PP NMS" )
+	field( OUT,  "$(TRIG):TDLY_TICKS PP NMS" )
+	field( FLNK, "$(TRIG):FW_TDES_SEQ" )
 }
 
-# This record shows the desired delay in ticks
+# This record shows the pulse generator desired delay in ticks
 # (May someday allow setting desired delay in ticks,
 #  but for now is closed_loop to avoid DB process
 #  chain errors.)
-record( ao, "$(TRIG):TDES_TICKS"	)
+# It may not match the current pulse generator delay, as
+# that can be set directly via CTRL.$(DG0D)
+#
+# This PV may be eliminated soon, as I think the only
+# safe way to inject a delay in ticks into this DB chain
+# is the current solution, which is to write the desired
+# delay directly to the CTRL.$(TYPE)$(N)D field.
+#
+# The other alternative would be to disable CA put operations
+# to the entire CTRL record and make this PV the only one in the module that
+# writes to the pulse generator delay.   Then this PV could
+# be the other end of the FW vs BW seq chains.
+# i.e.   TDES ---FW-->  TDLY_TICKS
+#        TDES <--BW---  TDLY_TICKS
+# instead of the current
+# i.e.   TDES ---FW-->  CTRL.DG0D
+#        TDES <--BW---  CTRL.DG0D
+record( ao, "$(TRIG):TDLY_TICKS"	)
 {
 	field( DOL,  "$(TRIG):TDLY NPP MS" )
 	field( OMSL, "closed_loop" )
 	field( EGU,  "ticks" )
-	field( FLNK, "$(TRIG):FW_TDES_SEQ" )
 }
 
 record( calcout, "$(TRIG):FW_TDES_TICK_CALC"	)
 {
 	field( INPA, "$(TRIG):TDLY NPP NMS" )
 	field( INPB, "$(TRIG):LSUB_EVSEL.SEVR NPP NMS" )
+	field( INPC, "$(EVR):CTRL.$(TYPE)$(N)C NPP MS" )
 	field( CALC, "(A>=0)&&(B==0)" )
 	field( OOPT, "When Non-zero" )
 	field( DOPT, "Use OCAL" )
-	field( OCAL, "A" )
+	field( OCAL, "A/C" )
 	field( OUT,  "$(EVR):CTRL.$(TYPE)$(N)D PP NMS" )
 	field( EGU,  "ticks" )
 }
@@ -459,10 +477,12 @@ record( ao, "$(TRIG):TDES_CALC_LOPR" )
 }
 
 # Grab the delay tick count for easy edm viewing w/ EGU of ticks
-record( longin, "$(TRIG):BW_TDLY" )
+record( calc, "$(TRIG):BW_TDLY" )
 {
 	field( DESC, "Tick count from delay gen" )
-	field( INP,  "$(EVR):CTRL.$(TYPE)$(N)D CPP MS" )
+	field( INPA, "$(EVR):CTRL.$(TYPE)$(N)D CPP MS" )
+	field( INPB, "$(EVR):CTRL.$(TYPE)$(N)C CPP MS" )
+	field( CALC, "A*B" )
 	field( EGU,  "ticks" )
 	field( FLNK, "$(TRIG):BW_TDLY_NS" )
 }
@@ -633,29 +653,28 @@ record( ao, "$(TRIG):FW_DIS2" )
 	field( SDIS, "$(TRIG):BW_SW2.VAL" )
 }
 
-record( ao, "$(TRIG):TWID2" )
+record( calcout, "$(TRIG):TWID2" )
 {
 	field( DESC, "Trigger Width" )
-	field( DTYP, "Raw Soft Channel" )
-	field( OUT, "$(EVR):CTRL.$(TYPE)$(N)W PP" )
-	field( OMSL, "closed_loop" )
-	field( LINR, "SLOPE" )
+	field( INPA, "$(TRIG):TWID.VAL" )
+	field( INPB, "$(EVR):CTRL.$(TYPE)$(N)C CPP MS" )
+	field( INPC, "8.403361345" )
+	field( CALC, "A/B/C" )
+	field( OUT,  "$(EVR):CTRL.$(TYPE)$(N)W PP MS" )
 	field( EGU, "ns" )
 	field( PREC, "1" )
-	field( HOPR, "1000000000" )
-	field( DRVH, "1000000000" )
-	field( ESLO, "8.403361345" )
 	field( VAL, "$(WID=100)" )
 	field( MDEL, "-1" )
 	field( SDIS, "$(TRIG):FW_SW2.VAL" )
-	field( DOL, "$(TRIG):TWID.VAL" )
 }
 
 # Grab the width tick count for easy edm viewing w/ EGU of ticks
-record( longin, "$(TRIG):BW_TWID_TICKS" )
+record( calc, "$(TRIG):BW_TWID_TICKS" )
 {
 	field( DESC, "Width from delay gen" )
-	field( INP,  "$(EVR):CTRL.$(TYPE)$(N)W CPP MS" )
+	field( INPA,  "$(EVR):CTRL.$(TYPE)$(N)W CPP MS" )
+	field( INPB,  "$(EVR):CTRL.$(TYPE)$(N)C CPP MS" )
+	field( CALC, "A*B" )
 	field( EGU,  "ticks" )
 	field( FLNK, "$(TRIG):BW_TWIDCALC" )
 }
