@@ -506,7 +506,7 @@ int evrTimeGet (epicsTimeStamp  *epicsTime_ps, unsigned int eventCode)
 
 int evrTimeGetFifo (epicsTimeStamp  *epicsTime_ps, unsigned int eventCode, unsigned long long *idx, int incr)
 {
-  int status = 0, i;
+  int status = 0;
   
   if ((eventCode > MRF_NUM_EVENTS) || (!evrTimeRWMutex_ps) || epicsMutexLock(evrTimeRWMutex_ps))
     return epicsTimeERROR;
@@ -526,11 +526,14 @@ int evrTimeGetFifo (epicsTimeStamp  *epicsTime_ps, unsigned int eventCode, unsig
       return epicsTimeERROR;
   }
  
+#if 0
+  // Can't use the *slighly* early  block w/ Orca, see below
+ 
+  if (*idx == eventCodeTime_as[eventCode].ts_idx) {
   /*
    * If we're here *slightly* early (eventCodeTime_as[eventCode].ts_idx == *idx), we'll wait.
    * Otherwise, we report an error.
    */
-  if (*idx == eventCodeTime_as[eventCode].ts_idx) {
       epicsMutexUnlock(evrTimeRWMutex_ps);
 #define TO_LIM 4
       for (i = 1; i < TO_LIM; i++) {
@@ -549,6 +552,19 @@ int evrTimeGetFifo (epicsTimeStamp  *epicsTime_ps, unsigned int eventCode, unsig
       }
       epicsMutexLock(evrTimeRWMutex_ps);
   }
+#else
+  if ( *idx == eventCodeTime_as[eventCode].ts_idx ) {
+    // Can't use the *slighly* early  block w/ Orca as it always triggers at 120hz
+    // even if the 140 event code we query here wasn't sent.
+    // If we were synced from prior query, incr is 1 which puts it at ts_idx == *idx
+	// This is because the Orca needs to be triggered before we know if we've
+	// received a beam event code.
+	// Same would be true for other similar long delay acquisition devices.
+	// If we're ever early, better to solve that mystery than spin here.
+    epicsMutexUnlock(evrTimeRWMutex_ps);
+    return epicsTimeERROR;
+  }
+#endif
   *epicsTime_ps = eventCodeTime_as[eventCode].fifotime[     *idx & MAX_TS_QUEUE_MASK ];
   epicsTime_ps->nsec |= status;
   status        = eventCodeTime_as[eventCode].fifostatus[   *idx & MAX_TS_QUEUE_MASK ];
