@@ -396,7 +396,7 @@ record( calcout, "$(TRIG):TDLY" )
 #  but for now is closed_loop to avoid DB process
 #  chain errors.)
 # It may not match the current pulse generator delay, as
-# that can be set directly via CTRL.$(DG0D)
+# that can be set directly via CTRL.DG0D
 #
 # This PV may be eliminated soon, as I think the only
 # safe way to inject a delay in ticks into this DB chain
