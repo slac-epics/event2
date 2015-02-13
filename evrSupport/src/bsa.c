@@ -190,6 +190,7 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
       if (bsa_ps->readFlag) bsa_ps->noread++;
       bsa_ps->readFlag = 0;
       bsa_ps->reset    = 1;
+      bsa_ps->lastgen  = 0;  /* Make sure we reset lastgen below! */
     }
     /* Ignore data that hasn't changed since last time */
     if ((secnTime_ps->secPastEpoch == bsa_ps->timeData.secPastEpoch) &&

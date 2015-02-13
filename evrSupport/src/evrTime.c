@@ -400,7 +400,7 @@ int evrTimeGetFromEdefTime(unsigned int     edefIdx,
                   (edef->time.nsec < edefTime_ps->nsec))) {
           epicsMutexUnlock(evrTimeRWMutex_ps);
 #ifdef BSA_DEBUG
-          if (((1 << edefIdx) & bsa_debug_mask) && bsa_debug_level >= 2) {
+          if (((1 << edefIdx) & bsa_debug_mask) && bsa_debug_level >= 3) {
               int idx2 = (edef_idx[edefIdx] - 1) & MAX_EDEF_TIME_MASK; /* Back one == last written! */
               evrTimeEdef_ts *edef2 = &edef_as[edefIdx][idx2];
 
@@ -821,6 +821,8 @@ int evrTime(epicsUInt32 mpsModifier)
           /* EDEF initialized? - check the newest mask so init done ASAP */
           if (evr_ps->pattern_s.edefInitMask & edefMask) {
             edef->timeInit = evr_ps->pattern_s.time;
+            edef->time.secPastEpoch = 0;
+            edef->time.nsec = 0;
 #ifdef BSA_DEBUG
             if ((bsa_debug_mask & edefMask) && bsa_debug_level >= 2)
                 printf("%08x:%08x EDEF%d slot %d, initialized.\n",
@@ -840,10 +842,11 @@ int evrTime(epicsUInt32 mpsModifier)
               edef->sevr = MAJOR_ALARM;
             else
               edef->sevr = INVALID_ALARM;
-            }
+          }
 #ifdef BSA_DEBUG
-            if ((bsa_debug_mask & edefMask) && bsa_debug_level >= 2)
-                printf("%08x:%08x EDEF%d slot %d, done=%d.\n", edef->time.secPastEpoch, edef->time.nsec, idx, idx2, edef->avgdone);
+          if ((bsa_debug_mask & edefMask) && bsa_debug_level >= 2)
+              printf("%08x:%08x EDEF%d slot %d, done=%d.\n",
+                     edef->time.secPastEpoch, edef->time.nsec, idx, idx2, edef->avgdone);
 #endif            
         }
       }
