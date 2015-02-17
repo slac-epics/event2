@@ -83,7 +83,6 @@
 
 /* BSA information for one device, one EDEF */
 typedef struct {
-
   /* Results of Averaging */
   double              val;       /* average value     */
   double              rms;       /* RMS of above      */
@@ -105,6 +104,7 @@ typedef struct {
   epicsEnum16         stat;      /* max status so far */
   epicsEnum16         sevr;      /* max severity so far*/
   unsigned int        lastgen;   /* The last EDEF index we received. */
+  int                 newinit;   /* 1=new epoch received, 0=normal */
 } bsa_ts;
 
 /* BSA devices */
@@ -191,6 +191,7 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
       bsa_ps->readFlag = 0;
       bsa_ps->reset    = 1;
       bsa_ps->lastgen  = 0;  /* Make sure we reset lastgen below! */
+      bsa_ps->newinit  = 1;
     }
     /* Ignore data that hasn't changed since last time */
     if ((secnTime_ps->secPastEpoch == bsa_ps->timeData.secPastEpoch) &&
@@ -248,10 +249,15 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
       bsa_ps->cnt  = bsa_ps->avgcnt;
       if (bsa_ps->avgcnt <= 1) {
         bsa_ps->rms = 0.0;
-        bsa_ps->inc = (int)(edefGen - bsa_ps->lastgen);
-        /* We never skip very many of these.  If we do, we must be starting up! */
-        if (bsa_ps->inc > 3)
+        if (bsa_ps->newinit) {
             bsa_ps->inc = 1;
+            bsa_ps->newinit = 0;
+        } else {
+            bsa_ps->inc = (int)(edefGen - bsa_ps->lastgen);
+            /* We never skip very many of these.  If we do, we must be starting up! */
+            if (bsa_ps->inc > 3)
+                bsa_ps->inc = 1;
+        }
 #ifdef BSA_DEBUG
         if (bsa_ps->inc != 1 && (bsa_debug_mask & (1 << idx)))
             printf("%08x:%08x -> %08x:%08x for edef %d -> inc = %d!\n",
