@@ -1539,26 +1539,18 @@ int evrTimePatternPutEnd(int modulo720Flag)
 
 long evrTimeGetFiducial(struct aSubRecord *psub)
 {
-#if 0
-    // TODO: Try this to use TSEL as the timestamp link
-	// It's the normal EPICS way of doing this and works
-	// for CA as well as local db links.
-	recGblGetTimeStamp( psub );
-	return psub->time.nsec & 0x1ffff;
-#else
     struct dbCommon *precord;
     if (!psub->dpvt) {
         struct dbAddr addr;
-        if (dbNameToAddr((char *)psub->a, &addr))
+        if (dbNameToAddr((char *)psub->a, &addr)) {
             return 0x1ffff;
-        else
+        } else
             psub->dpvt = addr.precord;
     }
     precord = (struct dbCommon *)psub->dpvt;
     if (psub->tse == epicsTimeEventDeviceTime)
         psub->time = precord->time;
     return precord->time.nsec & 0x1ffff;
-#endif
 }
 
 extern void eventDebug(int arg1, int arg2)
