@@ -363,8 +363,10 @@ static long process(bsacompressRecord *prec)
                            bsarec->ign, bsarec->gen, prec->gen);
 #endif
                 inc = ((unsigned int)bsarec->gen) - ((unsigned int)prec->gen);
+#ifdef BSA_DEBUG
                 if (inc != 1)
                     printf("%s: inc = %d, mask = 0x%x\n", prec->name, inc,(1 << (bsarec->edef - 1)));
+#endif
                 while (inc > 1) {
                     double nanbuf = NAN;
                     (void)put_value(prec,&nanbuf,1);
