@@ -153,6 +153,7 @@ int evrTimeGetFromEdefTime(unsigned int     edefIdx,
                            int             *edefAvgDone_p,
                            epicsEnum16     *edefSevr_p,
                            unsigned int    *edefGen_p);
+unsigned int evrTimeGetInitGen(unsigned int edefIdx, unsigned int edefGen);
 int evrTimeGet            (epicsTimeStamp  *epicsTime_ps,
                            unsigned int     eventCode);
 int evrTimeGetFifo        (epicsTimeStamp     *epicsTime_ps,

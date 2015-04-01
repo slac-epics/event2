@@ -136,7 +136,7 @@ typedef struct {
 } evrTimeEdef_ts;
 
 #ifdef BSA_DEBUG
-int bsa_debug_mask = 0; /* BSA debugging mask */
+int bsa_debug_mask  = 0x0; /* BSA debugging mask */
 int bsa_debug_level = 0;
 #endif
 
@@ -422,6 +422,70 @@ int evrTimeGetFromEdefTime(unsigned int     edefIdx,
       printf("%08x:%08x BSA%d not found.\n", edefTime_ps->secPastEpoch, edefTime_ps->nsec, edefIdx);
 #endif
   return epicsTimeERROR; /* No match! */
+}
+
+
+/*=============================================================================
+
+  Name: evrTimeGetInitGen
+
+  Abs:  Search backwards to find the first index in this acquisition.  Counting
+        back, we either find the init time or a zero time.  In the latter case,
+        we go forward one to find the first time.
+
+  Args: edefIdx, an edef identifier.
+        edefGen  an index pointing to an observation in a new acquisition epoch.
+  
+
+  Return: An index for the first value in the new acquisition epoch.
+
+==============================================================================*/
+unsigned int evrTimeGetInitGen(unsigned int edefIdx, unsigned int edefGen)
+{
+  epicsTimeStamp *itime;
+  evrTimeEdef_ts *edef;
+  unsigned int gen = edefGen;
+  int i;
+
+  if ((edefIdx >= EDEF_MAX) || (!evrTimeRWMutex_ps)) return epicsTimeERROR;
+  if (epicsMutexLock(evrTimeRWMutex_ps)) return epicsTimeERROR;
+  itime = &edef_as[edefIdx][gen & MAX_EDEF_TIME_MASK].timeInit;
+#ifdef BSA_DEBUG
+  if (((1 << edefIdx) & bsa_debug_mask) && bsa_debug_level >= 1)
+      printf("eTGIG: looking for %08x:%08x (index %d)\n", itime->secPastEpoch, itime->nsec, gen);
+#endif
+  for (i = 0; i < MAX_EDEF_TIME - 2; i++) {
+      edef = &edef_as[edefIdx][gen & MAX_EDEF_TIME_MASK];
+      if (edef->time.nsec == itime->nsec &&
+          edef->time.secPastEpoch == itime->secPastEpoch) {
+          epicsMutexUnlock(evrTimeRWMutex_ps);
+#ifdef BSA_DEBUG
+          if (((1 << edefIdx) & bsa_debug_mask) && bsa_debug_level >= 1)
+              printf("eTGIG: found match (index %d)\n", gen);
+#endif
+          return gen;
+      }
+      if (edef->time.nsec == 0 && edef->time.secPastEpoch == 0) {
+          epicsMutexUnlock(evrTimeRWMutex_ps);
+#ifdef BSA_DEBUG
+          if (((1 << edefIdx) & bsa_debug_mask) && bsa_debug_level >= 1)
+              printf("eTGIG: found zero time (index %d) --> return %d\n", gen, gen+1);
+#endif
+          return gen + 1;
+      }
+      gen--;
+  }
+  /*
+   * Couldn't find it?  Let's just say now then!  This will screw up any
+   * BSA in progress while we're starting up, but it will be OK for the
+   * BSA that never really start (BR, 1H, etc.)
+   */
+  epicsMutexUnlock(evrTimeRWMutex_ps);
+#ifdef BSA_DEBUG
+  if (((1 << edefIdx) & bsa_debug_mask) && bsa_debug_level >= 1)
+      printf("eTGIG: no match, returning %d\n", edefGen);
+#endif
+  return edefGen;
 }
 
 
@@ -845,8 +909,10 @@ int evrTime(epicsUInt32 mpsModifier)
           }
 #ifdef BSA_DEBUG
           if ((bsa_debug_mask & edefMask) && bsa_debug_level >= 2)
-              printf("%08x:%08x EDEF%d slot %d, done=%d.\n",
-                     edef->time.secPastEpoch, edef->time.nsec, idx, idx2, edef->avgdone);
+              printf("%08x:%08x (%08x:%08x) EDEF%d slot %d, done=%d.\n",
+                     edef->time.secPastEpoch, edef->time.nsec,
+                     edef->timeInit.secPastEpoch, edef->timeInit.nsec,
+                     idx, idx2, edef->avgdone);
 #endif            
         }
       }

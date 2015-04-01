@@ -44,6 +44,7 @@
 #undef  GEN_SIZE_OFFSET
 #include "bsaRecord.h"
 #include "epicsExport.h"
+#include "evrTime.h"
 
 /* Create RSET - Record Support Entry Table*/
 #define report NULL
@@ -93,6 +94,8 @@ static void reset(bsacompressRecord *prec)
     prec->inx = 0;
     prec->cvb = 0.0;
     prec->res = 0;
+    prec->gen = 0;
+    prec->ini = 0;
     /* allocate memory for the summing buffer for conversions requiring it */
     if (prec->alg == bsacompressALG_Average && prec->sptr == 0){
         prec->sptr = (double *)calloc(prec->nsam,sizeof(double));
@@ -317,7 +320,7 @@ static long process(bsacompressRecord *prec)
     long	status=0;
     long	nelements = 0;
     int		alg = prec->alg;
-
+    
     prec->pact = TRUE;
     if(!dbIsLinkConnected(&prec->inp)
     || dbGetNelements(&prec->inp,&nelements)
@@ -342,23 +345,39 @@ static long process(bsacompressRecord *prec)
 	    } else if(alg==bsacompressALG_Circular_Buffer) {
                 DBADDR     *bsa_addr = dbGetPdbAddrFromLink(&prec->inp);
                 bsaRecord  *bsarec   = (bsaRecord *)(bsa_addr ? bsa_addr->precord : NULL);
-                if (bsarec->inc > 1) {
-                    double nanbuf = NAN;
-                    int i;
+                unsigned int inc;
+                /*
+                 * bsarec->gen is the last index we have.
+                 * bsarec->ign is the first index of this epoch.
+                 * prec->gen is the last index we *stored*!
+                 * prec->ini is 0 if we need to initialize, 1 otherwise.
+                 */
+                if (!prec->ini) {
+                    prec->gen = bsarec->ign - 1;
+                    prec->ini = 1;
+                }
 #ifdef BSA_DEBUG
-                    if (bsa_debug_mask & (1 << (bsarec->edef - 1)))
-                        printf("bsacompress EDEF %d: inc = %d!\n", bsarec->edef - 1, bsarec->inc);
+                if ((bsa_debug_mask & (1 << (bsarec->edef - 1))) && bsa_debug_level >= 1)
+                    printf("CMP%d %s %s: bsaign=%d, bsagen=%d, mygen=%d\n",
+                           bsarec->edef - 1, bsarec->name, prec->name,
+                           bsarec->ign, bsarec->gen, prec->gen);
 #endif
-                    for (i = 1; i < bsarec->inc; i++)
-                        (void)put_value(prec,&nanbuf,1);
+                inc = ((unsigned int)bsarec->gen) - ((unsigned int)prec->gen);
+                if (inc != 1)
+                    printf("%s: inc = %d, mask = 0x%x\n", prec->name, inc,(1 << (bsarec->edef - 1)));
+                while (inc > 1) {
+                    double nanbuf = NAN;
+                    (void)put_value(prec,&nanbuf,1);
+                    inc--;
                 }
 		(void)put_value(prec,prec->wptr,nelements);
+                prec->gen = bsarec->gen;
 		status = 0;
 	    } else if(nelements>1) {
 		status = compress_array(prec,prec->wptr,nelements);
-	    }else if(nelements==1){
+	    } else if(nelements==1){
 		status = compress_scalar(prec,prec->wptr);
-	    }else status=1;
+	    } else status=1;
 	}
     }
     /* check event list */

@@ -128,8 +128,12 @@ recordtype(bsa) {
                 promptgroup(GUI_OUTPUT)
                 interest(1)
         }
-	field(INC,DBF_LONG) {
-		prompt("Increment")
+	field(GEN,DBF_LONG) {
+		prompt("Generation")
+		special(SPC_NOMOD)
+	}
+	field(IGN,DBF_LONG) {
+		prompt("Initial Generation")
 		special(SPC_NOMOD)
 	}
 }

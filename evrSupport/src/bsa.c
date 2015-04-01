@@ -87,7 +87,8 @@ typedef struct {
   double              val;       /* average value     */
   double              rms;       /* RMS of above      */
   int                 cnt;       /* # in average      */
-  int                 inc;       /* If not averaging, increment in EDEFs since last. */
+  int                 initGen;   /* Generation of first observation after init */
+  int                 edefGen;   /* Generation of current observation */
   int                 readcnt;   /* # total readouts  */
   epicsTimeStamp      time;      /* time of average   */
   unsigned long       nochange;  /* Same time stamp counter */
@@ -103,8 +104,6 @@ typedef struct {
   IOSCANPVT           ioscanpvt; /* to process records using above fields */
   epicsEnum16         stat;      /* max status so far */
   epicsEnum16         sevr;      /* max severity so far*/
-  unsigned int        lastgen;   /* The last EDEF index we received. */
-  int                 newinit;   /* 1=new epoch received, 0=normal */
 } bsa_ts;
 
 /* BSA devices */
@@ -190,8 +189,14 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
       if (bsa_ps->readFlag) bsa_ps->noread++;
       bsa_ps->readFlag = 0;
       bsa_ps->reset    = 1;
-      bsa_ps->lastgen  = 0;  /* Make sure we reset lastgen below! */
-      bsa_ps->newinit  = 1;
+      bsa_ps->initGen  = evrTimeGetInitGen(idx, edefGen);
+#ifdef BSA_DEBUG
+      if ((bsa_debug_mask & (1 << idx)) && bsa_debug_level >= 1)
+          printf("%08x:%08x EDEF%d %s reset, old epoch %08x:%08x, edg=%d, ig=%d\n",
+                 edefTimeInit_s.secPastEpoch, edefTimeInit_s.nsec, idx, name,
+                 bsa_ps->timeInit.secPastEpoch, bsa_ps->timeInit.nsec,
+                 edefGen, bsa_ps->initGen);
+#endif
     }
     /* Ignore data that hasn't changed since last time */
     if ((secnTime_ps->secPastEpoch == bsa_ps->timeData.secPastEpoch) &&
@@ -249,21 +254,6 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
       bsa_ps->cnt  = bsa_ps->avgcnt;
       if (bsa_ps->avgcnt <= 1) {
         bsa_ps->rms = 0.0;
-        if (bsa_ps->newinit) {
-            bsa_ps->inc = 1;
-            bsa_ps->newinit = 0;
-        } else {
-            bsa_ps->inc = (int)(edefGen - bsa_ps->lastgen);
-            /* We never skip very many of these.  If we do, we must be starting up! */
-            if (bsa_ps->inc > 3)
-                bsa_ps->inc = 1;
-        }
-#ifdef BSA_DEBUG
-        if (bsa_ps->inc != 1 && (bsa_debug_mask & (1 << idx)))
-            printf("%08x:%08x -> %08x:%08x for edef %d -> inc = %d!\n",
-                   bsa_ps->time.secPastEpoch, bsa_ps->time.nsec,
-                   bsa_ps->timeData.secPastEpoch, bsa_ps->timeData.nsec, idx, bsa_ps->inc);
-#endif
       } else {
         bsa_ps->rms = bsa_ps->var/(double)bsa_ps->avgcnt;
         bsa_ps->rms = sqrt(bsa_ps->rms);
@@ -277,12 +267,12 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
         scanIoRequest(bsa_ps->ioscanpvt);
 #ifdef BSA_DEBUG
         if ((bsa_debug_mask & (1 << idx)) && bsa_debug_level >= 1)
-            printf("%08x:%08x EDEF%d %s signaled.\n",
-                   bsa_ps->time.secPastEpoch, bsa_ps->time.nsec, idx, name);
+            printf("%08x:%08x (%d) EDEF%d %s signaled.\n",
+                   bsa_ps->time.secPastEpoch, bsa_ps->time.nsec, edefGen, idx, name);
 #endif
       }
     }
-    bsa_ps->lastgen = edefGen;
+    bsa_ps->edefGen = edefGen;
   }
   epicsMutexUnlock(bsaRWMutex_ps);
   return status;
@@ -323,9 +313,6 @@ int bsaSecnInit(char  *secnName,
   if (!dev_ps) {
     dev_ps = calloc(1,sizeof(bsaDevice_ts));
     if (dev_ps) {
-      int i;
-      for (i = 0; i < EDEF_MAX; i++)
-          dev_ps->bsa_as[i].lastgen--;
       strcpy(dev_ps->name, secnName);
       ellAdd(&bsaDeviceList_s,&dev_ps->node);
     }
@@ -410,11 +397,8 @@ static long read_bsa(bsaRecord *pbsa)
       pbsa->val  = bsa_ps->val;
       pbsa->rms  = bsa_ps->rms;
       pbsa->cnt  = bsa_ps->cnt;
-      pbsa->inc  = bsa_ps->inc;
-#ifdef BSA_DEBUG
-      if (bsa_ps->inc > 1 && (bsa_debug_mask & (1 << (pbsa->edef - 1))))
-          printf("EDEF %d: inc == %d!\n", pbsa->edef - 1, pbsa->inc);
-#endif
+      pbsa->gen  = bsa_ps->edefGen;
+      pbsa->ign  = bsa_ps->initGen;
       pbsa->time = bsa_ps->time;
       pbsa->noch = bsa_ps->nochange;
       pbsa->nore = bsa_ps->noread;
@@ -435,7 +419,6 @@ static long read_bsa(bsaRecord *pbsa)
     pbsa->val  = 0.0;
     pbsa->rms  = 0.0;
     pbsa->cnt  = 0;
-    pbsa->inc  = 0;
     epicsTimeGetEvent(&pbsa->time, 0);
     recGblSetSevr(pbsa,READ_ALARM,INVALID_ALARM);
   } else if (pbsa->cnt == 0) {

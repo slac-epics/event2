@@ -132,4 +132,12 @@ recordtype(bsacompress) {
 		special(SPC_NOMOD)
 		interest(3)
 	}
+	field(GEN,DBF_LONG) {
+		prompt("Generation")
+		special(SPC_NOMOD)
+	}
+	field(INI,DBF_LONG) {
+		prompt("Gen is Initialized")
+		special(SPC_NOMOD)
+	}
 }
