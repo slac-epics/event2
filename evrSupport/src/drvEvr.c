@@ -166,7 +166,7 @@ void evrSend(void *pCard, epicsInt16 messageSize, void *message)
     if (evrMessageWrite(messageType, (evrMessage_tu *)message))
       evrMessageCheckSumError(EVR_MESSAGE_PATTERN);
     else
-	  evrMessageClockCounter(EVR_MESSAGE_PATTERN, evrClockCounter);
+      evrMessageClockCounter(EVR_MESSAGE_PATTERN, evrClockCounter);
   }
 }
 
@@ -191,6 +191,9 @@ void evrEvent(int cardNo, epicsInt16 eventNum, epicsUInt32 timeNum)
     if (fiducial_time_stamp_ix>=PEEK_PIPE_SIZE){fiducial_time_stamp_ix=0;}
   }
 
+  /* This needs to be done first, or else we might have to wait a full fiducial! */
+  evrTimeCount((unsigned int)eventNum, (unsigned int) timeNum);
+
   if (eventNum == EVENT_FIDUCIAL) {
     lastfid = timeNum;
     if (readyForFiducial) {
@@ -212,6 +215,7 @@ void evrEvent(int cardNo, epicsInt16 eventNum, epicsUInt32 timeNum)
 	  epicsMessageQueueSend( eventTaskQueue, &eventMessage, sizeof(eventMessage) );
   }
 
+#if 0
   /* Increment the eventCode counter */
   /* TODO: I'm not sure this is the right place to call this function
    * For event code 1, we've just signaled the semaphore above, but as we're
@@ -225,6 +229,7 @@ void evrEvent(int cardNo, epicsInt16 eventNum, epicsUInt32 timeNum)
    * Could it be as simple as adding a fiducial field to EventMessage?
    */
   evrTimeCount((unsigned int)eventNum, (unsigned int) timeNum);
+#endif
 }
 
 /*---------------------------------------------------------------------------

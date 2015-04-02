@@ -230,7 +230,7 @@ void ErIrqHandler(int fd, int flags)
                         erp = erplimit - MAX_EVR_EVTQ / 2;
                         flags |= EVR_IRQFLAG_FIFOFULL;
                     }
-                    for(i=0; erp < erplimit && i < EVR_FIFO_EVENT_LIMIT; erp++) {
+                    for(i=0; erp < erplimit; erp++) {
                         struct FIFOEvent *fe = &pEq->evtq[erp & (MAX_EVR_EVTQ - 1)];
                         if (pCard->ErEventTab[fe->EventCode] & (1 << 15)) {
                             if (pCard->DevEventFunc != NULL)
