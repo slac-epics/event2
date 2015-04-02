@@ -1,3 +1,41 @@
+#
+# file: evrPmc230.template
+# abstract:
+#	This template creates records supporting the high level
+#	device control and link status of an MRF evrPmc230 module.
+#	Each ioc that supports an evr should instantiate one instance
+#	of this template.
+#
+# Required Macros:
+#	DEV		- Device Prefix
+# Optional Macros, default in parenthsis:
+# 	CARD	- Card number (0)
+#	FP0L	- Front Panel Trigger 0 Label (<unassigned>)
+#	FP1L	- Front Panel Trigger 1 Label (<unassigned>)
+#	FP2L	- Front Panel Trigger 2 Label (<unassigned>)
+#	FP3L	- Front Panel Trigger 3 Label (<unassigned>)
+#	DG0E	- Extended Delay Trigger 0 Enable (Disable)
+#	DG1E	- Extended Delay Trigger 1 Enable (Disable)
+#	DG2E	- Extended Delay Trigger 2 Enable (Disable)
+#	DG3E	- Extended Delay Trigger 3 Enable (Disable)
+#	DG0P	- Extended Delay Trigger 0 Polarity (Normal)
+#	DG1P	- Extended Delay Trigger 1 Polarity (Normal)
+#	DG2P	- Extended Delay Trigger 2 Polarity (Normal)
+#	DG3P	- Extended Delay Trigger 3 Polarity (Normal)
+#	DG0W	- Extended Delay Trigger 0 Width (1)
+#	DG1W	- Extended Delay Trigger 1 Width (1)
+#	DG2W	- Extended Delay Trigger 2 Width (1)
+#	DG3W	- Extended Delay Trigger 3 Width (1)
+#	DG0D	- Extended Delay Trigger 0 Delay (0)
+#	DG1D	- Extended Delay Trigger 1 Delay (0)
+#	DG2D	- Extended Delay Trigger 2 Delay (0)
+#	DG3D	- Extended Delay Trigger 3 Delay (0)
+#	DG0C	- Extended Delay Trigger 0 Scale factor (1)
+#	DG1C	- Extended Delay Trigger 1 Scale factor (1)
+#	DG2C	- Extended Delay Trigger 2 Scale factor (1)
+#	DG3C	- Extended Delay Trigger 3 Scale factor (1)
+#
+
 # On the PMC version of the EVR there are only 4 trigger outputs, no need to
 # enable everything...
 #
@@ -18,21 +56,21 @@ record(er, "$(DEV):CTRL")
   field(DG0E, "$(DG0E=Disabled)")
   field(DG0W, "$(DG0W=1)")
   field(DG0D, "$(DG0D=0)")
-  field(DG0C, "$(DG0C=119)")
+  field(DG0C, "$(DG0C=1)")
   field(DG0P, "$(DG0P=Normal)")
 
   field(IP1E, "$(IP1E)")
   field(DG1E, "$(DG1E=Disabled)")
   field(DG1W, "$(DG1W=1)")
   field(DG1D, "$(DG1D=0)")
-  field(DG1C, "$(DG1C=119)")
+  field(DG1C, "$(DG1C=1)")
   field(DG1P, "$(DG1P=Normal)")
 
   field(IP2E, "$(IP2E)")
   field(DG2E, "$(DG2E=Disabled)")
   field(DG2W, "$(DG2W=1)")
   field(DG2D, "$(DG2D=0)")
-  field(DG2C, "$(DG2C=119)")
+  field(DG2C, "$(DG2C=1)")
   field(DG2P, "$(DG2P=Normal)")
 
   field(FLNK, "$(EVRFLNK=$(DEV):Triggers)")
