@@ -117,6 +117,7 @@ typedef struct {
   double			  nFidQLateSmoo;
   int				  nFidQOnTime;
   int				  nTimeStampOK;
+  int				  nFidQCountGT1;
   int				  nTimeStampFailed;
   int                 fidq[MAX_TS_QUEUE];
   int                 fidR;
@@ -587,10 +588,12 @@ int evrTimeGetFifo (epicsTimeStamp  *epicsTime_ps, unsigned int eventCode, unsig
   if (*idx + MAX_TS_QUEUE < eventCodeTime_as[eventCode].ts_idx ||
       *idx > eventCodeTime_as[eventCode].ts_idx) {
       epicsMutexUnlock(evrTimeRWMutex_ps);
+	  /* Invalid index */
       return epicsTimeERROR;
   }
 
   if ( *idx == eventCodeTime_as[eventCode].ts_idx ) {
+	// FIFO is empty for this event code
     /* We're slightly early, but we'll be back.  Just throw an error. */
     epicsMutexUnlock(evrTimeRWMutex_ps);
     return epicsTimeERROR;
@@ -738,6 +741,7 @@ int evrTimeInit(epicsInt32 firstTimeSlotIn, epicsInt32 secondTimeSlotIn)
 		  pevrTime->nFidQLateMin   = EVR_MAX_INT;
 		  pevrTime->nFidQLateMax   = 0;
 		  pevrTime->nFidQLateSmoo   = 0;
+          pevrTime->nFidQCountGT1   = 0;
           pevrTime->nFidQOnTime   = 0;
 		  pevrTime->nTimeStampOK		= 0;
   		  pevrTime->nTimeStampFailed	= 0;
@@ -1248,7 +1252,7 @@ static long evrTimeEvent(longSubRecord *psub)
 
 /*
  * evrTimeEventProcessing handles updating the timestamps for
- * the specified event number.
+ * the specified event number in the event code timestamp FIFO.
  * This code used to be inline in evrTimeEvent(), but was
  * broken out into a separate routine so it could be called
  * in a more timely manner and possibly combined with evrTimeCount().
@@ -1279,6 +1283,7 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
     pevrTime    = &eventCodeTime_as[eventNum];
 
 #ifndef __rtems__
+	/* While fidq not drained */
     while (pevrTime->fidR != pevrTime->fidW) 
 #endif
     {
@@ -1315,6 +1320,8 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
         fidqFiducial = pevrTime->fidq[pevrTime->fidR];
         if (++pevrTime->fidR == MAX_TS_QUEUE)
             pevrTime->fidR = 0;
+    	if (pevrTime->fidR != pevrTime->fidW)
+          	pevrTime->nFidQCountGT1++;
 
         /* Grab the values from the current timestamp */
         curFiducial		= EVR_APS_PULSEID( evrTimeCurrent );
@@ -1368,6 +1375,7 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
                 int			fidDiff;
                 int			lastGoodFiducial;
 
+				/* We see too many of these! */
                 pevrTime->nFidQLate++;
 
                 /* See if we have a new last good timestamp */
@@ -1375,6 +1383,7 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
                         &&  PULSEID_INVALID != EVR_APS_PULSEID( evrTimeCurrent ) )
                     pLastGoodTS = &EVR_APS_TIME( evrTimeCurrent );
 
+				// The code above doesn't guarantee a valid pLastGoodTS! 
                 /* Grab the last good fiducial */
                 lastGoodFiducial = PULSEID(*pLastGoodTS);
 
@@ -1428,6 +1437,10 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
                         if (newTimeStamp.nsec & 0x10000)  /* Round up! */
                             newTimeStamp.nsec += 0x10000;
                         newTimeStamp.nsec	&= 0xfffe0000;
+
+						/* I think this must be wrong */
+						/* edtPdvCamera::TimeStampImage is reporting duplicate */
+						/* timestamps each time nFidCorrected is incremented */
 
                         /* Insert the fiducial */
                         newTimeStamp.nsec	|= fidqFiducial;
@@ -1620,8 +1633,8 @@ extern void eventDebug(int arg1, int arg2)
 					pevrTime->fidR, pevrTime->fidq[pevrTime->fidR] );
         printf("    nFidQEarly = %d, nFidQLate = %d, nFidQOnTime = %d\n",
 					pevrTime->nFidQEarly, pevrTime->nFidQLate, pevrTime->nFidQOnTime );
-        printf("    nFidQBad = %d, nSetFidInvalid = %d\n",
-					pevrTime->nFidQBad, pevrTime->nSetFidInvalid );
+        printf("    nFidQBad = %d, FidQCountGT1 = %d, nSetFidInvalid = %d\n",
+					pevrTime->nFidQBad, pevrTime->nFidQCountGT1, pevrTime->nSetFidInvalid );
         printf(	"   nFidQLateMin = %d, nFidQLateMax = %d, nFidQLateSmoo = %f\n",
 					pevrTime->nFidQLateMin, pevrTime->nFidQLateMax, pevrTime->nFidQLateSmoo );
         printf("    nCurFidBad = %d, nFidCorrected = %d\n",
@@ -1650,6 +1663,7 @@ extern void eventDebug(int arg1, int arg2)
 				pevrTime->nFidQLateMax   = 0;
 				pevrTime->nFidQLateSmoo   = 0;
 				pevrTime->nFidQOnTime   = 0;
+				pevrTime->nFidQCountGT1   = 0;
 				pevrTime->nTimeStampOK		= 0;
 				pevrTime->nTimeStampFailed	= 0;
 				epicsMutexUnlock(evrTimeRWMutex_ps);
