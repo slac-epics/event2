@@ -598,6 +598,7 @@ int evrTimeGetFifo (epicsTimeStamp  *epicsTime_ps, unsigned int eventCode, unsig
     epicsMutexUnlock(evrTimeRWMutex_ps);
     return epicsTimeERROR;
   }
+
   *epicsTime_ps = eventCodeTime_as[eventCode].fifotime[     *idx & MAX_TS_QUEUE_MASK ];
   epicsTime_ps->nsec |= status;
   status        = eventCodeTime_as[eventCode].fifostatus[   *idx & MAX_TS_QUEUE_MASK ];
@@ -639,7 +640,7 @@ static int evrTimeGet_gtWrapper(epicsTimeStamp *epicsTime_ps, int eventCode)
 
 static int evrTimeGetSystem_gtWrapper(epicsTimeStamp *epicsTime_ps, int eventCode)
 {
-    return evrTimeGetSystem(epicsTime_ps, 0);
+    return evrTimeGetSystem(epicsTime_ps, evrTimeCurrent);
 }
 
 
@@ -1363,8 +1364,8 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
                 pevrTime->nFidQEarly++;
             }
         else	if (	pLastGoodTS	  != NULL
-			||	(	curTimeStatus == epicsTimeOK
-				&&  curFiducial   != PULSEID_INVALID ) )
+					|| (	curTimeStatus == epicsTimeOK
+						&&  curFiducial   != PULSEID_INVALID ) )
             {
                 /*
                  * fidq fiducial is valid, but doesn't match evrTimeCurrent or evrTimeNext1
@@ -1379,26 +1380,16 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
                 pevrTime->nFidQLate++;
 
                 /* See if we have a new last good timestamp */
-                if  (   epicsTimeOK     == EVR_APS_STATUS(  evrTimeCurrent )
-                        &&  PULSEID_INVALID != EVR_APS_PULSEID( evrTimeCurrent ) )
+				if (	curTimeStatus == epicsTimeOK
+					&&  curFiducial   != PULSEID_INVALID )
                     pLastGoodTS = &EVR_APS_TIME( evrTimeCurrent );
 
-				// The code above doesn't guarantee a valid pLastGoodTS! 
                 /* Grab the last good fiducial */
                 lastGoodFiducial = PULSEID(*pLastGoodTS);
 
                 fidDiff = FID_DIFF( fidqFiducial, lastGoodFiducial );
-#if 0
-                if ( delta != fidDiff ) {
-                    printf( "ERROR: fidq-fid %d - lastGoodFiducial %d = %d, not %d\n",
-                            fidqFiducial, lastGoodFiducial, fidDiff, delta );
-                    fflush(stdout);
-                }
-#endif
 
                 /* Update fidq stats */
-				/* TODO: This isn't quite right, as we may be using lastGoodFiducial
-				 * from an earlier interrupt and thus our fidDiff can be zero here.  */
                 if( pevrTime->nFidQLateMin > fidDiff )
                     pevrTime->nFidQLateMin = fidDiff;
                 if( pevrTime->nFidQLateMax < fidDiff )

@@ -216,7 +216,7 @@ void evrEvent(int cardNo, epicsInt16 eventNum, epicsUInt32 timeNum)
   }
 
 #if 0
-  /* Increment the eventCode counter */
+  /* Increment the eventCode counter and add an entry to it's fidq */
   /* TODO: I'm not sure this is the right place to call this function
    * For event code 1, we've just signaled the semaphore above, but as we're
    * in interupt context here, this call to evrTimeCount() will always finish

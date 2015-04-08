@@ -174,7 +174,7 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
     bsa_ps = &((bsaDevice_ts *)dev_ps)->bsa_as[idx];
     /* Check if the EDEF has initialized and wipe out old values if it has */
     if ((edefTimeInit_s.secPastEpoch != bsa_ps->timeInit.secPastEpoch) ||
-        (edefTimeInit_s.nsec != bsa_ps->timeInit.nsec)) {
+        (edefTimeInit_s.nsec         != bsa_ps->timeInit.nsec)) {
 #ifdef BSA_DEBUG
         if ((bsa_debug_mask & (1 << idx)) && bsa_debug_level >= 1)
             printf("%08x:%08x EDEF%d %s reset, old epoch %08x:%08x\n",
@@ -454,8 +454,7 @@ static long init_bsa_record(bsaRecord *pbsa)
   if (status) return status;
 
   if ((pbsa->edef <= 0) || (pbsa->edef > EDEF_MAX)) {
-    errlogPrintf("init_bsa_record (%s): Invalid EDEF %d\n",
-                 pbsa->name, pbsa->edef - 1);
+    errlogPrintf("init_bsa_record (%s): Invalid EDEF %d\n", pbsa->name, pbsa->edef);
     return S_db_badField;
   }
   pbsa->dpvt = &((bsaDevice_ts *)pbsa->dpvt)->bsa_as[pbsa->edef-1];
