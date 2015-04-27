@@ -5,9 +5,9 @@
 /sbin/rmmod pci_mrfevr
 /sbin/rmmod pcie_evr
 if [ -f /bin/arch ]; then
-    /sbin/insmod /reg/g/pcds/package/epics/3.14/modules/event2/latest/driver/evr_device.ko.`uname -r`.`/bin/arch` || exit 1
+    /sbin/insmod /reg/g/pcds/package/epics/3.14/modules/event2/latest/driver/evr_device.ko.`uname -r`.`arch` || exit 1
 else
-    /sbin/insmod /reg/g/pcds/package/epics/3.14/modules/event2/latest/driver/evr_device.ko.`uname -r` || exit 1
+    /sbin/insmod /reg/g/pcds/package/epics/3.14/modules/event2/latest/driver/evr_device.ko.`uname -r`.`uname -m` || exit 1
 fi
 /sbin/modprobe pci_mrfevg
 

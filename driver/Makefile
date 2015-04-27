@@ -69,7 +69,7 @@ modules: modclean
 
 linuxRT: modclean
 	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(XCROSS_HOME) -C $(RT_KERNELDIR) M=$(PWD) modules
-	cp evr_device.ko evr_device.ko.3.14.12-rt9
+	cp evr_device.ko evr_device.ko.3.14.12-rt9.x86_64
 
 modclean:
 	-rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions Module.* module*
