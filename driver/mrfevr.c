@@ -30,11 +30,6 @@
 
 #include "pci_mrfev.h"
 
-#ifndef SA_SHIRQ
-/* No idea which version this changed in! */
-#define SA_SHIRQ IRQF_SHARED
-#endif
-
 MODULE_LICENSE("GPL");
 
 #define DEVICE_NAME           "evr_device"
@@ -49,9 +44,13 @@ static struct file_operations evr_fops = {
   .owner = THIS_MODULE,
   .read = ev_read,
   .write = ev_write,
+#ifdef HAVE_UNLOCKED_IOCTL
+  .unlocked_ioctl = ev_unlocked_ioctl,
+#else
   .ioctl = ev_ioctl,
 #ifdef CONFIG_COMPAT
   .compat_ioctl = ev_compat_ioctl,
+#endif
 #endif
   .open = ev_open,
   .release = ev_release,
@@ -163,7 +162,11 @@ static int pci_evr_probe(struct pci_dev *pcidev, const struct pci_device_id *dev
   ev_device->xcf_data_pos = -1;
   ev_device->fpga_conf_data = NULL;
   ev_device->fpga_conf_size = 0;
+#ifndef init_MUTEX
+  sema_init(&ev_device->sem, 1);
+#else
   init_MUTEX(&ev_device->sem);
+#endif
   res = cdev_add(&ev_device->cdev, chrdev, DEVICE_MINOR_NUMBERS);
   ev_device->pLC = 0;
   ev_device->lenLC = 0;
@@ -309,7 +312,11 @@ int ev_assign_irq(struct mrf_dev *ev_device)
 
   result = request_irq(ev_device->irq,
 		       &ev_interrupt,
-		       SA_SHIRQ,
+#if LINUX_VERSION_CODE > (0x020619)
+                       IRQF_SHARED,
+#else
+                       SA_SHIRQ,
+#endif
 		       DEVICE_NAME,
 		       (void *) ev_device);
   if (result)

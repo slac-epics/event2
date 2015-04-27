@@ -24,6 +24,7 @@
 #include <linux/mm.h>
 #include <linux/kdev_t.h>
 #include <linux/interrupt.h>
+#include <linux/sched.h>
 
 #include <asm/page.h>
 #include <asm/uaccess.h>
@@ -430,11 +431,13 @@ ssize_t ev_write(struct file *filp, const char __user *buf, size_t count,
   return retval;
 }
 
+#ifndef HAVE_UNLOCKED_IOCTL
 #ifdef CONFIG_COMPAT
 long ev_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
 	return ev_ioctl(NULL, file, cmd, arg);
 }
+#endif
 #endif
 
 /*
@@ -599,9 +602,13 @@ int ev_plx_irq_disable(struct mrf_dev *ev_device)
 * ev_read routine.                                                     *
 *                                                                      *
 \**********************************************************************/
-
+#ifdef HAVE_UNLOCKED_IOCTL
+long ev_unlocked_ioctl(struct file *filp,
+             unsigned int cmd, unsigned long arg)
+#else
 int ev_ioctl(struct inode *inode, struct file *filp,
-	     unsigned int cmd, unsigned long arg)
+             unsigned int cmd, unsigned long arg)
+#endif
 {
   struct shared_mrf *shared = ((struct shared_mrf *) filp->private_data);
   struct mrf_dev *ev_device = shared->parent;
@@ -612,6 +619,13 @@ int ev_ioctl(struct inode *inode, struct file *filp,
     return -ENOTTY;
   if (_IOC_NR(cmd) > EV_IOC_MAX)
     return -ENOTTY;
+  /* Check access */
+  if (_IOC_DIR(cmd) & _IOC_READ)
+    ret = !access_ok(VERIFY_WRITE, (void __user *)arg, _IOC_SIZE(cmd));
+  else if (_IOC_DIR(cmd) & _IOC_WRITE)
+    ret = !access_ok(VERIFY_READ, (void __user *)arg, _IOC_SIZE(cmd));
+  if (ret)
+    return -EFAULT;
 
   switch (cmd)
     {
@@ -693,15 +707,15 @@ int ev_ioctl(struct inode *inode, struct file *filp,
     case EV_IOCREAD32:
       if (ev_device->access_device == DEVICE_SHEV) {
         volatile u32 *pEr = ev_device->pEv;
-        u32 buf[EVR_MAX_READ/sizeof(u32)];
+        u32 *buf32 = shared->tmp;
         u32 offset, size, i, limit;
 
-        if (copy_from_user(buf, (u32 *)arg, sizeof(u32) * 2)) {
+        if (copy_from_user(buf32, (u32 *)arg, sizeof(u32) * 2)) {
           return -EACCES;
         }
         /* Args: offset, size */
-        offset = buf[0];
-        size   = buf[1];
+        offset = buf32[0];
+        size   = buf32[1];
         /* Offset and size must be aligned, and the read can't exceed EVR_MAX_READ. */
         if ((offset % sizeof(u32)) || (size % sizeof(u32)) || size > EVR_MAX_READ) {
             return -ENOTTY;
@@ -713,8 +727,8 @@ int ev_ioctl(struct inode *inode, struct file *filp,
         offset = offset / sizeof(u32);
         limit  = size   / sizeof(u32);
         for (i = 0; i < limit; i++)
-            buf[i] = be32_to_cpu(pEr[offset + i]);
-        if (copy_to_user((u32 *)arg, buf, size)) {
+            buf32[i] = be32_to_cpu(pEr[offset + i]);
+        if (copy_to_user((u32 *)arg, buf32, size)) {
             return -EFAULT;
         }
       } else
@@ -724,15 +738,15 @@ int ev_ioctl(struct inode *inode, struct file *filp,
     case EV_IOCREAD16:
       if (ev_device->access_device == DEVICE_SHEV) {
         volatile u16 *pEr = ev_device->pEv;
-        u16 buf[EVR_MAX_READ/sizeof(u16)];
+        u16 *buf16 = (u16 *)shared->tmp;
         u16 offset, size, i, limit;
 
-        if (copy_from_user(buf, (u16 *)arg, sizeof(u16) * 2)) {
+        if (copy_from_user(buf16, (u16 *)arg, sizeof(u16) * 2)) {
           return -EACCES;
         }
         /* Args: offset, size */
-        offset = buf[0];
-        size   = buf[1];
+        offset = buf16[0];
+        size   = buf16[1];
         /* Offset and size must be aligned, and the read can't exceed EVR_MAX_READ. */
         if ((offset % sizeof(u16)) || (size % sizeof(u16)) || size > EVR_MAX_READ)
             return -ENOTTY;
@@ -742,8 +756,8 @@ int ev_ioctl(struct inode *inode, struct file *filp,
         offset = offset / sizeof(u16);
         limit  = size   / sizeof(u16);
         for (i = 0; i < limit; i++)
-            buf[i] = be16_to_cpu(pEr[offset + i]);
-        if (copy_to_user((u16 *)arg, buf, size))
+            buf16[i] = be16_to_cpu(pEr[offset + i]);
+        if (copy_to_user((u16 *)arg, buf16, size))
             return -EFAULT;
       } else
         ret = -ENOTTY;

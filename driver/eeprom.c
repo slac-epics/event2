@@ -19,6 +19,7 @@
 #include <linux/ioport.h>
 #include <linux/delay.h>
 #include <linux/interrupt.h>
+#include <linux/sched.h>
 
 #include <asm/uaccess.h>
 

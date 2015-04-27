@@ -54,11 +54,22 @@ include $(TOP)/configure/RULES
 KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
 
+# linuxRT: Location of BuildRoot home for X86 architecture:
+BUILDROOT_X86_HOME=/afs/slac/g/lcls/package/linuxRT/buildroot-2014.11
+
+# linuxRT: Location CrossCompiler HOME for linuxRT x86_64 targets
+XCROSS_HOME=$(BUILDROOT_X86_HOME)/host/$(EPICS_HOST_ARCH)/x86_64-glibc-linux/usr/bin/x86_64-linux-
+RT_KERNELDIR = $(BUILDROOT_X86_HOME)/buildroot-glibc-x86_64/output/build/linux-3.14.12/
+
 realclean clean: modclean
 
 modules: modclean
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 	cp evr_device.ko evr_device.ko.`uname -r`.`arch`
+
+linuxRT: modclean
+	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(XCROSS_HOME) -C $(RT_KERNELDIR) M=$(PWD) modules
+	cp evr_device.ko evr_device.ko.3.14.12-rt9
 
 modclean:
 	-rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions Module.* module*

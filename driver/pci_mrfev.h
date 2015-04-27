@@ -82,6 +82,7 @@ struct shared_mrf {
     u32             irqmask;     /* The IRQs this client wants to see. */
     u32             pendingirq;  /* IRQs still to be delivered. */
     u16             evttab[256]; /* The events this client wants to see. */
+    u32             tmp[EVR_MAX_READ/sizeof(u32)];
     wait_queue_head_t waitq;
     spinlock_t      lock;
 };
@@ -141,10 +142,15 @@ ssize_t ev_read(struct file *filp, char __user *buf, size_t count,
 		loff_t *f_pos);
 ssize_t ev_write(struct file *filp, const char __user *buf, size_t count,
 		 loff_t *f_pos);
+#ifdef HAVE_UNLOCKED_IOCTL
+long ev_unlocked_ioctl(struct file *filp,
+	     unsigned int cmd, unsigned long arg);
+#else
 int ev_ioctl(struct inode *inode, struct file *filp,
 	     unsigned int cmd, unsigned long arg);
 #ifdef CONFIG_COMPAT
 long ev_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
+#endif
 #endif
 int ev_fasync(int fd, struct file *filp, int mode);
 int ev_remap_mmap(struct file *filp, struct vm_area_struct *vma);
