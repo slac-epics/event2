@@ -4,13 +4,19 @@
 /sbin/rmmod evr_device
 /sbin/rmmod pci_mrfevr
 /sbin/rmmod pcie_evr
-/sbin/insmod /reg/g/pcds/package/epics/3.14/modules/event2/latest/driver/evr_device.ko.`uname -r`.`arch` || exit 1
-/sbin/modprobe pci_mrfevg || exit 1
+if [ -f /bin/arch ]; then
+    /sbin/insmod /reg/g/pcds/package/epics/3.14/modules/event2/latest/driver/evr_device.ko.`uname -r`.`/bin/arch` || exit 1
+else
+    /sbin/insmod /reg/g/pcds/package/epics/3.14/modules/event2/latest/driver/evr_device.ko.`uname -r` || exit 1
+fi
+/sbin/modprobe pci_mrfevg
 
 majors=$(awk "\$2==\"evr_device\" {print \$1}" /proc/devices)
 
 echo "Found" $(echo $majors | wc -w) "Event Receivers."
 echo "Creating device nodes..."
+
+umask 022
 
 device=1
 for major in $majors; do
