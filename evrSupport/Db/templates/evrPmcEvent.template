@@ -11,6 +11,7 @@ record( erevent, "$(DEV):$(NAME)CTRL" )
   field( OUT2, "$(P2=0)" )
   field( VME,  "$(IRQ=1)" )
   field( FLNK, "$(EVRFLNK=$(DEV):Triggers)" )
+  info( autosaveFields, "DESC ENAB ENM OUT0 OUT1 OUT2 VME" )
 }
 
 record( longSub, "$(DEV):$(NAME)CNT" )

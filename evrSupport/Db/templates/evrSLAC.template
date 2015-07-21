@@ -93,6 +93,7 @@ record(er, "$(DEV):CTRL")
   field(DGBP, "$(DGBP=Normal)")
 
   field(FLNK, "$(EVRFLNK=$(DEV):Triggers)")
+  info( autosaveFields, "DESC ENAB DG0C DG0D DG0E DG0P DG0W IP0E DG1C DG1D DG1E DG1P DG1W IP1E DG2C DG2D DG2E DG2P DG2W IP2E DG3C DG3D DG3E DG3P DG3W IP3E DG4C DG4D DG4E DG4P DG4W IP4E DG5C DG5D DG5E DG5P DG5W IP5E DG6C DG6D DG6E DG6P DG6W IP6E DG7C DG7D DG7E DG7P DG7W IP7E DG8C DG8D DG8E DG8P DG8W IP8E DG9C DG9D DG9E DG9P DG9W IP9E DGAC DGAD DGAE DGAP DGAW IPAE DGBC DGBD DGBE DGBP DGBW IPBE" )
 }
 
 record(bi, "$(DEV):LINK")
@@ -133,86 +134,98 @@ record(mbbi, "$(DEV):STATUS")
 
 record(stringout, "$(DEV):FP0L")
 {
-  field(DESC, "$(FP0L=)")
+  field(DESC, "$(FP0L=Spare)")
   field(PINI, "YES")
-  field(VAL,  "$(FP0L=)")
+  field(VAL,  "$(FP0L=Spare)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FP1L")
 {
-  field(DESC, "$(FP1L=)")
+  field(DESC, "$(FP1L=Spare)")
   field(PINI, "YES")
-  field(VAL,  "$(FP1L=)")
+  field(VAL,  "$(FP1L=Spare)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FP2L")
 {
-  field(DESC, "$(FP2L=)")
+  field(DESC, "$(FP2L=Spare)")
   field(PINI, "YES")
-  field(VAL,  "$(FP2L=)")
+  field(VAL,  "$(FP2L=Spare)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FP3L")
 {
-  field(DESC, "$(FP3L=)")
+  field(DESC, "$(FP3L=Spare)")
   field(PINI, "YES")
-  field(VAL,  "$(FP3L=)")
+  field(VAL,  "$(FP3L=Spare)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FP4L")
 {
-  field(DESC, "$(FP4L=)")
+  field(DESC, "$(FP4L=Spare)")
   field(PINI, "YES")
-  field(VAL,  "$(FP4L=)")
+  field(VAL,  "$(FP4L=Spare)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FP5L")
 {
-  field(DESC, "$(FP5L=)")
+  field(DESC, "$(FP5L=Spare)")
   field(PINI, "YES")
-  field(VAL,  "$(FP5L=)")
+  field(VAL,  "$(FP5L=Spare)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FP6L")
 {
-  field(DESC, "$(FP6L=)")
+  field(DESC, "$(FP6L=Spare)")
   field(PINI, "YES")
-  field(VAL,  "$(FP6L=)")
+  field(VAL,  "$(FP6L=Spare)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FP7L")
 {
-  field(DESC, "$(FP7L=)")
+  field(DESC, "$(FP7L=Spare)")
   field(PINI, "YES")
-  field(VAL,  "$(FP7L=)")
+  field(VAL,  "$(FP7L=Spare)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FP8L")
 {
-  field(DESC, "$(FP8L=)")
+  field(DESC, "$(FP8L=Spare)")
   field(PINI, "YES")
-  field(VAL,  "$(FP8L=)")
+  field(VAL,  "$(FP8L=Spare)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FP9L")
 {
-  field(DESC, "$(FP9L=)")
+  field(DESC, "$(FP9L=Spare)")
   field(PINI, "YES")
-  field(VAL,  "$(FP9L=)")
+  field(VAL,  "$(FP9L=Spare)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FPAL")
 {
-  field(DESC, "$(FPAL=)")
+  field(DESC, "$(FPAL=Spare)")
   field(PINI, "YES")
-  field(VAL,  "$(FPAL=)")
+  field(VAL,  "$(FPAL=Spare)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FPBL")
 {
-  field(DESC, "$(FPBL=)")
+  field(DESC, "$(FPBL=Spare)")
   field(PINI, "YES")
-  field(VAL,  "$(FPBL=)")
+  field(VAL,  "$(FPBL=Spare)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(ai, "$(DEV):LINKERRCNT")

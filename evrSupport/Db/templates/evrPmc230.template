@@ -74,62 +74,7 @@ record(er, "$(DEV):CTRL")
   field(DG2P, "$(DG2P=Normal)")
 
   field(FLNK, "$(EVRFLNK=$(DEV):Triggers)")
-}
-
-record(stringout, "$(DEV):FP4L")
-{
-  field(DESC, "$(FP4L=)")
-  field(PINI, "YES")
-  field(VAL,  "$(FP4L=)")
-}
-
-record(stringout, "$(DEV):FP5L")
-{
-  field(DESC, "$(FP5L=)")
-  field(PINI, "YES")
-  field(VAL,  "$(FP5L=)")
-}
-
-record(stringout, "$(DEV):FP6L")
-{
-  field(DESC, "$(FP6L=)")
-  field(PINI, "YES")
-  field(VAL,  "$(FP6L=)")
-}
-
-record(stringout, "$(DEV):FP7L")
-{
-  field(DESC, "$(FP7L=)")
-  field(PINI, "YES")
-  field(VAL,  "$(FP7L=)")
-}
-
-record(stringout, "$(DEV):FP8L")
-{
-  field(DESC, "$(FP8L=)")
-  field(PINI, "YES")
-  field(VAL,  "$(FP8L=)")
-}
-
-record(stringout, "$(DEV):FP9L")
-{
-  field(DESC, "$(FP9L=)")
-  field(PINI, "YES")
-  field(VAL,  "$(FP9L=)")
-}
-
-record(stringout, "$(DEV):FPAL")
-{
-  field(DESC, "$(FPAL=)")
-  field(PINI, "YES")
-  field(VAL,  "$(FPAL=)")
-}
-
-record(stringout, "$(DEV):FPBL")
-{
-  field(DESC, "$(FPBL=)")
-  field(PINI, "YES")
-  field(VAL,  "$(FPBL=)")
+  info( autosaveFields, "DESC DG0C DG0D DG0E DG0P DG0W IP0E DG1C DG1D DG1E DG1P DG1W IP1E DG2C DG2D DG2E DG2P DG2W IP2E ENAB" )
 }
 
 record(bi, "$(DEV):LINK")
@@ -173,6 +118,7 @@ record(stringout, "$(DEV):FP0L")
   field(DESC, "$(FP0L=)")
   field(PINI, "YES")
   field(VAL,  "$(FP0L=)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FP1L")
@@ -180,6 +126,7 @@ record(stringout, "$(DEV):FP1L")
   field(DESC, "$(FP1L=)")
   field(PINI, "YES")
   field(VAL,  "$(FP1L=)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FP2L")
@@ -187,6 +134,7 @@ record(stringout, "$(DEV):FP2L")
   field(DESC, "$(FP2L=)")
   field(PINI, "YES")
   field(VAL,  "$(FP2L=)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(stringout, "$(DEV):FP3L")
@@ -194,6 +142,7 @@ record(stringout, "$(DEV):FP3L")
   field(DESC, "$(FP3L=)")
   field(PINI, "YES")
   field(VAL,  "$(FP3L=)")
+  info( autosaveFields, "DESC VAL" )
 }
 
 record(ai, "$(DEV):LINKERRCNT")

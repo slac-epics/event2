@@ -128,6 +128,7 @@ record(ao, "$(DEV):TREF") {
   field(ESLO, "8.403361345")
   field(VAL, "$(VAL)")
   field(PREC, "0")
+  info( autosaveFields, "DESC VAL" )
 }
 
 # $(DEV):EventCode:1 moved here to evrFiducial.db from
