@@ -361,6 +361,7 @@ static int ErConfigure (
 	case EVR_FIRMWARE_REV_LINUX4:
 	case EVR_FIRMWARE_REV_LINUX5:
 	case EVR_FIRMWARE_REV_LINUX6:
+	case EVR_FIRMWARE_REV_LINUX7:
 	    break;
 	case EVR_FIRMWARE_REV_VME1:
 	    fprintf ( stderr,
