@@ -52,21 +52,21 @@ record(er, "$(DEV):CTRL")
   field(OUT, "#C$(CARD) S0 @")
   field(PINI, "YES")
 #Extended Delay Triggers
-  field(IP0E, "$(IP0E)")
+  field(IP0E, "$(IP0E=Disabled)")
   field(DG0E, "$(DG0E=Disabled)")
   field(DG0W, "$(DG0W=1)")
   field(DG0D, "$(DG0D=0)")
   field(DG0C, "$(DG0C=1)")
   field(DG0P, "$(DG0P=Normal)")
 
-  field(IP1E, "$(IP1E)")
+  field(IP1E, "$(IP1E=Disabled)")
   field(DG1E, "$(DG1E=Disabled)")
   field(DG1W, "$(DG1W=1)")
   field(DG1D, "$(DG1D=0)")
   field(DG1C, "$(DG1C=1)")
   field(DG1P, "$(DG1P=Normal)")
 
-  field(IP2E, "$(IP2E)")
+  field(IP2E, "$(IP2E=Disabled)")
   field(DG2E, "$(DG2E=Disabled)")
   field(DG2W, "$(DG2W=1)")
   field(DG2D, "$(DG2D=0)")
@@ -74,7 +74,7 @@ record(er, "$(DEV):CTRL")
   field(DG2P, "$(DG2P=Normal)")
 
   field(FLNK, "$(EVRFLNK=$(DEV):Triggers)")
-  info( autosaveFields, "DESC DG0C DG0D DG0E DG0P DG0W IP0E DG1C DG1D DG1E DG1P DG1W IP1E DG2C DG2D DG2E DG2P DG2W IP2E ENAB" )
+  info( autosaveFields, "DESC DG0C DG0D DG0E DG0P DG0W DG1C DG1D DG1E DG1P DG1W DG2C DG2D DG2E DG2P DG2W ENAB" )
 }
 
 record(bi, "$(DEV):LINK")

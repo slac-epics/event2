@@ -313,7 +313,9 @@ epicsStatus ErProcess (erRecord  *pRec)
         if (pRec->dg0e)
             enable |= 1;
         ipov |= 1;
-    }
+    } else if ( pRec->dg0e && !pRec->ip0e ) {
+        printf ("devMrfEr::ErProcess(%s) Error: IP0E disabled!\n", pRec->name);
+	}
     if (pRec->ip1e) {
         if (pRec->dg1e || pRec->ld1e)
             ErSetDg (pCard, 1, pRec->dg1e, pRec->dg1d, pRec->dg1w, pRec->dg1c, pRec->dg1p);
@@ -321,7 +323,9 @@ epicsStatus ErProcess (erRecord  *pRec)
         if (pRec->dg1e)
             enable |= 1 << 1;
         ipov |= 1 << 1;
-    }
+    } else if ( pRec->dg1e && !pRec->ip1e ) {
+        printf ("devMrfEr::ErProcess(%s) Error: IP1E disabled!\n", pRec->name);
+	}
     if (pRec->ip2e) {
         if (pRec->dg2e || pRec->ld2e)
             ErSetDg (pCard, 2, pRec->dg2e, pRec->dg2d, pRec->dg2w, pRec->dg2c, pRec->dg2p);
@@ -329,7 +333,9 @@ epicsStatus ErProcess (erRecord  *pRec)
         if (pRec->dg2e)
             enable |= 1 << 2;
         ipov |= 1 << 2;
-    }
+    } else if ( pRec->dg2e && !pRec->ip2e ) {
+        printf ("devMrfEr::ErProcess(%s) Error: IP2E disabled!\n", pRec->name);
+	}
     if (pRec->ip3e) {
         if (pRec->dg3e || pRec->ld3e)
             ErSetDg (pCard, 3, pRec->dg3e, pRec->dg3d, pRec->dg3w, pRec->dg3c, pRec->dg3p);
@@ -337,7 +343,9 @@ epicsStatus ErProcess (erRecord  *pRec)
         if (pRec->dg3e)
             enable |= 1 << 3;
         ipov |= 1 << 3;
-    }
+    } else if ( pRec->dg3e && !pRec->ip3e ) {
+        printf ("devMrfEr::ErProcess(%s) Error: IP3E disabled!\n", pRec->name);
+	}
 	if (pRec->ip4e) {
 		if (pRec->dg4e || pRec->ld4e)
 			ErSetDg (pCard, 4, pRec->dg4e, pRec->dg4d, pRec->dg4w, pRec->dg4c, pRec->dg4p);
@@ -345,6 +353,8 @@ epicsStatus ErProcess (erRecord  *pRec)
 		if (pRec->dg4e)
 			enable |= 1 << 4;
 		ipov |= 1 << 4;
+    } else if ( pRec->dg4e && !pRec->ip4e ) {
+        printf ("devMrfEr::ErProcess(%s) Error: IP4E disabled!\n", pRec->name);
 	}
 	if (pRec->ip5e) {
 		if (pRec->dg5e || pRec->ld5e)
@@ -353,6 +363,8 @@ epicsStatus ErProcess (erRecord  *pRec)
 		if (pRec->dg5e)
 			enable |= 1 << 5;
 		ipov |= 1 << 5;
+    } else if ( pRec->dg5e && !pRec->ip5e ) {
+        printf ("devMrfEr::ErProcess(%s) Error: IP5E disabled!\n", pRec->name);
 	}
 	if (pRec->ip6e) {
 		if (pRec->dg6e || pRec->ld6e)
@@ -361,6 +373,8 @@ epicsStatus ErProcess (erRecord  *pRec)
 		if (pRec->dg6e)
 			enable |= 1 << 6;
 		ipov |= 1 << 6;
+    } else if ( pRec->dg6e && !pRec->ip6e ) {
+        printf ("devMrfEr::ErProcess(%s) Error: IP6E disabled!\n", pRec->name);
 	}
 	if (pRec->ip7e) {
 		if (pRec->dg7e || pRec->ld7e)
@@ -369,6 +383,8 @@ epicsStatus ErProcess (erRecord  *pRec)
 		if (pRec->dg7e)
 			enable |= 1 << 7;
 		ipov |= 1 << 7;
+    } else if ( pRec->dg7e && !pRec->ip7e ) {
+        printf ("devMrfEr::ErProcess(%s) Error: IP7E disabled!\n", pRec->name);
 	}
 	if (pRec->ip8e) {
 		if (pRec->dg8e || pRec->ld8e)
@@ -377,6 +393,8 @@ epicsStatus ErProcess (erRecord  *pRec)
 		if (pRec->dg8e)
 			enable |= 1 << 8;
 		ipov |= 1 << 8;
+    } else if ( pRec->dg8e && !pRec->ip8e ) {
+        printf ("devMrfEr::ErProcess(%s) Error: IP8E disabled!\n", pRec->name);
 	}
 	if (pRec->ip9e) {
 		if (pRec->dg9e || pRec->ld9e)
@@ -385,6 +403,8 @@ epicsStatus ErProcess (erRecord  *pRec)
 		if (pRec->dg9e)
 			enable |= 1 << 9;
 		ipov |= 1 << 9;
+    } else if ( pRec->dg9e && !pRec->ip9e ) {
+        printf ("devMrfEr::ErProcess(%s) Error: IP9E disabled!\n", pRec->name);
 	}
 	if (pRec->ipae) {
 		if (pRec->dgae || pRec->ldae)
@@ -393,6 +413,8 @@ epicsStatus ErProcess (erRecord  *pRec)
 		if (pRec->dgae)
 			enable |= 1 << 10;
 		ipov |= 1 << 10;
+    } else if ( pRec->dgae && !pRec->ipae ) {
+        printf ("devMrfEr::ErProcess(%s) Error: IPAE disabled!\n", pRec->name);
 	}
 	if (pRec->ipbe) {
 		if (pRec->dgbe || pRec->ldbe)
@@ -401,6 +423,8 @@ epicsStatus ErProcess (erRecord  *pRec)
 		if (pRec->dgbe)
 			enable |= 1 << 11;
 		ipov |= 1 << 11;
+    } else if ( pRec->dgbe && !pRec->ipbe ) {
+        printf ("devMrfEr::ErProcess(%s) Error: IPBE disabled!\n", pRec->name);
 	}
 
     if (pRec->ipov != ipov) {
