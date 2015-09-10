@@ -91,6 +91,7 @@
 #define EVR_FIRMWARE_REV_SLAC2  0x1FD00023
 #define EVR_FIRMWARE_REV_SLAC3  0x1FD10023
 #define EVR_FIRMWARE_REV_SLAC4  0x1FD10024
+#define EVR_FIRMWARE_REV_SLAC5  0x1FD20005
 
 /**************************************************************************************************/
 /*  Configuration Constants                                                                       */
