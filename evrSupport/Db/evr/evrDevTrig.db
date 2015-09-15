@@ -21,7 +21,6 @@
 #	POL	 - Initial Trigger polarity, default 0 (NORMAL)
 #	CTL	 - Initial Trigger enable, default 1 (Enabled)
 #	ACTV - Invariant Trigger Activate, default 1
-#	SYS  - EVG System specifier, default SYS0
 #	DRVH - High limit of desired delay, default  2.14748E09
 #	DRVL - Low  limit of desired delay, default -2.14748E09
 #
@@ -213,7 +212,7 @@ record( aSub, "$(TRIG):ASUB_LKUOFFSET" )
 	field( SNAM, "aSubEvOffset" )
 	field( INPA, "$(TRIG):LSUB_EVSEL.VAL NPP MS" )
 	field( INPB, "$(ACTV=1)" )
-	field( INPC, "EVNT:$(SYS=SYS0):1:DELAY CPP MS" )
+	field( INPC, "$(EVR):EC:DELAYS CPP MS" )
 	field( INPD, "0" )
 	field( FTA, "LONG" )
 	field( FTB, "LONG" )

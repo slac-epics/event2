@@ -51,7 +51,7 @@ record(aSub, "$(DEV):$(NAME)EVDESC") {
   field(FTA,  "LONG")
   field(INPB, "$(DEV):$(NAME)DESC")
   field(FTB,  "STRING")
-  field(INPC, "EVNT:$(SYS=SYS0):1:NAME CPP MS")
+  field(INPC, "$(EVR):EC:NAMES CPP MS")
   field(FTC,  "STRING")
   field(NOC,  "256")
   field(OUTA, "$(DEV):$(NAME)DESC PP")

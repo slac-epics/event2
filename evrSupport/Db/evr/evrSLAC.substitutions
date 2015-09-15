@@ -114,4 +114,10 @@ file pcdsEventCodes.db
    { DEV="$(EVR)", EVG="EVNT:SYS0" }
 }
 
+#
+# Creates records for the EVG event code delays and names
+file eventCodeDelays.db
+{
+   { EVR="$(EVR)"  }
+}
 
