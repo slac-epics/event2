@@ -1,0 +1,29 @@
+#
+# eventCodeDelays.db
+#
+# Need one instance for each EVR to support the invariant timing in evrDevTrig.db
+# These waveforms update via CA when they connect w/ the EVG
+# and save their values via autosave so the data is available even
+# when the EVG PV's are not.
+#
+# Required macros:
+#	EVR  - EVR PV prefix
+#	SYS  - EVG System specifier, default SYS0
+
+record( waveform, "$(EVR):EC:DELAYS" )
+{
+	field( INP,  "EVNT:$(SYS=SYS0):1:DELAY CPP NMS" )
+	field( NELM, "256" )
+	field( FTVL, "LONG" )
+	field( EGU,  "ticks" )
+	info( autosaveFields,  "VAL" )
+}
+
+record( waveform, "$(EVR):EC:NAMES" )
+{
+	field( INP,  "EVNT:$(SYS=SYS0):1:NAME CPP NMS" )
+	field( NELM, "256" )
+	field( FTVL, "STRING" )
+	info( autosaveFields,  "VAL" )
+}
+

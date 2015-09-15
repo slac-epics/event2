@@ -1,0 +1,5 @@
+# eventCodeDelays.req
+#
+$(EVR):EC:DELAYS.VAL
+$(EVR):EC:NAMES.VAL
+
