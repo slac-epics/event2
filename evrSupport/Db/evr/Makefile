@@ -40,7 +40,14 @@ DB += fiducialTimestamp.db
 DB += evrEventCode.template
 DB += evrEventCodeName.template
 
+# Event Code Delays
+DB += eventCodeDelays.db
+
+# LCLS Event Code List
+DB += lclsEventCodes.substitutions
+
 # PCDS Event Code List
+# includes LCLS event codes plus event sequencer codes
 DB += pcdsEventCodes.db
 DB += pcdsEventCodes.substitutions
 
@@ -55,6 +62,9 @@ DB += evrTrigCtrl.db
 # of our common EVR boards
 DB_INSTALLS += evrPmc230.substitutions
 DB_INSTALLS += evrSLAC.substitutions
+
+# Autosave for EVG event code delays
+REQ += eventCodeDelays.req
 
 include $(TOP)/configure/RULES
 #----------------------------------------
