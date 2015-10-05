@@ -1624,9 +1624,8 @@ int evrTimePatternPutEnd(int modulo720Flag)
         ------------------- ----------- ---------- ----------------------------
         struct aSubRecord* psub       read/write The aSub record.
 
-  Rem:  INPA should be a DBLINK to the NAME field of the record with the desired
-        timestamp.  The name is extracted into psub->a as a string, from which we
-        then find the database record and store into psub->dpvt for quick access.
+  Rem:  TSEL should be a DBLINK to the TIME field of the record with the
+  		desired timestamp, and TSE should be -2.
 
   Ret:  Fiducial number, to be put into VAL field of aSub.
 
@@ -1634,20 +1633,9 @@ int evrTimePatternPutEnd(int modulo720Flag)
 
 long evrTimeGetFiducial(struct aSubRecord *psub)
 {
-    struct dbCommon *precord;
-    if (!psub->dpvt) {
-        struct dbAddr addr;
-        if (dbNameToAddr((char *)psub->a, &addr)) {
-            return 0x1ffff;
-        } else
-            psub->dpvt = addr.precord;
-    }
-    precord = (struct dbCommon *)psub->dpvt;
-    if (psub->tse == epicsTimeEventDeviceTime)
-        psub->time = precord->time;
-    return precord->time.nsec & 0x1ffff;
+	recGblGetTimeStamp( psub );
+	return psub->time.nsec & 0x1ffff;
 }
-
 
 extern void eventDebug(int arg1, int arg2)
 {

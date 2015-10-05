@@ -24,7 +24,7 @@ record(fanout, "$(DEV):PATTERNFO") {
   field(LNK3, "$(DEV):MODIFIER5")
   field(LNK4, "$(LNK4)")
   field(LNK5, "$(LNK5)")
-  field(LNK6, "$(DEV):Fiducial")
+# field(LNK6, "$(DEV):Fiducial")
 }
 
 # 120Hz fiducial PV
@@ -32,7 +32,10 @@ record( longin, "$(DEV):Fiducial")
 {
   field( DESC, "Fiducial ID" )
   field( INP,  "$(DEV):PATTERN.L NPP MS" )
-  field( TSEL, "$(DEV):EventCode:40:Count.TIME" )
+# Fiducial now updated by event code 40 after 40 arrives so timestamp matches VAL
+  field( SCAN, "Event" )
+  field( EVNT, "40" )
+  field( TSE,  "40" )
 }
 
 # 360Hz fiducial PV
@@ -41,11 +44,8 @@ record( aSub, "$(DEV):360HzFiducial")
 {
   field( DESC, "360Hz Fiducial ID" )
   field( SNAM, "evrTimeGetFiducial" )
-  field( INPA, "$(DEV):EventCode:1:Count.NAME CP" )
   field( TSE,  "-2" )
-# TODO: Make evrTimeGetFiducial support the TSEL link
-# It'll replace both the last two lines w/ this
-# field( TSEL, "$(DEV):EventCode:1:Count" )
+  field( TSEL, "$(DEV):EventCode:1:Count.TIME" )
 }
 
 record(longSub, "$(DEV):MODIFIER5") {
