@@ -29,18 +29,30 @@ evrIoc_SRCS_DEFAULT += evrMain.cpp
 evrIoc_LIBS += evrSupport
 evrIoc_LIBS += devMrfEr
 evrIoc_LIBS += drvMrf
+ifdef DIAG_TIMER
+evrIoc_LIBS += diagTimer
+endif
 evrIoc_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 evrTest_SRCS_DEFAULT += evrTest.c
 evrTest_LIBS += drvMrf
+ifdef DIAG_TIMER
+evrTest_LIBS += diagTimer
+endif
 evrTest_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 evrDiag_SRCS_DEFAULT += evrDiag.c
 evrDiag_LIBS += drvMrf
+ifdef DIAG_TIMER
+evrDiag_LIBS += diagTimer
+endif
 evrDiag_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 evrVersion_SRCS_DEFAULT += evrVersion.c
 evrVersion_LIBS += drvMrf
+ifdef DIAG_TIMER
+evrVersion_LIBS += diagTimer
+endif
 evrVersion_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 #===========================
