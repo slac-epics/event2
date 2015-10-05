@@ -83,7 +83,7 @@ extern "C" {
 
 #define MAX_EV_TRIGGERS        12
 
-extern int	evrGetLastFiducial( );				/* Returns lastfid, the last fiducial set by ISR */
+extern int  evrGetLastFiducial( );              /* Returns lastfid, the last fiducial set by ISR */
 extern int lastfid;                             /* Keep this for a while to avoid compiler errors */
 
 
@@ -130,16 +130,23 @@ typedef epicsUInt32 evrModifier_ta[MAX_EVR_MODIFIER];
   
 typedef void (*FIDUCIALFUNCTION)(void *arg);
 
+struct  evrFifoInfo
+{
+    epicsTimeStamp      fifo_time;
+    long long           fifo_tsc;
+    int                 fifo_status;
+};
+
 int evrInitialize         (void);
 int evrTimeRegister       (FIDUCIALFUNCTION fiducialFunc,
                            void *           fiducialArg);
 int evrTimeGetFromPipeline(epicsTimeStamp  *epicsTime_ps,
                            evrTimeId_te     id,
                            evrModifier_ta   modifier_a, 
-                           epicsUInt32   *	patternStatus_p,
-                           epicsUInt32   *	edefAvgDoneMask_p,
-                           epicsUInt32   *	edefMinorMask_p,
-                           epicsUInt32   *	edefMajorMask_p);
+                           epicsUInt32   *  patternStatus_p,
+                           epicsUInt32   *  edefAvgDoneMask_p,
+                           epicsUInt32   *  edefMinorMask_p,
+                           epicsUInt32   *  edefMajorMask_p);
 #if 0
 int evrTimeGetFromEdef    (unsigned int     edefIdx,
                            epicsTimeStamp  *edefTime_ps,
@@ -156,10 +163,14 @@ int evrTimeGetFromEdefTime(unsigned int     edefIdx,
 unsigned int evrTimeGetInitGen(unsigned int edefIdx, unsigned int edefGen);
 int evrTimeGet            (epicsTimeStamp  *epicsTime_ps,
                            unsigned int     eventCode);
-int evrTimeGetFifo        (epicsTimeStamp     *epicsTime_ps,
+int evrTimeGetFifoInfo(    struct evrFifoInfo *pFifoInfoRet,
                            unsigned int        eventCode,
                            unsigned long long *idx,
-                           int                 incr);
+                           int                 incr );
+int evrTimeGetFifo(        epicsTimeStamp  *   epicsTime_ps,
+                           unsigned int        eventCode,
+                           unsigned long long *idx,
+                           int                 incr );
 int evrTimePutPulseID     (epicsTimeStamp  *epicsTime_ps,
                            unsigned int     pulseID);
 /* Routines used only by event module and Mpg application */
@@ -167,7 +178,7 @@ int evrTimePutPulseID     (epicsTimeStamp  *epicsTime_ps,
 int evrTimeInit           (epicsInt32   firstTimeSlotIn,
                            epicsInt32   secondTimeSlotIn);
 int evrTime               (epicsUInt32  mpsModifier);
-int evrTimeCount          (unsigned int eventCode, unsigned int fiducial);
+int evrTimeCount          (unsigned int eventCode, unsigned int fiducial, long long hiResTsc );
 long evrTimeEventProcessing(epicsInt16 eventNum);
 int evrTimePatternPutStart(evrMessagePattern_ts **pattern_pps,
                            unsigned long        **timeslot_pp,
@@ -193,8 +204,8 @@ Argument:  next_event_to_watch...The event to watch from this call onwards
 */
 #define PEEK_PIPE_SIZE  10
 epicsUInt32 peek_fiducial (epicsUInt32*next_event_to_watch,epicsUInt32 *Ticks,epicsUInt32 );
-void evrEvent(	int    cardNo,	epicsInt16 eventNum,	epicsUInt32	timeNum	);
-void evrSend(	void * pCard,	epicsInt16 messageSize,	void	*	message	);
+void evrEvent(  int    cardNo,  epicsInt16 eventNum,    epicsUInt32 timeNum );
+void evrSend(   void * pCard,   epicsInt16 messageSize, void    *   message );
 
 extern int fiddbg, fiddbgcnt; /* Temporary fiducial debug variable. */
 

@@ -14,6 +14,7 @@
            evrTimeGetFromEdefTime - Get Timestamp from EDEF and timestamp
            evrTimeGet        - Get Timestamp for an Event
            evrTimeGetFifo    - Get Timestamp from an Event FIFO
+           evrTimeGetFifoInfo- Get evrFifoInfo from an Event FIFO
            evrTimePutPulseID - Encode Pulse ID into a Timestamp
            evrTimeGetSystem  - Get System Time with Encoded Invalid Pulse ID
            evrTimePatternPutStart - Start New Time/Pattern Update
@@ -75,8 +76,16 @@
 #include "evrPattern.h"        
 #include <time.h>
 
+#ifdef DIAG_TIMER
+#include "HiResTime.h"
+#else
+#include "HiResTimeStub.h"
+#endif	/* DIAG_TIMER */
+
 #define  EVR_TIME_OK 0
 #define  EVR_TIME_INVALID 1
+
+#define MAX_FID_QUEUE          50              /* # fiducial hiRes timestamps in ISR queue */
 
 /* Pattern and timestamp table */
 typedef struct {
@@ -92,9 +101,9 @@ typedef struct {
                               /* 1st 32 bits = # of seconds since 1990   */
                               /* 2nd 32 bits = # of nsecs since last sec */
                               /*           except lower 17 bits = pulsid */
+  t_HiResTime		  hiResTsc;	/* 64 bit hi res counter, typically cpu tsc */
   int                 status; /* 0=OK; -1=invalid                        */
-  epicsTimeStamp      fifotime[MAX_TS_QUEUE];
-  int                 fifostatus[MAX_TS_QUEUE];
+  struct evrFifoInfo  fifoInfo[	MAX_TS_QUEUE ];
   unsigned long long  ts_idx;
   int                 count;         /* # times this event has happened  */
 
@@ -119,7 +128,8 @@ typedef struct {
   int				  nTimeStampOK;
   int				  nFidQCountGT1;
   int				  nTimeStampFailed;
-  int                 fidq[MAX_TS_QUEUE];
+  t_HiResTime		  fidqtsc[ MAX_FID_QUEUE ];
+  int                 fidq[    MAX_FID_QUEUE ];
   int                 fidR;
   int                 fidW;
 } evrTime_ts;
@@ -559,7 +569,7 @@ int evrTimeGet (epicsTimeStamp  *epicsTime_ps, unsigned int eventCode)
 
   Rem:  Routine to get the epics timestamp from a queue of timestamps.  This must
         be called no faster than timestamps come in, as there is no checking for bounds.
-        
+
         "evrTimeGetFifo(&ts, event, &idx, MAX_TS_QUEUE)" and "evrTimeGet(&ts, event)" return
         identical timestamps.
         
@@ -569,42 +579,88 @@ int evrTimeGet (epicsTimeStamp  *epicsTime_ps, unsigned int eventCode)
   Ret:  -1=Failed; 0 = Success
 ==============================================================================*/
 
-int evrTimeGetFifo (epicsTimeStamp  *epicsTime_ps, unsigned int eventCode, unsigned long long *idx, int incr)
+int evrTimeGetFifo ( epicsTimeStamp  * epicsTime_ps, unsigned int eventCode, unsigned long long *idx, int incr)
 {
-  int status = 0;
-  
-  if ((eventCode > MRF_NUM_EVENTS) || (!evrTimeRWMutex_ps) || epicsMutexLock(evrTimeRWMutex_ps))
-    return epicsTimeERROR;
-  if (incr == MAX_TS_QUEUE)
-      *idx = eventCodeTime_as[eventCode].ts_idx - 1;
-  else
-      *idx += incr;
-  /*
-   * eventCodeTime_as[eventCode].ts_idx is the monotonically increasing location for the *next*
-   * timestamp... it isn't valid yet!  Since there are MAX_TS_QUEUE entries, this means that
-   * the valid entries are between eventCodeTime_as[eventCode].ts_idx - MAX_TS_QUEUE and 
-   * eventCodeTime_as[eventCode].ts_idx - 1.
-   */
-  if (*idx + MAX_TS_QUEUE < eventCodeTime_as[eventCode].ts_idx ||
-      *idx > eventCodeTime_as[eventCode].ts_idx) {
-      epicsMutexUnlock(evrTimeRWMutex_ps);
-	  /* Invalid index */
-      return epicsTimeERROR;
-  }
+	struct evrFifoInfo  fifoInfo;
+	int					status = 0;
 
-  if ( *idx == eventCodeTime_as[eventCode].ts_idx ) {
-	// FIFO is empty for this event code
-    /* We're slightly early, but we'll be back.  Just throw an error. */
-    epicsMutexUnlock(evrTimeRWMutex_ps);
-    return epicsTimeERROR;
-  }
+	status = evrTimeGetFifoInfo( &fifoInfo, eventCode, idx, incr );
+	if ( status == 0 )
+	{
+		*epicsTime_ps	= fifoInfo.fifo_time;
+		status			= fifoInfo.fifo_status;
+	}
+	return status;
+}
+
+/*=============================================================================
 
-  *epicsTime_ps = eventCodeTime_as[eventCode].fifotime[     *idx & MAX_TS_QUEUE_MASK ];
-  epicsTime_ps->nsec |= status;
-  status        = eventCodeTime_as[eventCode].fifostatus[   *idx & MAX_TS_QUEUE_MASK ];
-  epicsMutexUnlock(evrTimeRWMutex_ps);
- 
-  return status; 
+  Name: evrTimeGetFifoInfo
+
+  Abs:  Get the epics timestamp associated with an event code from the fifo, defined as:
+        1st integer = number of seconds since 1990  
+        2nd integer = number of nsecs since last sec, except lower 17 bits=pulsid
+        
+  Args: Type     Name           Access     Description
+        -------  -------    ---------- ----------------------------
+  evrFifoInfo *  pFifoInfoRet	write  ptr to where evrFifoInfo should be copied
+  unsigned int   eventCode      read   Event code 0 to 255.
+                                      0,1=time associated w this pulse
+                                          (event code 1 = fiducial)
+                                          1 to 255 = EVR event codes
+  unsigned long long * idx      read/write The last fifo index we read
+  int            incr           read       How far to move ahead (MAX_TS_QUEUE if idx is uninitialized)
+
+  Rem:  Routine to get the epics timestamp from a queue of timestamps.  This must
+        be called no faster than timestamps come in, as there is no checking for bounds.
+        
+        "evrTimeGetFifoInfo(&fifoInfo, event, &idx, MAX_TS_QUEUE)" and "evrTimeGet(&ts, event)" return
+        identical timestamps.
+        
+
+  Side: 
+
+  Ret:  -1=Failed; 0 = Success
+==============================================================================*/
+
+int evrTimeGetFifoInfo( struct evrFifoInfo  * pFifoInfoRet, unsigned int eventCode, unsigned long long *idx, int incr )
+{
+	if (	(pFifoInfoRet == NULL)
+		||	(eventCode > MRF_NUM_EVENTS)
+		||	(!evrTimeRWMutex_ps) )
+		return epicsTimeERROR;
+
+	pFifoInfoRet->fifo_time.secPastEpoch	= 0;
+	pFifoInfoRet->fifo_time.nsec			= 0;
+	pFifoInfoRet->fifo_tsc					= 0LL;
+	pFifoInfoRet->fifo_status				= epicsTimeERROR;
+
+	if ( epicsMutexLock( evrTimeRWMutex_ps ) != 0 )
+		return epicsTimeERROR;
+
+	if (incr == MAX_TS_QUEUE)
+		*idx = eventCodeTime_as[eventCode].ts_idx - 1;
+	else
+		*idx += incr;
+
+	/*
+	 * eventCodeTime_as[eventCode].ts_idx is the monotonically increasing location for the *next*
+	 * timestamp... it isn't valid yet!  Since there are MAX_TS_QUEUE entries, this means that
+	 * the valid entries are between eventCodeTime_as[eventCode].ts_idx - MAX_TS_QUEUE and 
+	 * eventCodeTime_as[eventCode].ts_idx - 1.
+	 */
+	if ( *idx + MAX_TS_QUEUE < eventCodeTime_as[eventCode].ts_idx ||
+		 *idx >= eventCodeTime_as[eventCode].ts_idx) {
+		epicsMutexUnlock(evrTimeRWMutex_ps);
+		/* Invalid index or FIFO is empty */
+		return epicsTimeERROR;
+	}
+
+	/* Copy the requested fifo information */
+	*pFifoInfoRet	= eventCodeTime_as[eventCode].fifoInfo[     *idx & MAX_TS_QUEUE_MASK ];
+
+	epicsMutexUnlock(evrTimeRWMutex_ps);
+	return 0; 
 }
 
 /*=============================================================================
@@ -716,10 +772,12 @@ int evrTimeInit(epicsInt32 firstTimeSlotIn, epicsInt32 secondTimeSlotIn)
         /* init timestamp structures to invalid status & system time*/
         for (idx=0; idx<=MRF_NUM_EVENTS; idx++) {
     	  evrTime_ts  *   pevrTime = &eventCodeTime_as[idx];
-          int idx2;
+          int idx2;    
+		  t_HiResTime			hiResTsc	= GetHiResTicks();
           for (idx2 = 0; idx2 < MAX_TS_QUEUE; idx2++) {
-              pevrTime->fifotime[idx2] = mod720time;
-              pevrTime->fifostatus[idx2] = epicsTimeERROR;
+              pevrTime->fifoInfo[idx2].fifo_time   = mod720time;
+              pevrTime->fifoInfo[idx2].fifo_tsc    = hiResTsc;
+              pevrTime->fifoInfo[idx2].fifo_status = epicsTimeERROR;
           }
           pevrTime->ts_idx  = 0LL;
           pevrTime->time    = mod720time;
@@ -1177,13 +1235,10 @@ static long evrTimeRate(subRecord *psub)
 		evrTime() to advance the pipeline, it posts an eventMessage for event code 1
 		to the eventTaskQueue.
 		For other event codes, the eventMessage is posted directly from evrEvent in the interrupt context.
-        TODO: I think we need to move the call to evrTimeCount() for all event codes
-		from evrEvent() to evrEventTask() which processes all eventMessage's which
-		are posted to eventTaskQueue.
   Ret:  -1=Failed; 0 = Success
 
 ==============================================================================*/
-int evrTimeCount(unsigned int eventCode, unsigned int fiducial)
+int evrTimeCount(unsigned int eventCode, unsigned int fiducial, t_HiResTime hiResTsc )
 {
   if ((eventCode > 0) && (eventCode <= MRF_NUM_EVENTS)) {
     evrTime_ts  *   pevrTime = &eventCodeTime_as[eventCode];
@@ -1194,8 +1249,9 @@ int evrTimeCount(unsigned int eventCode, unsigned int fiducial)
         pevrTime->count = 1;
 	if( fiducial > PULSEID_MAX )
 		fiducial = PULSEID_INVALID;
-    pevrTime->fidq[pevrTime->fidW] = fiducial;
-    if (++pevrTime->fidW == MAX_TS_QUEUE)
+    pevrTime->fidq[		pevrTime->fidW ] = fiducial;
+    pevrTime->fidqtsc[	pevrTime->fidW ] = hiResTsc;
+    if (++pevrTime->fidW == MAX_FID_QUEUE)
         pevrTime->fidW = 0;
     return epicsTimeOK;
   }
@@ -1260,7 +1316,7 @@ static long evrTimeEvent(longSubRecord *psub)
  *
  * fiddbg printf'e replaced with diag counters to avoid skewing our timestamping
  */
-long evrTimeEventProcessing(epicsInt16 eventNum)
+long evrTimeEventProcessing( epicsInt16 eventNum )
 {
     evrTime_ts      	    *   pevrTime    	= NULL;
     static epicsTimeStamp   *   pLastGoodTS   	= NULL;
@@ -1270,8 +1326,8 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
     epicsTimeStamp              newTimeStamp	= mod720time;
     int                         newTimeStatus	= epicsTimeERROR;
     int                         fidqFiducial	= PULSEID_INVALID;
+	t_HiResTime	 				fidqTsc 		= 0LL;
     int                         countDiff;
-
     if ((eventNum <= 0) || (eventNum > MRF_NUM_EVENTS)) {
         return epicsTimeERROR;
     }
@@ -1319,7 +1375,8 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
 
         /* Get the fiducial from the fiducial Q */
         fidqFiducial = pevrTime->fidq[pevrTime->fidR];
-        if (++pevrTime->fidR == MAX_TS_QUEUE)
+    	fidqTsc		 = pevrTime->fidqtsc[pevrTime->fidR];
+        if (++pevrTime->fidR == MAX_FID_QUEUE)
             pevrTime->fidR = 0;
     	if (pevrTime->fidR != pevrTime->fidW)
           	pevrTime->nFidQCountGT1++;
@@ -1462,6 +1519,7 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
          * as it's set by evrTime() based on the pattern modifiers from the IRQ */
         if ( eventNum != EVENT_FIDUCIAL )
             {
+        		assert( pevrTime != &eventCodeTime_as[1] );
                 /* Update the latest timestamp for this event */
                 pevrTime->time      = newTimeStamp;
                 pevrTime->status    = newTimeStatus;
@@ -1471,10 +1529,11 @@ long evrTimeEventProcessing(epicsInt16 eventNum)
             /* Add the timestamp to the fifo queue
              * EVENT_FIDUCIAL also saves timestamps here,
              * so if you want to see corrected FIDUCIAL timestamps,
-             * call evrTimeGetFifo() to get it from the event FIFO */
-            unsigned int    idx = (pevrTime->ts_idx++) & MAX_TS_QUEUE_MASK;
-            pevrTime->fifotime[idx]   = pevrTime->time;
-            pevrTime->fifostatus[idx] = pevrTime->status;
+             * call evrTimeGetFifoInfo() to get it from the event FIFO */
+            unsigned int    	idx = (pevrTime->ts_idx++) & MAX_TS_QUEUE_MASK;
+            pevrTime->fifoInfo[idx].fifo_time   = pevrTime->time;
+            pevrTime->fifoInfo[idx].fifo_tsc    = fidqTsc;
+            pevrTime->fifoInfo[idx].fifo_status = pevrTime->status;
         }
     }
 
@@ -1589,48 +1648,87 @@ long evrTimeGetFiducial(struct aSubRecord *psub)
     return precord->time.nsec & 0x1ffff;
 }
 
+
 extern void eventDebug(int arg1, int arg2)
 {
+	int iFifoDump = 0;
+	int nFifoDump = 10;
     int doreset = 0;
     if (arg1 < 0) {
         arg1 = -arg1;
         doreset = 1;
     }
     do {
+		unsigned long long  idx         = 0LL;
+		long long  			deltaTsc    = 0LL;
+		long long  			priorTsc    = 0LL;
         evrTime_ts      *   pevrTime    = &eventCodeTime_as[arg1];
-        unsigned long long  idx         = pevrTime->ts_idx;
-        int fidx = idx & MAX_TS_QUEUE_MASK;
-        int lidx = (idx + MAX_TS_QUEUE - 1) & MAX_TS_QUEUE_MASK;
         printf( "Event Code %d:\n", arg1 );
         printf( "   Count = %d, time = %08x.%08x, status = %d\n",
                 pevrTime->count,
 				pevrTime->time.secPastEpoch,
                 pevrTime->time.nsec,   
 				pevrTime->status    );
-        printf(	"   count = %d, dbgcnt = %d, nCntEarly = %d, nCntLate = %d, nCntOnTime = %d\n",
-				pevrTime->count, pevrTime->dbgcnt, pevrTime->nCntEarly, pevrTime->nCntLate, pevrTime->nCntOnTime );
+        printf(	"   dbgcnt = %d, nCntEarly = %d, nCntLate = %d, nCntOnTime = %d\n",
+				pevrTime->dbgcnt, pevrTime->nCntEarly, pevrTime->nCntLate, pevrTime->nCntOnTime );
         printf(	"   nCntLateMin = %d, nCntLateMax = %d, nCntLateSmoo = %f\n",
 				pevrTime->nCntLateMin, pevrTime->nCntLateMax, pevrTime->nCntLateSmoo );
-        printf("    idx = %llu, fidx = %d, lidx = %d\n", idx, fidx, lidx );
-        printf("    first time = %08x.%08x\n",
-                pevrTime->fifotime[fidx].secPastEpoch,
-                pevrTime->fifotime[fidx].nsec);
-        printf("    last time  = %08x.%08x\n",
-                pevrTime->fifotime[lidx].secPastEpoch,
-                pevrTime->fifotime[lidx].nsec);
-        printf("    lastfid    = 0x%05x\n", evrGetLastFiducial() );
-        printf("    Wr fidq[%d] = 0x%05x, Rd fidq[%d] = 0x%05x\n",
-					pevrTime->fidW, pevrTime->fidq[pevrTime->fidW],
-					pevrTime->fidR, pevrTime->fidq[pevrTime->fidR] );
-        printf("    nFidQEarly = %d, nFidQLate = %d, nFidQOnTime = %d\n",
+		for ( iFifoDump = 0; iFifoDump < nFifoDump; iFifoDump++ )
+		{
+			char	strTime[40];
+			struct evrFifoInfo	fifoInfo;
+			int		incr;
+			int		status;
+			if ( iFifoDump == 0 )
+				incr	= MAX_TS_QUEUE;
+			else
+				incr	= -1;
+
+			status = evrTimeGetFifoInfo( &fifoInfo, arg1, &idx, incr );
+			if ( iFifoDump == 0 )
+			{
+				int fidx = idx & MAX_TS_QUEUE_MASK;
+				int lidx = (idx + MAX_TS_QUEUE - 1) & MAX_TS_QUEUE_MASK;
+				printf("   FIFO: idx = 0x%llx, fidx = 0x%x, lidx = 0x%x\n", idx, fidx, lidx );
+				deltaTsc    = 0LL;
+			}
+			else
+			{
+				deltaTsc = priorTsc - fifoInfo.fifo_tsc;
+			}
+			priorTsc = fifoInfo.fifo_tsc;
+			epicsTimeToStrftime( strTime, 40, "%M:%S.%03f", &fifoInfo.fifo_time );
+#ifdef HI_RES_TIME_H
+			printf( "     time(%2d) = %14s, fid %d, delta %.3fms\n", -iFifoDump,
+					strTime, fifoInfo.fifo_time.nsec & 0x1ffff,
+					HiResTicksToSeconds( deltaTsc ) * 1000	);
+#else
+			printf( "     time(%d) = %14s, fid %d, delta %lld ticks\n", -iFifoDump,
+					strTime, fifoInfo.fifo_time.nsec & 0x1ffff, deltaTsc );
+#endif /* HI_RES_TIME_H */
+			if ( status < 0 )
+			{
+				printf( "    Nothing more in FIFO\n" );
+				break;
+			}
+		}
+        printf("    lastfid    = %d\n", evrGetLastFiducial() );
+		int	fidW = pevrTime->fidW - 1;
+		int	fidR = pevrTime->fidR - 1;
+    	if( fidW < 0 ) fidW = MAX_FID_QUEUE - 1;
+    	if( fidR < 0 ) fidR = MAX_FID_QUEUE - 1;
+        printf( "   Wr fidq[%d] = %d, Rd fidq[%d] = %d\n",
+					fidW, pevrTime->fidq[fidW],
+					fidR, pevrTime->fidq[fidR] );
+        printf( "   nFidQEarly = %d, nFidQLate = %d, nFidQOnTime = %d\n",
 					pevrTime->nFidQEarly, pevrTime->nFidQLate, pevrTime->nFidQOnTime );
-        printf("    nFidQBad = %d, FidQCountGT1 = %d, nSetFidInvalid = %d\n",
+        printf( "   nFidQBad = %d, FidQCountGT1 = %d, nSetFidInvalid = %d\n",
 					pevrTime->nFidQBad, pevrTime->nFidQCountGT1, pevrTime->nSetFidInvalid );
         printf(	"   nFidQLateMin = %d, nFidQLateMax = %d, nFidQLateSmoo = %f\n",
 					pevrTime->nFidQLateMin, pevrTime->nFidQLateMax, pevrTime->nFidQLateSmoo );
-        printf("    nCurFidBad = %d, nFidCorrected = %d\n",
+        printf( "   nCurFidBad = %d, nFidCorrected = %d\n",
 					pevrTime->nCurFidBad, pevrTime->nFidCorrected );
-        printf("    nTimeStampOK = %d, nTimeStampFailed = %d\n",
+        printf( "   nTimeStampOK = %d, nTimeStampFailed = %d\n",
 					pevrTime->nTimeStampOK, pevrTime->nTimeStampFailed );
 
         if (doreset) {

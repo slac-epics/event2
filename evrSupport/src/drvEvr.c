@@ -39,6 +39,12 @@
 #include "drvMrfEr.h"		/* for ErRegisterDevDBuffHandler */
 #include "devMrfEr.h"		/* for ErRegisterEventHandler    */
 
+#ifdef DIAG_TIMER
+#include "HiResTime.h"
+#else
+#include "HiResTimeStub.h"
+#endif	/* DIAG_TIMER */
+
 #ifdef __rtems__
 #define EVR_TIMEOUT     (0.06)  /* Timeout in sec waiting for 360hz input. */
 #else
@@ -185,6 +191,9 @@ void evrSend(void *pCard, epicsInt16 messageSize, void *message)
 =============================================================================*/
 void evrEvent(int cardNo, epicsInt16 eventNum, epicsUInt32 timeNum)
 {
+  t_HiResTime			hiResTsc	= GetHiResTicks();
+  if(eventNum == EVENT_FIDUCIAL)
+    lastfid = timeNum;
   if(eventNum==event_to_peek_fiducial) {
     fiducial_time_stamp[fiducial_time_stamp_ix]= timeNum;
     fiducial_time_stamp_ix++;
@@ -192,10 +201,9 @@ void evrEvent(int cardNo, epicsInt16 eventNum, epicsUInt32 timeNum)
   }
 
   /* This needs to be done first, or else we might have to wait a full fiducial! */
-  evrTimeCount((unsigned int)eventNum, (unsigned int) timeNum);
+  evrTimeCount((unsigned int)eventNum, (unsigned int) timeNum, hiResTsc );
 
   if (eventNum == EVENT_FIDUCIAL) {
-    lastfid = timeNum;
     if (readyForFiducial) {
       epicsUInt32  evrClockCounter;                                      // NEW
       readyForFiducial = 0;
@@ -214,22 +222,6 @@ void evrEvent(int cardNo, epicsInt16 eventNum, epicsUInt32 timeNum)
 	  eventMessage.eventNum  = eventNum;
 	  epicsMessageQueueSend( eventTaskQueue, &eventMessage, sizeof(eventMessage) );
   }
-
-#if 0
-  /* Increment the eventCode counter and add an entry to it's fidq */
-  /* TODO: I'm not sure this is the right place to call this function
-   * For event code 1, we've just signaled the semaphore above, but as we're
-   * in interupt context here, this call to evrTimeCount() will always finish
-   * before the evrTask() calls evrTime() to advance the pattern buffers.
-   * For other event codes, it's a race to see if evrTask() can handle the
-   * pattern buffers before the other event code interrupts occur.
-   * This should rarely happen under RTEMS, but can easily happen under RedHat linux.
-   * The problem with moving this call is we don't have a way to pass timeNum, the fiducial timestamp
-   * from the event timestamp FIFO, on to be processed by the eventTaskQueue.
-   * Could it be as simple as adding a fiducial field to EventMessage?
-   */
-  evrTimeCount((unsigned int)eventNum, (unsigned int) timeNum);
-#endif
 }
 
 /*---------------------------------------------------------------------------

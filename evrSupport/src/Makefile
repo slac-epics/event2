@@ -15,6 +15,9 @@ USR_CFLAGS_RTEMS += -DEVR_DRIVER_SUPPORT
 ifeq ($(EVR_DRIVER_SUPPORT_LINUX), YES)
 USR_CFLAGS_Linux += -DEVR_DRIVER_SUPPORT
 endif
+ifdef DIAG_TIMER
+USR_CFLAGS += -DDIAG_TIMER
+endif
 
 
 SRC_DIRS += $(TOP)/mrfApp/src
@@ -51,6 +54,9 @@ evrSupport_SRCS += bsaRecord.c
 evrSupport_SRCS += bsacompressRecord.c
 evrSupport_SRCS += drvEvr.c
 evrSupport_LIBS += $(EPICS_BASE_IOC_LIBS)
+ifdef DIAG_TIMER
+evrSupport_LIBS += diagTimer
+endif
 
 #===========================
 
