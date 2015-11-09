@@ -20,9 +20,11 @@ struct kind {
     unsigned int val;
     char *desc;
 } kinds[] = {
+    { 0xffffffff, 0x0000f305, "PMC: RTEMS!! Needs upgrade!" },
     { 0xff000000, 0x10000000, "cPCI 3U" },
-    { 0xffffffff, 0x11000002, "PMC: needs upgrade!!" },
-    { 0xffffffff, 0x11000103, "PMC: latest version" },
+    { 0xffffffff, 0x11000002, "PMC: needs upgrade!!!" },
+    { 0xffffffff, 0x11000103, "PMC: needs upgrade!!" },
+    { 0xffffffff, 0x11000303, "PMC: latest version" },
     { 0xff000000, 0x11000000, "PMC: unknown version?!?" },
     { 0xff000000, 0x12000000, "VME64x" },
     { 0xff000000, 0x13000000, "cRIO" },
@@ -61,8 +63,6 @@ int main (int argc, char **argv )
             if (device == '3') {
                 ptr = (unsigned int *) mmap(0, 0x40, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
                 if ( ptr == MAP_FAILED ) {
-                    fprintf(stderr, "Failed to map %s!\n", name);
-                    perror("");
                     continue;
                 }
                 val = ptr[VERSIONOFFSET];
