@@ -57,7 +57,7 @@ int main (int argc, char **argv )
         int done = 0;
         for (device = '3'; device <= '4'; device++) {
             sprintf(name, "/dev/er%c%c", board, device);
-            fd = open(name, O_RDWR);
+            fd = open(name, O_RDONLY);
             if (fd < 0)
                 continue;
             if (device == '3') {
