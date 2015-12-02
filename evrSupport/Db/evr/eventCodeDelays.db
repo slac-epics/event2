@@ -16,6 +16,7 @@ record( waveform, "$(EVR):EC:DELAYS" )
 	field( NELM, "256" )
 	field( FTVL, "LONG" )
 	field( EGU,  "ticks" )
+	field( PINI, "YES" )
 	info( autosaveFields,  "VAL" )
 }
 
