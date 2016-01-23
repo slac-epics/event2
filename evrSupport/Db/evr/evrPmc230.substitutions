@@ -32,8 +32,8 @@ file evrPmc230.template
     }
 
     {   $(EVR),		"$(EVR):Triggers",
-        "Spare",    Enabled,    Normal,     1000,   500,    119,    "\$(IP0E=Disabled)",
-        "Spare",    Enabled,    Normal,     1000,   750,    119,    "\$(IP1E=Disabled)",
+        "Spare",    Disabled,   Normal,     1000,   500,    119,    "\$(IP0E=Disabled)",
+        "Spare",    Disabled,   Normal,     1000,   750,    119,    "\$(IP1E=Disabled)",
         "Spare",    Disabled,   Normal,     5000,   500,    119,    "\$(IP2E=Disabled)",
         "Spare",    Disabled,   Normal,     5000,   500,    119,    "\$(IP3E=Disabled)",
     } 
