@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 240
-y 1568
+x 674
+y 1778
 w 880
 h 200
 font "helvetica-medium-r-18.0"
@@ -21,7 +21,6 @@ topShadowColor index 1
 botShadowColor index 14
 title "$(EVR) $(T)-Trig-$(CH)"
 showGrid
-snapToGrid
 gridSize 4
 endScreenProperties
 
@@ -42,57 +41,6 @@ bgColor index 5
 value {
   "$(T) $(CH)"
 }
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 464
-y 8
-w 80
-h 24
-controlPv "$(TRIG):TWID"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-motifWidget
-limitsFromDb
-nullColor index 18
-nullCondition "disabled"
-newPos
-objType "controls"
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 408
-y 8
-w 52
-h 24
-fgColor index 25
-fgAlarm
-onColor index 6
-offColor index 3
-inconsistentColor index 40
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(TRIG):TPOL"
-indicatorPv "$(TRIG):TPOL"
-onLabel "Invert"
-offLabel "Normal"
-3d
-font "helvetica-medium-r-12.0"
-objType "controls"
 endObjectProperties
 
 # (Related Display)
@@ -158,32 +106,6 @@ symbols {
 icon
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 148
-y 8
-w 196
-h 24
-controlPv "$(TRIG):TCTL.DESC"
-format "string"
-font "courier-bold-r-12.0"
-fontAlign "center"
-fgColor index 25
-bgColor index 5
-editable
-motifWidget
-nullColor index 18
-smartRefresh
-fastUpdate
-newPos
-objType "controls"
-noExecuteClipMask
-endObjectProperties
-
 # (Text Monitor)
 object activeXTextDspClass:noedit
 beginObjectProperties
@@ -232,32 +154,6 @@ useHexPrefix
 showUnits
 newPos
 objType "monitors"
-endObjectProperties
-
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 92
-y 8
-w 52
-h 24
-controlPv "$(TRIG):TEC"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-motifWidget
-limitsFromDb
-nullColor index 18
-nullCondition "disabled"
-colorPv "$(TRIG):EVENTCTRL.SEVR"
-newPos
-objType "controls"
 endObjectProperties
 
 # (Text Monitor)
@@ -493,31 +389,6 @@ newPos
 objType "monitors"
 endObjectProperties
 
-# (Text Control)
-object activeXTextDspClass
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 548
-y 8
-w 80
-h 24
-controlPv "$(TRIG):TDES"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 25
-fgAlarm
-bgColor index 5
-editable
-motifWidget
-limitsFromDb
-nullColor index 18
-nullCondition "disabled"
-newPos
-objType "controls"
-endObjectProperties
-
 # (Button)
 object activeButtonClass
 beginObjectProperties
@@ -565,6 +436,300 @@ value {
   "Disabled"
 }
 endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 88
+y 4
+w 612
+h 56
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 88
+y 4
+w 612
+h 56
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 644
+y 4
+w 56
+h 56
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 644
+y 4
+w 56
+h 56
+lineColor index 20
+fillColor index 25
+lineWidth 4
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 652
+y 16
+w 40
+h 32
+lineColor index 20
+fillColor index 25
+lineWidth 4
+numPoints 2
+xPoints {
+  0 652
+  1 692
+}
+yPoints {
+  0 16
+  1 48
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 560
+y 4
+w 56
+h 56
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 560
+y 4
+w 56
+h 56
+lineColor index 20
+fillColor index 25
+lineWidth 4
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 568
+y 16
+w 40
+h 32
+lineColor index 20
+fillColor index 25
+lineWidth 4
+numPoints 2
+xPoints {
+  0 568
+  1 608
+}
+yPoints {
+  0 16
+  1 48
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 476
+y 4
+w 56
+h 56
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 476
+y 4
+w 56
+h 56
+lineColor index 20
+fillColor index 25
+lineWidth 4
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 484
+y 16
+w 40
+h 32
+lineColor index 20
+fillColor index 25
+lineWidth 4
+numPoints 2
+xPoints {
+  0 484
+  1 524
+}
+yPoints {
+  0 16
+  1 48
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 88
+y 4
+w 56
+h 56
+
+beginGroup
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 88
+y 4
+w 56
+h 56
+lineColor index 20
+fillColor index 25
+lineWidth 4
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 96
+y 16
+w 40
+h 32
+lineColor index 20
+fillColor index 25
+lineWidth 4
+numPoints 2
+xPoints {
+  0 96
+  1 136
+}
+yPoints {
+  0 16
+  1 48
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 264
+y 8
+w 112
+h 48
+font "helvetica-medium-r-24.0"
+fgColor index 20
+bgColor index 25
+useDisplayBg
+value {
+  "Not"
+  "Owned"
+}
+endObjectProperties
+
+endGroup
+
+visPv "$(EVR):CTRL.IP$(CH)E"
+visMin "0"
+visMax "1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 92
+y 8
+w 620
+h 25
+
+beginGroup
 
 # (Group)
 object activeGroupClass
@@ -695,6 +860,141 @@ endGroup
 visPv "$(EVR):CTRL.$(DG)$(CH)C"
 visInvert
 visMin "0"
+visMax "2"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 548
+y 8
+w 80
+h 24
+controlPv "$(TRIG):TDES"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+nullCondition "disabled"
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 464
+y 8
+w 80
+h 24
+controlPv "$(TRIG):TWID"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+nullCondition "disabled"
+newPos
+objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 408
+y 8
+w 52
+h 24
+fgColor index 25
+fgAlarm
+onColor index 6
+offColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(TRIG):TPOL"
+indicatorPv "$(TRIG):TPOL"
+onLabel "Invert"
+offLabel "Normal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 148
+y 8
+w 196
+h 24
+controlPv "$(TRIG):TCTL.DESC"
+format "string"
+font "courier-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+nullColor index 18
+smartRefresh
+fastUpdate
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 92
+y 8
+w 52
+h 24
+controlPv "$(TRIG):TEC"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 25
+fgAlarm
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+nullCondition "disabled"
+colorPv "$(TRIG):EVENTCTRL.SEVR"
+newPos
+objType "controls"
+endObjectProperties
+
+endGroup
+
+visPv "$(EVR):CTRL.IP$(CH)E"
+visMin "1"
 visMax "2"
 endObjectProperties
 

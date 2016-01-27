@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 497
-y 52
-w 884
-h 972
+x 915
+y 692
+w 882
+h 380
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-bold-r-14.0"
@@ -19,11 +19,26 @@ ctlBgColor1 index 25
 ctlBgColor2 index 7
 topShadowColor index 1
 botShadowColor index 14
-title "$(EVR) SLAC pciE EVR"
+title "$(EVR) PMC EVR-230"
 showGrid
 snapToGrid
 gridSize 4
 endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 8
+y 132
+w 868
+h 240
+lineColor index 3
+fill
+fillColor index 3
+endObjectProperties
 
 # (Rectangle)
 object activeRectangleClass
@@ -56,7 +71,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "SLAC PCIe Event Receiver"
+  "PMC EVR-230 Event Receiver"
   "$(EVR)"
 }
 endObjectProperties
@@ -67,7 +82,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 820
+x 824
 y 8
 w 48
 h 24
@@ -86,7 +101,7 @@ beginObjectProperties
 major 4
 minor 4
 release 0
-x 456
+x 392
 y 8
 w 88
 h 24
@@ -99,7 +114,7 @@ buttonLabel "Triggers ..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "event2Screens/evrTrig3T_slac.edl"
+  0 "event2Screens/evrTrig3T.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -113,7 +128,7 @@ beginObjectProperties
 major 4
 minor 4
 release 0
-x 760
+x 700
 y 8
 w 56
 h 24
@@ -140,9 +155,9 @@ beginObjectProperties
 major 4
 minor 4
 release 0
-x 656
+x 596
 y 8
-w 100
+w 96
 h 24
 fgColor index 14
 bgColor index 4
@@ -173,7 +188,7 @@ beginObjectProperties
 major 4
 minor 4
 release 0
-x 552
+x 488
 y 8
 w 100
 h 24
@@ -199,33 +214,6 @@ replaceSymbols {
 }
 propagateMacros {
   0 0
-}
-icon
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 392
-y 8
-w 56
-h 24
-fgColor index 14
-bgColor index 4
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "EVR"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "event2Screens/evr_slac.edl"
-}
-setPosition {
-  0 "parentWindow"
 }
 icon
 endObjectProperties
@@ -411,6 +399,45 @@ beginObjectProperties
 major 4
 minor 1
 release 1
+x 8
+y 124
+w 68
+h 16
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "Triggers"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 572
+y 136
+w 98
+h 14
+font "helvetica-medium-i-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "* relative to TREF"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
 x 200
 y 64
 w 36
@@ -515,6 +542,33 @@ useDisplayBg
 value {
   "Reference Time (ns)"
 }
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 328
+y 8
+w 56
+h 24
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "EVR"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "event2Screens/evr.edl"
+}
+setPosition {
+  0 "parentWindow"
+}
+icon
 endObjectProperties
 
 # (Lines)
@@ -739,82 +793,6 @@ newPos
 objType "monitors"
 endObjectProperties
 
-# (Rectangle)
-object activeRectangleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 8
-y 132
-w 866
-h 816
-lineColor index 3
-fill
-fillColor index 3
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 664
-y 948
-w 128
-h 20
-controlPv "$(IOC):TOD"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 14
-fgAlarm
-bgColor index 12
-useDisplayBg
-precision 1
-nullColor index 0
-newPos
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 8
-y 124
-w 68
-h 16
-font "helvetica-bold-r-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 3
-value {
-  "Triggers"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 572
-y 136
-w 98
-h 14
-font "helvetica-medium-i-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "* relative to TREF"
-}
-autoSize
-endObjectProperties
-
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -961,7 +939,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 656
+x 736
 y 156
 w 68
 h 16
@@ -981,7 +959,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 728
+x 808
 y 156
 w 56
 h 16
@@ -995,6 +973,39 @@ value {
 }
 endObjectProperties
 
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 764
+y 8
+w 52
+h 24
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "IOC"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "iocScreens/ioc_soft.edl"
+}
+menuLabel {
+  0 "IOC"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "IOC=$(IOC)"
+}
+icon
+endObjectProperties
+
 # (Embedded Window)
 object activePipClass
 beginObjectProperties
@@ -1003,7 +1014,7 @@ minor 1
 release 0
 x 12
 y 172
-w 858
+w 860
 h 64
 fgColor index 14
 bgColor index 0
@@ -1039,7 +1050,7 @@ minor 1
 release 0
 x 12
 y 236
-w 858
+w 860
 h 64
 fgColor index 14
 bgColor index 0
@@ -1095,7 +1106,7 @@ minor 1
 release 0
 x 12
 y 300
-w 858
+w 860
 h 64
 fgColor index 14
 bgColor index 0
@@ -1123,327 +1134,23 @@ propagateMacros {
 noScroll
 endObjectProperties
 
-# (Embedded Window)
-object activePipClass
+# (Static Text)
+object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
-x 12
-y 364
-w 858
-h 64
+release 1
+x 642
+y 156
+w 84
+h 16
+font "helvetica-medium-i-12.0"
+fontAlign "center"
 fgColor index 14
-bgColor index 0
-topShadowColor index 1
-botShadowColor index 14
-displaySource "menu"
-filePv "LOC\\\\emb-trig=0"
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "event2Screens/emb-trig.edl"
+bgColor index 3
+useDisplayBg
+value {
+  "Delay(ticks)"
 }
-menuLabel {
-  0 "Embedded Trigger"
-}
-symbols {
-  0 "TRIG=$(EVR):TRIG3,CH=3,DG=DG,T=Front Panel,EVR=$(EVR)"
-}
-replaceSymbols {
-  0 1
-}
-propagateMacros {
-  0 0
-}
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 12
-y 428
-w 858
-h 64
-fgColor index 14
-bgColor index 0
-topShadowColor index 1
-botShadowColor index 14
-displaySource "menu"
-filePv "LOC\\\\emb-trig=0"
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "event2Screens/emb-trig.edl"
-}
-menuLabel {
-  0 "Embedded Trigger"
-}
-symbols {
-  0 "TRIG=$(EVR):TRIG4,CH=4,DG=DG,T=Front Panel,EVR=$(EVR)"
-}
-replaceSymbols {
-  0 1
-}
-propagateMacros {
-  0 0
-}
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 12
-y 492
-w 858
-h 64
-fgColor index 14
-bgColor index 0
-topShadowColor index 1
-botShadowColor index 14
-displaySource "menu"
-filePv "LOC\\\\emb-trig=0"
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "event2Screens/emb-trig.edl"
-}
-menuLabel {
-  0 "Embedded Trigger"
-}
-symbols {
-  0 "TRIG=$(EVR):TRIG5,CH=5,DG=DG,T=Front Panel,EVR=$(EVR)"
-}
-replaceSymbols {
-  0 1
-}
-propagateMacros {
-  0 0
-}
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 12
-y 556
-w 858
-h 64
-fgColor index 14
-bgColor index 0
-topShadowColor index 1
-botShadowColor index 14
-displaySource "menu"
-filePv "LOC\\\\emb-trig=0"
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "event2Screens/emb-trig.edl"
-}
-menuLabel {
-  0 "Embedded Trigger"
-}
-symbols {
-  0 "TRIG=$(EVR):TRIG6,CH=6,DG=DG,T=Front Panel,EVR=$(EVR)"
-}
-replaceSymbols {
-  0 1
-}
-propagateMacros {
-  0 0
-}
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 12
-y 620
-w 858
-h 64
-fgColor index 14
-bgColor index 0
-topShadowColor index 1
-botShadowColor index 14
-displaySource "menu"
-filePv "LOC\\\\emb-trig=0"
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "event2Screens/emb-trig.edl"
-}
-menuLabel {
-  0 "Embedded Trigger"
-}
-symbols {
-  0 "TRIG=$(EVR):TRIG7,CH=7,DG=DG,T=Front Panel,EVR=$(EVR)"
-}
-replaceSymbols {
-  0 1
-}
-propagateMacros {
-  0 0
-}
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 12
-y 684
-w 858
-h 64
-fgColor index 14
-bgColor index 0
-topShadowColor index 1
-botShadowColor index 14
-displaySource "menu"
-filePv "LOC\\\\emb-trig=0"
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "event2Screens/emb-trig.edl"
-}
-menuLabel {
-  0 "Embedded Trigger"
-}
-symbols {
-  0 "TRIG=$(EVR):TRIG8,CH=8,DG=DG,T=Front Panel,EVR=$(EVR)"
-}
-replaceSymbols {
-  0 1
-}
-propagateMacros {
-  0 0
-}
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 12
-y 748
-w 858
-h 64
-fgColor index 14
-bgColor index 0
-topShadowColor index 1
-botShadowColor index 14
-displaySource "menu"
-filePv "LOC\\\\emb-trig=0"
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "event2Screens/emb-trig.edl"
-}
-menuLabel {
-  0 "Embedded Trigger"
-}
-symbols {
-  0 "TRIG=$(EVR):TRIG9,CH=9,DG=DG,T=Front Panel,EVR=$(EVR)"
-}
-replaceSymbols {
-  0 1
-}
-propagateMacros {
-  0 0
-}
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 12
-y 812
-w 858
-h 64
-fgColor index 14
-bgColor index 0
-topShadowColor index 1
-botShadowColor index 14
-displaySource "menu"
-filePv "LOC\\\\emb-trig=0"
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "event2Screens/emb-trig.edl"
-}
-menuLabel {
-  0 "Embedded Trigger"
-}
-symbols {
-  0 "TRIG=$(EVR):TRIGA,CH=A,DG=DG,T=Front Panel,EVR=$(EVR)"
-}
-replaceSymbols {
-  0 1
-}
-propagateMacros {
-  0 0
-}
-noScroll
-endObjectProperties
-
-# (Embedded Window)
-object activePipClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 12
-y 876
-w 858
-h 64
-fgColor index 14
-bgColor index 0
-topShadowColor index 1
-botShadowColor index 14
-displaySource "menu"
-filePv "LOC\\\\emb-trig=0"
-sizeOfs 5
-numDsps 1
-displayFileName {
-  0 "event2Screens/emb-trig.edl"
-}
-menuLabel {
-  0 "Embedded Trigger"
-}
-symbols {
-  0 "TRIG=$(EVR):TRIGB,CH=B,DG=DG,T=Front Panel,EVR=$(EVR)"
-}
-replaceSymbols {
-  0 1
-}
-propagateMacros {
-  0 0
-}
-noScroll
 endObjectProperties
 
