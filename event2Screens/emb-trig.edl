@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 674
-y 1778
+x 284
+y 1764
 w 880
 h 200
 font "helvetica-medium-r-18.0"
@@ -237,12 +237,11 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 168
+x 148
 y 36
-w 200
+w 196
 h 24
 font "helvetica-bold-r-12.0"
-fontAlign "center"
 fgColor index 20
 bgColor index 3
 useDisplayBg
@@ -251,7 +250,7 @@ visInvert
 visMin "0"
 visMax "25"
 value {
-  "No event code selected!"
+  "No event code!"
 }
 endObjectProperties
 
@@ -443,253 +442,12 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 88
-y 4
-w 612
-h 56
+x 264
+y 12
+w 112
+h 48
 
 beginGroup
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 88
-y 4
-w 612
-h 56
-
-beginGroup
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 644
-y 4
-w 56
-h 56
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 644
-y 4
-w 56
-h 56
-lineColor index 20
-fillColor index 25
-lineWidth 4
-endObjectProperties
-
-# (Lines)
-object activeLineClass
-beginObjectProperties
-major 4
-minor 0
-release 1
-x 652
-y 16
-w 40
-h 32
-lineColor index 20
-fillColor index 25
-lineWidth 4
-numPoints 2
-xPoints {
-  0 652
-  1 692
-}
-yPoints {
-  0 16
-  1 48
-}
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 560
-y 4
-w 56
-h 56
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 560
-y 4
-w 56
-h 56
-lineColor index 20
-fillColor index 25
-lineWidth 4
-endObjectProperties
-
-# (Lines)
-object activeLineClass
-beginObjectProperties
-major 4
-minor 0
-release 1
-x 568
-y 16
-w 40
-h 32
-lineColor index 20
-fillColor index 25
-lineWidth 4
-numPoints 2
-xPoints {
-  0 568
-  1 608
-}
-yPoints {
-  0 16
-  1 48
-}
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 476
-y 4
-w 56
-h 56
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 476
-y 4
-w 56
-h 56
-lineColor index 20
-fillColor index 25
-lineWidth 4
-endObjectProperties
-
-# (Lines)
-object activeLineClass
-beginObjectProperties
-major 4
-minor 0
-release 1
-x 484
-y 16
-w 40
-h 32
-lineColor index 20
-fillColor index 25
-lineWidth 4
-numPoints 2
-xPoints {
-  0 484
-  1 524
-}
-yPoints {
-  0 16
-  1 48
-}
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 88
-y 4
-w 56
-h 56
-
-beginGroup
-
-# (Circle)
-object activeCircleClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 88
-y 4
-w 56
-h 56
-lineColor index 20
-fillColor index 25
-lineWidth 4
-endObjectProperties
-
-# (Lines)
-object activeLineClass
-beginObjectProperties
-major 4
-minor 0
-release 1
-x 96
-y 16
-w 40
-h 32
-lineColor index 20
-fillColor index 25
-lineWidth 4
-numPoints 2
-xPoints {
-  0 96
-  1 136
-}
-yPoints {
-  0 16
-  1 48
-}
-endObjectProperties
-
-endGroup
-
-endObjectProperties
-
-endGroup
-
-endObjectProperties
 
 # (Static Text)
 object activeXTextClass
@@ -698,7 +456,7 @@ major 4
 minor 1
 release 1
 x 264
-y 8
+y 12
 w 112
 h 48
 font "helvetica-medium-r-24.0"
