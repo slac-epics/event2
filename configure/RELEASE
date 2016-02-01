@@ -13,7 +13,7 @@ EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
 # ===============================================================
 # Example: IPAC_MODULE_VERSION=R2.8.4-0.2.0
 MISCUTILS_MODULE_VERSION=R2.2.2-0.4.0
-DIAG_TIMER_MODULE_VERSION=R1.6.0
+DIAG_TIMER_MODULE_VERSION=R1.7.0
 
 # ============================================================
 # External Support module path definitions
