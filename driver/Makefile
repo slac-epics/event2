@@ -54,12 +54,16 @@ include $(TOP)/configure/RULES
 KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
 
-# linuxRT: Location of BuildRoot home for X86 architecture:
-BUILDROOT_X86_HOME=/afs/slac/g/lcls/package/linuxRT/buildroot-2014.11
+# Build these RT kernel drivers
+RT_KERNELS = 3.14.12-rt9 3.18.11-rt7
 
-# linuxRT: Location CrossCompiler HOME for linuxRT x86_64 targets
-XCROSS_HOME=$(BUILDROOT_X86_HOME)/host/$(EPICS_HOST_ARCH)/x86_64-glibc-linux/usr/bin/x86_64-linux-
-RT_KERNELDIR = $(BUILDROOT_X86_HOME)/buildroot-glibc-x86_64/output/build/linux-3.14.12/
+# XCROSS_HOME and KERNELDIR for linuxRT kernel 3.14.12-rt9
+KERNELDIR_3.14.12-rt9	= /afs/slac/g/lcls/package/linuxRT/buildroot-2014.11/buildroot-glibc-x86_64/output/build/linux-3.14.12/
+XCROSS_HOME_3.14.12-rt9	= /afs/slac/g/lcls/package/linuxRT/buildroot-2014.11/host/linux-x86_64/x86_64-glibc-linux/usr/bin/x86_64-linux-
+
+# XCROSS_HOME and KERNELDIR for linuxRT kernel 3.18.11-rt7
+KERNELDIR_3.18.11-rt7	= /afs/slac/package/linuxRT/buildroot-2015.02/buildroot-2015.02-x86_64/output/build/linux-3.18.11/
+XCROSS_HOME_3.18.11-rt7	= /afs/slac/package/linuxRT/buildroot-2015.02/host/linux-x86_64/x86_64/usr/bin/x86_64-linux-
 
 realclean clean: modclean
 
@@ -67,9 +71,12 @@ modules: modclean
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 	cp evr_device.ko evr_device.ko.`uname -r`.`arch`
 
-linuxRT: modclean
-	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(XCROSS_HOME) -C $(RT_KERNELDIR) M=$(PWD) modules
-	cp evr_device.ko evr_device.ko.3.14.12-rt9.x86_64
+.PHONY: $(RT_KERNELS)
+linuxRT: modclean $(RT_KERNELS)
+
+$(RT_KERNELS):
+	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(XCROSS_HOME_$(@)) -C $(KERNELDIR_$(@)) M=$(PWD) modules
+	cp evr_device.ko evr_device.ko.$(@).x86_64
 
 modclean:
 	-rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions Module.* module*
