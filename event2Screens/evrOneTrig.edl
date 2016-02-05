@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 900
-y 1754
+x 446
+y 1488
 w 882
 h 248
 font "helvetica-medium-r-18.0"
@@ -101,61 +101,7 @@ beginObjectProperties
 major 4
 minor 4
 release 0
-x 392
-y 8
-w 88
-h 24
-fgColor index 14
-bgColor index 4
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "Triggers ..."
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "event2Screens/evrTrig3T.edl"
-}
-setPosition {
-  0 "parentWindow"
-}
-icon
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 700
-y 8
-w 56
-h 24
-fgColor index 14
-bgColor index 4
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "Diag"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "evrScreens/evrDiag.edl"
-}
-setPosition {
-  0 "parentWindow"
-}
-icon
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 596
+x 660
 y 8
 w 96
 h 24
@@ -188,7 +134,7 @@ beginObjectProperties
 major 4
 minor 4
 release 0
-x 488
+x 552
 y 8
 w 100
 h 24
@@ -542,33 +488,6 @@ useDisplayBg
 value {
   "Reference Time (ns)"
 }
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 328
-y 8
-w 56
-h 24
-fgColor index 14
-bgColor index 4
-topShadowColor index 1
-botShadowColor index 11
-font "helvetica-medium-r-12.0"
-buttonLabel "EVR"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "event2Screens/evr_slac.edl"
-}
-setPosition {
-  0 "parentWindow"
-}
-icon
 endObjectProperties
 
 # (Lines)
@@ -1079,6 +998,32 @@ bgColor index 3
 useDisplayBg
 value {
   "Delay(ticks)"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 480
+y 8
+w 64
+h 24
+fgColor index 14
+bgColor index 4
+topShadowColor index 1
+botShadowColor index 11
+font "helvetica-medium-r-12.0"
+buttonLabel "Full EVR"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "event2Screens/evrSLAC.edl"
+}
+setPosition {
+  0 "parentWindow"
 }
 endObjectProperties
 

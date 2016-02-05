@@ -32,10 +32,10 @@ record( longin, "$(DEV):Fiducial")
 {
   field( DESC, "Fiducial ID" )
   field( INP,  "$(DEV):PATTERN.L NPP MS" )
-# Fiducial now updated by event code 40 after 40 arrives so timestamp matches VAL
+# Fiducial now updated by event code 1 after 1 arrives so timestamp matches VAL
   field( SCAN, "Event" )
-  field( EVNT, "40" )
-  field( TSE,  "40" )
+  field( EVNT, "1" )
+  field( TSE,  "1" )
 }
 
 # 360Hz fiducial PV
