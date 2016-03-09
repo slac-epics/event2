@@ -230,7 +230,20 @@ void ErIrqHandler(int fd, int flags)
                         erp = erplimit - MAX_EVR_EVTQ / 2;
                         flags |= EVR_IRQFLAG_FIFOFULL;
                     }
-                    for(i=0; erp < erplimit; erp++) {
+#if 0
+                    // TODO: How to ensure we callback for event code 1 before other event codes
+                    for( long long ec1Check = erplimit - 1; ec1Check >= erp; ec1Check-- )
+                    {
+                        // TODO: struct FIFOEvent *fe = GetFifoEvent( pEq, erp );
+                        struct FIFOEvent *fe = &pEq->evtq[erp & (MAX_EVR_EVTQ - 1)];
+						if ( fe->EventCode == 1 )
+                        {
+							lastFid = fe->TimestampHigh;
+							break;
+                        }
+                    }
+#endif
+                    for(i=0; erp < erplimit && i < EVR_FIFO_EVENT_LIMIT; erp++) {
                         struct FIFOEvent *fe = &pEq->evtq[erp & (MAX_EVR_EVTQ - 1)];
                         if (pCard->ErEventTab[fe->EventCode] & (1 << 15)) {
                             if (pCard->DevEventFunc != NULL)
@@ -749,9 +762,9 @@ epicsStatus ErGetTicks(int Card, epicsUInt32 *Ticks)
 |*      EventFunc = (DEV_EVENT_FUNC *) Address of the device-support layer event function.
 |*
 \**************************************************************************************************/
-void ErRegisterDevEventHandler(ErCardStruct *pCard, DEV_EVENT_FUNC EventFunc)
+void ErRegisterDevEventHandler(ErCardStruct *pCard, DEV_EVENT_FUNC DevEventFunc)
 {
-	pCard->DevEventFunc = EventFunc;
+	pCard->DevEventFunc = DevEventFunc;
 }
 
 /**************************************************************************************************

@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 497
-y 52
+x 52
+y 51
 w 884
 h 972
 font "helvetica-medium-r-18.0"
@@ -901,7 +901,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 548
+x 564
 y 156
 w 84
 h 16
@@ -961,7 +961,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 656
+x 736
 y 156
 w 68
 h 16
@@ -981,7 +981,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 728
+x 808
 y 156
 w 56
 h 16
@@ -1445,5 +1445,25 @@ propagateMacros {
   0 0
 }
 noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 648
+y 156
+w 84
+h 16
+font "helvetica-medium-i-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Delay(ticks)*"
+}
 endObjectProperties
 

@@ -47,8 +47,12 @@ int EvrOpen(void **pEq, char *device_name)
 #ifdef DEBUG
   DEBUG_PRINTF("EvrOpen: open(\"%s\", O_RDWR) returned %d\n", device_name, fd);
 #endif
-  if (fd != -1)
-    {
+  if (fd == -1)
+  {
+  	  printf( "EvrOpen Error: open(\"%s\", O_RDWR) returned -1, errno %d\n", device_name, errno );
+  }
+  else
+  {
       /* Memory map Event Receiver registers */
       *pEq = (void *) mmap(0, EVR_SH_MEM_WINDOW, PROT_READ, MAP_SHARED, fd, 0);
 #ifdef DEBUG
@@ -56,11 +60,12 @@ int EvrOpen(void **pEq, char *device_name)
                    errno);
 #endif
       if (*pEq == MAP_FAILED)
-	{
-	  close(fd);
-	  return -1;
-	}
-    }
+	  {
+        printf( "EvrOpen Error: mmap returned %p, errno %d\n", *pEq, errno );
+	    close(fd);
+	    return -1;
+	  }
+  }
 
   return fd;
 }

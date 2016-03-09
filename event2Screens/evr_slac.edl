@@ -3,7 +3,7 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 908
+x 148
 y 1543
 w 697
 h 676
@@ -2657,7 +2657,7 @@ minor 0
 release 0
 x 504
 y 652
-w 138
+w 180
 h 24
 controlPv "$(IOC):TOD"
 precision 1
@@ -2674,9 +2674,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 518
+x 504
 y 628
-w 124
+w 180
 h 24
 font "helvetica-medium-r-12.0"
 fontAlign "right"
