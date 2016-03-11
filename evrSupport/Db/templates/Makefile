@@ -46,7 +46,9 @@ ARCHIVE += archive_pmc_evr.tpl-arch
 # REQ += <file>.substitutions
 # REQ += <file>.template
 #
+REQ += autosave_evr_PMC.req
 REQ += autosave_evr_PMC.tpl-req
+REQ += autosave_evr_SLAC.req
 REQ += autosave_evr_SLAC.tpl-req
 REQ += autosave_pmc_evr.tpl-req
 
