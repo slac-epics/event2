@@ -280,7 +280,7 @@ void           ErRegisterDevEventHandler (ErCardStruct*, DEV_EVENT_FUNC);
 void           ErRegisterDevErrorHandler (ErCardStruct*, DEV_ERROR_FUNC);
 void           ErRegisterDevDBuffHandler (ErCardStruct*, DEV_DBUFF_FUNC);
 void           ErResetAll (ErCardStruct*);
-void           ErSetDg (ErCardStruct*, int, epicsBoolean, epicsUInt32, epicsUInt32, epicsUInt16,
+int            ErSetDg (ErCardStruct*, int, epicsBoolean, epicsUInt32, epicsUInt32, epicsUInt16,
                         epicsBoolean);
 void           ErSetDirq (ErCardStruct*, epicsBoolean, epicsUInt16, epicsUInt16);
 epicsStatus    ErSetFPMap (ErCardStruct*, int, epicsUInt16);

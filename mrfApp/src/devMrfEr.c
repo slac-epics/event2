@@ -73,6 +73,7 @@
 #include <epicsTypes.h>         /* EPICS Architecture-independent type definitions                */
 #include <epicsInterrupt.h>     /* EPICS Interrupt context support routines                       */
 #include <epicsMutex.h>         /* EPICS Mutex support library                                    */
+#include <errno.h>
 #include <string.h>
 
 #include <alarm.h>              /* EPICS Alarm status and severity definitions                    */
@@ -308,7 +309,11 @@ epicsStatus ErProcess (erRecord  *pRec)
     ipov = 0;
     if (pRec->ip0e) {
         if (pRec->dg0e || pRec->ld0e)
-            ErSetDg (pCard, 0, pRec->dg0e, pRec->dg0d, pRec->dg0w, pRec->dg0c, pRec->dg0p);
+            if ( ErSetDg (pCard, 0, pRec->dg0e, pRec->dg0d, pRec->dg0w, pRec->dg0c, pRec->dg0p) < 0 )
+			{
+				pRec->ip0e = 0;
+        		db_post_events(pRec, &pRec->ip0e, DBE_VALUE);
+			}
         pRec->ld0e = pRec->dg0e;
         if (pRec->dg0e)
             enable |= 1;
@@ -318,7 +323,11 @@ epicsStatus ErProcess (erRecord  *pRec)
 	}
     if (pRec->ip1e) {
         if (pRec->dg1e || pRec->ld1e)
-            ErSetDg (pCard, 1, pRec->dg1e, pRec->dg1d, pRec->dg1w, pRec->dg1c, pRec->dg1p);
+            if ( ErSetDg (pCard, 1, pRec->dg1e, pRec->dg1d, pRec->dg1w, pRec->dg1c, pRec->dg1p) < 0 )
+			{
+				pRec->ip1e = 0;
+        		db_post_events(pRec, &pRec->ip1e, DBE_VALUE);
+			}
         pRec->ld1e = pRec->dg1e;
         if (pRec->dg1e)
             enable |= 1 << 1;
@@ -328,7 +337,11 @@ epicsStatus ErProcess (erRecord  *pRec)
 	}
     if (pRec->ip2e) {
         if (pRec->dg2e || pRec->ld2e)
-            ErSetDg (pCard, 2, pRec->dg2e, pRec->dg2d, pRec->dg2w, pRec->dg2c, pRec->dg2p);
+            if ( ErSetDg (pCard, 2, pRec->dg2e, pRec->dg2d, pRec->dg2w, pRec->dg2c, pRec->dg2p) < 0 )
+			{
+				pRec->ip2e = 0;
+        		db_post_events(pRec, &pRec->ip2e, DBE_VALUE);
+			}
         pRec->ld2e = pRec->dg2e;
         if (pRec->dg2e)
             enable |= 1 << 2;
@@ -338,7 +351,11 @@ epicsStatus ErProcess (erRecord  *pRec)
 	}
     if (pRec->ip3e) {
         if (pRec->dg3e || pRec->ld3e)
-            ErSetDg (pCard, 3, pRec->dg3e, pRec->dg3d, pRec->dg3w, pRec->dg3c, pRec->dg3p);
+            if ( ErSetDg (pCard, 3, pRec->dg3e, pRec->dg3d, pRec->dg3w, pRec->dg3c, pRec->dg3p) < 0 )
+			{
+				pRec->ip3e = 0;
+        		db_post_events(pRec, &pRec->ip3e, DBE_VALUE);
+			}
         pRec->ld3e = pRec->dg3e;
         if (pRec->dg3e)
             enable |= 1 << 3;
@@ -348,7 +365,11 @@ epicsStatus ErProcess (erRecord  *pRec)
 	}
 	if (pRec->ip4e) {
 		if (pRec->dg4e || pRec->ld4e)
-			ErSetDg (pCard, 4, pRec->dg4e, pRec->dg4d, pRec->dg4w, pRec->dg4c, pRec->dg4p);
+            if ( ErSetDg (pCard, 4, pRec->dg4e, pRec->dg4d, pRec->dg4w, pRec->dg4c, pRec->dg4p) < 0 )
+			{
+				pRec->ip4e = 0;
+        		db_post_events(pRec, &pRec->ip4e, DBE_VALUE);
+			}
 		pRec->ld4e = pRec->dg4e;
 		if (pRec->dg4e)
 			enable |= 1 << 4;
@@ -358,7 +379,11 @@ epicsStatus ErProcess (erRecord  *pRec)
 	}
 	if (pRec->ip5e) {
 		if (pRec->dg5e || pRec->ld5e)
-			ErSetDg (pCard, 5, pRec->dg5e, pRec->dg5d, pRec->dg5w, pRec->dg5c, pRec->dg5p);
+            if ( ErSetDg (pCard, 5, pRec->dg5e, pRec->dg5d, pRec->dg5w, pRec->dg5c, pRec->dg5p) < 0 )
+			{
+				pRec->ip5e = 0;
+        		db_post_events(pRec, &pRec->ip5e, DBE_VALUE);
+			}
 		pRec->ld5e = pRec->dg5e;
 		if (pRec->dg5e)
 			enable |= 1 << 5;
@@ -368,7 +393,11 @@ epicsStatus ErProcess (erRecord  *pRec)
 	}
 	if (pRec->ip6e) {
 		if (pRec->dg6e || pRec->ld6e)
-			ErSetDg (pCard, 6, pRec->dg6e, pRec->dg6d, pRec->dg6w, pRec->dg6c, pRec->dg6p);
+            if ( ErSetDg (pCard, 6, pRec->dg6e, pRec->dg6d, pRec->dg6w, pRec->dg6c, pRec->dg6p) < 0 )
+			{
+				pRec->ip6e = 0;
+        		db_post_events(pRec, &pRec->ip6e, DBE_VALUE);
+			}
 		pRec->ld6e = pRec->dg6e;
 		if (pRec->dg6e)
 			enable |= 1 << 6;
@@ -378,7 +407,11 @@ epicsStatus ErProcess (erRecord  *pRec)
 	}
 	if (pRec->ip7e) {
 		if (pRec->dg7e || pRec->ld7e)
-			ErSetDg (pCard, 7, pRec->dg7e, pRec->dg7d, pRec->dg7w, pRec->dg7c, pRec->dg7p);
+            if ( ErSetDg (pCard, 7, pRec->dg7e, pRec->dg7d, pRec->dg7w, pRec->dg7c, pRec->dg7p) < 0 )
+			{
+				pRec->ip7e = 0;
+        		db_post_events(pRec, &pRec->ip7e, DBE_VALUE);
+			}
 		pRec->ld7e = pRec->dg7e;
 		if (pRec->dg7e)
 			enable |= 1 << 7;
@@ -388,7 +421,11 @@ epicsStatus ErProcess (erRecord  *pRec)
 	}
 	if (pRec->ip8e) {
 		if (pRec->dg8e || pRec->ld8e)
-			ErSetDg (pCard, 8, pRec->dg8e, pRec->dg8d, pRec->dg8w, pRec->dg8c, pRec->dg8p);
+            if ( ErSetDg (pCard, 8, pRec->dg8e, pRec->dg8d, pRec->dg8w, pRec->dg8c, pRec->dg8p) < 0 )
+			{
+				pRec->ip8e = 0;
+        		db_post_events(pRec, &pRec->ip8e, DBE_VALUE);
+			}
 		pRec->ld8e = pRec->dg8e;
 		if (pRec->dg8e)
 			enable |= 1 << 8;
@@ -398,7 +435,11 @@ epicsStatus ErProcess (erRecord  *pRec)
 	}
 	if (pRec->ip9e) {
 		if (pRec->dg9e || pRec->ld9e)
-			ErSetDg (pCard, 9, pRec->dg9e, pRec->dg9d, pRec->dg9w, pRec->dg9c, pRec->dg9p);
+            if ( ErSetDg (pCard, 9, pRec->dg9e, pRec->dg9d, pRec->dg9w, pRec->dg9c, pRec->dg9p) < 0 )
+			{
+				pRec->ip9e = 0;
+        		db_post_events(pRec, &pRec->ip9e, DBE_VALUE);
+			}
 		pRec->ld9e = pRec->dg9e;
 		if (pRec->dg9e)
 			enable |= 1 << 9;
@@ -408,7 +449,11 @@ epicsStatus ErProcess (erRecord  *pRec)
 	}
 	if (pRec->ipae) {
 		if (pRec->dgae || pRec->ldae)
-			ErSetDg (pCard, 10, pRec->dgae, pRec->dgad, pRec->dgaw, pRec->dgac, pRec->dgap);
+            if ( ErSetDg (pCard, 10, pRec->dgae, pRec->dgad, pRec->dgaw, pRec->dgac, pRec->dgap) < 0 )
+			{
+				pRec->ipae = 0;
+        		db_post_events(pRec, &pRec->ipae, DBE_VALUE);
+			}
 		pRec->ldae = pRec->dgae;
 		if (pRec->dgae)
 			enable |= 1 << 10;
@@ -418,7 +463,11 @@ epicsStatus ErProcess (erRecord  *pRec)
 	}
 	if (pRec->ipbe) {
 		if (pRec->dgbe || pRec->ldbe)
-			ErSetDg (pCard, 11, pRec->dgbe, pRec->dgbd, pRec->dgbw, pRec->dgbc, pRec->dgbp);
+            if ( ErSetDg (pCard, 11, pRec->dgbe, pRec->dgbd, pRec->dgbw, pRec->dgbc, pRec->dgbp) < 0 )
+			{
+				pRec->ipbe = 0;
+        		db_post_events(pRec, &pRec->ipbe, DBE_VALUE);
+			}
 		pRec->ldbe = pRec->dgbe;
 		if (pRec->dgbe)
 			enable |= 1 << 11;

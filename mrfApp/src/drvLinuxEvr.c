@@ -835,16 +835,18 @@ void ErResetAll(ErCardStruct *pCard)
 |* o This routine expects to be called with the Event Receiver card structure locked.
 |*
 \**************************************************************************************************/
-void ErSetDg(ErCardStruct *pCard, int Channel, epicsBoolean Enable, 
+int ErSetDg(ErCardStruct *pCard, int Channel, epicsBoolean Enable, 
 			epicsUInt32 Delay, epicsUInt32 Width, 
 			epicsUInt16 Prescaler, epicsBoolean Pol)
 {
+	int	status	= 0;
+
 	if( Channel < 0 || Channel >= EVR_NUM_DG ) {
 		errlogPrintf("%s: invalid parameter: Channel = %d.\n", __func__, Channel);
-                return;
+                return -EINVAL;
 	}
 	if ( Channel >= MAX_DG ) /* Don't complain if SLAC-valid channel but we aren't SLAC! */
-		return;
+		return -EINVAL;
 
 	if ( ErDebug >= 1 )
 		printf( "%s: EVR card %d, slot %d %s DG %2d: pre=%u, del=%u, wid=%u, pol=%s.\n",
@@ -855,16 +857,16 @@ void ErSetDg(ErCardStruct *pCard, int Channel, epicsBoolean Enable,
 
 	epicsMutexLock(pCard->CardLock);
 	if(Enable) {
-            EvrSetPulseParams(pCard->Slot, Channel, Prescaler, Delay, Width, Pol, 1);
+            status = EvrSetPulseParams(pCard->Slot, Channel, Prescaler, Delay, Width, Pol, 1);
 	} else {
-            EvrSetPulseParams(pCard->Slot, Channel, 0, 0, 0, Pol, 0);
+            status = EvrSetPulseParams(pCard->Slot, Channel, 0, 0, 0, Pol, 0);
 	}
 
 	if ( ErDebug >= 2 )
 		EvrDumpPulses( pCard->Slot, 10 );
 
 	epicsMutexUnlock(pCard->CardLock);
-	return;
+	return status;
 }
 
 

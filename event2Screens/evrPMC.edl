@@ -3,9 +3,9 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 915
-y 692
-w 882
+x 55
+y 1109
+w 955
 h 380
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-12.0"
@@ -31,7 +31,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 8
+x 80
 y 132
 w 868
 h 240
@@ -48,7 +48,7 @@ minor 0
 release 0
 x 0
 y 0
-w 880
+w 952
 h 40
 lineColor index 56
 fill
@@ -71,7 +71,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "PMC EVR-230 Event Receiver"
+  "PMC EVR-230 Shared Event2 Receiver"
   "$(EVR)"
 }
 endObjectProperties
@@ -224,7 +224,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 8
+x 80
 y 56
 w 180
 h 60
@@ -239,7 +239,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 8
+x 80
 y 48
 w 48
 h 16
@@ -258,7 +258,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 344
+x 416
 y 56
 w 304
 h 60
@@ -273,7 +273,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 344
+x 416
 y 48
 w 132
 h 16
@@ -292,7 +292,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 352
+x 424
 y 68
 w 56
 h 20
@@ -312,7 +312,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 508
+x 580
 y 72
 w 132
 h 20
@@ -332,7 +332,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 196
+x 268
 y 56
 w 136
 h 60
@@ -347,7 +347,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 196
+x 268
 y 48
 w 80
 h 16
@@ -366,7 +366,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 656
+x 728
 y 56
 w 132
 h 60
@@ -381,7 +381,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 656
+x 728
 y 48
 w 80
 h 16
@@ -399,7 +399,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 8
+x 80
 y 124
 w 68
 h 16
@@ -418,7 +418,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 572
+x 644
 y 136
 w 98
 h 14
@@ -438,7 +438,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 200
+x 272
 y 64
 w 36
 h 20
@@ -458,7 +458,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 244
+x 316
 y 64
 w 56
 h 20
@@ -482,7 +482,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 420
+x 492
 y 92
 w 76
 h 20
@@ -506,7 +506,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 508
+x 580
 y 92
 w 132
 h 20
@@ -530,7 +530,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 660
+x 732
 y 72
 w 124
 h 16
@@ -577,7 +577,7 @@ beginObjectProperties
 major 4
 minor 0
 release 1
-x 304
+x 376
 y 60
 w 24
 h 24
@@ -588,11 +588,11 @@ fillAlarm
 alarmPv "$(EVR):STATUS"
 numPoints 5
 xPoints {
-  0 316
-  1 304
-  2 316
-  3 328
-  4 316
+  0 388
+  1 376
+  2 388
+  3 400
+  4 388
 }
 yPoints {
   0 60
@@ -609,7 +609,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 48
+x 120
 y 64
 w 136
 h 20
@@ -627,7 +627,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 48
+x 120
 y 92
 w 136
 h 20
@@ -645,7 +645,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 16
+x 88
 y 92
 w 28
 h 20
@@ -665,7 +665,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 16
+x 88
 y 64
 w 28
 h 20
@@ -685,7 +685,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 200
+x 272
 y 92
 w 36
 h 20
@@ -705,7 +705,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 244
+x 316
 y 92
 w 84
 h 20
@@ -730,7 +730,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 420
+x 492
 y 68
 w 76
 h 20
@@ -754,7 +754,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 352
+x 424
 y 92
 w 56
 h 20
@@ -774,7 +774,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 664
+x 736
 y 92
 w 119
 h 20
@@ -799,7 +799,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 116
+x 188
 y 136
 w 420
 h 20
@@ -819,7 +819,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 16
+x 88
 y 156
 w 60
 h 16
@@ -839,7 +839,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 164
+x 236
 y 156
 w 180
 h 16
@@ -859,7 +859,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 356
+x 428
 y 156
 w 55
 h 16
@@ -879,7 +879,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 548
+x 620
 y 156
 w 84
 h 16
@@ -899,7 +899,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 480
+x 552
 y 156
 w 64
 h 16
@@ -919,7 +919,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 416
+x 488
 y 156
 w 52
 h 16
@@ -939,7 +939,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 736
+x 808
 y 156
 w 68
 h 16
@@ -959,7 +959,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 808
+x 880
 y 156
 w 56
 h 16
@@ -1012,7 +1012,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 12
+x 84
 y 172
 w 860
 h 64
@@ -1048,7 +1048,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 12
+x 84
 y 236
 w 860
 h 64
@@ -1084,7 +1084,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 96
+x 168
 y 156
 w 64
 h 16
@@ -1104,7 +1104,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 12
+x 84
 y 300
 w 860
 h 64
@@ -1140,7 +1140,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 642
+x 716
 y 156
 w 84
 h 16
@@ -1152,5 +1152,149 @@ useDisplayBg
 value {
   "Delay(ticks)"
 }
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 200
+w 76
+h 28
+fgColor index 14
+onColor index 11
+offColor index 5
+topShadowColor index 1
+botShadowColor index 13
+controlPv "$(EVR):CTRL.IP0E"
+pressValue "0"
+onLabel "Release!"
+offLabel "Release"
+3d
+useEnumNumeric
+font "helvetica-bold-r-14.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 172
+w 76
+h 28
+fgColor index 14
+onColor index 11
+offColor index 5
+topShadowColor index 1
+botShadowColor index 13
+controlPv "$(EVR):CTRL.IP0E"
+pressValue "1"
+onLabel "Acquire!"
+offLabel "Acquire"
+3d
+useEnumNumeric
+font "helvetica-bold-r-14.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 328
+w 76
+h 28
+fgColor index 14
+onColor index 11
+offColor index 5
+topShadowColor index 1
+botShadowColor index 13
+controlPv "$(EVR):CTRL.IP2E"
+pressValue "0"
+onLabel "Release!"
+offLabel "Release"
+3d
+useEnumNumeric
+font "helvetica-bold-r-14.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 300
+w 76
+h 28
+fgColor index 14
+onColor index 11
+offColor index 5
+topShadowColor index 1
+botShadowColor index 13
+controlPv "$(EVR):CTRL.IP2E"
+pressValue "1"
+onLabel "Acquire!"
+offLabel "Acquire"
+3d
+useEnumNumeric
+font "helvetica-bold-r-14.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 264
+w 76
+h 28
+fgColor index 14
+onColor index 11
+offColor index 5
+topShadowColor index 1
+botShadowColor index 13
+controlPv "$(EVR):CTRL.IP1E"
+pressValue "0"
+onLabel "Release!"
+offLabel "Release"
+3d
+useEnumNumeric
+font "helvetica-bold-r-14.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 236
+w 76
+h 28
+fgColor index 14
+onColor index 11
+offColor index 5
+topShadowColor index 1
+botShadowColor index 13
+controlPv "$(EVR):CTRL.IP1E"
+pressValue "1"
+onLabel "Acquire!"
+offLabel "Acquire"
+3d
+useEnumNumeric
+font "helvetica-bold-r-14.0"
 endObjectProperties
 

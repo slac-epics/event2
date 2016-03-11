@@ -147,10 +147,11 @@ int EvrSetPulseParams(int fd, int pulse, u32 presc, u32 delay, u32 width,
     p.Pulse.Control |= (1 << C_EVR_PULSE_POLARITY);
   if (enable == 1)
     p.Pulse.Control |= (1 << C_EVR_PULSE_MAP_TRIG_ENA) | (1 << C_EVR_PULSE_ENA);
-  if (ioctl(fd, EV_IOCPULSE, &p)) {
+  int io_ret = ioctl(fd, EV_IOCPULSE, &p );
+  if ( io_ret ) {
   	  /* Note, if perror is used here, it complains device is busy for invalid pulse parameters */
-      fprintf( stderr, "EVR Programming failed for pulse %d\n", pulse );
-      return -1;
+      fprintf( stderr, "EVR driver error %d, Programming failed for pulse %d\n", io_ret, pulse );
+      return io_ret;
   } else
       return 0;
 }
