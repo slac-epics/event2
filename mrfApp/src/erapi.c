@@ -137,7 +137,7 @@ int EvrSetPulseParams(int fd, int pulse, u32 presc, u32 delay, u32 width,
 {
   struct EvrIoctlPulse p;
   if (pulse < 0 || pulse >= EVR_MAX_PULSES)
-    return -1;
+    return EINVAL;
   p.Id              = pulse;
   p.Pulse.Prescaler = presc;
   p.Pulse.Delay     = delay;
@@ -147,13 +147,27 @@ int EvrSetPulseParams(int fd, int pulse, u32 presc, u32 delay, u32 width,
     p.Pulse.Control |= (1 << C_EVR_PULSE_POLARITY);
   if (enable == 1)
     p.Pulse.Control |= (1 << C_EVR_PULSE_MAP_TRIG_ENA) | (1 << C_EVR_PULSE_ENA);
-  int io_ret = ioctl(fd, EV_IOCPULSE, &p );
-  if ( io_ret ) {
-  	  /* Note, if perror is used here, it complains device is busy for invalid pulse parameters */
-      fprintf( stderr, "EVR driver error %d, Programming failed for pulse %d\n", io_ret, pulse );
-      return io_ret;
-  } else
-      return 0;
+  if ( ioctl(fd, EV_IOCPULSE, &p ) ) {
+	/* Note, if perror is used here, it complains device is busy for invalid pulse parameters */
+	int	io_ret = errno;
+	switch ( io_ret )
+	{
+	  case EBUSY:
+		fprintf( stderr, "EVR pulse %d owned by a different process!\n", pulse );
+		break;
+	  case ENOTTY:
+		fprintf( stderr, "Not a valid EVR request for pulse %d!\n", pulse );
+		break;
+	  case EFAULT:
+		fprintf( stderr, "Unable to access EVR device!\n" );
+		break;
+	  default:
+		perror("Programming pulse failed");
+		break;
+	}
+	return io_ret;
+  }
+  return 0;
 }
 
 void EvrDumpPulses(int fd, int pulses)

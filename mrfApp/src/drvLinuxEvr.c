@@ -829,7 +829,9 @@ void ErResetAll(ErCardStruct *pCard)
 |*      Prescaler = (epicsUInt16)    Prescaler countdown applied to delay and width.
 |*      Polarity  = (epicsBoolean)   0 for normal polarity (high true)
 |*                                   1 for reverse polarity (low true)
-|* 
+|*
+|* RETURNS:	0 on success, non-zero errno on failure
+|*
 |*-------------------------------------------------------------------------------------------------
 |* NOTES:
 |* o This routine expects to be called with the Event Receiver card structure locked.
@@ -843,10 +845,10 @@ int ErSetDg(ErCardStruct *pCard, int Channel, epicsBoolean Enable,
 
 	if( Channel < 0 || Channel >= EVR_NUM_DG ) {
 		errlogPrintf("%s: invalid parameter: Channel = %d.\n", __func__, Channel);
-                return -EINVAL;
+                return EINVAL;
 	}
 	if ( Channel >= MAX_DG ) /* Don't complain if SLAC-valid channel but we aren't SLAC! */
-		return -EINVAL;
+		return EINVAL;
 
 	if ( ErDebug >= 1 )
 		printf( "%s: EVR card %d, slot %d %s DG %2d: pre=%u, del=%u, wid=%u, pol=%s.\n",
