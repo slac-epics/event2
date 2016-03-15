@@ -59,6 +59,13 @@ struct EvrIoctlPulse {
   struct PulseStruct Pulse;
 };
 
+typedef enum { EvrTrigFree=0, EvrTrigAlloc=1, EvrTrigSteal=2, EvrTrigCheck=3 } EvrIoctlTrigOp;
+
+struct EvrIoctlTrig {
+    u32       Id;
+    u32       Op;
+};
+
 struct CMLStruct {
   /* Bit patterns contain pattern bits in the 20 lowest bit locations */
   u32  Pattern00; /* bit pattern for low state */
@@ -283,6 +290,7 @@ struct MrfErRegs {
 #define EV_IOCPULSE   _IO(EV_IOC_MAGIC, 5)
 #define EV_IOCREAD32  _IO(EV_IOC_MAGIC, 6)
 #define EV_IOCREAD16  _IO(EV_IOC_MAGIC, 7)
+#define EV_IOCTRIG    _IO(EV_IOC_MAGIC, 8)
 
 #define EV_IOC_MAX   8
 

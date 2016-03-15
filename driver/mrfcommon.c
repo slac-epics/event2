@@ -665,13 +665,53 @@ int ev_ioctl(struct inode *inode, struct file *filp,
         ret = -ENOTTY;
       break;
 
+    case EV_IOCTRIG:
+      if (ev_device->access_device == DEVICE_SHEV) {
+        struct EvrIoctlTrig p;
+        if (copy_from_user(&p, (struct EvrIoctlTrig *)arg, sizeof(struct EvrIoctlTrig))) {
+          return -EACCES;
+        }
+        if (p.Id >= EVR_MAX_PULSES)
+          return -EINVAL;
+        switch (p.Op) {
+        case EvrTrigFree:
+            if (ev_device->pulse[p.Id] == shared->idx)
+                ev_device->pulse[p.Id] = -1;
+            else
+                ret = -EBUSY;
+            break;
+        case EvrTrigAlloc:
+            if (ev_device->pulse[p.Id] != shared->idx &&
+                ev_device->pulse[p.Id] != -1) {
+                ret = -EBUSY;
+                break;
+            } else
+                ev_device->pulse[p.Id] = shared->idx;
+            break;
+        case EvrTrigSteal:
+            ev_device->pulse[p.Id] = shared->idx;
+            break;
+        case EvrTrigCheck:
+            if (ev_device->pulse[p.Id] != shared->idx &&
+                ev_device->pulse[p.Id] != -1) {
+                ret = -EBUSY;
+            }
+            break;
+        default:
+            ret = -EINVAL;
+            break;
+        }
+      } else
+        ret = -ENOTTY;
+      break;
+
     case EV_IOCPULSE:
       if (ev_device->access_device == DEVICE_SHEV) {
         struct EvrIoctlPulse p;
         if (copy_from_user(&p, (struct EvrIoctlPulse *)arg, sizeof(struct EvrIoctlPulse))) {
           return -EACCES;
         }
-        if (p.Id < 0 || p.Id >= EVR_MAX_PULSES)
+        if (p.Id >= EVR_MAX_PULSES)
           return -ENOTTY;
         if (ev_device->pulse[p.Id] == -1) {
           /* If this pulse is unused, claim it! */
@@ -693,11 +733,7 @@ int ev_ioctl(struct inode *inode, struct file *filp,
             pEr->Pulse[p.Id].Width = be32_to_cpu(p.Pulse.Width);
           } else {
             DPF((KERN_ALERT "Disabling pulse %d for %d.\n", p.Id, shared->idx));
-            /*
-             * I'm of two minds about this.  If we disable a pulse, are we
-             * releasing it, or is it always ours?
-             */
-            ev_device->pulse[p.Id] = -1;
+            /* Change of plan: don't free the pulse! */
           }
         }
       } else

@@ -39,6 +39,10 @@ include $(TOP)/configure/CONFIG
 
 INC += evrmemmap.h
 
+PROD_IOC_Linux = evrAlloc
+
+evrAllocSRCS += evrAlloc.c
+
 #=======================================================================#
 #                               RULES                                   #
 #=======================================================================#
