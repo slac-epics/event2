@@ -1,0 +1,12 @@
+Anything after March 15, 2016 is the new driver.
+
+2.6.18-164.15.1.el5.x86_64	ioc-tst-rec03
+2.6.18-371.el5.x86_64		daq-amo-mon01
+2.6.26.1.i686				NOT USED!
+2.6.26.1.x86_64				daq-amo-cam02
+2.6.35.13-rt-bond.x86_64	NOT USED!
+2.6.35.13-rt.i686			ioc-fee-gasdet-daq
+2.6.35.13-rt.x86_64			ioc-mec-lasmot1
+2.6.32-504.8.1.el6.x86_64	psdev105
+3.14.12-rt9.x86_64			psdev105 (any rhel6)
+3.18.11-rt7.x86_64			psdev105 (any rhel6)

@@ -69,13 +69,15 @@ XCROSS_HOME_3.14.12-rt9	= /afs/slac/g/lcls/package/linuxRT/buildroot-2014.11/hos
 KERNELDIR_3.18.11-rt7	= /afs/slac/package/linuxRT/buildroot-2015.02/buildroot-2015.02-x86_64/output/build/linux-3.18.11/
 XCROSS_HOME_3.18.11-rt7	= /afs/slac/package/linuxRT/buildroot-2015.02/host/linux-x86_64/x86_64/usr/bin/x86_64-linux-
 
-realclean clean: modclean
-
 modules: modclean
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 	@/bin/rm -f evr_device.ko.`uname -r`.`arch`
 	cp evr_device.ko evr_device.ko.`uname -r`.`arch`
 	@chmod 0644 evr_device.ko.`uname -r`.`arch`
+
+ifeq '$(EPICS_HOST_ARCH)' 'rhel6-x86_64'
+modules: linuxRT
+endif
 
 .PHONY: $(RT_KERNELS)
 linuxRT: modclean $(RT_KERNELS)
@@ -85,6 +87,8 @@ $(RT_KERNELS):
 	@/bin/rm -f evr_device.ko.$(@).x86_64
 	cp evr_device.ko evr_device.ko.$(@).x86_64
 	@chmod 0644 evr_device.ko.$(@).x86_64
+
+realclean clean: modclean
 
 modclean:
 	-rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions Module.* module*
