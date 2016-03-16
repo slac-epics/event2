@@ -73,14 +73,18 @@ realclean clean: modclean
 
 modules: modclean
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+	@/bin/rm -f evr_device.ko.`uname -r`.`arch`
 	cp evr_device.ko evr_device.ko.`uname -r`.`arch`
+	@chmod 0644 evr_device.ko.`uname -r`.`arch`
 
 .PHONY: $(RT_KERNELS)
 linuxRT: modclean $(RT_KERNELS)
 
 $(RT_KERNELS):
 	$(MAKE) ARCH=x86_64 CROSS_COMPILE=$(XCROSS_HOME_$(@)) -C $(KERNELDIR_$(@)) M=$(PWD) modules
+	@/bin/rm -f evr_device.ko.$(@).x86_64
 	cp evr_device.ko evr_device.ko.$(@).x86_64
+	@chmod 0644 evr_device.ko.$(@).x86_64
 
 modclean:
 	-rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions Module.* module*
