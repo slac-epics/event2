@@ -68,6 +68,7 @@
 #include "dbScan.h"           /* for post_event            */
 #include <dbAccess.h>         /* for dbNameToAddr          */
 #include <aSubRecord.h>
+#include <recGbl.h>
 #include <stdlib.h>
 
 #include "mrfCommon.h"        /* MRF_NUM_EVENTS */    
@@ -185,10 +186,6 @@ static unsigned long firstTimeSlot    = 1;
 static unsigned long secondTimeSlot   = 4;
 static unsigned long activeTimeSlot   = 0; /* 1=time slot active on the current pulse*/
 static epicsTimeStamp mod720time;
-
-/* Fiducial debug variables */
-int		fiddbg		= 0;
-int		fiddbgcnt	= 0;
 
 
 /*=============================================================================
@@ -1751,29 +1748,6 @@ extern void eventDebug(int arg1, int arg2)
     fflush(stdout);
 }
 
-
-/* iocsh command: fidDebug */
-static const iocshArg fidDebugArg0 = {"Mask" , iocshArgInt};
-static const iocshArg fidDebugArg1 = {"Count" , iocshArgInt};
-static const iocshArg *const fidDebugArgs[2] = {&fidDebugArg0, &fidDebugArg1};
-static const iocshFuncDef fidDebugDef = {"fidDebug", 2, fidDebugArgs};
-extern void fidDebug( int mask, int count )
-{
-    if ( count == 0 )
-        count = 200;
-	fiddbg		= mask;
-	fiddbgcnt	= count;
-    printf("Fiducial debugging is %d (0x%x).\n", fiddbg, fiddbg);
-    fflush(stdout);
-}
-
-static void fidDebugCall(const iocshArgBuf * args)
-{
-    int mask	= args[0].ival;
-    int count	= args[1].ival;
-    fidDebug( mask, count );
-}
-
 /* iocsh command: eventDebug */
 static const iocshArg eventDebugArg0 = {"ECstart" , iocshArgInt};
 static const iocshArg eventDebugArg1 = {"ECfinal" , iocshArgInt};
@@ -1791,7 +1765,6 @@ static void eventDebugCall(const iocshArgBuf * args)
 /* Registration APIs */
 static void evrSupportRegistrar()
 {
-    iocshRegister(  &fidDebugDef, 	fidDebugCall );
     iocshRegister(  &eventDebugDef, eventDebugCall );
 }
 epicsExportRegistrar(	evrSupportRegistrar	);
@@ -1802,4 +1775,3 @@ epicsRegisterFunction(	evrTimeRate	);
 epicsRegisterFunction(	evrTimeEvent	);
 epicsRegisterFunction(	evrTimeGetFiducial	);
 epicsRegisterFunction(	eventDebug	);
-epicsRegisterFunction(	fidDebug	);

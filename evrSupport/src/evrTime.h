@@ -207,8 +207,6 @@ epicsUInt32 peek_fiducial (epicsUInt32*next_event_to_watch,epicsUInt32 *Ticks,ep
 void evrEvent(  int    cardNo,  epicsInt16 eventNum,    epicsUInt32 timeNum );
 void evrSend(   void * pCard,   epicsInt16 messageSize, void    *   message );
 
-extern int fiddbg, fiddbgcnt; /* Temporary fiducial debug variable. */
-
 #ifdef __cplusplus
 }
 #endif

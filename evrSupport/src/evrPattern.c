@@ -201,8 +201,8 @@ int evrPattern(int fidMsgTimedOut, epicsUInt32 *mpsModifier_p)
       pattern_ps->time = prevTime;
     }
     evrTimePutPulseID(&pattern_ps->time, PULSEID_INVALID);
-    if (fiddbg) {
-        printf("EP!\n");fflush(stdout);
+    if ( ErDebug >= 3 ) {
+        printf("Recvd evr pattern.\n");fflush(stdout);
     }
     if (epicsTimeDiffInSeconds(&currentTime, mod720time_ps) > MODULO720_SECS)
       pattern_ps->modifier_a[MOD1_IDX] |= MODULO720_MASK;
