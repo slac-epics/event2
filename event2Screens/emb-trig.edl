@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 284
-y 1764
+x 472
+y 1861
 w 880
 h 200
 font "helvetica-medium-r-18.0"
@@ -164,7 +164,7 @@ minor 7
 release 0
 x 92
 y 36
-w 52
+w 48
 h 24
 controlPv "$(TRIG):EC_RBV"
 font "helvetica-medium-r-12.0"
@@ -260,7 +260,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 148
+x 145
 y 36
 w 196
 h 24
@@ -273,7 +273,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 148
+x 145
 y 36
 w 196
 h 24
@@ -296,26 +296,6 @@ visPv "$(TRIG):LSUB_EVSEL"
 visInvert
 visMin "0"
 visMax "25"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 396
-y 36
-w 64
-h 24
-font "helvetica-medium-i-12.0"
-fontAlign "center"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Computed"
-}
 endObjectProperties
 
 # (Lines)
@@ -394,9 +374,9 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 348
+x 344
 y 8
-w 56
+w 64
 h 24
 fgColor index 25
 fgAlarm
@@ -420,9 +400,9 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 348
+x 344
 y 8
-w 56
+w 64
 h 24
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -677,9 +657,9 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 408
+x 412
 y 8
-w 52
+w 48
 h 24
 fgColor index 25
 fgAlarm
@@ -703,7 +683,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 148
+x 144
 y 8
 w 196
 h 24
@@ -731,7 +711,7 @@ minor 7
 release 0
 x 92
 y 8
-w 52
+w 48
 h 24
 controlPv "$(TRIG):TEC"
 font "helvetica-medium-r-12.0"
@@ -754,5 +734,31 @@ endGroup
 visPv "$(EVR):CTRL.IP$(CH)E"
 visMin "1"
 visMax "2"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 344
+y 36
+w 64
+h 24
+fgColor index 25
+onColor index 6
+offColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 13
+controlPv "$(EVR):CTRL.IP$(CH)E"
+indicatorPv "$(EVR):CTRL.IP$(CH)E"
+onLabel "Acquired"
+offLabel "Released"
+labelType "literal"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
 endObjectProperties
 

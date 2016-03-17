@@ -3,9 +3,9 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 641
-y 1202
-w 949
+x 537
+y 1141
+w 884
 h 972
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-12.0"
@@ -33,7 +33,7 @@ minor 0
 release 0
 x 0
 y 0
-w 948
+w 880
 h 40
 lineColor index 56
 fill
@@ -236,7 +236,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 76
+x 8
 y 56
 w 180
 h 60
@@ -251,7 +251,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 76
+x 8
 y 48
 w 48
 h 16
@@ -270,7 +270,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 412
+x 344
 y 56
 w 304
 h 60
@@ -285,7 +285,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 412
+x 344
 y 48
 w 132
 h 16
@@ -304,7 +304,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 420
+x 352
 y 68
 w 56
 h 20
@@ -324,7 +324,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 576
+x 508
 y 72
 w 132
 h 20
@@ -344,7 +344,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 264
+x 196
 y 56
 w 136
 h 60
@@ -359,7 +359,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 264
+x 196
 y 48
 w 80
 h 16
@@ -378,7 +378,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 724
+x 656
 y 56
 w 132
 h 60
@@ -393,7 +393,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 724
+x 656
 y 48
 w 80
 h 16
@@ -411,7 +411,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 268
+x 200
 y 64
 w 36
 h 20
@@ -431,7 +431,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 312
+x 244
 y 64
 w 56
 h 20
@@ -455,7 +455,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 488
+x 420
 y 92
 w 76
 h 20
@@ -479,7 +479,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 576
+x 508
 y 92
 w 132
 h 20
@@ -503,7 +503,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 728
+x 660
 y 72
 w 124
 h 16
@@ -523,7 +523,7 @@ beginObjectProperties
 major 4
 minor 0
 release 1
-x 372
+x 304
 y 60
 w 24
 h 24
@@ -534,11 +534,11 @@ fillAlarm
 alarmPv "$(EVR):STATUS"
 numPoints 5
 xPoints {
-  0 384
-  1 372
-  2 384
-  3 396
-  4 384
+  0 316
+  1 304
+  2 316
+  3 328
+  4 316
 }
 yPoints {
   0 60
@@ -555,7 +555,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 116
+x 48
 y 64
 w 136
 h 20
@@ -573,7 +573,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 116
+x 48
 y 92
 w 136
 h 20
@@ -591,7 +591,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 84
+x 16
 y 92
 w 28
 h 20
@@ -611,7 +611,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 84
+x 16
 y 64
 w 28
 h 20
@@ -631,7 +631,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 268
+x 200
 y 92
 w 36
 h 20
@@ -651,7 +651,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 312
+x 244
 y 92
 w 84
 h 20
@@ -676,7 +676,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 488
+x 420
 y 68
 w 76
 h 20
@@ -700,7 +700,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 420
+x 352
 y 92
 w 56
 h 20
@@ -720,7 +720,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 732
+x 664
 y 92
 w 119
 h 20
@@ -745,7 +745,7 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 76
+x 8
 y 132
 w 866
 h 816
@@ -760,7 +760,7 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 732
+x 664
 y 948
 w 128
 h 20
@@ -782,7 +782,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 76
+x 8
 y 124
 w 68
 h 16
@@ -801,7 +801,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 640
+x 572
 y 136
 w 98
 h 14
@@ -821,7 +821,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 184
+x 116
 y 136
 w 420
 h 20
@@ -841,7 +841,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 84
+x 16
 y 156
 w 60
 h 16
@@ -861,7 +861,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 232
+x 164
 y 156
 w 180
 h 16
@@ -881,7 +881,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 424
+x 356
 y 156
 w 55
 h 16
@@ -901,7 +901,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 632
+x 564
 y 156
 w 84
 h 16
@@ -921,7 +921,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 548
+x 480
 y 156
 w 64
 h 16
@@ -941,7 +941,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 484
+x 416
 y 156
 w 52
 h 16
@@ -961,7 +961,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 804
+x 736
 y 156
 w 68
 h 16
@@ -981,7 +981,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 876
+x 808
 y 156
 w 56
 h 16
@@ -1001,7 +1001,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 80
+x 12
 y 172
 w 858
 h 64
@@ -1037,7 +1037,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 80
+x 12
 y 236
 w 858
 h 64
@@ -1073,7 +1073,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 164
+x 96
 y 156
 w 64
 h 16
@@ -1093,7 +1093,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 80
+x 12
 y 300
 w 858
 h 64
@@ -1129,7 +1129,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 80
+x 12
 y 364
 w 858
 h 64
@@ -1165,7 +1165,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 80
+x 12
 y 428
 w 858
 h 64
@@ -1201,7 +1201,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 80
+x 12
 y 492
 w 858
 h 64
@@ -1237,7 +1237,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 80
+x 12
 y 556
 w 858
 h 64
@@ -1273,7 +1273,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 80
+x 12
 y 620
 w 858
 h 64
@@ -1309,7 +1309,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 80
+x 12
 y 684
 w 858
 h 64
@@ -1345,7 +1345,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 80
+x 12
 y 748
 w 858
 h 64
@@ -1381,7 +1381,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 80
+x 12
 y 812
 w 858
 h 64
@@ -1417,7 +1417,7 @@ beginObjectProperties
 major 4
 minor 1
 release 0
-x 80
+x 12
 y 876
 w 858
 h 64
@@ -1453,7 +1453,7 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 716
+x 648
 y 156
 w 84
 h 16
@@ -1465,581 +1465,5 @@ useDisplayBg
 value {
   "Delay(ticks)*"
 }
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 492
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP5E"
-pressValue "1"
-onLabel "Acquire!"
-offLabel "Acquire"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 520
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP5E"
-pressValue "0"
-onLabel "Release!"
-offLabel "Release"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 904
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IPBE"
-pressValue "0"
-onLabel "Release!"
-offLabel "Release"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 876
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IPBE"
-pressValue "1"
-onLabel "Acquire!"
-offLabel "Acquire"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 200
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP0E"
-pressValue "0"
-onLabel "Release!"
-offLabel "Release"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 172
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP0E"
-pressValue "1"
-onLabel "Acquire!"
-offLabel "Acquire"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 456
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP4E"
-pressValue "0"
-onLabel "Release!"
-offLabel "Release"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 428
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP4E"
-pressValue "1"
-onLabel "Acquire!"
-offLabel "Acquire"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 392
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP3E"
-pressValue "0"
-onLabel "Release!"
-offLabel "Release"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 364
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP3E"
-pressValue "1"
-onLabel "Acquire!"
-offLabel "Acquire"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 328
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP2E"
-pressValue "0"
-onLabel "Release!"
-offLabel "Release"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 300
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP2E"
-pressValue "1"
-onLabel "Acquire!"
-offLabel "Acquire"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 264
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP1E"
-pressValue "0"
-onLabel "Release!"
-offLabel "Release"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 236
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP1E"
-pressValue "1"
-onLabel "Acquire!"
-offLabel "Acquire"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 840
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IPAE"
-pressValue "0"
-onLabel "Release!"
-offLabel "Release"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 812
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IPAE"
-pressValue "1"
-onLabel "Acquire!"
-offLabel "Acquire"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 776
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP9E"
-pressValue "0"
-onLabel "Release!"
-offLabel "Release"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 748
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP9E"
-pressValue "1"
-onLabel "Acquire!"
-offLabel "Acquire"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 712
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP8E"
-pressValue "0"
-onLabel "Release!"
-offLabel "Release"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 684
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP8E"
-pressValue "1"
-onLabel "Acquire!"
-offLabel "Acquire"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 648
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP7E"
-pressValue "0"
-onLabel "Release!"
-offLabel "Release"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 620
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP7E"
-pressValue "1"
-onLabel "Acquire!"
-offLabel "Acquire"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 584
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP6E"
-pressValue "0"
-onLabel "Release!"
-offLabel "Release"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 0
-y 556
-w 76
-h 28
-fgColor index 14
-onColor index 11
-offColor index 5
-topShadowColor index 1
-botShadowColor index 13
-controlPv "$(EVR):CTRL.IP6E"
-pressValue "1"
-onLabel "Acquire!"
-offLabel "Acquire"
-3d
-useEnumNumeric
-font "helvetica-bold-r-14.0"
 endObjectProperties
 
