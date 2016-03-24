@@ -79,6 +79,10 @@ int main(int argc, char **argv)
         break;
     }
     fd = open(device, O_RDWR);
+	if ( fd < 0 ) {
+		printf( "Error: Unable to open %s\n", device );
+		return -1;
+	}
     if (i == argc) {
 		int FPGAVersion = READ_EVR_REGISTER(fd, FPGAVersion);
 		printf( "EVR Found with Firmware Revision 0x%04X\n", FPGAVersion );
@@ -93,6 +97,10 @@ int main(int argc, char **argv)
             if (ioctl(fd, EV_IOCTRIG, &eit) < 0) {
                 if (errno == EBUSY)
                     printf("%2d: In Use!\n", i);
+                else if ( errno == ENOTTY ) {
+                    printf("%2d: Driver version does not support trigger allocation.  Update driver.\n", i );
+					break;
+				}
                 else
                     printf("%2d: Unexpected error (%d)?\n", i, errno);
             } else {
