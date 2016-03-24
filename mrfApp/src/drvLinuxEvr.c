@@ -27,6 +27,7 @@
 #include <epicsExit.h>
 #include <epicsStdlib.h>        /* EPICS Standard C library support routines                      */
 #include <errlog.h>
+#include <errno.h>
 #include <iocsh.h>              /* EPICS iocsh support library                                    */
 #include <drvSup.h>
 #include <string.h>
@@ -713,6 +714,111 @@ epicsBoolean ErGetRamStatus(ErCardStruct *pCard, int RamNumber)
 }
 
 /**************************************************************************************************
+|* ErAcquireTrigger () -- Acquire or release a trigger channel
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      pCard      = (ErCardStruct *) Pointer to the Event Receiver card structure.
+|*      TrigNumber = (int)            Which Output Trigger 0 .. N
+|*      fAcquire   = (unsigned int)   1 to acquire, 0 to release
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      0			Success
+|*		EBUSY		Trigger owned by another process
+|*		EINVALID	Invalid trigger number
+|*
+\**************************************************************************************************/
+int	ErAcquireTrigger( ErCardStruct * pCard,	unsigned int iTrig, unsigned int fAcquire )
+{
+	struct EvrIoctlTrig	eit;
+	int					status	= 0;
+
+	if ( iTrig >= MAX_DG )
+		return EINVAL;
+
+	epicsMutexLock(pCard->CardLock);
+	eit.Id = iTrig;
+	if ( fAcquire )
+		eit.Op = EvrTrigAlloc;
+	else
+		eit.Op = EvrTrigFree;
+	if ( ioctl( pCard->Slot, EV_IOCTRIG, &eit ) != 0 )
+		status = errno;
+	epicsMutexUnlock(pCard->CardLock);
+	switch ( status )
+	{
+	case 0:
+		break;
+	case EBUSY:
+		if ( fAcquire )
+			fprintf( stderr, "EVR trigger %d owned by a different process!\n", iTrig );
+		break;
+	case ENOTTY:
+		fprintf( stderr, "Not a valid EVR request for trigger %d!\n", iTrig );
+		break;
+	case EFAULT:
+		fprintf( stderr, "Unable to access EVR device!\n" );
+		break;
+	default:
+		if ( fAcquire )
+			perror( "Trigger channel acquire failed!" );
+		else
+			perror( "Trigger channel release failed!" );
+		break;
+	}
+	return status;
+}
+
+/**************************************************************************************************
+|* ErCheckTrigger () -- See if trigger is in use
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      pCard      = (ErCardStruct *) Pointer to the Event Receiver card structure.
+|*      TrigNumber = (int)            Which Output Trigger 0 .. N
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      0			Trigger is available
+|*      1			Trigger is in use by another process
+|*
+\**************************************************************************************************/
+int ErCheckTrigger( ErCardStruct * pCard, unsigned int iTrig )
+{
+	struct EvrIoctlTrig	eit;
+	int					status  = 0;
+	int					inUse	= 0;
+
+	if ( iTrig >= MAX_DG )
+		return 0;
+
+	epicsMutexLock(pCard->CardLock);
+	eit.Id = iTrig;
+	eit.Op = EvrTrigCheck;
+	if ( ioctl( pCard->Slot, EV_IOCTRIG, &eit ) != 0 )
+		status = errno;
+	epicsMutexUnlock(pCard->CardLock);
+	switch ( status )
+	{
+	case 0:
+		inUse = 0;
+		break;
+	case EBUSY:
+		inUse = 1;
+		break;
+	case ENOTTY:
+		fprintf( stderr, "Not a valid EVR request for trigger %d!\n", iTrig );
+		break;
+	case EFAULT:
+		fprintf( stderr, "Unable to access EVR device!\n" );
+		break;
+	default:
+		perror( "Trigger channel check failed!" );
+		break;
+	}
+	return inUse;
+}
+
+/**************************************************************************************************
 |* ErGetTicks () -- Return the Current Value of the Event Counter
 |*-------------------------------------------------------------------------------------------------
 |*
@@ -864,7 +970,7 @@ int ErSetDg(ErCardStruct *pCard, int Channel, epicsBoolean Enable,
             status = EvrSetPulseParams(pCard->Slot, Channel, 0, 0, 0, Pol, 0);
 	}
 
-	if ( ErDebug >= 2 )
+	if ( ErDebug >= 3 )
 		EvrDumpPulses( pCard->Slot, 10 );
 
 	epicsMutexUnlock(pCard->CardLock);

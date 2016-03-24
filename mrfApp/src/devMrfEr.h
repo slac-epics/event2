@@ -58,7 +58,7 @@
 /**************************************************************************************************/
 
 #include <epicsTypes.h>         /* EPICS Architecture-independent type definitions                */
-#include <mrfCommon.h>          /* MRF event system constants and definitions                     */
+#include "mrfCommon.h"          /* MRF event system constants and definitions                     */
 
 /**************************************************************************************************/
 /*  Function Prototypes for User-Specified Error and Event Notification Functions                 */
@@ -72,6 +72,11 @@ typedef void (*USER_DBUFF_FUNC) (void *Buffer);
 /*  Function Prototypes for User-Callable Interface to the Device Support Layer                   */
 /**************************************************************************************************/
 
+struct	ErCardStruct;
+epicsStatus ErUpdateEventTab(		struct ErCardStruct	*	pCard,
+									epicsInt16    			EventNum,
+									epicsUInt16    			oldMask,
+									epicsUInt16    			newMask	);
 epicsStatus ErRegisterEventHandler (int Card, USER_EVENT_FUNC func);
 epicsStatus ErRegisterErrorHandler (int Card, USER_ERROR_FUNC func);
 

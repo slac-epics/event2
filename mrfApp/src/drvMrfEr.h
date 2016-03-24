@@ -260,6 +260,8 @@ typedef void (*DEV_DBUFF_FUNC)  (ErCardStruct *pCard, epicsInt16 Size, void *Buf
 /*  Function Prototypes For Driver Support Routines                                               */
 /**************************************************************************************************/
 
+int            ErAcquireTrigger(ErCardStruct*, unsigned int, unsigned int);
+int            ErCheckTrigger(ErCardStruct*, unsigned int);
 epicsBoolean   ErCheckTaxi (ErCardStruct*);
 void           ErDebugLevel (epicsInt32);
 epicsUInt16    ErEnableIrq (ErCardStruct*, epicsUInt16);

@@ -93,12 +93,11 @@
 #include <biRecord.h>           /* Standard EPICS bi Record structure                             */
 #include <stringinRecord.h>		/* Standard EPICS stringin Record structure                      */
 #include <stringoutRecord.h>	/* Standard EPICS stringout Record structure                      */
-#include <erDefs.h>             /* Common Event Receiver (ER) definitions                         */
-
-#include <devMrfEr.h>           /* MRF Event Receiver device support layer interface              */
-#include <drvMrfEr.h>           /* MRF Event Receiver driver support layer interface              */
-
 #include <epicsExport.h>        /* EPICS Symbol exporting macro definitions                       */
+
+#include "erDefs.h"             /* Common Event Receiver (ER) definitions                         */
+#include "devMrfEr.h"           /* MRF Event Receiver device support layer interface              */
+#include "drvMrfEr.h"           /* MRF Event Receiver driver support layer interface              */
 
 
 /**************************************************************************************************/
@@ -107,10 +106,6 @@
 
 LOCAL_RTN void ErDevEventFunc (ErCardStruct*, epicsInt16, epicsUInt32);
 LOCAL_RTN void ErDevErrorFunc (ErCardStruct*, int);
-LOCAL_RTN epicsStatus ErUpdateEventTab( ErCardStruct	*	pCard,
-										epicsInt16    		EventNum,
-										epicsUInt16    		oldMask,
-										epicsUInt16    		newMask );
 
 
 /**************************************************************************************************/
@@ -123,6 +118,7 @@ LOCAL_RTN epicsStatus ErUpdateEventTab( ErCardStruct	*	pCard,
 
 LOCAL_RTN epicsStatus ErInitRecord (erRecord*);
 LOCAL_RTN epicsStatus ErProcess    (erRecord*);
+LOCAL_RTN void ErProcessTrigger(ErCardStruct*, erRecord*, unsigned int, epicsUInt32*, unsigned int*);
 
 
 /**************************************************************************************************/
@@ -232,6 +228,13 @@ epicsStatus ErInitRecord (erRecord *pRec)
     */
     pRec->dpvt = (void *)pCard;
 
+ 	/*
+	 * Check which triggers are already in use
+	 */
+	for ( i = 0; i < EVR_NUM_DG; i++ ) {
+		*(&pRec->tiu0 + i) = ErCheckTrigger( pCard, i );
+	}
+
    /*---------------------
     * Set the Event Receiver with any pre-defined values
     */
@@ -240,7 +243,7 @@ epicsStatus ErInitRecord (erRecord *pRec)
 
 }/*end ErInitRecord()*/
 
- /**************************************************************************************************
+/**************************************************************************************************
 |* ErProcess () -- ER Record Processing Routine
 |*-------------------------------------------------------------------------------------------------
 |*
@@ -279,8 +282,9 @@ LOCAL_RTN
 epicsStatus ErProcess (erRecord  *pRec)
 {
     ErCardStruct   *pCard;
-    unsigned int ipov = 0;
-    epicsUInt32 enable = EVR_MAP_INTERRUPT | EVR_MAP_TS_LATCH;
+    unsigned int	ipov = 0;
+    unsigned int	iTrig;
+    epicsUInt32		enable = EVR_MAP_INTERRUPT | EVR_MAP_TS_LATCH;
 
    /*---------------------
     * Output a debug message if the debug flag is set.
@@ -301,179 +305,12 @@ epicsStatus ErProcess (erRecord  *pRec)
     * Lock the card structure while we are processing the record.
     */
     epicsMutexLock (pCard->CardLock);
-  
-   /*---------------------
-    * Update the delayed pulse generator outputs first
-    * Set the programmable delay (DG) output parameters (Enable, Delay, Width, Prescaler, Polarity)
-    */
-    ipov = 0;
-    if (pRec->ip0e) {
-        if (pRec->dg0e || pRec->ld0e)
-            if ( ErSetDg (pCard, 0, pRec->dg0e, pRec->dg0d, pRec->dg0w, pRec->dg0c, pRec->dg0p) != 0 )
-			{
-				pRec->ip0e = 0;
-        		db_post_events(pRec, &pRec->ip0e, DBE_VALUE);
-			}
-        pRec->ld0e = pRec->dg0e;
-        if (pRec->dg0e)
-            enable |= 1;
-        ipov |= 1;
-    } else if ( pRec->dg0e && !pRec->ip0e ) {
-        if ( ErDebug >= 1 ) printf ("devMrfEr::ErProcess(%s) Error: IP0E disabled!\n", pRec->name);
-	}
-    if (pRec->ip1e) {
-        if (pRec->dg1e || pRec->ld1e)
-            if ( ErSetDg (pCard, 1, pRec->dg1e, pRec->dg1d, pRec->dg1w, pRec->dg1c, pRec->dg1p) != 0 )
-			{
-				pRec->ip1e = 0;
-        		db_post_events(pRec, &pRec->ip1e, DBE_VALUE);
-			}
-        pRec->ld1e = pRec->dg1e;
-        if (pRec->dg1e)
-            enable |= 1 << 1;
-        ipov |= 1 << 1;
-    } else if ( pRec->dg1e && !pRec->ip1e ) {
-        if ( ErDebug >= 1 ) printf ("devMrfEr::ErProcess(%s) Error: IP1E disabled!\n", pRec->name);
-	}
-    if (pRec->ip2e) {
-        if (pRec->dg2e || pRec->ld2e)
-            if ( ErSetDg (pCard, 2, pRec->dg2e, pRec->dg2d, pRec->dg2w, pRec->dg2c, pRec->dg2p) != 0 )
-			{
-				pRec->ip2e = 0;
-        		db_post_events(pRec, &pRec->ip2e, DBE_VALUE);
-			}
-        pRec->ld2e = pRec->dg2e;
-        if (pRec->dg2e)
-            enable |= 1 << 2;
-        ipov |= 1 << 2;
-    } else if ( pRec->dg2e && !pRec->ip2e ) {
-        if ( ErDebug >= 1 ) printf ("devMrfEr::ErProcess(%s) Error: IP2E disabled!\n", pRec->name);
-	}
-    if (pRec->ip3e) {
-        if (pRec->dg3e || pRec->ld3e)
-            if ( ErSetDg (pCard, 3, pRec->dg3e, pRec->dg3d, pRec->dg3w, pRec->dg3c, pRec->dg3p) != 0 )
-			{
-				pRec->ip3e = 0;
-        		db_post_events(pRec, &pRec->ip3e, DBE_VALUE);
-			}
-        pRec->ld3e = pRec->dg3e;
-        if (pRec->dg3e)
-            enable |= 1 << 3;
-        ipov |= 1 << 3;
-    } else if ( pRec->dg3e && !pRec->ip3e ) {
-        if ( ErDebug >= 1 ) printf ("devMrfEr::ErProcess(%s) Error: IP3E disabled!\n", pRec->name);
-	}
-	if (pRec->ip4e) {
-		if (pRec->dg4e || pRec->ld4e)
-            if ( ErSetDg (pCard, 4, pRec->dg4e, pRec->dg4d, pRec->dg4w, pRec->dg4c, pRec->dg4p) != 0 )
-			{
-				pRec->ip4e = 0;
-        		db_post_events(pRec, &pRec->ip4e, DBE_VALUE);
-			}
-		pRec->ld4e = pRec->dg4e;
-		if (pRec->dg4e)
-			enable |= 1 << 4;
-		ipov |= 1 << 4;
-    } else if ( pRec->dg4e && !pRec->ip4e ) {
-        if ( ErDebug >= 1 ) printf ("devMrfEr::ErProcess(%s) Error: IP4E disabled!\n", pRec->name);
-	}
-	if (pRec->ip5e) {
-		if (pRec->dg5e || pRec->ld5e)
-            if ( ErSetDg (pCard, 5, pRec->dg5e, pRec->dg5d, pRec->dg5w, pRec->dg5c, pRec->dg5p) != 0 )
-			{
-				pRec->ip5e = 0;
-        		db_post_events(pRec, &pRec->ip5e, DBE_VALUE);
-			}
-		pRec->ld5e = pRec->dg5e;
-		if (pRec->dg5e)
-			enable |= 1 << 5;
-		ipov |= 1 << 5;
-    } else if ( pRec->dg5e && !pRec->ip5e ) {
-        if ( ErDebug >= 1 ) printf ("devMrfEr::ErProcess(%s) Error: IP5E disabled!\n", pRec->name);
-	}
-	if (pRec->ip6e) {
-		if (pRec->dg6e || pRec->ld6e)
-            if ( ErSetDg (pCard, 6, pRec->dg6e, pRec->dg6d, pRec->dg6w, pRec->dg6c, pRec->dg6p) != 0 )
-			{
-				pRec->ip6e = 0;
-        		db_post_events(pRec, &pRec->ip6e, DBE_VALUE);
-			}
-		pRec->ld6e = pRec->dg6e;
-		if (pRec->dg6e)
-			enable |= 1 << 6;
-		ipov |= 1 << 6;
-    } else if ( pRec->dg6e && !pRec->ip6e ) {
-        if ( ErDebug >= 1 ) printf ("devMrfEr::ErProcess(%s) Error: IP6E disabled!\n", pRec->name);
-	}
-	if (pRec->ip7e) {
-		if (pRec->dg7e || pRec->ld7e)
-            if ( ErSetDg (pCard, 7, pRec->dg7e, pRec->dg7d, pRec->dg7w, pRec->dg7c, pRec->dg7p) != 0 )
-			{
-				pRec->ip7e = 0;
-        		db_post_events(pRec, &pRec->ip7e, DBE_VALUE);
-			}
-		pRec->ld7e = pRec->dg7e;
-		if (pRec->dg7e)
-			enable |= 1 << 7;
-		ipov |= 1 << 7;
-    } else if ( pRec->dg7e && !pRec->ip7e ) {
-        if ( ErDebug >= 1 ) printf ("devMrfEr::ErProcess(%s) Error: IP7E disabled!\n", pRec->name);
-	}
-	if (pRec->ip8e) {
-		if (pRec->dg8e || pRec->ld8e)
-            if ( ErSetDg (pCard, 8, pRec->dg8e, pRec->dg8d, pRec->dg8w, pRec->dg8c, pRec->dg8p) != 0 )
-			{
-				pRec->ip8e = 0;
-        		db_post_events(pRec, &pRec->ip8e, DBE_VALUE);
-			}
-		pRec->ld8e = pRec->dg8e;
-		if (pRec->dg8e)
-			enable |= 1 << 8;
-		ipov |= 1 << 8;
-    } else if ( pRec->dg8e && !pRec->ip8e ) {
-        if ( ErDebug >= 1 ) printf ("devMrfEr::ErProcess(%s) Error: IP8E disabled!\n", pRec->name);
-	}
-	if (pRec->ip9e) {
-		if (pRec->dg9e || pRec->ld9e)
-            if ( ErSetDg (pCard, 9, pRec->dg9e, pRec->dg9d, pRec->dg9w, pRec->dg9c, pRec->dg9p) != 0 )
-			{
-				pRec->ip9e = 0;
-        		db_post_events(pRec, &pRec->ip9e, DBE_VALUE);
-			}
-		pRec->ld9e = pRec->dg9e;
-		if (pRec->dg9e)
-			enable |= 1 << 9;
-		ipov |= 1 << 9;
-    } else if ( pRec->dg9e && !pRec->ip9e ) {
-        if ( ErDebug >= 1 ) printf ("devMrfEr::ErProcess(%s) Error: IP9E disabled!\n", pRec->name);
-	}
-	if (pRec->ipae) {
-		if (pRec->dgae || pRec->ldae)
-            if ( ErSetDg (pCard, 10, pRec->dgae, pRec->dgad, pRec->dgaw, pRec->dgac, pRec->dgap) != 0 )
-			{
-				pRec->ipae = 0;
-        		db_post_events(pRec, &pRec->ipae, DBE_VALUE);
-			}
-		pRec->ldae = pRec->dgae;
-		if (pRec->dgae)
-			enable |= 1 << 10;
-		ipov |= 1 << 10;
-    } else if ( pRec->dgae && !pRec->ipae ) {
-        if ( ErDebug >= 1 ) printf ("devMrfEr::ErProcess(%s) Error: IPAE disabled!\n", pRec->name);
-	}
-	if (pRec->ipbe) {
-		if (pRec->dgbe || pRec->ldbe)
-            if ( ErSetDg (pCard, 11, pRec->dgbe, pRec->dgbd, pRec->dgbw, pRec->dgbc, pRec->dgbp) != 0 )
-			{
-				pRec->ipbe = 0;
-        		db_post_events(pRec, &pRec->ipbe, DBE_VALUE);
-			}
-		pRec->ldbe = pRec->dgbe;
-		if (pRec->dgbe)
-			enable |= 1 << 11;
-		ipov |= 1 << 11;
-    } else if ( pRec->dgbe && !pRec->ipbe ) {
-        if ( ErDebug >= 1 ) printf ("devMrfEr::ErProcess(%s) Error: IPBE disabled!\n", pRec->name);
+ 
+ 	/*
+	 * Process all the channels
+	 */
+	for ( iTrig = 0; iTrig < EVR_NUM_DG; iTrig++ ) {
+		ErProcessTrigger( pCard, pRec, iTrig, &enable, &ipov );
 	}
 
     if (pRec->ipov != ipov) {
@@ -500,6 +337,96 @@ epicsStatus ErProcess (erRecord  *pRec)
 
 }/*end ErProcess()*/
 
+/**************************************************************************************************
+|* ErProcessTrigger () -- Process one trigger from the ER record
+|*-------------------------------------------------------------------------------------------------
+|*
+|* This routine is called from the ErProcess()
+|* The card structure must be locked by the caller
+|*
+|*-------------------------------------------------------------------------------------------------
+|* FUNCTION:
+|*   o Process one trigger channel
+|*     - If IP$(TRIG) is set, make sure we own the trigger.  If not, clear the flag and generate an error msg.
+|*     - Trigger output (TRG) enable/disable.
+|*     - Programmable width output (OTP) enable, delay, width, and polarity.
+|*     - Level output (OTL) enable/disable.
+|*     - Programmable delay output (DG) enable, delay, width, prescaler, and polarity.
+|*-------------------------------------------------------------------------------------------------
+|* INPUT PARAMETERS:
+|*      pRec        = (erRecord *)     Pointer to the ER record structure.
+|*      iTrig       = (unsigned int)   Trigger number: 0 .. EVR_NUM_DG
+|*      pEnableRet  = (epicsUInt32 *)  Sets bit (1 << iTrig) if trigger is enabled
+|*      pOutVecRet  = (unsigned int *) Sets bit (1 << iTrig) if trigger should be set in output vector 
+|*
+|*-------------------------------------------------------------------------------------------------
+|* RETURNS:
+|*      void
+\**************************************************************************************************/
+
+LOCAL_RTN
+void ErProcessTrigger(
+	ErCardStruct    *    pCard,
+	erRecord        *    pRec,
+	unsigned int         iTrig,
+	epicsUInt32     *    pEnableMaskRet,
+	unsigned int    *    pOutVecRet )
+{
+	epicsEnum16		*	pIPE	= &pRec->ip0e + iTrig;	/* Ptr to I Possess 	         */
+	epicsEnum16		*	pLIP	= &pRec->lip0 + iTrig;	/* Ptr to Last I Possess         */
+	epicsEnum16		*	pTIU	= &pRec->tiu0 + iTrig;	/* Ptr to Trigger In Use         */
+	epicsEnum16		*	pDGE	= &pRec->dg0e + iTrig;	/* Ptr to Delayed gate enable 	 */
+	epicsEnum16		*	pLDE	= &pRec->ld0e + iTrig;	/* Ptr to Last DG enable 	     */
+	epicsUInt32		*	pDGD	= &pRec->dg0d + iTrig;	/* Ptr to Delayed gate delay 	 */
+	epicsUInt32		*	pDGW	= &pRec->dg0w + iTrig;	/* Ptr to Delayed gate width 	 */
+	epicsUInt16		*	pDGC	= &pRec->dg0c + iTrig;	/* Ptr to Delayed gate prescaler */
+	epicsUInt16		*	pDGP	= &pRec->dg0p + iTrig;	/* Ptr to Delayed gate polarity  */
+
+	if ( iTrig >= EVR_NUM_DG || !pEnableMaskRet || !pOutVecRet )
+		return;
+
+    /*---------------------
+     * Acquire any channels we don't already own but have been requested to acquire
+     */
+    if ( *pIPE != *pLIP ) {
+		/*---------------------
+		 * Acquire any channels we don't already own but have been requested to acquire
+		 */
+		switch ( ErAcquireTrigger( pCard, iTrig, *pIPE ) )
+		{
+		case 0:
+			break;
+		case EBUSY:
+			printf( "devMrfEr::ErProcess(%s) Error: Trigger %d is already allocated!\n", pRec->name, iTrig );
+			*pTIU 	= 1;
+			db_post_events(pRec, pTIU, DBE_VALUE);
+			*pIPE	= 0;
+			db_post_events(pRec, pIPE, DBE_VALUE);
+			break;
+		case EINVAL:
+			*pIPE	= 0;
+			db_post_events(pRec, pIPE, DBE_VALUE);
+			break;
+		}
+		*pLIP = *pIPE;
+    }
+
+   /*---------------------
+    * Set the programmable delay gate (DG) output parameters (Enable, Delay, Width, Prescaler, Polarity)
+    */
+    if ( *pIPE ) {
+        if ( *pDGE || *pLDE )
+            if ( ErSetDg( pCard, 0, *pDGE, *pDGD, *pDGW, *pDGC, *pDGP ) != 0 )
+				perror( "Programming pulse parameters!" );
+        *pLDE = *pDGE;
+        if ( *pDGE )
+            *pEnableMaskRet |= 1 << iTrig;
+        *pOutVecRet |= 1 << iTrig;
+    }
+	return;
+}/*end ErProcessTrigger()*/
+
+
 /**************************************************************************************************/
 /*                Event Receiver Event ("erevent") Record Device Support Routines                 */
 /*                                                                                                */
@@ -656,10 +583,11 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
     * Debug output can be enabled for all records by calling "ErDebugLevel(11)",
     * or on a per-record basis by setting the TPRO field to 11.
     */
-    DebugFlag = (pRec->tpro > 10) || (ErDebug > 10);
+    DebugFlag = (pRec->tpro > 10) || (ErDebug >= 2);
     if (DebugFlag)
-        printf ("ErEventProcess(%s) entered.  ENAB = %s\n",
-                      pRec->name, pRec->enab?"True":"False");
+        printf ("ErEventProcess(%s) entered.  ENAB = %s, enm=%d, lenm=%d\n",
+                      pRec->name, pRec->enab?"True":"False",
+        			  pRec->enm, pRec->lenm );
     if (DebugFlag)
 		printf( "ErEventProcess(%s) entered: monitor_mask=%u, stat=%u, nsta=%u, sevr=%u, nsev=%u\n",
 				pRec->name, monitor_mask, pRec->stat, pRec->nsta, pRec->sevr, pRec->nsev );
@@ -718,8 +646,8 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
         */
         if (Mask != pRec->lout) {
             if (DebugFlag)
-                printf( "ErEventProcess(%s) New output mask 0x%04X, old mask 0x%04X\n",
-						pRec->name, Mask, pRec->lout );
+                printf( "ErEventProcess(%s) Event %d, new output mask 0x%04X, old mask 0x%04X\n",
+						pRec->name, pRec->enm, Mask, pRec->lout );
 
 			/*-------------------
 			 * If the ENM field is valid, update the output mask for this event.
@@ -1491,7 +1419,7 @@ void ErDevEventFunc (ErCardStruct *pCard, epicsInt16 EventNum, epicsUInt32 Time)
 |* o 
 \**************************************************************************************************/
 
-LOCAL_RTN
+GLOBAL_RTN
 epicsStatus ErUpdateEventTab(
     ErCardStruct	*	pCard,                  /* Pointer to Event Receiver card structure       */
     epicsInt16    		EventNum,				/* Event number to update				          */
