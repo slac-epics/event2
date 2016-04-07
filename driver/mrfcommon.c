@@ -835,12 +835,17 @@ irqreturn_t ev_interrupt(int irq, void *dev_id)
     } else {
         struct EvrQueues *evrq = ev_device->evrq;
         volatile struct MrfErRegs *pEr = ev_device->pEv;
+        /* Cache all the interrupt flags. For SLAC G2, we attempt to handle all interrupt sources
+           in one pass of the ISR. */
         int flags = be32_to_cpu(pEr->IrqFlag);
         int i;
         DPF((KERN_ALERT "I%08x\n", flags));
         /* Clear everything but FIFOFULL. */
         if(flags & ~EVR_IRQFLAG_FIFOFULL)
-            pEr->IrqFlag = be32_to_cpu(flags & ~EVR_IRQFLAG_FIFOFULL); 
+            pEr->IrqFlag = be32_to_cpu(flags & ~EVR_IRQFLAG_FIFOFULL);
+            /* Now, reset interrupt flags to zero - MRF and SLAC G1 are immune to this, SLAC G2
+               needs it. */
+            pEr->IrqFlag = be32_to_cpu(0); 
 
         if(flags & EVR_IRQFLAG_DATABUF) {
             int databuf_sts = be32_to_cpu(pEr->DataBufControl);
@@ -895,9 +900,15 @@ irqreturn_t ev_interrupt(int irq, void *dev_id)
             ctrl |= (1 << C_EVR_CTRL_RESET_EVENTFIFO);
             pEr->Control = be32_to_cpu(ctrl);
             evrq->fifofull++;
+
+            pEr->IrqFlag = be32_to_cpu(EVR_IRQFLAG_FIFOFULL);
+            /* Now, reset interrupt flags to zero - MRF and SLAC G1 are immune to this, SLAC G2
+               needs it. */
+            pEr->IrqFlag = be32_to_cpu(0); 
         }
 
-        pEr->IrqFlag = be32_to_cpu(flags);
+        /* This is a redundant interrupt flag clear-all. */
+        /* pEr->IrqFlag = be32_to_cpu(flags); */
 
         for (i = 0; i < MAX_EVR_OPENS; i++)
             if (ev_device->shared[i].parent) {
