@@ -403,7 +403,7 @@ void ErProcessTrigger(
 			*pIPE	= 0;
 			db_post_events(pRec, pIPE, DBE_VALUE);
 			break;
-		case EINVAL:
+		default:
 			*pIPE	= 0;
 			db_post_events(pRec, pIPE, DBE_VALUE);
 			break;
@@ -416,7 +416,7 @@ void ErProcessTrigger(
     */
     if ( *pIPE ) {
         if ( *pDGE || *pLDE )
-            if ( ErSetDg( pCard, 0, *pDGE, *pDGD, *pDGW, *pDGC, *pDGP ) != 0 )
+            if ( ErSetDg( pCard, iTrig, *pDGE, *pDGD, *pDGW, *pDGC, *pDGP ) != 0 )
 				perror( "Programming pulse parameters!" );
         *pLDE = *pDGE;
         if ( *pDGE )
@@ -563,7 +563,6 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
     * Local variables
     */
     epicsBoolean   DebugFlag;			/* True if debug output prints are enabled        */
-    epicsBoolean   LoadMask = epicsFalse;       /* True if need to load a new output mask         */
     epicsBoolean   LoadRam  = epicsFalse;       /* True if need ro re-load the Event Map RAM      */
     epicsUInt16    Mask = 0;                    /* New output mask for this event                 */
     ErCardStruct  *pCard;                       /* Pointer to Event Receiver card structure       */
@@ -638,7 +637,6 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
 			}/*end if previous event number was valid*/
 
             pRec->lenm	= pRec->enm;
-            LoadMask	= epicsTrue;
         }/*end if event number has changed*/
 
        /*---------------------
@@ -658,7 +656,6 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
 			}/*end if we should write new output mask for this event*/
 
             pRec->lout = Mask;
-            LoadMask = epicsTrue;
         }/*end if output mask has changed*/
 
     }/*end if record is enabled*/

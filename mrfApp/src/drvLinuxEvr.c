@@ -17,7 +17,7 @@
 
 #include <sys/ioctl.h>
 #define DEFINE_READ_EVR
-#define INLINE_READ_EVR static
+#define INLINE_READ_EVR static __inline__
 #define  EVR_DRIVER_SUPPORT_MODULE   /* Indicates we are in the driver support module environment */
 #include "drvMrfEr.h"
 #undef	EVR_MAX_BUFFER
@@ -723,9 +723,10 @@ epicsBoolean ErGetRamStatus(ErCardStruct *pCard, int RamNumber)
 |*
 |*-------------------------------------------------------------------------------------------------
 |* RETURNS:
-|*      0			Success
-|*		EBUSY		Trigger owned by another process
-|*		EINVALID	Invalid trigger number
+|*      0		Success
+|*		EBUSY	Trigger owned by another process
+|*		EINVAL	Invalid trigger number
+|*		ENOTTY	Driver does not support trigger allocation
 |*
 \**************************************************************************************************/
 int	ErAcquireTrigger( ErCardStruct * pCard,	unsigned int iTrig, unsigned int fAcquire )
@@ -754,7 +755,7 @@ int	ErAcquireTrigger( ErCardStruct * pCard,	unsigned int iTrig, unsigned int fAc
 			fprintf( stderr, "EVR trigger %d owned by a different process!\n", iTrig );
 		break;
 	case ENOTTY:
-		fprintf( stderr, "Not a valid EVR request for trigger %d!\n", iTrig );
+		fprintf( stderr, "Driver does not support trigger allocation! Update driver!\n" );
 		break;
 	case EFAULT:
 		fprintf( stderr, "Unable to access EVR device!\n" );
@@ -1066,30 +1067,38 @@ epicsStatus ErDrvReport (int level)
 		EvrDumpStatus( pCard->Slot );
 		EvrDumpPulses(		pCard->Slot, 10 );
 
+		/* Dump the ErEventTab entries that monitor IRQ's */
+		printf( "EventCode IRQ monitors:" );
+		for (EventNum = 0; EventNum < EVR_NUM_EVENTS; EventNum++ )
+		{
+			if ( pCard->ErEventTab[EventNum] & 0x8000 )
+				printf( " %d", EventNum );
+		}
+		printf( "\n" );
+
 		/* Dump the active entries in ErEventTab */
 		printf( "ErEventTab[code]: 0x8000 is IRQ, 0x0001 is OUT0, 0x0002 is OUT1, ...\n" );
 		for (EventNum = 0; EventNum < EVR_NUM_EVENTS; EventNum++ )
 		{
-			if ( pCard->ErEventTab[EventNum] != 0 )
+			epicsUInt16	tableEntry	= pCard->ErEventTab[EventNum];
+			if ( tableEntry != 0 && tableEntry != 0x8000 )
 			{
-				if (level == 0)
-					printf( "ErEventTab[%3d] = 0x%04x\n", EventNum, pCard->ErEventTab[EventNum] );
-				else
+				unsigned int chan;
+				printf( "ErEventTab[%3d] = 0x%04x", EventNum, tableEntry );
+				for ( chan = 0; chan < EVR_MAP_N_CHAN_MAX; chan++ )
 				{
-					unsigned int chan;
-					printf( "ErEventTab[%3d] = 0x%04x", EventNum, pCard->ErEventTab[EventNum] );
-					for ( chan = 0; chan < EVR_MAP_N_CHAN_MAX; chan++ )
+					if ( (tableEntry & (1 << chan)) == 0 )
+						continue;
+					if ( chan == EVR_MAP_IRQ_CHAN )
+						printf( ", IRQ" );
+					else
+						printf( ", out%d", chan );
+					if ( level > 0 && pCard->ErEventCnt[EventNum][chan] > 0 )
 					{
-						if( pCard->ErEventCnt[EventNum][chan] > 0 )
-						{
-							if ( chan == EVR_MAP_IRQ_CHAN )
-								printf( ", IRQ cnt=%d", pCard->ErEventCnt[EventNum][chan] );
-							else
-								printf( ", out%d cnt=%d", chan, pCard->ErEventCnt[EventNum][chan] );
-						}
+						printf( " cnt=%d", pCard->ErEventCnt[EventNum][chan] );
 					}
-					printf( "\n" );
 				}
+				printf( "\n" );
 			}
 		}
 		printf("\n");

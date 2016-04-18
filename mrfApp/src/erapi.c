@@ -26,7 +26,7 @@
 #include <unistd.h>
 
 #define DEFINE_READ_EVR
-#define INLINE_READ_EVR static
+#define INLINE_READ_EVR static __inline__
 #include "erapi.h"
 
 extern void EvrIrqHandlerThreadCreate(void (**handler) (int, int), int);
@@ -36,7 +36,6 @@ extern void EvrIrqHandlerThreadCreate(void (**handler) (int, int), int);
 */
 
 #define DEBUG_PRINTF printf
-unsigned int	erapiDebug	= 1;
 
 int EvrOpen(void **pEq, char *device_name)
 {
@@ -75,6 +74,8 @@ int EvrClose(int fd)
   int result;
 
   result = munmap(0, EVR_SH_MEM_WINDOW);
+  if ( result < 0 )
+  	perror( "EvrClose: munmap error." );
   return close(fd);
 }
 
@@ -97,7 +98,7 @@ void EvrDumpStatus(int fd)
   result = READ_EVR_REGISTER(fd, Control);
   DEBUG_PRINTF("Control %08x: ", result);
   if (result & (1 << C_EVR_CTRL_MASTER_ENABLE))
-    DEBUG_PRINTF("MSEN ");
+    DEBUG_PRINTF("MstrEnabled ");
   if (result & (1 << C_EVR_CTRL_EVENT_FWD_ENA))
     DEBUG_PRINTF("FWD ");
   if (result & (1 << C_EVR_CTRL_TXLOOPBACK))
@@ -107,9 +108,9 @@ void EvrDumpStatus(int fd)
   if (result & (1 << C_EVR_CTRL_TS_CLOCK_DBUS))
     DEBUG_PRINTF("DSDBUS ");
   if (result & (1 << C_EVR_CTRL_MAP_RAM_ENABLE))
-    DEBUG_PRINTF("MAPENA ");
+    DEBUG_PRINTF("EventMapRamEnabled ");
   if (result & (1 << C_EVR_CTRL_MAP_RAM_SELECT))
-    DEBUG_PRINTF("MAPSEL ");
+    DEBUG_PRINTF("EventMapRamSelected ");
   DEBUG_PRINTF("\n");
   result = READ_EVR_REGISTER(fd, IrqFlag);
   DEBUG_PRINTF("IRQ Flag %08x: ", result);
@@ -179,20 +180,16 @@ void EvrDumpPulses(int fd, int pulses)
 
   for (i = 0; i < pulses; i++)
     {
-      DEBUG_PRINTF("Pulse %02x Presc %08x Delay %08x Width %08x", i,
+      DEBUG_PRINTF("Pulse %02d Presc %-3d Delay %-8d Width %-8d", i,
 		   p[i].Prescaler, p[i].Delay, p[i].Width);
       control = p[i].Control;
-      DEBUG_PRINTF(" Output %d", control & (1 << C_EVR_PULSE_OUT) ? 1 : 0);
+      /* DEBUG_PRINTF(" Output %d", control & (1 << C_EVR_PULSE_OUT) ? 1 : 0); */
       if (control & (1 << C_EVR_PULSE_POLARITY))
-	DEBUG_PRINTF(" NEG");
-      if (control & (1 << C_EVR_PULSE_MAP_RESET_ENA))
-	DEBUG_PRINTF(" MAPRES");
-      if (control & (1 << C_EVR_PULSE_MAP_SET_ENA))
-	DEBUG_PRINTF(" MAPSET");
+	      DEBUG_PRINTF(" Inverted");
       if (control & (1 << C_EVR_PULSE_MAP_TRIG_ENA))
-	DEBUG_PRINTF(" MAPTRIG");
+	      DEBUG_PRINTF(" Trig");
       if (control & (1 << C_EVR_PULSE_ENA))
-	DEBUG_PRINTF(" ENA");
+	      DEBUG_PRINTF(" Pulse Enabled");
       DEBUG_PRINTF("\n");
     }
 }
