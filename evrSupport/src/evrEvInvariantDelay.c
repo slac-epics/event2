@@ -102,24 +102,37 @@ static long aSubEvOffset(aSubRecord *prec)
     epicsUInt32 *	pdelayArray		=  (epicsUInt32*)(prec->c);
     epicsUInt32		defaultDelay	= *(epicsUInt32*)(prec->d);
     epicsUInt32	*	poutputDelay	=  (epicsUInt32*)(prec->vala);
-    epicsEnum16		sevr;
+    epicsEnum16		sevr			= 0;
 
+#if 0
+/*
+ * Don't want this severity check now that we cache a copy of the EVG DELAYS in $EVR:EC:DELAYS
+ * The local cache allows us to compute delays from autosaved values even when EVG is offline
+ * so invariant timing works even w/ test EVG's providing the timing signal.
+ */
     if(dbGetSevr(&prec->inpc, &sevr)) {
         printf("%s: CA connection severity check error\n", prec->name);
         return 0;
     }
+#endif
 
     if(sevr                          ||     /* record is not initialized */
        !activeFlag                   ||     /* deactivate */
        !pdelayArray                  ||     /* no lookup table */
        (eventNumber<0 || eventNumber>255)   /* out of range for event number */) {
         *poutputDelay = defaultDelay;                   /* if something is wrong, just use default delay */
+		if ( prec->tpro >= 2 )
+			printf( "aSubEvOffset %s ERROR: Unable to lookup EC %d, using def delay %u\n", prec->name, eventNumber, defaultDelay );
     }
     else {
-		*poutputDelay = *(pdelayArray + eventNumber);  /* Everything is OK, let's use look up table */
+		/* Everything is OK, let's use look up table */
+    	epicsUInt32		outputDelay	=  *(pdelayArray + eventNumber);
+		if ( prec->tpro >= 2 )
+			printf( "aSubEvOffset %s: EC %d delay is %u\n", prec->name, eventNumber, outputDelay );
+		*poutputDelay = outputDelay;
 
 		/* Save the computed delay as the new default */
-		*(epicsUInt32*)(prec->d) = *poutputDelay;
+		*(epicsUInt32*)(prec->d) = outputDelay;
 	}
     return 0;
 }
