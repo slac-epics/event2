@@ -3,6 +3,7 @@
 # Comment/uncomment to hide/show debugging messages in system log
 #DEBUG=y
 
+USR_CFLAGS += -fno-keep-inline-functions
 ifeq ($(DETECT_UNCONFIGURED_BOARD),y)
 #  CFLAGS += -DDETECT_UNCONFIGURED_BOARD
 endif

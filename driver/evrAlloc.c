@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<sys/ioctl.h>
 #define DEFINE_READ_EVR
+#define INLINE_READ_EVR static __inline__
 #include<evrmemmap.h>
 #include<unistd.h>
 #include<string.h>
