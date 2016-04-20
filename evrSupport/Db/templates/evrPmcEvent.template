@@ -60,26 +60,3 @@ record( longout, "$(DEV):$(NAME)_ID" )
   field( FLNK,	"$(DEV):$(NAME)_NAME.EVNT PP MS" )
 }
 
-# Compute the number of enabled output triggers using this CTRL
-# (Total number of outputs enabled: OUT0, OUT1, OUT2, ...)
-record( longSub, "$(DEV):$(NAME)CTRL_N_OUTPUTS_ON" )
-{
-	field( INAM, "lsubCountNonZeroInit" )
-	field( SNAM, "lsubCountNonZero" )
-	field( DESC,  "# of ctrl outputs on" )
-	field( PINI,  "YES" )
-	field( INPA, "$(DEV):$(NAME)CTRL.OUT0 CPP NMS")
-	field( INPB, "$(DEV):$(NAME)CTRL.OUT1 CPP NMS")
-	field( INPC, "$(DEV):$(NAME)CTRL.OUT2 CPP NMS")
-	field( INPD, "$(DEV):$(NAME)CTRL.OUT3 CPP NMS")
-	field( INPE, "$(DEV):$(NAME)CTRL.OUT4 CPP NMS")
-	field( INPF, "$(DEV):$(NAME)CTRL.OUT5 CPP NMS")
-	field( INPG, "$(DEV):$(NAME)CTRL.OUT6 CPP NMS")
-	field( INPH, "$(DEV):$(NAME)CTRL.OUT7 CPP NMS")
-	field( INPI, "$(DEV):$(NAME)CTRL.OUT8 CPP NMS")
-	field( INPJ, "$(DEV):$(NAME)CTRL.OUT9 CPP NMS")
-	field( INPK, "$(DEV):$(NAME)CTRL.OUTA CPP NMS")
-	field( INPL, "$(DEV):$(NAME)CTRL.OUTB CPP NMS")
-	field( INPM, "$(DEV):$(NAME)CTRL.OUTC CPP NMS")
-	field( INPN, "$(DEV):$(NAME)CTRL.OUTD CPP NMS")
-}
