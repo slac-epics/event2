@@ -61,6 +61,7 @@ record( longout, "$(TRIG):TEC" )
 	field( DESC, "Trigger's Event code" )
 	field( OUT,  "$(TRIG):EC_NAME.EVNT" )
 	field( FLNK, "$(TRIG):EC_NAME PP MS" )
+#field( TPRO, "2" )
 	info( autosaveFields, "DESC VAL" )
 }
 
@@ -77,6 +78,7 @@ record( bo, "$(TRIG):TCTL" )
 	field( VAL,  "$(CTL=0)" )
 	field( PINI, "YES" )
 	field( FLNK, "$(TRIG):FW_EC_SEQ" )
+#field( TPRO, "2" )
 	info( autosaveFields, "DESC VAL ZNAM ONAM ZSV OSV" )
 }
 
@@ -132,11 +134,13 @@ record( ao, "$(TRIG):TDES" )
 	field( DRVL, "$(DRVL=-2.14748E09)" )
 	field( ESLO, "8.403361345" )
 	field( VAL, "$(DES=-1e9)" )
+#	field( MDEL, "-1" )
 	field( MDEL, "0" )
 	field( PINI, "YES" )
 	field( LSV,  "MINOR" )
 	field( FLNK, "$(TRIG):TDLY_NS" )
 	info( autosaveFields, "DESC EGU HHSV HIGH HIHI HSV LLSV LOLO LOW LSV PREC VAL" )
+#field( TPRO, "2" )
 }
 
 # Trigger event code
@@ -144,8 +148,10 @@ record( longout, "$(TRIG):EC_RBV" )
 {
 	field( DESC, "Trigger's Event code" )
 	field( OMSL, "closed_loop" )
-	field( DOL,  "$(TRIG):LSUB_EVSEL CPP MS" )
+	field( DOL,  "$(TRIG):LSUB_EVSEL NPP MS" )
+#	field( DOL,  "$(TRIG):LSUB_EVSEL CPP MS" )
 #	field( FLNK, "$(TRIG):BW_EC_SEQ" )
+#field( TPRO, "2" )
 	info( autosaveFields, "DESC" )
 }
 
@@ -161,9 +167,11 @@ record( seq, "$(TRIG):BW_EC_SEQ" )
 	field( DOL1, "0" )
 	field( LNK1, "$(TRIG):FW_EC_SEQ_ENAB PP NMS" )
 
+#	field( DLY2, "0.5" )
 #	field( DOL2, "$(TRIG):EC_RBV NPP NMS" )
 	field( DOL2, "$(TRIG):EC_RBV CPP NMS" )
 	field( LNK2, "$(TRIG):TEC PP NMS" )
+#field( TPRO, "1" )
 
 	field( FLNK, "$(TRIG):FW_EC_SEQ_REENABLE PP NMS" )
 	info( autosaveFields, "DESC" )
@@ -171,9 +179,12 @@ record( seq, "$(TRIG):BW_EC_SEQ" )
 
 record( seq, "$(TRIG):FW_EC_SEQ_REENABLE" )
 {
-	field( DLY1, "0.25" )
+#	field( DLY1, "0.25" )
+	field( DLY1, "0.5" )
+#	field( DLY1, "0.01" )
 	field( DOL1, "1" )
-	field( LNK1, "$(TRIG):FW_EC_SEQ_ENAB PP NMS" )
+	field( LNK1, "$(TRIG):FW_EC_SEQ_ENAB NPP NMS" )
+#field( TPRO, "1" )
 	info( autosaveFields, "DESC" )
 }
 
@@ -184,6 +195,7 @@ record( seq, "$(TRIG):FW_EC_SEQ_REENABLE" )
 # Value set by record $(TRIG):ASUB_LKUOFFSET
 record( ai, "$(TRIG):TOFFSET" )
 {
+#field( TPRO, "2" )
 	field( DESC, "Tick cnt for cur EC" )
 	field( PINI, "NO" )
 	field( EGU,  "ticks" )
@@ -194,6 +206,7 @@ record( ai, "$(TRIG):TOFFSET" )
 
 record( calc, "$(TRIG):TOFFSET_NS" )
 {
+#field( TPRO, "2" )
 	field( DESC, "Offset in ns for ec" )
 	field( EGU,  "ns" )
 	field( CALC, "A*B" )
@@ -208,10 +221,11 @@ record( calc, "$(TRIG):TOFFSET_NS" )
 # this record processes each time LSUB_EVSEL updates
 record( aSub, "$(TRIG):ASUB_LKUOFFSET" )
 {
+#field( TPRO, "2" )
 	field( DESC, "Offset lookup" )
 	field( SCAN, "Passive" )
 	field( PINI, "YES" )
-#	field( EFLG, "ON CHANGE" )
+	field( EFLG, "ON CHANGE" )
 	field( INAM, "aSubEvOffsetInit" )
 	field( SNAM, "aSubEvOffset" )
 	field( INPA, "$(TRIG):LSUB_EVSEL.VAL NPP MS" )
@@ -226,6 +240,7 @@ record( aSub, "$(TRIG):ASUB_LKUOFFSET" )
 	field( OUTA, "$(TRIG):TOFFSET.VAL PP MS" )
 	field( FTVA, "LONG" )
 #	field( FLNK, "$(TRIG):TDES" ) # Needed?
+	field( FLNK, "$(TRIG):EC_RBV" )
 }
 
 # PV to read currently assigned event code
@@ -236,6 +251,8 @@ record( aSub, "$(TRIG):ASUB_LKUOFFSET" )
 # which control record's event code number to read
 record( longSub, "$(TRIG):LSUB_EVSEL" )
 {
+	field( SDIS, "$(EVR):CTRL.IP$(N)E" )
+	field( DISV, "0" )
 	field( DESC, "Event Code Read" )
 	field( SCAN, "Passive" )
 	field( INAM, "lsubEvSelInit" )
@@ -257,68 +274,77 @@ record( longSub, "$(TRIG):LSUB_EVSEL" )
 	field( INPO, "$(EVR):EVENT14CTRL.ENM CPP NMS" )
 	field( INPZ, "$(TRIG):LSUB_TRGSEL.VAL PP MS" )
 	field( FLNK, "$(TRIG):ASUB_LKUOFFSET" )
+#field( TPRO, "2" )
 }
 
 # This PV examines each of the 14 control records to find
 # the first one which is enabled for this trigger's output
 # It's value is 0 if the $(TRIG):EVENTCTRL is enabled,
 # 1 if EVENT1CTRL is enabled, 2 for EVENT2CTRL, ...
+# LSUB_TRGSEL is processed on demand by LSUB_EVSEL
 record( longSub, "$(TRIG):LSUB_TRGSEL" )
 {
+#field( TPRO, "2" )
+	field( SDIS, "$(EVR):CTRL.IP$(N)E" )
+	field( DISV, "0" )
 	field( DESC, "Delay Selector" )
 	field( SCAN, "Passive" )
-	field( PINI, "YES" )
+#	field( PINI, "YES" )
 	field( INAM, "lsubTrigSelInit" )
 	field( SNAM, "lsubTrigSel" )
-	field( INPA, "$(TRIG):EVENTCTRL.OUT$(N) CPP NMS" )
-	field( INPB, "$(EVR):EVENT1CTRL.OUT$(N) CPP NMS" )
-	field( INPC, "$(EVR):EVENT2CTRL.OUT$(N) CPP NMS" )
-	field( INPD, "$(EVR):EVENT3CTRL.OUT$(N) CPP NMS" )
-	field( INPE, "$(EVR):EVENT4CTRL.OUT$(N) CPP NMS" )
-	field( INPF, "$(EVR):EVENT5CTRL.OUT$(N) CPP NMS" )
-	field( INPG, "$(EVR):EVENT6CTRL.OUT$(N) CPP NMS" )
-	field( INPH, "$(EVR):EVENT7CTRL.OUT$(N) CPP NMS" )
-	field( INPI, "$(EVR):EVENT8CTRL.OUT$(N) CPP NMS" )
-	field( INPJ, "$(EVR):EVENT9CTRL.OUT$(N) CPP NMS" )
-	field( INPK, "$(EVR):EVENT10CTRL.OUT$(N) CPP NMS" )
-	field( INPL, "$(EVR):EVENT11CTRL.OUT$(N) CPP NMS" )
-	field( INPM, "$(EVR):EVENT12CTRL.OUT$(N) CPP NMS" )
-	field( INPN, "$(EVR):EVENT13CTRL.OUT$(N) CPP NMS" )
-	field( INPO, "$(EVR):EVENT14CTRL.OUT$(N) CPP NMS" )
-	field( FLNK, "$(TRIG):LSUB_EVSEL" )
+	field( INPA, "$(TRIG):EVENTCTRL.OUT$(N) NPP NMS" )
+	field( INPB, "$(EVR):EVENT1CTRL.OUT$(N) NPP NMS" )
+	field( INPC, "$(EVR):EVENT2CTRL.OUT$(N) NPP NMS" )
+	field( INPD, "$(EVR):EVENT3CTRL.OUT$(N) NPP NMS" )
+	field( INPE, "$(EVR):EVENT4CTRL.OUT$(N) NPP NMS" )
+	field( INPF, "$(EVR):EVENT5CTRL.OUT$(N) NPP NMS" )
+	field( INPG, "$(EVR):EVENT6CTRL.OUT$(N) NPP NMS" )
+	field( INPH, "$(EVR):EVENT7CTRL.OUT$(N) NPP NMS" )
+	field( INPI, "$(EVR):EVENT8CTRL.OUT$(N) NPP NMS" )
+	field( INPJ, "$(EVR):EVENT9CTRL.OUT$(N) NPP NMS" )
+	field( INPK, "$(EVR):EVENT10CTRL.OUT$(N) NPP NMS" )
+	field( INPL, "$(EVR):EVENT11CTRL.OUT$(N) NPP NMS" )
+	field( INPM, "$(EVR):EVENT12CTRL.OUT$(N) NPP NMS" )
+	field( INPN, "$(EVR):EVENT13CTRL.OUT$(N) NPP NMS" )
+	field( INPO, "$(EVR):EVENT14CTRL.OUT$(N) NPP NMS" )
+#	field( FLNK, "$(TRIG):LSUB_EVSEL" )
 }
 
-# Forward trigger delay seqence enable calculation
+# Forward trigger delay sequence enable calculation
 # Input A is used for temporary disable of the FW_TDES sequence
 # Processed on demand by FW_TDES_SEQ
 record( calcout, "$(TRIG):FW_TDES_SEQ_ENAB_CALC" )
 {
+#field( TPRO, "2" )
 	field( INPA, "1" )
 	field( INPB, "$(TRIG):LSUB_TRGSEL.SEVR NPP NMS" )
 	field( INPC, "$(TRIG):TDES.SEVR NPP NMS" )
 	field( INPD, "$(TRIG):TDLY NPP MS" )
 	field( INPE, "$(TRIG):ASUB_LKUOFFSET.SEVR NPP NMS" )
-	field( CALC, "A&&(B==0)&&(C==0)&&(D>=0)&&(E==0)" )
-	field( OUT,  "$(TRIG):FW_TDES_SEQ_ENAB PP NMS" )
+#	field( CALC, "A&&(B==0)&&(C==0)&&(D>=0)&&(E==0)" )
+	field( CALC, "A&&(B==0)&&(D>=0)&&(E==0)" )
+#	field( OUT,  "$(TRIG):FW_TDES_SEQ_ENAB PP NMS" )
 }
 
-record( bo, "$(TRIG):FW_TDES_SEQ_ENAB" )
-{
-	field( ZNAM, "Disabled" )
-	field( ONAM, "Enabled" )
-}
+#record( bo, "$(TRIG):FW_TDES_SEQ_ENAB" )
+#{
+#field( TPRO, "2" )
+#	field( ZNAM, "Disabled" )
+#	field( ONAM, "Enabled" )
+#}
 
 # Sequence for forward delay updates
 # No delays in this record, see the re-enable
 record( seq, "$(TRIG):FW_TDES_SEQ" )
 {
+#field( TPRO, "2" )
 	field( SDIS, "$(TRIG):FW_TDES_SEQ_ENAB_CALC PP" )
 	field( DISV, "0" )
 	field( DESC, "Update delay seq" )
 
 #   Disable the BW_TDES_SEQ while we do the FW_TDES_SEQ
 	field( DOL1, "0" )
-	field( LNK1, "$(TRIG):BW_TDES_SEQ_ENAB_CALC.A PP MS" )
+	field( LNK1, "$(TRIG):BW_TDES_SEQ_ENAB_CALC.A PP NMS" )
 
 	field( DOL2, "$(TRIG):TDLY NPP MS" )
 	field( LNK2, "$(TRIG):FW_TDES_TICK_CALC PP NMS" )
@@ -330,9 +356,11 @@ record( seq, "$(TRIG):FW_TDES_SEQ" )
 # Reenable after a short delay
 record( seq, "$(TRIG):BW_TDES_SEQ_REENABLE" )
 {
+#field( TPRO, "2" )
 	field( DLY1, "0.25" )
+#	field( DLY1, "0" )
 	field( DOL1, "1" )
-	field( LNK1, "$(TRIG):BW_TDES_SEQ_ENAB_CALC.A PP NMS" )
+	field( LNK1, "$(TRIG):BW_TDES_SEQ_ENAB_CALC.A NPP NMS" )
 	info( autosaveFields, "DESC" )
 }
 
@@ -341,32 +369,38 @@ record( seq, "$(TRIG):BW_TDES_SEQ_REENABLE" )
 # Processed on demand by BW_TDES_SEQ
 record( calcout, "$(TRIG):BW_TDES_SEQ_ENAB_CALC" )
 {
+#field( TPRO, "2" )
 	field( INPA, "1" )
 	field( INPB, "$(TRIG):LSUB_TRGSEL.SEVR NPP NMS" )
 	field( CALC, "A && (B==0)" )
-	field( OUT,  "$(TRIG):BW_TDES_SEQ_ENAB PP NMS" )
+#	field( OUT,  "$(TRIG):BW_TDES_SEQ_ENAB PP NMS" )
 }
 
-record( bo, "$(TRIG):BW_TDES_SEQ_ENAB" )
-{
-	field( ZNAM, "Disabled" )
-	field( ONAM, "Enabled" )
-}
+#record( bo, "$(TRIG):BW_TDES_SEQ_ENAB" )
+#{
+#field( TPRO, "2" )
+#	field( ZNAM, "Disabled" )
+#	field( ONAM, "Enabled" )
+#}
 
 # Sequence for backward delay updates
 # No delays in this record, see the re-enable
 record( seq, "$(TRIG):BW_TDES_SEQ" )
 {
+#field( TPRO, "2" )
 	field( SDIS, "$(TRIG):BW_TDES_SEQ_ENAB_CALC PP" )
 	field( DISV, "0" )
 	field( DESC, "Backward delay seq" )
 
 #   Disable the FW_TDES_SEQ while we do the BW_TDES_SEQ
 	field( DOL1, "0" )
-	field( LNK1, "$(TRIG):FW_TDES_SEQ_ENAB_CALC.A PP MS" )
+	field( LNK1, "$(TRIG):FW_TDES_SEQ_ENAB_CALC.A NPP NMS" )
 
-	field( DOL2, "$(TRIG):BW_TDES NPP MS" )
-	field( LNK2, "$(TRIG):TDES PP NMS" )
+# If we don't need this update of TDES, which I don't think we want,
+# do we even need this seq record?
+##Update TDES
+#	field( DOL2, "$(TRIG):BW_TDES NPP MS" )
+#	field( LNK2, "$(TRIG):TDES PP NMS" )
 
 	field( FLNK, "$(TRIG):FW_TDES_SEQ_REENABLE PP NMS" )
 	info( autosaveFields, "DESC" )
@@ -377,13 +411,14 @@ record( seq, "$(TRIG):FW_TDES_SEQ_REENABLE" )
 {
 	field( DOL1, "1" )
 	field( DLY1, "0.25" )
-	field( LNK1, "$(TRIG):FW_TDES_SEQ_ENAB_CALC.A PP MS" )
+	field( LNK1, "$(TRIG):FW_TDES_SEQ_ENAB_CALC.A NPP NMS" )
 	info( autosaveFields, "DESC" )
 }
 
 # This PV computes the Trigger Delay in ticks
 record( calcout, "$(TRIG):TDLY" )
 {
+#field( TPRO, "2" )
 	field( DESC, "Trigger EVR Delay" )
 	field( INPA, "$(TRIG):TDLY_NS NPP MS" )
 	field( INPB, "8.403361345" )
@@ -393,7 +428,7 @@ record( calcout, "$(TRIG):TDLY" )
 	field( LOW,  "-1e-9" )
 	field( LSV,  "MINOR" )
 	field( OUT,  "$(TRIG):TDLY_TICKS PP NMS" )
-	field( FLNK, "$(TRIG):FW_TDES_SEQ" )
+#	field( FLNK, "$(TRIG):FW_TDES_SEQ" )
 }
 
 # This record shows the pulse generator desired delay in ticks
@@ -419,17 +454,19 @@ record( calcout, "$(TRIG):TDLY" )
 #        TDES <--BW---  CTRL.DG0D
 record( ao, "$(TRIG):TDLY_TICKS"	)
 {
+#field( TPRO, "2" )
 	field( DOL,  "$(TRIG):TDLY NPP MS" )
 	field( OMSL, "closed_loop" )
 	field( EGU,  "ticks" )
+	field( FLNK, "$(TRIG):FW_TDES_SEQ" )
 }
 
 record( calcout, "$(TRIG):FW_TDES_TICK_CALC"	)
 {
+#field( TPRO, "2" )
 	field( INPA, "$(TRIG):TDLY NPP NMS" )
 	field( INPB, "$(TRIG):LSUB_EVSEL.SEVR NPP NMS" )
 	field( INPC, "$(EVR):CTRL.$(TYPE)$(N)C NPP MS" )
-#	field( INPC, "$(EVR):CTRL.$(TYPE)$(N)C CPP MS" )
 	field( CALC, "(A>=0)&&(B==0)&&(C!=0)" )
 	field( OOPT, "When Non-zero" )
 	field( DOPT, "Use OCAL" )
@@ -443,6 +480,7 @@ record( calcout, "$(TRIG):FW_TDES_TICK_CALC"	)
 # after the event code before the trigger is generated
 record( calc, "$(TRIG):TDLY_NS" )
 {
+#field( TPRO, "2" )
 	field( DESC, "Trigger Delay" )
 	field( CALC, "A+B-(C*D)" )
 	field( INPA, "$(TRIG):TDES.VAL NPP MS" )
@@ -462,6 +500,7 @@ record( calc, "$(TRIG):TDLY_NS" )
 # flagging 0 delays on EC 140 due to rounding errors
 record( calcout, "$(TRIG):TDES_CALC_LOW" )
 {
+#field( TPRO, "2" )
 	field( DESC, "TDES low limit calc" )
 	field( CALC, "A*B-C-0.01" )
 	field( INPA, "$(TRIG):TOFFSET.VAL CPP NMS" )
@@ -475,6 +514,7 @@ record( calcout, "$(TRIG):TDES_CALC_LOW" )
 
 record( ao, "$(TRIG):TDES_CALC_LOPR" )
 {
+#field( TPRO, "2" )
 	field( DESC, "TDES low operator calc" )
 	field( OMSL, "closed_loop" )
 	field( DOL,  "$(TRIG):TDES_CALC_LOW NPP MS" )
@@ -486,6 +526,7 @@ record( ao, "$(TRIG):TDES_CALC_LOPR" )
 # Grab the delay tick count for easy edm viewing w/ EGU of ticks
 record( calc, "$(TRIG):BW_TDLY" )
 {
+#field( TPRO, "2" )
 	field( DESC, "Tick count from delay gen" )
 	field( INPA, "$(EVR):CTRL.$(TYPE)$(N)D CPP MS" )
 	field( INPB, "$(EVR):CTRL.$(TYPE)$(N)C CPP MS" )
@@ -497,6 +538,7 @@ record( calc, "$(TRIG):BW_TDLY" )
 # Compute time delay in ns after the event code
 record( calc, "$(TRIG):BW_TDLY_NS" )
 {
+#field( TPRO, "2" )
 	field( DESC, "Backward delay after EC" )
 	field( SCAN, "Passive" )
 	field( CALC, "A*B" )
@@ -510,20 +552,23 @@ record( calc, "$(TRIG):BW_TDLY_NS" )
 # Compute desired delay relative to TREF (ns)
 record( calc, "$(TRIG):BW_TDES" )
 {
+#field( TPRO, "2" )
 	field( DESC, "Backward TDES calc" )
 	field( SCAN, "Passive" )
 	field( CALC, "(A+B)*C-D" )
-	field( INPA, "$(TRIG):TOFFSET.VAL NPP MS" )
+#	field( INPA, "$(TRIG):TOFFSET.VAL NPP MS" )
+	field( INPA, "$(TRIG):TOFFSET.VAL CPP MS" )
 	field( INPB, "$(TRIG):BW_TDLY NPP MS" )
 	field( INPC, "8.403361345" )
 	field( INPD, "$(EVR):TREF NPP MS" )
 	field( EGU,  "ns" )
 	field( PREC, "2" )
-	field( FLNK, "$(TRIG):BW_TDES_SEQ" )
+#	field( FLNK, "$(TRIG):BW_TDES_SEQ" )
 }
 
 record( seq, "$(TRIG):PROP_SEQ2" )
 {
+#field( TPRO, "2" )
 	field( PINI, "YES" )
 	field( DLY1, "15" )
 	field( DOL1, "1" )
@@ -532,6 +577,7 @@ record( seq, "$(TRIG):PROP_SEQ2" )
 
 record( fanout, "$(TRIG):TINI" )
 {
+#field( TPRO, "2" )
 	field( DESC, "Trigger Init" )
 	field( PINI, "YES" )
 	field( LNK1, "$(TRIG):TDES PP" )
@@ -576,6 +622,7 @@ record( seq, "$(TRIG):TCTL_ITNSEQ" )
 
 record( bo, "$(TRIG):TCTL_ITN" )
 {
+#field( TPRO, "2" )
 	field( SCAN, "Passive" )
 	field( DTYP, "Soft Channel" )
 	field( OMSL, "closed_loop" )
@@ -601,6 +648,7 @@ record( ai, "$(TRIG):FW_SW2" )
 
 record( seq, "$(TRIG):BW_SEQ2" )
 {
+#field( TPRO, "2" )
 	field( DLY1, "1." )
 	field( DOL1, "0" )
 	field( LNK1, "$(TRIG):FW_SW2.VAL PP" )
@@ -608,6 +656,7 @@ record( seq, "$(TRIG):BW_SEQ2" )
 
 record( fanout, "$(TRIG):FW_FOUT2" )
 {
+#field( TPRO, "2" )
 	field( SDIS, "$(TRIG):FW_SW2.VAL" )
 	field( FLNK, "$(TRIG):FW_SEQ2" )
 	field( LNK1, "$(TRIG):TWID2" )
@@ -615,6 +664,7 @@ record( fanout, "$(TRIG):FW_FOUT2" )
 
 record( seq, "$(TRIG):FW_SEQ2" )
 {
+#field( TPRO, "2" )
 	field( DLY1, "15" )
 	field( DOL1, "0" )
 	field( LNK1, "$(TRIG):BW_SW2.VAL PP" )
@@ -622,6 +672,7 @@ record( seq, "$(TRIG):FW_SEQ2" )
 
 record( fanout, "$(TRIG):BW_FOUT2" )
 {
+#field( TPRO, "2" )
 	field( FLNK, "$(TRIG):BW_SEQ2" )
 	field( LNK1, "$(TRIG):BW_TWID" )
 }
@@ -661,6 +712,7 @@ record( calcout, "$(TRIG):TWID2" )
 	field( VAL, "$(WID=100)" )
 	field( MDEL, "-1" )
 	field( SDIS, "$(TRIG):FW_SW2.VAL" )
+#field(TPRO, 2)
 }
 
 # Grab the width tick count for easy edm viewing w/ EGU of ticks
@@ -672,6 +724,7 @@ record( calc, "$(TRIG):BW_TWID_TICKS" )
 	field( CALC, "A*B" )
 	field( EGU,  "ticks" )
 	field( FLNK, "$(TRIG):BW_TWIDCALC" )
+#field(TPRO, 2)
 }
 
 record( calc, "$(TRIG):BW_TWIDCALC" )
@@ -737,11 +790,13 @@ record( bo, "$(TRIG):FW_EC_SEQ_ENAB" )
 # other EVENT[1..14]CTRL records that are enabled.
 record( aSub, "$(TRIG):FW_EC_SEQ" )
 {
+#field( TPRO, "1" )
 	field( SDIS, "$(TRIG):FW_EC_SEQ_ENAB" )
 	field( DISV, "0" )
 	field( DESC, "Output Selector" )
 	field( SCAN, "Passive" )
 	field( PINI, "NO" )
+#	field( EFLG, "ON CHANGE" )
 	field( EFLG, "ON CHANGE" )
 	field( INAM, "asubCopyInToOutInit" )
 	field( SNAM, "asubCopyInToOut" )
@@ -749,12 +804,12 @@ record( aSub, "$(TRIG):FW_EC_SEQ" )
 	field( FTA,  "ULONG" )
 	field( FTVA, "ULONG" )
 	field( INPA, "$(TRIG):TEC NPP NMS" )
-	field( OUTA, "$(TRIG):EVENTCTRL.ENM PP NMS" )
+	field( OUTA, "$(TRIG):EVENTCTRL.ENM NPP NMS" )
 
 	field( FTB,  "ULONG" )
 	field( FTVB, "ULONG" )
 	field( INPB, "1" )
-	field( OUTB, "$(TRIG):EVENTCTRL.ENAB PP NMS" )
+	field( OUTB, "$(TRIG):EVENTCTRL.ENAB NPP NMS" )
 
 	field( FTC,  "ULONG" )
 	field( FTVC, "ULONG" )
@@ -798,64 +853,3 @@ record( aSub, "$(TRIG):FW_EC_SEQ" )
 	field( INPU, "0" ) field( FTU, "ULONG" ) field( FTVU, "ULONG" )
 }
 
-#
-# NOTE: The following 3 records were added to support sharing the
-# existing 14 $(EVR):EVENT4CTRL style records.
-# New scheme adds $(TRIG):EVENTCTRL and uses that, avoiding the requirement
-# for these, as the default will be to use the trigger specific $(TRIG):EVENTCTRL.
-# For now I'm leaving them in in case we find that users are still sharing the
-# same event ctrl record via the older screens.
-#	$(TRIG):CTRL_N_OUTPUTS_ON
-#	$(TRIG):CTRL_IS_SHARED_CALC
-#	$(TRIG):CTRL_IS_SHARED
-# also these 14
-#	$(EVR):EVENT$(N)CTRL_N_OUTPUTS_ON
-
-# PV to fetch the current number of enabled outputs for
-# the control record specified by input Z.
-# Processes whenever any of the 15 EVENT*CTRL_N_OUTPUTS_ON PV's updates
-# Uses the LSUB_TRGSEL value to specify which control
-# record's count to read
-record( longSub, "$(TRIG):CTRL_N_OUTPUTS_ON" )
-{
-	field( DESC, "# outputs for this ctrl" )
-	field( SCAN, "Passive" )
-	field( INAM, "lsubEvSelInit" )
-	field( SNAM, "lsubEvSel" )
-	field( INPA, "$(TRIG):EVENTCTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPB, "$(EVR):EVENT1CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPC, "$(EVR):EVENT2CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPD, "$(EVR):EVENT3CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPE, "$(EVR):EVENT4CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPF, "$(EVR):EVENT5CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPG, "$(EVR):EVENT6CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPH, "$(EVR):EVENT7CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPI, "$(EVR):EVENT8CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPJ, "$(EVR):EVENT9CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPK, "$(EVR):EVENT10CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPL, "$(EVR):EVENT11CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPM, "$(EVR):EVENT12CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPN, "$(EVR):EVENT13CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPO, "$(EVR):EVENT14CTRL_N_OUTPUTS_ON CPP NMS" )
-	field( INPZ, "$(TRIG):LSUB_TRGSEL.VAL CPP NMS" )
-	field( FLNK, "$(TRIG):CTRL_IS_SHARED_CALC" )
-}
-
-# PV to determine if this trigger shares it's control record
-# with other outputs
-record( calc, "$(TRIG):CTRL_IS_SHARED_CALC" )
-{
-	field( INPA, "$(TRIG):CTRL_N_OUTPUTS_ON NPP NMS" )
-	field( INPB, "$(TRIG):TCTL CPP MS" )
-	field( CALC, "B?(A>1):(A>0)" )
-	field( PINI, "YES" )
-	field( FLNK, "$(TRIG):CTRL_IS_SHARED" )
-}
-
-record( bo, "$(TRIG):CTRL_IS_SHARED" )
-{
-	field( DOL,  "$(TRIG):CTRL_IS_SHARED_CALC" )
-	field( OMSL, "closed_loop" )
-	field( ZNAM, "Private" )
-	field( ONAM, "Shared" )
-}
