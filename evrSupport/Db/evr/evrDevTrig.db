@@ -342,76 +342,9 @@ record( seq, "$(TRIG):FW_TDES_SEQ" )
 	field( DISV, "0" )
 	field( DESC, "Update delay seq" )
 
-#   Disable the BW_TDES_SEQ while we do the FW_TDES_SEQ
-	field( DOL1, "0" )
-	field( LNK1, "$(TRIG):BW_TDES_SEQ_ENAB_CALC.A PP NMS" )
-
 	field( DOL2, "$(TRIG):TDLY NPP MS" )
 	field( LNK2, "$(TRIG):FW_TDES_TICK_CALC PP NMS" )
 
-	field( FLNK, "$(TRIG):BW_TDES_SEQ_REENABLE PP NMS" )
-	info( autosaveFields, "DESC" )
-}
-
-# Reenable after a short delay
-record( seq, "$(TRIG):BW_TDES_SEQ_REENABLE" )
-{
-#field( TPRO, "2" )
-	field( DLY1, "0.25" )
-#	field( DLY1, "0" )
-	field( DOL1, "1" )
-	field( LNK1, "$(TRIG):BW_TDES_SEQ_ENAB_CALC.A NPP NMS" )
-	info( autosaveFields, "DESC" )
-}
-
-# Backward trigger delay seqence enable calculation
-# Input A is used for temporary disable of the BW_TDES sequence
-# Processed on demand by BW_TDES_SEQ
-record( calcout, "$(TRIG):BW_TDES_SEQ_ENAB_CALC" )
-{
-#field( TPRO, "2" )
-	field( INPA, "1" )
-	field( INPB, "$(TRIG):LSUB_TRGSEL.SEVR NPP NMS" )
-	field( CALC, "A && (B==0)" )
-#	field( OUT,  "$(TRIG):BW_TDES_SEQ_ENAB PP NMS" )
-}
-
-#record( bo, "$(TRIG):BW_TDES_SEQ_ENAB" )
-#{
-#field( TPRO, "2" )
-#	field( ZNAM, "Disabled" )
-#	field( ONAM, "Enabled" )
-#}
-
-# Sequence for backward delay updates
-# No delays in this record, see the re-enable
-record( seq, "$(TRIG):BW_TDES_SEQ" )
-{
-#field( TPRO, "2" )
-	field( SDIS, "$(TRIG):BW_TDES_SEQ_ENAB_CALC PP" )
-	field( DISV, "0" )
-	field( DESC, "Backward delay seq" )
-
-#   Disable the FW_TDES_SEQ while we do the BW_TDES_SEQ
-	field( DOL1, "0" )
-	field( LNK1, "$(TRIG):FW_TDES_SEQ_ENAB_CALC.A NPP NMS" )
-
-# If we don't need this update of TDES, which I don't think we want,
-# do we even need this seq record?
-##Update TDES
-#	field( DOL2, "$(TRIG):BW_TDES NPP MS" )
-#	field( LNK2, "$(TRIG):TDES PP NMS" )
-
-	field( FLNK, "$(TRIG):FW_TDES_SEQ_REENABLE PP NMS" )
-	info( autosaveFields, "DESC" )
-}
-
-# Reenable after a short delay
-record( seq, "$(TRIG):FW_TDES_SEQ_REENABLE" )
-{
-	field( DOL1, "1" )
-	field( DLY1, "0.25" )
-	field( LNK1, "$(TRIG):FW_TDES_SEQ_ENAB_CALC.A NPP NMS" )
 	info( autosaveFields, "DESC" )
 }
 
@@ -563,7 +496,6 @@ record( calc, "$(TRIG):BW_TDES" )
 	field( INPD, "$(EVR):TREF NPP MS" )
 	field( EGU,  "ns" )
 	field( PREC, "2" )
-#	field( FLNK, "$(TRIG):BW_TDES_SEQ" )
 }
 
 record( seq, "$(TRIG):PROP_SEQ2" )
