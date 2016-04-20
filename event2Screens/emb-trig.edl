@@ -112,81 +112,6 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 548
-y 36
-w 80
-h 24
-controlPv "$(TRIG):BW_TDES"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 16
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 464
-y 36
-w 80
-h 24
-controlPv "$(TRIG):BW_TWIDCALC"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 16
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 92
-y 36
-w 48
-h 24
-controlPv "$(TRIG):EC_RBV"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 16
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 40
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
 x 716
 y 8
 w 68
@@ -341,57 +266,6 @@ useDisplayBg
 value {
   "Ev. Code Rdbk"
 }
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 632
-y 36
-w 80
-h 24
-controlPv "$(TRIG):BW_TDLY"
-font "helvetica-medium-r-12.0"
-fontAlign "center"
-fgColor index 15
-fgAlarm
-bgColor index 12
-limitsFromDb
-nullColor index 14
-smartRefresh
-useHexPrefix
-showUnits
-newPos
-objType "monitors"
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 344
-y 8
-w 64
-h 24
-fgColor index 25
-fgAlarm
-onColor index 6
-offColor index 3
-inconsistentColor index 40
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(TRIG):TCTL"
-indicatorPv "$(TRIG):TCTL"
-onLabel "Enabled"
-offLabel "Disabled"
-3d
-font "helvetica-medium-r-12.0"
-objType "controls"
 endObjectProperties
 
 # (Static Text)
@@ -727,6 +601,132 @@ nullCondition "disabled"
 colorPv "$(TRIG):EVENTCTRL.SEVR"
 newPos
 objType "controls"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 344
+y 8
+w 64
+h 24
+fgColor index 25
+fgAlarm
+onColor index 6
+offColor index 3
+inconsistentColor index 40
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(TRIG):TCTL"
+indicatorPv "$(TRIG):TCTL"
+onLabel "Enabled"
+offLabel "Disabled"
+3d
+font "helvetica-medium-r-12.0"
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 632
+y 36
+w 80
+h 24
+controlPv "$(TRIG):BW_TDLY"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 14
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 548
+y 36
+w 80
+h 24
+controlPv "$(TRIG):BW_TDES"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 16
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 464
+y 36
+w 80
+h 24
+controlPv "$(TRIG):BW_TWIDCALC"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 16
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 92
+y 36
+w 48
+h 24
+controlPv "$(TRIG):EC_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 16
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+showUnits
+newPos
+objType "monitors"
 endObjectProperties
 
 endGroup
