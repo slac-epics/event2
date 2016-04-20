@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 472
-y 1861
+x 164
+y 1632
 w 880
 h 200
 font "helvetica-medium-r-18.0"
@@ -339,7 +339,7 @@ release 0
 x 92
 y 8
 w 620
-h 25
+h 56
 
 beginGroup
 
