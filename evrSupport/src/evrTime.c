@@ -110,11 +110,12 @@ typedef struct {
 
 	/* Diagnostics */
   int                 dbgcnt;
+  long long			  fifoDeltaMin;
+  long long			  fifoDeltaMax;
   int				  nCntEarly;
   int				  nCntLate;
   int				  nCntLateMin;
   int				  nCntLateMax;
-  double			  nCntLateSmoo;
   int				  nCntOnTime;
   int				  nCurFidBad;
   int				  nFidCorrected;
@@ -124,7 +125,6 @@ typedef struct {
   int				  nSetFidInvalid;
   int				  nFidQLateMin;
   int				  nFidQLateMax;
-  double			  nFidQLateSmoo;
   int				  nFidQOnTime;
   int				  nTimeStampOK;
   int				  nFidQCountGT1;
@@ -782,11 +782,12 @@ int evrTimeInit(epicsInt32 firstTimeSlotIn, epicsInt32 secondTimeSlotIn)
           pevrTime->count   = 0;
 
           pevrTime->dbgcnt  = 0;
+          pevrTime->fifoDeltaMin  = 0LL;
+          pevrTime->fifoDeltaMax  = 0LL;
           pevrTime->nCntEarly   = 0;
           pevrTime->nCntLate   = 0;
           pevrTime->nCntLateMin  = EVR_MAX_INT;
           pevrTime->nCntLateMax  = 0;
-          pevrTime->nCntLateSmoo  = 0;
           pevrTime->nCntOnTime  = 0;
 		  pevrTime->nCurFidBad	= 0;
 		  pevrTime->nFidCorrected	= 0;
@@ -796,7 +797,6 @@ int evrTimeInit(epicsInt32 firstTimeSlotIn, epicsInt32 secondTimeSlotIn)
           pevrTime->nSetFidInvalid   = 0;
 		  pevrTime->nFidQLateMin   = EVR_MAX_INT;
 		  pevrTime->nFidQLateMax   = 0;
-		  pevrTime->nFidQLateSmoo   = 0;
           pevrTime->nFidQCountGT1   = 0;
           pevrTime->nFidQOnTime   = 0;
 		  pevrTime->nTimeStampOK		= 0;
@@ -1336,10 +1336,8 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
 
     pevrTime    = &eventCodeTime_as[eventNum];
 
-#ifndef __rtems__
 	/* While fidq not drained */
     while (pevrTime->fidR != pevrTime->fidW) 
-#endif
     {
         /*
          * First, check our local dbgcnt event counter vs the one
@@ -1368,7 +1366,6 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
             pevrTime->nCntLateMin = -countDiff;
         if( pevrTime->nCntLateMax < -countDiff )
             pevrTime->nCntLateMax = -countDiff;
-        pevrTime->nCntLateSmoo = pevrTime->nCntLateSmoo * 0.9 + -countDiff * 0.1;
 
         /* Get the fiducial from the fiducial Q */
         fidqFiducial = pevrTime->fidq[pevrTime->fidR];
@@ -1448,7 +1445,6 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
                     pevrTime->nFidQLateMin = fidDiff;
                 if( pevrTime->nFidQLateMax < fidDiff )
                     pevrTime->nFidQLateMax = fidDiff;
-                pevrTime->nFidQLateSmoo = pevrTime->nFidQLateSmoo * 0.9 + fidDiff * 0.1;
 
                 if (abs(fidDiff) > 750)
                     {
@@ -1523,11 +1519,21 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
             }
 
         {
+			/* Keep stats on min and max delta vs prior fifo entry */
+            unsigned int    	prior_idx		= (pevrTime->ts_idx - 1) & MAX_TS_QUEUE_MASK;
+            long long			prior_tsc		= pevrTime->fifoInfo[prior_idx].fifo_tsc;
+			long long			deltaTsc		= fidqTsc - prior_tsc;
+			if( pevrTime->fifoDeltaMax < deltaTsc )
+				pevrTime->fifoDeltaMax = deltaTsc;
+			if( pevrTime->fifoDeltaMin == 0
+			||	pevrTime->fifoDeltaMin > deltaTsc )
+				pevrTime->fifoDeltaMin = deltaTsc;
+
             /* Add the timestamp to the fifo queue
              * EVENT_FIDUCIAL also saves timestamps here,
              * so if you want to see corrected FIDUCIAL timestamps,
              * call evrTimeGetFifoInfo() to get it from the event FIFO */
-            unsigned int    	idx = (pevrTime->ts_idx++) & MAX_TS_QUEUE_MASK;
+            unsigned int		idx				= (pevrTime->ts_idx++) & MAX_TS_QUEUE_MASK;
             pevrTime->fifoInfo[idx].fifo_time   = pevrTime->time;
             pevrTime->fifoInfo[idx].fifo_tsc    = fidqTsc;
             pevrTime->fifoInfo[idx].fifo_status = pevrTime->status;
@@ -1645,8 +1651,8 @@ extern void eventDebug(int arg1, int arg2)
     }
     do {
 		unsigned long long  idx         = 0LL;
-		long long  			deltaTsc    = 0LL;
-		long long  			priorTsc    = 0LL;
+		long long  			delta_tsc   = 0LL;
+		long long  			prior_tsc   = 0LL;
         evrTime_ts      *   pevrTime    = &eventCodeTime_as[arg1];
         printf( "Event Code %d:\n", arg1 );
         printf( "   Count = %d, time = %08x.%08x, status = %d\n",
@@ -1656,8 +1662,8 @@ extern void eventDebug(int arg1, int arg2)
 				pevrTime->status    );
         printf(	"   dbgcnt = %d, nCntEarly = %d, nCntLate = %d, nCntOnTime = %d\n",
 				pevrTime->dbgcnt, pevrTime->nCntEarly, pevrTime->nCntLate, pevrTime->nCntOnTime );
-        printf(	"   nCntLateMin = %d, nCntLateMax = %d, nCntLateSmoo = %f\n",
-				pevrTime->nCntLateMin, pevrTime->nCntLateMax, pevrTime->nCntLateSmoo );
+        printf(	"   nCntLateMin = %d, nCntLateMax = %d\n",
+				pevrTime->nCntLateMin, pevrTime->nCntLateMax );
 		for ( iFifoDump = 0; iFifoDump < nFifoDump; iFifoDump++ )
 		{
 			char	strTime[40];
@@ -1675,21 +1681,21 @@ extern void eventDebug(int arg1, int arg2)
 				int fidx = idx & MAX_TS_QUEUE_MASK;
 				int lidx = (idx + MAX_TS_QUEUE - 1) & MAX_TS_QUEUE_MASK;
 				printf("   FIFO: idx = 0x%llx, fidx = 0x%x, lidx = 0x%x\n", idx, fidx, lidx );
-				deltaTsc    = 0LL;
+				delta_tsc    = 0LL;
 			}
 			else
 			{
-				deltaTsc = priorTsc - fifoInfo.fifo_tsc;
+				delta_tsc = prior_tsc - fifoInfo.fifo_tsc;
 			}
-			priorTsc = fifoInfo.fifo_tsc;
+			prior_tsc = fifoInfo.fifo_tsc;
 			epicsTimeToStrftime( strTime, 40, "%M:%S.%03f", &fifoInfo.fifo_time );
 #ifdef HI_RES_TIME_H
 			printf( "     time(%2d) = %14s, fid %d, delta %.3fms\n", -iFifoDump,
 					strTime, fifoInfo.fifo_time.nsec & 0x1ffff,
-					HiResTicksToSeconds( deltaTsc ) * 1000	);
+					HiResTicksToSeconds( delta_tsc ) * 1000	);
 #else
 			printf( "     time(%d) = %14s, fid %d, delta %lld ticks\n", -iFifoDump,
-					strTime, fifoInfo.fifo_time.nsec & 0x1ffff, deltaTsc );
+					strTime, fifoInfo.fifo_time.nsec & 0x1ffff, delta_tsc );
 #endif /* HI_RES_TIME_H */
 			if ( status < 0 )
 			{
@@ -1697,7 +1703,10 @@ extern void eventDebug(int arg1, int arg2)
 				break;
 			}
 		}
-        printf("    lastfid    = %d\n", evrGetLastFiducial() );
+        printf(	"   FIFO: deltaMin = %.3fms, deltaMax = %.3fms\n",
+					HiResTicksToSeconds( pevrTime->fifoDeltaMin ) * 1000,
+					HiResTicksToSeconds( pevrTime->fifoDeltaMax ) * 1000	);
+        printf( "   lastfid     = %d\n", evrGetLastFiducial() );
 		int	fidW = pevrTime->fidW - 1;
 		int	fidR = pevrTime->fidR - 1;
     	if( fidW < 0 ) fidW = MAX_FID_QUEUE - 1;
@@ -1709,8 +1718,8 @@ extern void eventDebug(int arg1, int arg2)
 					pevrTime->nFidQEarly, pevrTime->nFidQLate, pevrTime->nFidQOnTime );
         printf( "   nFidQBad = %d, FidQCountGT1 = %d, nSetFidInvalid = %d\n",
 					pevrTime->nFidQBad, pevrTime->nFidQCountGT1, pevrTime->nSetFidInvalid );
-        printf(	"   nFidQLateMin = %d, nFidQLateMax = %d, nFidQLateSmoo = %f\n",
-					pevrTime->nFidQLateMin, pevrTime->nFidQLateMax, pevrTime->nFidQLateSmoo );
+        printf(	"   nFidQLateMin = %d, nFidQLateMax = %d\n",
+					pevrTime->nFidQLateMin, pevrTime->nFidQLateMax );
         printf( "   nCurFidBad = %d, nFidCorrected = %d\n",
 					pevrTime->nCurFidBad, pevrTime->nFidCorrected );
         printf( "   nTimeStampOK = %d, nTimeStampFailed = %d\n",
@@ -1721,11 +1730,12 @@ extern void eventDebug(int arg1, int arg2)
 			{
 				pevrTime->fidR = pevrTime->fidW;
 				pevrTime->dbgcnt = pevrTime->count;
+				pevrTime->fifoDeltaMin = 0LL;
+				pevrTime->fifoDeltaMax = 0LL;
 				pevrTime->nCntEarly   = 0;
 				pevrTime->nCntLate   = 0;
 				pevrTime->nCntLateMin  = EVR_MAX_INT;
 				pevrTime->nCntLateMax  = 0;
-				pevrTime->nCntLateSmoo  = 0;
 				pevrTime->nCntOnTime  = 0;
 				pevrTime->nCurFidBad	= 0;
 				pevrTime->nFidCorrected	= 0;
@@ -1735,7 +1745,6 @@ extern void eventDebug(int arg1, int arg2)
 				pevrTime->nFidQLate   = 0;
 				pevrTime->nFidQLateMin   = EVR_MAX_INT;
 				pevrTime->nFidQLateMax   = 0;
-				pevrTime->nFidQLateSmoo   = 0;
 				pevrTime->nFidQOnTime   = 0;
 				pevrTime->nFidQCountGT1   = 0;
 				pevrTime->nTimeStampOK		= 0;
