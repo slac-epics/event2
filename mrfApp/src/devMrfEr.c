@@ -584,12 +584,12 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
     */
     DebugFlag = (pRec->tpro > 10) || (ErDebug >= 2);
     if (DebugFlag)
-        printf ("ErEventProcess(%s) entered.  ENAB = %s, enm=%d, lenm=%d\n",
+        printf ("ErEventProcess(%s) entered.  ENAB = %s, enm=%d, lenm=%d, lout=0x%X\n",
                       pRec->name, pRec->enab?"True":"False",
-        			  pRec->enm, pRec->lenm );
+        			  pRec->enm, pRec->lenm, pRec->lout );
     if (DebugFlag)
-		printf( "ErEventProcess(%s) entered: monitor_mask=%u, stat=%u, nsta=%u, sevr=%u, nsev=%u\n",
-				pRec->name, monitor_mask, pRec->stat, pRec->nsta, pRec->sevr, pRec->nsev );
+		printf( "ErEventProcess(%s) entered: stat=%u, nsta=%u, sevr=%u, nsev=%u\n",
+				pRec->name, pRec->stat, pRec->nsta, pRec->sevr, pRec->nsev );
 
    /*---------------------
     * Lock the event receiver card structure while we process this record
@@ -600,6 +600,16 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
     * If the record is enabled, see if the event number or output mask have changed.
     */
     if (pRec->enab) {
+	   /*
+	    * Check for errors in lout
+		*/
+		if ( (pRec->lout & pCard->ErEventTab[pRec->enm]) != pRec->lout )
+		{
+			printf(	"ErEventProcess(%s) ERROR.  enm=%d, lout=0x%X, eventTab=0x%X\n",
+					pRec->name, pRec->enm, pRec->lout, pCard->ErEventTab[pRec->enm] );
+			/* Clear lout to ensure reload of event RAM */
+			pRec->lout = 0;
+		}
 
        /*---------------------
         * Build the output mask for this event.
@@ -631,8 +641,12 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
 			/* Turn off the mask bits for the previous event number */ 
 			if ((pRec->lenm < EVR_NUM_EVENTS) && (pRec->lenm > 0)) {
 				ErUpdateEventTab( pCard, pRec->lenm, pRec->lout, 0    );	/* lout is prior Mask */
-				ErUpdateEventTab( pCard, pRec->enm,  0,          Mask );
-            	pRec->lout	= Mask;
+				if ((pRec->enm < EVR_NUM_EVENTS) && (pRec->enm > 0)) {
+					ErUpdateEventTab( pCard, pRec->enm,  0,          Mask );
+            		pRec->lout	= Mask;
+				}
+				else
+					pRec->lout	= 0;
 				LoadRam		= epicsTrue;
 			}/*end if previous event number was valid*/
 
@@ -652,10 +666,9 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
 			 */
 			if ( (pRec->enm < EVR_NUM_EVENTS) && (pRec->enm > 0)) {
 				ErUpdateEventTab( pCard, pRec->enm, pRec->lout, Mask ); /* lout is prior Mask */
-				LoadRam = epicsTrue;
+            	pRec->lout	= Mask;
+				LoadRam		= epicsTrue;
 			}/*end if we should write new output mask for this event*/
-
-            pRec->lout = Mask;
         }/*end if output mask has changed*/
 
     }/*end if record is enabled*/
@@ -674,6 +687,7 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
         */
         if ((pRec->lenm < EVR_NUM_EVENTS) && (pRec->lenm > 0)) {
 			ErUpdateEventTab( pCard, pRec->lenm, pRec->lout, 0 ); /* lout is prior Mask */
+        	pRec->lout = 0;
             LoadRam = epicsTrue;
         }/*end if LENM was valid*/
 
