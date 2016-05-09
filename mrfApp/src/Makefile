@@ -29,6 +29,7 @@ include $(SOURCE_DIR)/MRF_CONFIG
 # Don't use -O0 for RTEMS as it generates undef references to in_be16()
 #USR_CFLAGS_Linux += -O0
 USR_CFLAGS += -DDEBUG_PRINT
+USR_CFLAGS += -fno-keep-inline-functions
 ifeq ($(BSP_SUPPORTS_PCI), YES)
     USR_CFLAGS += -DPCI
 endif

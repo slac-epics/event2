@@ -566,7 +566,6 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
     epicsBoolean   LoadRam  = epicsFalse;       /* True if need ro re-load the Event Map RAM      */
     epicsUInt16    Mask = 0;                    /* New output mask for this event                 */
     ErCardStruct  *pCard;                       /* Pointer to Event Receiver card structure       */
-	unsigned short monitor_mask = 0;
   
    /*---------------------
     * Get the card structure.
@@ -600,17 +599,6 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
     * If the record is enabled, see if the event number or output mask have changed.
     */
     if (pRec->enab) {
-	   /*
-	    * Check for errors in lout
-		*/
-		if ( (pRec->lout & pCard->ErEventTab[pRec->enm]) != pRec->lout )
-		{
-			printf(	"ErEventProcess(%s) ERROR.  enm=%d, lout=0x%X, eventTab=0x%X\n",
-					pRec->name, pRec->enm, pRec->lout, pCard->ErEventTab[pRec->enm] );
-			/* Clear lout to ensure reload of event RAM */
-			pRec->lout = 0;
-		}
-
        /*---------------------
         * Build the output mask for this event.
         * NOTE: We currently do not have a field for the timestamp latch....
