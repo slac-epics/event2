@@ -12,7 +12,7 @@
 
 #define DEVICE_MINOR_NUMBERS      5
 #define MAX_MRF_DEVICES           8
-#define MAX_EVR_OPENS             4
+#define MAX_EVR_OPENS             12
 #define EVR_FIFO_EVENT_LIMIT    256
 
 /*
