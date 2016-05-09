@@ -17,18 +17,18 @@ menu(erOPP) {
 }
 recordtype(er) {
 	include "dbCommon.dbd"
-        field(FPGV,DBF_LONG) {
-                prompt("Virtex Configuration Version")
-                promptgroup(GUI_DISPLAY)
-                pp(TRUE)
-                base(HEX)
-                interest(1)
-        }
+	field(FPGV,DBF_LONG) {
+		prompt("Virtex Configuration Version")
+		promptgroup(GUI_DISPLAY)
+		pp(TRUE)
+		base(HEX)
+		interest(2)
+	}
 	field(VAL,DBF_CHAR) {
 		prompt("Worthless Value")
 		asl(ASL0)
 		special(SPC_NOMOD)
-		interest(1)
+		interest(2)
 	}
 	field(OUT,DBF_OUTLINK) {
 		prompt("Output Specification")
@@ -39,28 +39,28 @@ recordtype(er) {
         prompt("Bus Info Description")
 		special("SPC_NOMOD")
         promptgroup(GUI_DISPLAY)
-        interest(1)
+        interest(2)
 		size(40)
     }
 	field(IPOV,DBF_ULONG) {
 		prompt("IP Out Vector")
 		promptgroup(GUI_DISPLAY)
 		pp(TRUE)
-		interest(1)
+		interest(2)
 	}
 
-	field(DG0C,DBF_USHORT) { prompt("DG 0 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(1) }
-	field(DG1C,DBF_USHORT) { prompt("DG 1 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(1) }
-	field(DG2C,DBF_USHORT) { prompt("DG 2 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(1) }
-	field(DG3C,DBF_USHORT) { prompt("DG 3 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(1) }
-	field(DG4C,DBF_USHORT) { prompt("DG 4 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(1) }
-	field(DG5C,DBF_USHORT) { prompt("DG 5 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(1) }
-	field(DG6C,DBF_USHORT) { prompt("DG 6 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(1) }
-	field(DG7C,DBF_USHORT) { prompt("DG 7 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(1) }
-	field(DG8C,DBF_USHORT) { prompt("DG 8 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(1) }
-	field(DG9C,DBF_USHORT) { prompt("DG 9 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(1) }
-	field(DGAC,DBF_USHORT) { prompt("DG 10 Clock prescaler") promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(1) }
-	field(DGBC,DBF_USHORT) { prompt("DG 11 Clock prescaler") promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(1) }
+	field(DG0C,DBF_USHORT) { prompt("DG 0 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(2) initial(1) }
+	field(DG1C,DBF_USHORT) { prompt("DG 1 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(2) initial(1) }
+	field(DG2C,DBF_USHORT) { prompt("DG 2 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(2) initial(1) }
+	field(DG3C,DBF_USHORT) { prompt("DG 3 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(2) initial(1) }
+	field(DG4C,DBF_USHORT) { prompt("DG 4 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(2) initial(1) }
+	field(DG5C,DBF_USHORT) { prompt("DG 5 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(2) initial(1) }
+	field(DG6C,DBF_USHORT) { prompt("DG 6 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(2) initial(1) }
+	field(DG7C,DBF_USHORT) { prompt("DG 7 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(2) initial(1) }
+	field(DG8C,DBF_USHORT) { prompt("DG 8 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(2) initial(1) }
+	field(DG9C,DBF_USHORT) { prompt("DG 9 Clock prescaler")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(2) initial(1) }
+	field(DGAC,DBF_USHORT) { prompt("DG 10 Clock prescaler") promptgroup(GUI_DISPLAY) pp(TRUE) interest(2) initial(1) }
+	field(DGBC,DBF_USHORT) { prompt("DG 11 Clock prescaler") promptgroup(GUI_DISPLAY) pp(TRUE) interest(2) initial(1) }
 
 	field(DG0D,DBF_ULONG) { prompt("DG 0 Delay")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(0) }
 	field(DG1D,DBF_ULONG) { prompt("DG 1 Delay")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) initial(0) }
@@ -127,50 +127,50 @@ recordtype(er) {
 	field(IPAE,DBF_MENU) { prompt("I Possess trigger 10") promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
 	field(IPBE,DBF_MENU) { prompt("I Possess trigger 11") promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
 
-	field(LIP0,DBF_MENU) { prompt("Last IP0E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTRG0) }
-	field(LIP1,DBF_MENU) { prompt("Last IP1E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTRG0) }
-	field(LIP2,DBF_MENU) { prompt("Last IP2E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTRG0) }
-	field(LIP3,DBF_MENU) { prompt("Last IP3E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTRG0) }
-	field(LIP4,DBF_MENU) { prompt("Last IP4E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTRG0) }
-	field(LIP5,DBF_MENU) { prompt("Last IP5E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTRG0) }
-	field(LIP6,DBF_MENU) { prompt("Last IP6E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTRG0) }
-	field(LIP7,DBF_MENU) { prompt("Last IP7E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTRG0) }
-	field(LIP8,DBF_MENU) { prompt("Last IP8E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTRG0) }
-	field(LIP9,DBF_MENU) { prompt("Last IP9E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTRG0) }
-	field(LIPA,DBF_MENU) { prompt("Last IPAE") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTRG0) }
-	field(LIPB,DBF_MENU) { prompt("Last IPBE") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTRG0) }
+	field(LIP0,DBF_MENU) { prompt("Last IP0E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTRG0) }
+	field(LIP1,DBF_MENU) { prompt("Last IP1E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTRG0) }
+	field(LIP2,DBF_MENU) { prompt("Last IP2E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTRG0) }
+	field(LIP3,DBF_MENU) { prompt("Last IP3E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTRG0) }
+	field(LIP4,DBF_MENU) { prompt("Last IP4E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTRG0) }
+	field(LIP5,DBF_MENU) { prompt("Last IP5E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTRG0) }
+	field(LIP6,DBF_MENU) { prompt("Last IP6E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTRG0) }
+	field(LIP7,DBF_MENU) { prompt("Last IP7E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTRG0) }
+	field(LIP8,DBF_MENU) { prompt("Last IP8E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTRG0) }
+	field(LIP9,DBF_MENU) { prompt("Last IP9E") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTRG0) }
+	field(LIPA,DBF_MENU) { prompt("Last IPAE") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTRG0) }
+	field(LIPB,DBF_MENU) { prompt("Last IPBE") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTRG0) }
 
 	# These should probably be special(SPC_NOMOD) instead of pp(TRUE) but they've been this way a long time
-	field(LD0E,DBF_MENU) { prompt("Lst DG0 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
-	field(LD1E,DBF_MENU) { prompt("Lst DG1 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
-	field(LD2E,DBF_MENU) { prompt("Lst DG2 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
-	field(LD3E,DBF_MENU) { prompt("Lst DG3 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
-	field(LD4E,DBF_MENU) { prompt("Lst DG4 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
-	field(LD5E,DBF_MENU) { prompt("Lst DG5 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
-	field(LD6E,DBF_MENU) { prompt("Lst DG6 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
-	field(LD7E,DBF_MENU) { prompt("Lst DG7 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
-	field(LD8E,DBF_MENU) { prompt("Lst DG8 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
-	field(LD9E,DBF_MENU) { prompt("Lst DG9 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
-	field(LDAE,DBF_MENU) { prompt("Lst DG10 Enable") promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
-	field(LDBE,DBF_MENU) { prompt("Lst DG11 Enable") promptgroup(GUI_DISPLAY) pp(TRUE) interest(1) menu(erTRG0) }
+	field(LD0E,DBF_MENU) { prompt("Lst DG0 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(3) menu(erTRG0) }
+	field(LD1E,DBF_MENU) { prompt("Lst DG1 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(3) menu(erTRG0) }
+	field(LD2E,DBF_MENU) { prompt("Lst DG2 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(3) menu(erTRG0) }
+	field(LD3E,DBF_MENU) { prompt("Lst DG3 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(3) menu(erTRG0) }
+	field(LD4E,DBF_MENU) { prompt("Lst DG4 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(3) menu(erTRG0) }
+	field(LD5E,DBF_MENU) { prompt("Lst DG5 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(3) menu(erTRG0) }
+	field(LD6E,DBF_MENU) { prompt("Lst DG6 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(3) menu(erTRG0) }
+	field(LD7E,DBF_MENU) { prompt("Lst DG7 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(3) menu(erTRG0) }
+	field(LD8E,DBF_MENU) { prompt("Lst DG8 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(3) menu(erTRG0) }
+	field(LD9E,DBF_MENU) { prompt("Lst DG9 Enable")  promptgroup(GUI_DISPLAY) pp(TRUE) interest(3) menu(erTRG0) }
+	field(LDAE,DBF_MENU) { prompt("Lst DG10 Enable") promptgroup(GUI_DISPLAY) pp(TRUE) interest(3) menu(erTRG0) }
+	field(LDBE,DBF_MENU) { prompt("Lst DG11 Enable") promptgroup(GUI_DISPLAY) pp(TRUE) interest(3) menu(erTRG0) }
 
-	field(TIU0,DBF_MENU) { prompt("trigger 0 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTrigInUse) }
-	field(TIU1,DBF_MENU) { prompt("trigger 1 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTrigInUse) }
-	field(TIU2,DBF_MENU) { prompt("trigger 2 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTrigInUse) }
-	field(TIU3,DBF_MENU) { prompt("trigger 3 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTrigInUse) }
-	field(TIU4,DBF_MENU) { prompt("trigger 4 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTrigInUse) }
-	field(TIU5,DBF_MENU) { prompt("trigger 5 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTrigInUse) }
-	field(TIU6,DBF_MENU) { prompt("trigger 6 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTrigInUse) }
-	field(TIU7,DBF_MENU) { prompt("trigger 7 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTrigInUse) }
-	field(TIU8,DBF_MENU) { prompt("trigger 8 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTrigInUse) }
-	field(TIU9,DBF_MENU) { prompt("trigger 9 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTrigInUse) }
-	field(TIUA,DBF_MENU) { prompt("trigger 10 In Use") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTrigInUse) }
-	field(TIUB,DBF_MENU) { prompt("trigger 11 In Use") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(1) menu(erTrigInUse) }
+	field(TIU0,DBF_MENU) { prompt("trigger 0 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTrigInUse) }
+	field(TIU1,DBF_MENU) { prompt("trigger 1 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTrigInUse) }
+	field(TIU2,DBF_MENU) { prompt("trigger 2 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTrigInUse) }
+	field(TIU3,DBF_MENU) { prompt("trigger 3 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTrigInUse) }
+	field(TIU4,DBF_MENU) { prompt("trigger 4 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTrigInUse) }
+	field(TIU5,DBF_MENU) { prompt("trigger 5 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTrigInUse) }
+	field(TIU6,DBF_MENU) { prompt("trigger 6 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTrigInUse) }
+	field(TIU7,DBF_MENU) { prompt("trigger 7 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTrigInUse) }
+	field(TIU8,DBF_MENU) { prompt("trigger 8 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTrigInUse) }
+	field(TIU9,DBF_MENU) { prompt("trigger 9 In Use")  promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTrigInUse) }
+	field(TIUA,DBF_MENU) { prompt("trigger 10 In Use") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTrigInUse) }
+	field(TIUB,DBF_MENU) { prompt("trigger 11 In Use") promptgroup(GUI_DISPLAY) special(SPC_NOMOD) interest(2) menu(erTrigInUse) }
 
 	field(TAXI,DBF_LONG) {
 		prompt("Taxi Violation")
 		special(SPC_NOMOD)
-		interest(1)
+		interest(2)
 	}
 	field(ENAB,DBF_MENU) {
 		prompt("Master Enable")
