@@ -138,7 +138,7 @@ static int pci_evr_probe(struct pci_dev *pcidev, const struct pci_device_id *dev
     return -ENOMEM;
   }
   memset(ev_device->qmem, 0, sizeof(struct EvrQueues) + PAGE_SIZE);
-  ev_device->evrq = (void *)((long long)(ev_device->qmem + PAGE_SIZE - 1) & PAGE_MASK);
+  ev_device->evrq = (void *)((long)(ev_device->qmem + PAGE_SIZE - 1) & PAGE_MASK);
   ev_device->vmas = 0;
 
   /* Allocate device numbers for character device. */

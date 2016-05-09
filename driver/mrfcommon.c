@@ -532,7 +532,7 @@ int ev_remap_mmap(struct file *filp, struct vm_area_struct *vma)
     }
   } else {
     if (vsize > EVR_SH_MEM_WINDOW) {
-      printk(KERN_NOTICE DEVICE_NAME ": mmap vsize %08x, qsize %08lx\n",
+      printk(KERN_NOTICE DEVICE_NAME ": mmap vsize %08x, qsize %08zx\n",
              (unsigned int) vsize, sizeof(struct EvrQueues));
       return -EINVAL;
     } else {
