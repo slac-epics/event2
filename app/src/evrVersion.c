@@ -61,7 +61,7 @@ int main (int argc, char **argv )
             if (fd < 0)
                 continue;
             if (device == '3') {
-                ptr = (unsigned int *) mmap(0, 0x40, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+                ptr = (unsigned int *) mmap(0, 0x40, PROT_READ, MAP_SHARED, fd, 0);
                 if ( ptr == MAP_FAILED ) {
                     continue;
                 }
