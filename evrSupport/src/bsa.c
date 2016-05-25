@@ -238,9 +238,8 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
           int avgcnt_2 = bsa_ps->avgcnt-2;
 	  double diff  = secnVal - bsa_ps->avg;
 	  bsa_ps->avg += diff/(double)bsa_ps->avgcnt;
-	  diff        /= (double)avgcnt_1;
 	  bsa_ps->var  = ((double)avgcnt_2*(bsa_ps->var/(double)avgcnt_1)) +
-                         ((double)bsa_ps->avgcnt*diff*diff);
+                         ((diff*diff)/(double)bsa_ps->avgcnt);
 	    if (secnSevr > bsa_ps->sevr) {
                 bsa_ps->sevr = secnSevr;
                 bsa_ps->stat = secnStat;
@@ -255,7 +254,6 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
       if (bsa_ps->avgcnt <= 1) {
         bsa_ps->rms = 0.0;
       } else {
-        bsa_ps->rms = bsa_ps->var/(double)bsa_ps->avgcnt;
         bsa_ps->rms = sqrt(bsa_ps->rms);
       }
       bsa_ps->time = bsa_ps->timeData;
