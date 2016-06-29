@@ -376,7 +376,7 @@ void ErProcessTrigger(
 	epicsEnum16		*	pLIP	= &pRec->lip0 + iTrig;	/* Ptr to Last I Possess         */
 	epicsEnum16		*	pTIU	= &pRec->tiu0 + iTrig;	/* Ptr to Trigger In Use         */
 	epicsEnum16		*	pDGE	= &pRec->dg0e + iTrig;	/* Ptr to Delayed gate enable 	 */
-	epicsEnum16		*	pLDE	= &pRec->ld0e + iTrig;	/* Ptr to Last DG enable 	     */
+	epicsEnum16		*	pLDE	= &pRec->ld0e + iTrig;	/* Ptr to Last DG enable 	 */
 	epicsUInt32		*	pDGD	= &pRec->dg0d + iTrig;	/* Ptr to Delayed gate delay 	 */
 	epicsUInt32		*	pDGW	= &pRec->dg0w + iTrig;	/* Ptr to Delayed gate width 	 */
 	epicsUInt16		*	pDGC	= &pRec->dg0c + iTrig;	/* Ptr to Delayed gate prescaler */
@@ -395,6 +395,7 @@ void ErProcessTrigger(
 		switch ( ErAcquireTrigger( pCard, iTrig, *pIPE ) )
 		{
 		case 0:
+                case ENOTTY: /* Sigh.  Old driver.  We've already screamed, but let's let it work. */
 			break;
 		case EBUSY:
 			printf( "devMrfEr::ErProcess(%s) Error: Trigger %d is already allocated!\n", pRec->name, iTrig );

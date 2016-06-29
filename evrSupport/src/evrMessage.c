@@ -391,7 +391,7 @@ int evrMessageWrite(unsigned int messageIdx, evrMessage_tu * message_pu)
   evrMessage_as[messageIdx].newData_a[idx] = 1;      /* now, this buffer has new data */
   evrMessage_as[messageIdx].newData_a[idx?0:1] = 0;  /* the previous one is old now */
 
-  if (evrMessage_as[messageIdx].notRead_a[idx])      /* Oh! I update, before read out, It is overwitten */
+  if (evrMessage_as[messageIdx].notRead_a[idx])      /* Oh! I update, before read out, It is overwritten */
      evrMessage_as[messageIdx].overwriteCount++;
   else
      evrMessage_as[messageIdx].notRead_a[idx] = 1;   /* This buffer is not read out yet */

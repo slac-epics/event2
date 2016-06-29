@@ -3,7 +3,6 @@ TOP = .
 include $(TOP)/configure/CONFIG
 
 DIRS += configure
-DIRS += driver
 DIRS += mrfApp
 DIRS += evrSupport
 DIRS += app

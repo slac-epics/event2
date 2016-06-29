@@ -221,7 +221,7 @@ static int evrTimeGetSystem (epicsTimeStamp  *epicsTime_ps, evrTimeId_te id)
         ------------------- ----------- ---------- ----------------------------
         epicsTimeStamp * epicsTime_ps     Write    Timestamp of this pattern
         evrTimeId_te        id            Read     Timestamp pipeline index;
-                                      0=time associated w this pulse
+                                          0=time associated w this pulse
                                           1,2,3 = time associated w next pulses
                                           4 = last active pulse
         evrModifier_ta  modifier_a        Write    First 6 longwords of the pattern

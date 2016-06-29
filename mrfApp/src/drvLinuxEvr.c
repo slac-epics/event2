@@ -197,30 +197,6 @@ void ErIrqHandler(int fd, int flags)
 
                 irqCount++;
 
-                /* This should always be here 2ms before the fiducial event */
-		if(flags & EVR_IRQFLAG_DATABUF) {
-                    long long drp = pEq->dwp - 1; /* Read the latest! */
-                    if (drp != pCard->drp) {
-                        int idx = drp & (MAX_EVR_DBQ - 1);
-                        int databuf_sts = pEq->dbq[idx].status;
-
-                        if(databuf_sts & (1<<C_EVR_DATABUF_CHECKSUM)) {
-                            if (pCard->DevErrorFunc != NULL)
-                                (*pCard->DevErrorFunc)(pCard, ERROR_DBUF_CHECKSUM);
-                        } else {
-                            if (pCard->DevDBuffFunc != NULL) {
-                                pCard->DBuffSize = (databuf_sts & ((1<<(C_EVR_DATABUF_SIZEHIGH+1))-1));
-                                memcpy(pCard->DataBuffer, pEq->dbq[idx].data, pCard->DBuffSize);
-                                (*pCard->DevDBuffFunc)(pCard, pCard->DBuffSize, pCard->DataBuffer);
-                            }
-                        }
-                        /* TBD - Check if we skipped some? */
-                        pCard->drp = drp;
-                    } else {
-                        /* We must have skipped one earlier, but caught up? */
-                    }
-		}
-
 		if(flags & EVR_IRQFLAG_EVENT) {
                     long long erplimit = pEq->ewp;     /* Pointer to the next! */
                     long long erp      = pCard->erp;   /* Where we are now. */
@@ -253,6 +229,35 @@ void ErIrqHandler(int fd, int flags)
                         }
                     }
                     pCard->erp = erp;
+		}
+
+                /*
+                 * This should always be here 2ms before the fiducial event.  That said, this means
+                 * that the *next* one comes 0.7ms *after* a fiducial event.  So if we have some
+                 * latency, we're almost always going to have the fiducial interrupt extending over
+                 * into the data buffer time.  So we do the *event* first!
+                 */
+		if(flags & EVR_IRQFLAG_DATABUF) {
+                    long long drp = pEq->dwp - 1; /* Read the latest! */
+                    if (drp != pCard->drp) {
+                        int idx = drp & (MAX_EVR_DBQ - 1);
+                        int databuf_sts = pEq->dbq[idx].status;
+
+                        if(databuf_sts & (1<<C_EVR_DATABUF_CHECKSUM)) {
+                            if (pCard->DevErrorFunc != NULL)
+                                (*pCard->DevErrorFunc)(pCard, ERROR_DBUF_CHECKSUM);
+                        } else {
+                            if (pCard->DevDBuffFunc != NULL) {
+                                pCard->DBuffSize = (databuf_sts & ((1<<(C_EVR_DATABUF_SIZEHIGH+1))-1));
+                                memcpy(pCard->DataBuffer, pEq->dbq[idx].data, pCard->DBuffSize);
+                                (*pCard->DevDBuffFunc)(pCard, pCard->DBuffSize, pCard->DataBuffer);
+                            }
+                        }
+                        /* TBD - Check if we skipped some? */
+                        pCard->drp = drp;
+                    } else {
+                        /* We must have skipped one earlier, but caught up? */
+                    }
 		}
 
 		if(flags & EVR_IRQFLAG_PULSE) {
@@ -807,7 +812,7 @@ int ErCheckTrigger( ErCardStruct * pCard, unsigned int iTrig )
 		inUse = 1;
 		break;
 	case ENOTTY:
-		fprintf( stderr, "Not a valid EVR request for trigger %d!\n", iTrig );
+                /* Silently fail.  We've already bitched about this above.  Assume it's ours. */
 		break;
 	case EFAULT:
 		fprintf( stderr, "Unable to access EVR device!\n" );
