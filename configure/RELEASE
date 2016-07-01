@@ -34,4 +34,4 @@ MISCUTILS=$(EPICS_MODULES)/miscUtils/$(MISCUTILS_MODULE_VERSION)
 DIAG_TIMER=$(EPICS_MODULES)/diagTimer/$(DIAG_TIMER_MODULE_VERSION)
 EV2_DRIVER=$(EPICS_MODULES)/ev2_driver/$(EV2_DRIVER_MODULE_VERSION)
 
-MY_MODULES=/reg/neh/home4/mcbrowne/trunk12/modules
+#MY_MODULES=/reg/neh/home4/mcbrowne/trunk12/modules

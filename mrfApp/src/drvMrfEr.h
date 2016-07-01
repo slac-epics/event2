@@ -64,7 +64,6 @@
 #include <dbScan.h>             /* EPICS Database scan routines and definitions                   */
 
 #include <mrfCommon.h>          /* MRF Event system constants and definitions                     */
-#include <evrmemmap.h>          /* For EVR_NUM_PULSES */
 
 /*
  *  Firmware revisions
@@ -349,9 +348,6 @@ struct ErCardStruct {
     char            intMsg     [EVR_INT_MSG_LEN];    /* Buffer for interrupt debug messages       */
     char            FormFactor;              /* "VME_EVR" or "PMC_EVR" */
     char            EventCodeDesc[EVR_NUM_EVENTS][MAX_STRING_SIZE+1];   /* Event code description */
-    epicsUInt32     maxDelay [EVR_MAX_PULSES];   /* Max delay for each pulse gen	*/
-    epicsUInt32     maxPresc [EVR_MAX_PULSES];   /* Max prescale for each pulse gen	*/
-    epicsUInt32     maxWidth [EVR_MAX_PULSES];   /* Max width for each pulse gen	*/
     long long       drp;                     /* Last data buffer read pointer */
     long long       erp;                     /* Next event read pointer */
     epicsUInt32     FPGAVersion;             /* The board version register */
