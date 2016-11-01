@@ -368,13 +368,14 @@ static int ErConfigure (
 	switch ( FPGAVersion )
 	{
 	default:
-	    printf( "ErConfigure: WARNING: Unknown firmware revision on PMC EVR!\n" );
+	    printf( "ErConfigure: WARNING: Unknown firmware revision on PMC OR SLAC EVR!\n" );
 	    break;
 	case EVR_FIRMWARE_REV_SLAC1:
 	case EVR_FIRMWARE_REV_SLAC2:
 	case EVR_FIRMWARE_REV_SLAC3:
 	case EVR_FIRMWARE_REV_SLAC4:
 	case EVR_FIRMWARE_REV_SLAC5:
+	case EVR_FIRMWARE_REV_SLAC6:
 	case EVR_FIRMWARE_REV_LINUX1:
 	case EVR_FIRMWARE_REV_LINUX2:
 	case EVR_FIRMWARE_REV_LINUX3:
