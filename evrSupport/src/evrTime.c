@@ -1519,17 +1519,22 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
             }
 
         {
-			/* Keep stats on min and max delta vs prior fifo entry */
+			/* Keep stats on min and max deltaTsc vs prior fidqTsc in the fifo queue */
             unsigned int    	prior_idx		= (pevrTime->ts_idx - 1) & MAX_TS_QUEUE_MASK;
             long long			prior_tsc		= pevrTime->fifoInfo[prior_idx].fifo_tsc;
 			long long			deltaTsc		= fidqTsc - prior_tsc;
-			if( pevrTime->fifoDeltaMax < deltaTsc )
+
+			// Don't set fifoDeltaMax on the first deltaTsc as it's possibly invalid
+			if( pevrTime->fifoDeltaMin != 0
+			&&	pevrTime->fifoDeltaMax < deltaTsc )
 				pevrTime->fifoDeltaMax = deltaTsc;
+
+			// Set fifoDeltaMin on the first one to get us going
 			if( pevrTime->fifoDeltaMin == 0
 			||	pevrTime->fifoDeltaMin > deltaTsc )
 				pevrTime->fifoDeltaMin = deltaTsc;
 
-            /* Add the timestamp to the fifo queue
+            /* Add the timestamp and fidqTsc to the fifo queue
              * EVENT_FIDUCIAL also saves timestamps here,
              * so if you want to see corrected FIDUCIAL timestamps,
              * call evrTimeGetFifoInfo() to get it from the event FIFO */
@@ -1709,9 +1714,9 @@ extern void eventDebug(int arg1, int arg2)
         printf( "   lastfid     = %d\n", evrGetLastFiducial() );
 		int	fidW = pevrTime->fidW - 1;
 		int	fidR = pevrTime->fidR - 1;
-    	if( fidW < 0 ) fidW = MAX_FID_QUEUE - 1;
-    	if( fidR < 0 ) fidR = MAX_FID_QUEUE - 1;
-        printf( "   Wr fidq[%d] = %d, Rd fidq[%d] = %d\n",
+		if( fidW < 0 ) fidW = MAX_FID_QUEUE - 1;
+		if( fidR < 0 ) fidR = MAX_FID_QUEUE - 1;
+		printf( "   Wr fidq[%d] = %d, Rd fidq[%d] = %d\n",
 					fidW, pevrTime->fidq[fidW],
 					fidR, pevrTime->fidq[fidR] );
         printf( "   nFidQEarly = %d, nFidQLate = %d, nFidQOnTime = %d\n",
@@ -1726,31 +1731,30 @@ extern void eventDebug(int arg1, int arg2)
 					pevrTime->nTimeStampOK, pevrTime->nTimeStampFailed );
 
         if (doreset) {
-			if ( evrTimeRWMutex_ps && epicsMutexLock(evrTimeRWMutex_ps) == 0 )
-			{
-				pevrTime->fidR = pevrTime->fidW;
-				pevrTime->dbgcnt = pevrTime->count;
-				pevrTime->fifoDeltaMin = 0LL;
-				pevrTime->fifoDeltaMax = 0LL;
-				pevrTime->nCntEarly   = 0;
-				pevrTime->nCntLate   = 0;
-				pevrTime->nCntLateMin  = EVR_MAX_INT;
-				pevrTime->nCntLateMax  = 0;
-				pevrTime->nCntOnTime  = 0;
-				pevrTime->nCurFidBad	= 0;
-				pevrTime->nFidCorrected	= 0;
-				pevrTime->nFidQEarly   = 0;
-				pevrTime->nFidQBad   = 0;
-				pevrTime->nSetFidInvalid   = 0;
-				pevrTime->nFidQLate   = 0;
-				pevrTime->nFidQLateMin   = EVR_MAX_INT;
-				pevrTime->nFidQLateMax   = 0;
-				pevrTime->nFidQOnTime   = 0;
-				pevrTime->nFidQCountGT1   = 0;
-				pevrTime->nTimeStampOK		= 0;
-				pevrTime->nTimeStampFailed	= 0;
-				epicsMutexUnlock(evrTimeRWMutex_ps);
-			}
+			// if ( evrTimeRWMutex_ps && epicsMutexLock(evrTimeRWMutex_ps) == 0 )
+			// No need to take the mutex, potentially delaying the ISR,
+			// as these are just independent diagnostic counts
+			pevrTime->dbgcnt = pevrTime->count;
+			pevrTime->fifoDeltaMin = 0LL;
+			pevrTime->fifoDeltaMax = 0LL;
+			pevrTime->nCntEarly   = 0;
+			pevrTime->nCntLate   = 0;
+			pevrTime->nCntLateMin  = EVR_MAX_INT;
+			pevrTime->nCntLateMax  = 0;
+			pevrTime->nCntOnTime  = 0;
+			pevrTime->nCurFidBad	= 0;
+			pevrTime->nFidCorrected	= 0;
+			pevrTime->nFidQEarly   = 0;
+			pevrTime->nFidQBad   = 0;
+			pevrTime->nSetFidInvalid   = 0;
+			pevrTime->nFidQLate   = 0;
+			pevrTime->nFidQLateMin   = EVR_MAX_INT;
+			pevrTime->nFidQLateMax   = 0;
+			pevrTime->nFidQOnTime   = 0;
+			pevrTime->nFidQCountGT1   = 0;
+			pevrTime->nTimeStampOK		= 0;
+			pevrTime->nTimeStampFailed	= 0;
+		//	epicsMutexUnlock(evrTimeRWMutex_ps);
         }
         arg1++;
     } while (arg1 <= arg2);
