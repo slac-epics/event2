@@ -1,37 +1,19 @@
 # RELEASE
 # Defines location of external products
-include $(TOP)/RELEASE_SITE
+# Run "gnumake clean uninstall install" in the application
+# top directory each time this file is changed.
+-include $(TOP)/configure/RELEASE.local
 
-# ===============================================================
-# Define the location and version of EPICS base
-# ===============================================================
-BASE_MODULE_VERSION=R3.14.12-0.4.0
-EPICS_BASE=$(EPICS_SITE_TOP)/base/$(BASE_MODULE_VERSION)
+# Check for valid macro definitions for module release directories
+# You can add tests here to make sure RELEASE.local defined valid
+# macros for all the module dependencies
+ifeq ($(wildcard $(EPICS_BASE)/include),)
+$(error Invalid EPICS_BASE: $(EPICS_BASE))
+endif
+ifeq ($(wildcard $(DIAG_TIMER)/include),)
+$(error Invalid DIAG_TIMER: $(DIAG_TIMER))
+endif
+ifeq ($(wildcard $(EV2_DRIVER)/include),)
+$(error Invalid EV2_DRIVER: $(EV2_DRIVER))
+endif
 
-# ===============================================================
-# Define the version(s) of any other needed modules 
-# ===============================================================
-# Example: IPAC_MODULE_VERSION=R2.8.4-0.2.0
-MISCUTILS_MODULE_VERSION=R2.2.2-0.4.0
-DIAG_TIMER_MODULE_VERSION=R1.7.0
-EV2_DRIVER_MODULE_VERSION=R1.0.1
-
-# ============================================================
-# External Support module path definitions
-#
-# If any of these macros expand to a path which
-# contains an "include" directory, that directory will be
-# included in the compiler include path.
-#
-# If any of these macros expand to a path which
-# contains a "lib/<arch>" directory, that directory will be
-# included in the compiler link path for that architecture.
-#
-# If your build fails, look for these paths in your build output
-# ============================================================
-# Example: IPAC=$(EPICS_MODULES)/ipac/$(IPAC_MODULE_VERSION)
-MISCUTILS=$(EPICS_MODULES)/miscUtils/$(MISCUTILS_MODULE_VERSION)
-DIAG_TIMER=$(EPICS_MODULES)/diagTimer/$(DIAG_TIMER_MODULE_VERSION)
-EV2_DRIVER=$(EPICS_MODULES)/ev2_driver/$(EV2_DRIVER_MODULE_VERSION)
-
-#MY_MODULES=/reg/neh/home4/mcbrowne/trunk12/modules
