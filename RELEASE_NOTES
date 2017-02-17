@@ -1,0 +1,20 @@
+
+R4.1.0	2017-02-16	Bruce Hill
+	Initial build for git workflow build
+	Stop clearing fidR in eventDebug reset code.
+	Added code to avoid initial invalid deltaTsc max.
+	Stopped taking mutex in eventDebug reset code while clearing diag counters as
+		it could skew the tsc diagnostics to hold that mutex in a console thread.
+
+R4.0.0-4.2.4	2016-10-31	Scott Stubbs
+	Adding newer SLAC G2 firmware and updating ev2_driver.
+
+R4.0.0-4.2.3	2016-07-01	Bruce Hill
+	Removed obsolete use of driver evrmemmap.h in drvMrfEr.h
+
+R4.0.0-4.2.2	2016-06-29 Michael C. Browne
+	Make allocate/check trigger compatible with old driver.
+	Also fix glitch where databuffer is prematurely processed (before corresponding fiducial event).
+
+R4.0.0-4.2.2	2016-05-25 Michael C. Browne
+	Fix BSA variance computation.
