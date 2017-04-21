@@ -1,8 +1,3 @@
-include "menuScan.dbd"
-include "menuYesNo.dbd"
-include "menuAlarmStat.dbd"
-include "menuAlarmSevr.dbd"
-include "menuPriority.dbd"
 menu(erTRG0) {
 	choice(erTRG0_Disabled,"Disabled")
 	choice(erTRG0_Enabled,"Enabled")
@@ -182,6 +177,4 @@ recordtype(er) {
 		initial(1)
 	}
 }
-
-
 
