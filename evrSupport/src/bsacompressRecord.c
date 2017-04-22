@@ -315,6 +315,12 @@ static long init_record(bsacompressRecord *prec, int pass)
     return(0);
 }
 
+/* Brought in ugly macro from 3.14 till we can nuke this bsacompressRecord entirely */
+#define dbGetPdbAddrFromLink(PLNK) \
+    ( ( (PLNK)->type != DB_LINK ) \
+      ? 0 \
+      : ( ( (struct dbAddr *)( (PLNK)->value.pv_link.pvt) ) ) )
+
 static long process(bsacompressRecord *prec)
 {
     long	status=0;
