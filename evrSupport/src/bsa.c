@@ -452,7 +452,8 @@ static long init_bsa_record(bsaRecord *pbsa)
   if (status) return status;
 
   if ((pbsa->edef <= 0) || (pbsa->edef > EDEF_MAX)) {
-    errlogPrintf("init_bsa_record (%s): Invalid EDEF %d\n", pbsa->name, pbsa->edef);
+    errlogPrintf("init_bsa_record (%s): Invalid EDEF %d\n",
+                 pbsa->name, pbsa->edef);
     return S_db_badField;
   }
   pbsa->dpvt = &((bsaDevice_ts *)pbsa->dpvt)->bsa_as[pbsa->edef-1];
@@ -481,9 +482,11 @@ static long write_ao(aoRecord *pao)
 {
   long status = 0;
 
-  DBADDR *paddr = dbGetPdbAddrFromLink(&pao->dol);
   long options = DBR_STATUS | DBR_TIME;
   long nrequest = 0;
+
+  epicsEnum16      input_status, input_severity;
+  epicsTimeStamp   input_timestamp;
 
   struct {
 	DBRstatus
@@ -491,16 +494,15 @@ static long write_ao(aoRecord *pao)
   } options_s;
 
   /* Get the input's STAT and SEVR and timestamp (but don't get value) */
-
-  if (!paddr) status = -1;
-  else if (dbGetField(paddr, DBR_DOUBLE, &options_s, &options, &nrequest, 0)) {
-    status = -1;
-    if (pao->tse == epicsTimeEventDeviceTime) /* We need to timestamp it somehow! */
-        epicsTimeGetCurrent(&pao->time);
-  } else {
-    status = bsaSecnAvg(&options_s.time, pao->val, options_s.status, options_s.severity, 0, pao->dpvt);
+  status = dbGetAlarm(&pao->dol, &input_status, &input_severity);
+  if(status == 0) status = dbGetTimeStamp(&pao->dol, &input_timestamp);
+  if(status == 0) {
+  	status = bsaSecnAvg(&input_timestamp, pao->val, input_status, input_severity, 0, pao->dpvt);
     if (pao->tse == epicsTimeEventDeviceTime)
-        pao->time = options_s.time;
+      pao->time = input_timestamp;
+  } else {
+    if (pao->tse == epicsTimeEventDeviceTime) /* We need to timestamp it somehow! */
+      epicsTimeGetCurrent(&pao->time);
   }
 
   if (status) recGblSetSevr(pao,WRITE_ALARM,INVALID_ALARM);
