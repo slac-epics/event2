@@ -1,8 +1,15 @@
 #
 # RELEASE_NOTES
 #
+R4.2.0	2017-04-22	Bruce Hill
+	Fixed some build problems for base 3.15.5
+		Applied Kukhee's 2014-12-19 fix for bsa.c from event module for R3.15 compatibility.
+		Brought in ugly dbGetPdbAddrFromLink macro from R3.14 as needed to compile bsacompressRecord for R3.15
+
 R4.1.1	2017-04-20	Bruce Hill
 	Updated to miscUtils/R2.2.4 diagTimer/R1.9.0 ev2_driver/R1.0.2
+	Removed redundant include of menuScan.dbd and other base dbd files to build w/ newer base versions
+	Fixed stale prototype for bsaSecnAvg()
 
 R4.1.0	2017-02-16	Bruce Hill
 	Initial build for git workflow build
