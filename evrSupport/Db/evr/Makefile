@@ -60,8 +60,8 @@ DB += evrTrigCtrl.db
 
 # Sample substitution files for each
 # of our common EVR boards
-DB_INSTALLS += evrPmc230.substitutions
-DB_INSTALLS += evrSLAC.substitutions
+DB += evrPmc230.substitutions
+DB += evrSLAC.substitutions
 
 # Autosave for EVG event code delays
 REQ += eventCodeDelays.req
