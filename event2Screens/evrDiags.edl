@@ -3240,7 +3240,7 @@ buttonLabel "Triggers"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrScreens/evrTriggerDiags.edl"
+  0 "event2Screens/evrTriggerDiags.edl"
 }
 menuLabel {
   0 "Triggers"
@@ -3461,7 +3461,7 @@ buttonLabel "Events"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrScreens/evrEventDiags.edl"
+  0 "event2Screens/evrEventDiags.edl"
 }
 menuLabel {
   0 "Events"

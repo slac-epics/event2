@@ -5132,7 +5132,7 @@ buttonLabel "52-103..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrEventDiags52"
+  0 "event2Screens/evrEventDiags52.edl"
 }
 menuLabel {
   0 "Event Names and Delays 52-103"
@@ -5161,7 +5161,7 @@ buttonLabel "104-155..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrEventDiags104"
+  0 "event2Screens/evrEventDiags104.edl"
 }
 menuLabel {
   0 "Event Names and Delays 104-155"
@@ -5190,7 +5190,7 @@ buttonLabel "208-255..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrEventDiags208"
+  0 "event2Screens/evrEventDiags208.edl"
 }
 menuLabel {
   0 "Event Names and Delays 208-255"
@@ -5219,7 +5219,7 @@ buttonLabel "0-51..."
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrEventDiags"
+  0 "event2Screens/evrEventDiags.edl"
 }
 menuLabel {
   0 "Event Names and Delays 0-51"

@@ -126,7 +126,7 @@ buttonLabel "Diag"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrScreens/evrDiag.edl"
+  0 "event2Screens/evrDiag.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -153,7 +153,7 @@ buttonLabel "Seq Codes"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrScreens/seqEventCodes.edl"
+  0 "event2Screens/seqEventCodes.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -186,7 +186,7 @@ buttonLabel "LCLS Codes"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrScreens/lclsEventCodes.edl"
+  0 "event2Screens/lclsEventCodes.edl"
 }
 setPosition {
   0 "parentWindow"

@@ -200,7 +200,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-ecs-10-ec.edl"
+  0 "event2Screens/emb-ecs-10-ec.edl"
 }
 symbols {
   0 "DEC=17,ECS=$(ECS),EVG=$(EVG)"
@@ -227,7 +227,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-ecs-10-ec.edl"
+  0 "event2Screens/emb-ecs-10-ec.edl"
 }
 symbols {
   0 "DEC=18,ECS=$(ECS),EVG=$(EVG)"
@@ -254,7 +254,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-ecs-10-ec.edl"
+  0 "event2Screens/emb-ecs-10-ec.edl"
 }
 symbols {
   0 "DEC=8,ECS=$(ECS),EVG=$(EVG)"
@@ -281,7 +281,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-ecs-10-ec.edl"
+  0 "event2Screens/emb-ecs-10-ec.edl"
 }
 symbols {
   0 "DEC=7,ECS=$(ECS),EVG=$(EVG)"
@@ -308,7 +308,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-ecs-10-ec.edl"
+  0 "event2Screens/emb-ecs-10-ec.edl"
 }
 symbols {
   0 "DEC=19,ECS=$(ECS),EVG=$(EVG)"
@@ -335,7 +335,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-ecs-10-ec.edl"
+  0 "event2Screens/emb-ecs-10-ec.edl"
 }
 symbols {
   0 "DEC=9,ECS=$(ECS),EVG=$(EVG)"
@@ -362,7 +362,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-ecs-10-ec.edl"
+  0 "event2Screens/emb-ecs-10-ec.edl"
 }
 symbols {
   0 "DEC=21,ECS=$(ECS),EVG=$(EVG)"
@@ -389,7 +389,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-ecs-3-ec.edl"
+  0 "event2Screens/emb-ecs-3-ec.edl"
 }
 symbols {
   0 "N1=67,N2=68,N3=69,ECS=$(ECS),EVG=$(EVG)"
@@ -416,7 +416,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-ecs-3-ec.edl"
+  0 "event2Screens/emb-ecs-3-ec.edl"
 }
 symbols {
   0 "N1=167,N2=168,N3=169,ECS=$(ECS),EVG=$(EVG)"
@@ -443,7 +443,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-ecs-3-ec.edl"
+  0 "event2Screens/emb-ecs-3-ec.edl"
 }
 symbols {
   0 "N1=201,N2=202,N3=203,ECS=$(ECS),EVG=$(EVG)"
@@ -470,7 +470,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-ecs-3-ec.edl"
+  0 "event2Screens/emb-ecs-3-ec.edl"
 }
 symbols {
   0 "N1=204,N2=205,N3=206,ECS=$(ECS),EVG=$(EVG)"
@@ -497,7 +497,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-ecs-3-ec.edl"
+  0 "event2Screens/emb-ecs-3-ec.edl"
 }
 symbols {
   0 "N1=207,N2=208,N3=209,ECS=$(ECS),EVG=$(EVG)"

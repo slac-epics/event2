@@ -62,7 +62,7 @@ buttonLabel "Pict"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrScreens/evnt_dev_diag.edl"
+  0 "event2Screens/evnt_dev_diag.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -92,7 +92,7 @@ buttonLabel "EC Select"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrScreens/evnt_unitmain.edl"
+  0 "event2Screens/evnt_unitmain.edl"
 }
 menuLabel {
   0 "Triggers"

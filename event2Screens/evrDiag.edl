@@ -233,7 +233,7 @@ buttonLabel "EVR"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrScreens/evr.edl"
+  0 "event2Screens/evr.edl"
 }
 setPosition {
   0 "parentWindow"
@@ -303,7 +303,7 @@ buttonLabel "Old EVR screen"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrScreens/evrDiags.edl"
+  0 "event2Screens/evrDiags.edl"
 }
 setPosition {
   0 "parentWindow"

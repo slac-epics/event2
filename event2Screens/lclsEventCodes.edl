@@ -519,7 +519,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=LCLSBEAM,NAME2=LCLS_60_,ID1=140,ID2=141,EVG=$(EVG)"
@@ -546,7 +546,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=LCLS_30_,NAME2=LCLS_10_,ID1=142,ID2=143,EVG=$(EVG)"
@@ -573,7 +573,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=LCLS_5_,NAME2=LCLS_1_,ID1=144,ID2=145,EVG=$(EVG)"
@@ -600,7 +600,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=LCLSHALF,NAME2=LCLS_N-1,ID1=146,ID2=147,EVG=$(EVG)"
@@ -627,7 +627,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=LCLS_N-2,NAME2=LCLSTCAV,ID1=148,ID2=149,EVG=$(EVG)"
@@ -654,7 +654,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=LCLSBURS,NAME2=LCLS_ACC,ID1=150,ID2=151,EVG=$(EVG)"
@@ -681,7 +681,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=LCLSSTBY,NAME2=LCRFONLY,ID1=152,ID2=153,EVG=$(EVG)"
@@ -708,7 +708,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=LCACC_10,NAME2=STRAIGHT,ID1=154,ID2=155,EVG=$(EVG)"
@@ -735,7 +735,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=LCLSTCV3,NAME2=LCNOTCV3,ID1=156,ID2=157,EVG=$(EVG)"
@@ -762,7 +762,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=LCLSPOCK,NAME2=LCLSPROF,ID1=158,ID2=159,EVG=$(EVG)"
@@ -861,7 +861,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=LCTCV3PM,NAME2=LCBXKIK,ID1=160,ID2=161,EVG=$(EVG)"
@@ -888,7 +888,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=LCBYKIK,NAME2=LCALKIK,ID1=162,ID2=163,EVG=$(EVG)"
@@ -915,7 +915,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=TESTBURS,NAME2=LCLSTBD,ID1=164,ID2=165,EVG=$(EVG)"
@@ -942,7 +942,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=TS1_120_,NAME2=TS1_60_,ID1=10,ID2=11,EVG=$(EVG)"
@@ -969,7 +969,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=TS1_30_,NAME2=TS1_10_,ID1=12,ID2=13,EVG=$(EVG)"
@@ -996,7 +996,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-3-ec.edl"
+  0 "event2Screens/emb-evg-3-ec.edl"
 }
 symbols {
   0 "NAME1=TS1_5_,NAME2=TS1_1_,NAME3=TS1_HALF,ID1=14,ID2=15,ID3=16,EVG=$(EVG)"
@@ -1043,7 +1043,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=TS2_120_,NAME2=TS2_60_,ID1=20,ID2=21,EVG=$(EVG)"
@@ -1070,7 +1070,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=TS2_30_,NAME2=TS2_10_,ID1=22,ID2=23,EVG=$(EVG)"
@@ -1097,7 +1097,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-3-ec.edl"
+  0 "event2Screens/emb-evg-3-ec.edl"
 }
 symbols {
   0 "NAME1=TS2_5_,NAME2=TS2_1_,NAME3=TS2_HALF,ID1=24,ID2=25,ID3=26,EVG=$(EVG)"
@@ -1144,7 +1144,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=TS3_120_,NAME2=TS3_60_,ID1=30,ID2=31,EVG=$(EVG)"
@@ -1171,7 +1171,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=TS3_30_,NAME2=TS3_10_,ID1=22,ID2=33,EVG=$(EVG)"
@@ -1198,7 +1198,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-3-ec.edl"
+  0 "event2Screens/emb-evg-3-ec.edl"
 }
 symbols {
   0 "NAME1=TS3_5_,NAME2=TS3_1_,NAME3=TS3_HALF,ID1=34,ID2=35,ID3=36,EVG=$(EVG)"
@@ -1245,7 +1245,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=TS4_120_,NAME2=TS4_60_,ID1=40,ID2=41,EVG=$(EVG)"
@@ -1272,7 +1272,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=TS4_30_,NAME2=TS4_10_,ID1=42,ID2=43,EVG=$(EVG)"
@@ -1299,7 +1299,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-3-ec.edl"
+  0 "event2Screens/emb-evg-3-ec.edl"
 }
 symbols {
   0 "NAME1=TS4_5_,NAME2=TS4_1_,NAME3=TS4_HALF,ID1=44,ID2=45,ID3=46,EVG=$(EVG)"
@@ -1346,7 +1346,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=TS5_120_,NAME2=TS5_60_,ID1=50,ID2=51,EVG=$(EVG)"
@@ -1373,7 +1373,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=TS5_30_,NAME2=TS5_10_,ID1=52,ID2=53,EVG=$(EVG)"
@@ -1400,7 +1400,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-3-ec.edl"
+  0 "event2Screens/emb-evg-3-ec.edl"
 }
 symbols {
   0 "NAME1=TS5_5_,NAME2=TS5_1_,NAME3=TS5_HALF,ID1=54,ID2=55,ID3=56,EVG=$(EVG)"
@@ -1447,7 +1447,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=TS6_120_,NAME2=TS6_60_,ID1=60,ID2=61,EVG=$(EVG)"
@@ -1474,7 +1474,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-2-ec.edl"
+  0 "event2Screens/emb-evg-2-ec.edl"
 }
 symbols {
   0 "NAME1=TS6_30_,NAME2=TS6_10_,ID1=62,ID2=63,EVG=$(EVG)"
@@ -1501,7 +1501,7 @@ filePv "LOC\\\\emb-ec=i,0"
 setSize
 numDsps 1
 displayFileName {
-  0 "evrScreens/emb-evg-3-ec.edl"
+  0 "event2Screens/emb-evg-3-ec.edl"
 }
 symbols {
   0 "NAME1=TS6_5_,NAME2=TS6_1_,NAME3=TS6_HALF,ID1=64,ID2=65,ID3=66,EVG=$(EVG)"

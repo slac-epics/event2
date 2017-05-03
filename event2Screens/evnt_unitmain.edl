@@ -128,7 +128,7 @@ buttonLabel "Old Trigger Panel"
 numPvs 4
 numDsps 1
 displayFileName {
-  0 "evrScreens/evrTrig3T.edl"
+  0 "event2Screens/evrTrig3T.edl"
 }
 menuLabel {
   0 "Triggers"
