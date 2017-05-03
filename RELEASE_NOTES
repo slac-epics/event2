@@ -1,6 +1,10 @@
 #
 # RELEASE_NOTES
 #
+R4.2.1	2017-04-22	Bruce Hill
+	Added event2 copies of all edm screens shared w/ event module in event2Screens.
+	No more shared displays.  All event2 screens accessed via event2Screens soft link.
+
 R4.2.0	2017-04-22	Bruce Hill
 	Fixed some build problems for base 3.15.5
 		Applied Kukhee's 2014-12-19 fix for bsa.c from event module for R3.15 compatibility.
