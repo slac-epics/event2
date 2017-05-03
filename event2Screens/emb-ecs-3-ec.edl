@@ -1,0 +1,433 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 678
+y 458
+w 400
+h 100
+font "helvetica-bold-r-12.0"
+ctlFont "helvetica-bold-r-12.0"
+btnFont "helvetica-bold-r-14.0"
+btnFontAlign "center"
+fgColor index 14
+bgColor index 6
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 1
+ctlBgColor1 index 3
+ctlBgColor2 index 49
+topShadowColor index 1
+botShadowColor index 14
+title "Emb 3 ECS Event Codes"
+showGrid
+snapToGrid
+gridSize 4
+endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 36
+y 4
+w 44
+h 20
+lineColor index 14
+fill
+fillColor index 89
+lineWidth 0
+alarmPv "$(ECS):0:EC_$(N1)_OWNER_ID"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 36
+y 28
+w 44
+h 20
+lineColor index 14
+fill
+fillColor index 89
+lineWidth 0
+alarmPv "$(ECS):0:EC_$(N2)_OWNER_ID"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 36
+y 52
+w 44
+h 20
+lineColor index 14
+fill
+fillColor index 89
+lineWidth 0
+alarmPv "$(ECS):0:EC_$(N3)_OWNER_ID"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 136
+y 52
+w 168
+h 20
+controlPv "$(EVG):1:NAME$(N3)"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+bgColor index 4
+editable
+motifWidget
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 136
+y 28
+w 168
+h 20
+controlPv "$(EVG):1:NAME$(N2)"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+bgColor index 4
+editable
+motifWidget
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 136
+y 4
+w 168
+h 20
+controlPv "$(EVG):1:NAME$(N1)"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+bgColor index 4
+editable
+motifWidget
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 28
+w 32
+h 20
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "$(N2)"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 36
+y 28
+w 44
+h 20
+controlPv "$(ECS):0:EC_$(N2)_OWNER_NAME"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 12
+useDisplayBg
+limitsFromDb
+nullColor index 0
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 84
+y 28
+w 48
+h 20
+controlPv "$(ECS):0:EC_$(N2)_OWNER_ID"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+bgColor index 4
+editable
+motifWidget
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 308
+y 28
+w 60
+h 20
+controlPv "CALC\\\{A*8.403361345\}($(EVG):1:ECS_$(N2)DLY.A)"
+format "float"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+precision 1
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 52
+w 32
+h 20
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "$(N3)"
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 36
+y 52
+w 44
+h 20
+controlPv "$(ECS):0:EC_$(N3)_OWNER_NAME"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 12
+useDisplayBg
+limitsFromDb
+nullColor index 0
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 84
+y 52
+w 48
+h 20
+controlPv "$(ECS):0:EC_$(N3)_OWNER_ID"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+bgColor index 4
+editable
+motifWidget
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 308
+y 52
+w 60
+h 20
+controlPv "CALC\\\{A*8.403361345\}($(EVG):1:ECS_$(N3)DLY.A)"
+format "float"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+precision 1
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 308
+y 4
+w 60
+h 20
+controlPv "CALC\\\{A*8.403361345\}($(EVG):1:ECS_$(N1)DLY.A)"
+format "float"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+precision 1
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 84
+y 4
+w 48
+h 20
+controlPv "$(ECS):0:EC_$(N1)_OWNER_ID"
+font "helvetica-medium-r-12.0"
+fgColor index 25
+bgColor index 4
+editable
+motifWidget
+limitsFromDb
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 5
+release 0
+x 36
+y 4
+w 44
+h 20
+controlPv "$(ECS):0:EC_$(N1)_OWNER_NAME"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 12
+useDisplayBg
+limitsFromDb
+nullColor index 0
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 0
+y 4
+w 32
+h 20
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "$(N1)"
+}
+endObjectProperties
+
