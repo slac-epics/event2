@@ -15,22 +15,36 @@ static int evrIrqHandlerThread(void *p)
     void (**irqHandler)(int, int) = arg->handler;
     int fd = arg->fd;
     int mask, cnt;
+    int lasterrno = 0;
+    int errnocnt = 0;
 
     free(p);
 
     while(1) {
+        errno = 0;
         cnt = read(fd, &mask, sizeof(mask));
         if (cnt == sizeof(mask)) {
             if (*irqHandler) (*irqHandler)(fd, mask);
+            if (lasterrno) {
+                lasterrno = 0;
+                errnocnt = 0;
+            }
         } else if (cnt < 0) {
             if (errno != EINTR) {
                 perror("evrIrqHandlerThread has an unknown error");
-                printf("evrIrqHandlerThread is exiting.\n");
-                /*
-                 * Nothing will work after this.  Do we want to just
-                 * exit(1) and call it a day?!?
-                 */
-                break;
+                if (errno == lasterrno) {
+                    if (++errnocnt == 10) {
+                        printf("evrIrqHandlerThread is exiting.\n");
+                        /* 
+                         * Hey, we tried... we should probably kill
+                         * everything.  But we won't.
+                         */
+                        break;
+                    }
+                } else {
+                    lasterrno = errno;
+                    errnocnt = 0;
+                }
             }
         } else {
             printf("evrIrqHandlerThread read %d bytes?!?\n", cnt);
