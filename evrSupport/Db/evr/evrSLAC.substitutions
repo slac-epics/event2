@@ -33,23 +33,24 @@ file evrSLAC.template
 #	EVR  - EVR PV prefix
 #	TRIG - Trigger PV prefix
 #	TYPE - Trigger type, DG for ext Delay pulse Generators, OT for OTP Triggers
+#	TYPENUM - 0 or 1, corresponds to TYPE - DG or OT respectively.  Used for DOL field.
 #	TCTL - Trigger control (enable) field, one of DG0E, DG1E, DG2E, OTP0, ..., OTPD
 file evrDevTrig.db
 {
 	pattern
-	{	N,	TRIG,			TYPE,	TCTL	}
-	{	0,	$(EVR):TRIG0,	DG,		DG$(N)E	}
-	{	1,	$(EVR):TRIG1,	DG,		DG$(N)E	}
-	{	2,	$(EVR):TRIG2,	DG,		DG$(N)E	}
-	{	3,	$(EVR):TRIG3,	DG,		DG$(N)E	}
-	{	4,	$(EVR):TRIG4,	DG,		DG$(N)E	}
-	{	5,	$(EVR):TRIG5,	DG,		DG$(N)E	}
-	{	6,	$(EVR):TRIG6,	DG,		DG$(N)E	}
-	{	7,	$(EVR):TRIG7,	DG,		DG$(N)E	}
-	{	8,	$(EVR):TRIG8,	DG,		DG$(N)E	}
-	{	9,	$(EVR):TRIG9,	DG,		DG$(N)E	}
-	{	A,	$(EVR):TRIGA,	DG,		DG$(N)E	}
-	{	B,	$(EVR):TRIGB,	DG,		DG$(N)E	}
+	{	N,	TRIG,		TYPE,	TYPENUM,TCTL	}
+	{	0,	$(EVR):TRIG0,	DG,	0,	DG$(N)E	}
+	{	1,	$(EVR):TRIG1,	DG,	0,	DG$(N)E	}
+	{	2,	$(EVR):TRIG2,	DG,	0,	DG$(N)E	}
+	{	3,	$(EVR):TRIG3,	DG,	0,	DG$(N)E	}
+	{	4,	$(EVR):TRIG4,	DG,	0,	DG$(N)E	}
+	{	5,	$(EVR):TRIG5,	DG,	0,	DG$(N)E	}
+	{	6,	$(EVR):TRIG6,	DG,	0,	DG$(N)E	}
+	{	7,	$(EVR):TRIG7,	DG,	0,	DG$(N)E	}
+	{	8,	$(EVR):TRIG8,	DG,	0,	DG$(N)E	}
+	{	9,	$(EVR):TRIG9,	DG,	0,	DG$(N)E	}
+	{	A,	$(EVR):TRIGA,	DG,	0,	DG$(N)E	}
+	{	B,	$(EVR):TRIGB,	DG,	0,	DG$(N)E	}
 }
 
 # Make a set of event control records for each output trigger

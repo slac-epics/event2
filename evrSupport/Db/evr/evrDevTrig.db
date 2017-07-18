@@ -11,6 +11,7 @@
 #	EVR  - EVR PV prefix
 #	TRIG - Trigger PV prefix
 #	TYPE - DG or OT (Extended Delay Pulse Generator or OTP Pulse Generator)
+#	TYPENUM - 0 or 1, corresponds to TYPE - DG or OT respectively.  Used for DOL field.
 #	N	 - Trigger number (0, 1, 2, ...)
 #	TCTL - Trigger control (enable) field, one of DG0E, DG1E, DG2E, OTP0, ..., OTPD
 
@@ -47,7 +48,7 @@ record( bo, "$(TRIG):LOCKED" )
 # Trigger type, set in substitution file
 record( bo, "$(TRIG):TYPE" )
 {
-	field( DOL,  "$(TYPE)" )
+	field( DOL,  "$(TYPENUM)" )
 	field( OMSL, "closed_loop" )
 	field( ZNAM, "DG" )
 	field( ONAM, "OT" )

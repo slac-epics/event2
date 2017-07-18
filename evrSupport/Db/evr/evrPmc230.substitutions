@@ -45,14 +45,15 @@ file evrPmc230.template
 #	EVR  - EVR PV prefix
 #	TRIG - Trigger PV prefix
 #	TYPE - Trigger type, DG for ext Delay pulse Generators, OT for OTP Triggers
+#	TYPENUM - 0 or 1, corresponds to TYPE - DG or OT respectively.  Used for DOL field.
 #	TCTL - Trigger control (enable) field, one of DG0E, DG1E, DG2E, OTP0, ..., OTPD
 file evrDevTrig.db
 {
 	pattern
-	{	N,	TRIG,				TYPE,	TCTL	}
-	{	0,	$(EVR):TRIG$(N),	DG,		DG$(N)E	}
-	{	1,	$(EVR):TRIG$(N),	DG,		DG$(N)E	}
-	{	2,	$(EVR):TRIG$(N),	DG,		DG$(N)E	}
+	{	N,	TRIG,			TYPE,	TYPENUM,TCTL	}
+	{	0,	$(EVR):TRIG$(N),	DG,	0,	DG$(N)E	}
+	{	1,	$(EVR):TRIG$(N),	DG,	0,	DG$(N)E	}
+	{	2,	$(EVR):TRIG$(N),	DG,	0,	DG$(N)E	}
 }
 
 # Make a set of event control records for each output trigger
