@@ -306,13 +306,21 @@ epicsStatus ErProcess (erRecord  *pRec)
     */
     epicsMutexLock (pCard->CardLock);
  
- 	/*
+ 	/* 
 	 * Process all the channels
 	 */
 	for ( iTrig = 0; iTrig < EVR_NUM_DG; iTrig++ ) {
 		ErProcessTrigger( pCard, pRec, iTrig, &enable, &ipov );
 	}
 
+   /*---------------------
+    * Process error count reset request.
+    * Set IP Out Vector and current FPGA version record fields.
+    */
+    if (pRec->rxvr) {
+      pRec->rxvr = 0;
+      pCard->RxvioCount = 0;
+    }
     if (pRec->ipov != ipov) {
         pRec->ipov = ipov;
         db_post_events(pRec, &pRec->ipov, DBE_VALUE);

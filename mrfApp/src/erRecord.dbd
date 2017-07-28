@@ -176,5 +176,10 @@ recordtype(er) {
 		special(SPC_NOMOD)
 		initial(1)
 	}
+        field(RXVR,DBF_CHAR) {
+                prompt("RX violation counter reset")
+                pp(TRUE)
+                interest(1)
+        }
 }
 
