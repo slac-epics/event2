@@ -13,18 +13,18 @@ include $(TOP)/configure/CONFIG
 
 # XTOD templates
 DB += basic-evr.substitutions
-DB_INSTALLS += evrPmc230.template
-DB_INSTALLS += evrSLAC.template
-DB_INSTALLS += evrPmcEvent.template
-DB_INSTALLS += evrSlaveEvent.template
-DB_INSTALLS += evrEventCtrl.template
-DB_INSTALLS += evrEventRate.template
-DB_INSTALLS += evrFiducial.template
-DB_INSTALLS += evrLabel.template
-DB_INSTALLS += evrLabels.template
-DB_INSTALLS += evrTaxi.template
-DB_INSTALLS += evr.template
-DB_INSTALLS += evrWithExtDelays.template
+DB += evrPmc230.template
+DB += evrSLAC.template
+DB += evrPmcEvent.template
+DB += evrSlaveEvent.template
+DB += evrEventCtrl.template
+DB += evrEventRate.template
+DB += evrFiducial.template
+DB += evrLabel.template
+DB += evrLabels.template
+DB += evrTaxi.template
+DB += evr.template
+DB += evrWithExtDelays.template
 
 #----------------------------------------------------
 # Create and install (or just install)
