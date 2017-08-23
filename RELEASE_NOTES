@@ -1,6 +1,9 @@
 #
 # RELEASE_NOTES
 #
+R4.2.4 2017-09-23	Bruce Hill
+	More build fixes for R3.15.5 and bumped to diagTimer/R1.9.1
+
 R4.2.3 2017-07-28	Scott Stubbs
 	Fixes for broken CA links related to IOC not allowing enum strings on init and RXVR field.
 	Added code for receive error count reset field back to devMrfEr.c from event module.
