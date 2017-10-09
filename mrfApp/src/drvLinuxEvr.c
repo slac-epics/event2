@@ -59,7 +59,7 @@
 /*                                                                                                */
 
 static ELLLIST ErCardList;                        /* Linked list of ER card structures */
-static epicsBoolean bErCardListInitDone = epicsFalse;
+static int bErCardListInitDone = epicsFalse;
 static epicsMutexId ErCardListLock;
 static epicsMutexId ErConfigureLock;
 
@@ -474,13 +474,13 @@ static int ErConfigure (
 |* 
 |*-------------------------------------------------------------------------------------------------
 |* RETURNS:
-|*      status    = (epicsBoolean)   True if a framing error was present.
+|*      status    = (int)   True if a framing error was present.
 |*                                   False if a framing error was not present.
 |*
 \**************************************************************************************************/
-epicsBoolean ErCheckTaxi(ErCardStruct *pCard)
+int ErCheckTaxi(ErCardStruct *pCard)
 {
-	epicsBoolean ret = epicsFalse;
+	int ret = epicsFalse;
 	
 	epicsMutexLock(pCard->CardLock);
 	if (EvrGetViolation(pCard->Slot))
@@ -571,11 +571,11 @@ epicsStatus ErFinishDrvInit(int AfterRecordInit)
 |*-------------------------------------------------------------------------------------------------
 |* INPUT PARAMETERS:
 |*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*      Enable    = (epicsBoolean)   If true, enable the Data Buffer Ready interrupt.
+|*      Enable    = (int)   If true, enable the Data Buffer Ready interrupt.
 |*                                   If false, disable the Data Buffer Ready interrupt.
 |*
 \**************************************************************************************************/
-void ErDBuffIrq(ErCardStruct *pCard, epicsBoolean Enable)
+void ErDBuffIrq(ErCardStruct *pCard, int Enable)
 {
 	int mask;
 	
@@ -601,11 +601,11 @@ void ErDBuffIrq(ErCardStruct *pCard, epicsBoolean Enable)
 |*-------------------------------------------------------------------------------------------------
 |* INPUT PARAMETERS:
 |*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*      Enable    = (epicsBoolean)   If true, enable the event FIFO interrupt.
+|*      Enable    = (int)   If true, enable the event FIFO interrupt.
 |*                                   If false, disable the event FIFO interrupt.
 |*
 \**************************************************************************************************/
-void ErEventIrq(ErCardStruct *pCard, epicsBoolean Enable)
+void ErEventIrq(ErCardStruct *pCard, int Enable)
 {
 	int mask;
 	
@@ -704,11 +704,11 @@ epicsUInt32 ErGetSecondsSR (ErCardStruct *pCard)
 |*
 |*-------------------------------------------------------------------------------------------------
 |* RETURNS:
-|*      enabled   = (epicsBoolean)   True if the specified Event Map RAM is enabled.
+|*      enabled   = (int)   True if the specified Event Map RAM is enabled.
 |*                                   False if the specified Event Map RAM is not enabled.
 |*
 \**************************************************************************************************/
-epicsBoolean ErGetRamStatus(ErCardStruct *pCard, int RamNumber)
+int ErGetRamStatus(ErCardStruct *pCard, int RamNumber)
 {
 	epicsUInt32 ctrl;
 	
@@ -935,12 +935,12 @@ void ErResetAll(ErCardStruct *pCard)
 |* INPUT PARAMETERS:
 |*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
 |*      Channel   = (int)            The DG channel (0-3) that we wish to set.
-|*      Enable    = (epicsBoolean)   True if we are to enable the selected DG channel.
+|*      Enable    = (int)   True if we are to enable the selected DG channel.
 |*                                   False if we are to disable the selected DG channel
 |*      Delay     = (epicsUInt32)    Desired delay for the DG channel.
 |*      Width     = (epicsUInt32)    Desired width for the DG channel.
 |*      Prescaler = (epicsUInt16)    Prescaler countdown applied to delay and width.
-|*      Polarity  = (epicsBoolean)   0 for normal polarity (high true)
+|*      Polarity  = (int)   0 for normal polarity (high true)
 |*                                   1 for reverse polarity (low true)
 |*
 |* RETURNS:	0 on success, non-zero errno on failure
@@ -950,9 +950,9 @@ void ErResetAll(ErCardStruct *pCard)
 |* o This routine expects to be called with the Event Receiver card structure locked.
 |*
 \**************************************************************************************************/
-int ErSetDg(ErCardStruct *pCard, int Channel, epicsBoolean Enable, 
+int ErSetDg(ErCardStruct *pCard, int Channel, int Enable, 
 			epicsUInt32 Delay, epicsUInt32 Width, 
-			epicsUInt16 Prescaler, epicsBoolean Pol)
+			epicsUInt16 Prescaler, int Pol)
 {
 	int	status	= 0;
 
@@ -990,11 +990,11 @@ int ErSetDg(ErCardStruct *pCard, int Channel, epicsBoolean Enable,
 |*-------------------------------------------------------------------------------------------------
 |* INPUT PARAMETERS:
 |*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
-|*      Enable    = (epicsBoolean)   If true, enable the Receive Link Violation interrupt.
+|*      Enable    = (int)   If true, enable the Receive Link Violation interrupt.
 |*                                   If false, disable the Receive Link Violation interrupt.
 |*
 \**************************************************************************************************/
-void ErTaxiIrq(ErCardStruct *pCard, epicsBoolean Enable)
+void ErTaxiIrq(ErCardStruct *pCard, int Enable)
 {
 	int mask;
 	

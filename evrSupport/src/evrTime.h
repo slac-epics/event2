@@ -123,6 +123,7 @@ typedef epicsUInt32 evrModifier_ta[MAX_EVR_MODIFIER];
 #define EVENT_FIDUCIAL          1        /* Fiducial event code         */
 #define EVENT_EXTERNAL_TRIG     100      /* External trigger event code */
 #define EVENT_MODULO720         121      /* Modulo 720 event code       */
+#define EVENT_MODULO720_STR     "121"    /* Modulo 720 event name (for 3.15) */
 #define EVENT_MPG               122      /* MPG update event code       */
 #define EVENT_MODULO36_MIN      201      /* Min modulo 36 event code    */
 #define EVENT_MODULO36_MAX      236      /* Max modulo 36 event code    */

@@ -38,6 +38,7 @@
 #include "bsa.h"		/* for bsaInit            */
 #include "drvMrfEr.h"		/* for ErRegisterDevDBuffHandler */
 #include "devMrfEr.h"		/* for ErRegisterEventHandler    */
+#include <epicsVersion.h>
 
 #ifdef DIAG_TIMER
 #include "HiResTime.h"
@@ -141,6 +142,17 @@ static int evrReport( int interest )
 int evrGetLastFiducial( )
 {
 	return lastfid;
+}
+
+/*=============================================================================
+  Name: timesyncGetLastFiducial()
+
+  Abs: A simple routine to return the fiducial id for the most
+  	   recently received EVENT_FIDUCIAL, but as a long long for timesync!
+=============================================================================*/
+long long timesyncGetLastFiducial( )
+{
+    return (long long) lastfid;
 }
 
 
@@ -365,6 +377,21 @@ static int evrRecord()
   return 0;
 }
 
+#if EPICS_VERSION > 3 || (EPICS_VERSION == 3 && EPICS_REVISION >= 15)
+static EVENTPVT evtlist[256] = { NULL };
+
+static void myPostEvent(int evt)
+{
+    if (evt < 1 || evt > 255)
+        return;
+    if (!evtlist[evt]) {
+        char name[10];
+        sprintf(name, "%d", evt);
+        evtlist[evt] = eventNameToHandle(name);
+    }
+    postEvent(evtlist[evt]);
+}
+#endif
 
 /*
  * This thread drains the eventTaskQueue
@@ -382,7 +409,11 @@ static int evrEventTask(void)
 		evrTimeEventProcessing(eventMessage.eventNum);
 
 		/* Tell EPICS to post the event code */
+#if EPICS_VERSION < 3 || (EPICS_VERSION == 3 && EPICS_REVISION < 15)
 		post_event(eventMessage.eventNum);
+#else
+                myPostEvent(eventMessage.eventNum);
+#endif
 
 		/* pCard cannot be NULL since the only entities which send messages are
 		*  - the evrTask which bails out if pCard is NULL

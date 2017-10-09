@@ -26,6 +26,7 @@ INC+=evrTime.h
 INC+=evrPattern.h
 INC+=evrMessage.h
 INC+=bsa.h
+INC+=timesyncAPI.h
 
 DBDINC += longSubRecord
 DBDINC += bsaRecord

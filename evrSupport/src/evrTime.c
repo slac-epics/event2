@@ -75,6 +75,7 @@
 #include "evrMessage.h"       /* EVR_MAX_INT    */    
 #include "evrTime.h"       
 #include "evrPattern.h"        
+#include <epicsVersion.h>
 #include <time.h>
 
 #ifdef DIAG_TIMER
@@ -586,6 +587,52 @@ int evrTimeGetFifo ( epicsTimeStamp  * epicsTime_ps, unsigned int eventCode, uns
 	{
 		*epicsTime_ps	= fifoInfo.fifo_time;
 		status			= fifoInfo.fifo_status;
+	}
+	return status;
+}
+
+/*=============================================================================
+
+  Name: timesyncGetFifo
+
+  Abs:  Get the epics timestamp associated with an event code from the fifo, defined as:
+        1st integer = number of seconds since 1990  
+        2nd integer = number of nsecs since last sec, except lower 17 bits=pulsid
+        
+  Args: Type     Name           Access     Description
+        -------  -------    ---------- ----------------------------
+  epicsTimeStamp * epicsTime_ps write  ptr to epics timestamp to be returned
+  long long *    fid            write  ptr to fiducial to be returned
+  unsigned int   eventCode      read   Event code 0 to 255.
+                                      0,1=time associated w this pulse
+                                          (event code 1 = fiducial)
+                                          1 to 255 = EVR event codes
+  unsigned long long * idx      read/write The last fifo index we read
+  int            incr           read       How far to move ahead (MAX_TS_QUEUE if idx is uninitialized)
+
+  Rem:  Routine to get the epics timestamp from a queue of timestamps.  This must
+        be called no faster than timestamps come in, as there is no checking for bounds.
+
+        "timesyncGetFifo(&ts, &fid, event, &idx, MAX_TS_QUEUE)" and "evrTimeGet(&ts, event)" return
+        identical timestamps.
+        
+
+  Side: 
+
+  Ret:  -1=Failed; 0 = Success
+==============================================================================*/
+
+int timesyncGetFifo (epicsTimeStamp  *epicsTime_ps, long long *fid, unsigned int eventCode, unsigned long long *idx, int incr)
+{
+	struct evrFifoInfo  fifoInfo;
+	int					status = 0;
+
+	status = evrTimeGetFifoInfo( &fifoInfo, eventCode, idx, incr );
+	if ( status == 0 )
+	{
+		*epicsTime_ps	= fifoInfo.fifo_time;
+                *fid            = epicsTime_ps->nsec & 0x1ffff;
+		status		= fifoInfo.fifo_status;
 	}
 	return status;
 }
@@ -1612,7 +1659,14 @@ int evrTimePatternPutEnd(int modulo720Flag)
 {
   /* Post the modulo-720 sync event if the pattern has that bit set */
   if (modulo720Flag) {
+#if EPICS_VERSION < 3 || (EPICS_VERSION == 3 && EPICS_REVISION < 15)
     post_event(EVENT_MODULO720);
+#else
+    static EVENTPVT modulo720evt = NULL;
+    if (!modulo720evt)
+      modulo720evt = eventNameToHandle(EVENT_MODULO720_STR);
+    postEvent(modulo720evt);
+#endif
     epicsTimeGetCurrent(&mod720time);
   }
   if (evrTimeRWMutex_ps) {
