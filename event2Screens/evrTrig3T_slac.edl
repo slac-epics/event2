@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 226
-y 355
+x 206
+y 1584
 w 1305
-h 564
+h 624
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-12.0"
 btnFont "helvetica-bold-r-14.0"
@@ -34,7 +34,7 @@ release 0
 x 4
 y 56
 w 1292
-h 480
+h 536
 lineColor index 3
 fill
 fillColor index 3
@@ -61,7 +61,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 0
 y 0
 w 336
@@ -80,10 +80,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 88
+y 84
 w 52
 h 24
 fgColor index 25
@@ -122,9 +122,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 624
-y 48
+y 44
 w 112
 h 16
 font "helvetica-bold-r-12.0"
@@ -141,11 +141,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 280
 y 64
 w 24
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -160,11 +160,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 344
 y 64
 w 24
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -179,11 +179,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 408
 y 64
 w 24
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -198,11 +198,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 472
 y 64
 w 24
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -217,11 +217,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 536
 y 64
 w 24
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -236,11 +236,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 600
 y 64
 w 24
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -255,11 +255,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 664
 y 64
 w 24
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -274,11 +274,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 728
 y 64
 w 24
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -293,11 +293,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 792
 y 64
 w 24
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -312,11 +312,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 856
 y 64
 w 24
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -331,11 +331,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 920
 y 64
 w 24
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -350,11 +350,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 984
 y 64
 w 24
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -368,10 +368,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 88
+y 84
 w 36
 h 24
 controlPv "$(EVR):EVENT1CTRL.ENM"
@@ -395,7 +395,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 152
 y 48
 w 88
@@ -416,7 +416,7 @@ major 10
 minor 0
 release 0
 x 1100
-y 540
+y 592
 w 128
 h 24
 controlPv "$(IOC):TOD"
@@ -433,9 +433,9 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
-x 950
-y 540
+release 1
+x 952
+y 592
 w 132
 h 24
 font "helvetica-medium-r-12.0"
@@ -452,10 +452,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 88
+y 84
 w 56
 h 24
 fgColor index 25
@@ -474,10 +474,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 88
+y 84
 w 56
 h 24
 fgColor index 25
@@ -496,10 +496,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 88
+y 84
 w 56
 h 24
 fgColor index 25
@@ -518,10 +518,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 88
+y 84
 w 56
 h 24
 fgColor index 25
@@ -540,10 +540,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 88
+y 84
 w 56
 h 24
 fgColor index 25
@@ -562,10 +562,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 88
+y 84
 w 56
 h 24
 fgColor index 25
@@ -584,10 +584,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 88
+y 84
 w 56
 h 24
 fgColor index 25
@@ -606,10 +606,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 88
+y 84
 w 56
 h 24
 fgColor index 25
@@ -628,10 +628,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 88
+y 84
 w 56
 h 24
 fgColor index 25
@@ -650,10 +650,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 88
+y 84
 w 56
 h 24
 fgColor index 25
@@ -672,10 +672,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 88
+y 84
 w 56
 h 24
 fgColor index 25
@@ -694,10 +694,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 88
+y 84
 w 56
 h 24
 fgColor index 25
@@ -716,10 +716,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 88
+y 84
 w 56
 h 24
 fgColor index 25
@@ -739,11 +739,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 1056
 y 64
 w 24
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -780,10 +780,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 120
+y 116
 w 52
 h 24
 fgColor index 25
@@ -802,10 +802,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 120
+y 116
 w 36
 h 24
 controlPv "$(EVR):EVENT2CTRL.ENM"
@@ -828,10 +828,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 120
+y 116
 w 56
 h 24
 fgColor index 25
@@ -850,10 +850,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 120
+y 116
 w 56
 h 24
 fgColor index 25
@@ -872,10 +872,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 120
+y 116
 w 56
 h 24
 fgColor index 25
@@ -894,10 +894,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 120
+y 116
 w 56
 h 24
 fgColor index 25
@@ -916,10 +916,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 120
+y 116
 w 56
 h 24
 fgColor index 25
@@ -938,10 +938,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 120
+y 116
 w 56
 h 24
 fgColor index 25
@@ -960,10 +960,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 120
+y 116
 w 56
 h 24
 fgColor index 25
@@ -982,10 +982,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 120
+y 116
 w 56
 h 24
 fgColor index 25
@@ -1004,10 +1004,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 120
+y 116
 w 56
 h 24
 fgColor index 25
@@ -1026,10 +1026,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 120
+y 116
 w 56
 h 24
 fgColor index 25
@@ -1048,10 +1048,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 120
+y 116
 w 56
 h 24
 fgColor index 25
@@ -1070,10 +1070,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 120
+y 116
 w 56
 h 24
 fgColor index 25
@@ -1092,10 +1092,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 120
+y 116
 w 56
 h 24
 fgColor index 25
@@ -1114,10 +1114,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 152
+y 148
 w 52
 h 24
 fgColor index 25
@@ -1136,10 +1136,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 152
+y 148
 w 36
 h 24
 controlPv "$(EVR):EVENT3CTRL.ENM"
@@ -1162,10 +1162,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 152
+y 148
 w 56
 h 24
 fgColor index 25
@@ -1184,10 +1184,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 152
+y 148
 w 56
 h 24
 fgColor index 25
@@ -1206,10 +1206,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 152
+y 148
 w 56
 h 24
 fgColor index 25
@@ -1228,10 +1228,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 152
+y 148
 w 56
 h 24
 fgColor index 25
@@ -1250,10 +1250,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 152
+y 148
 w 56
 h 24
 fgColor index 25
@@ -1272,10 +1272,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 152
+y 148
 w 56
 h 24
 fgColor index 25
@@ -1294,10 +1294,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 152
+y 148
 w 56
 h 24
 fgColor index 25
@@ -1316,10 +1316,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 152
+y 148
 w 56
 h 24
 fgColor index 25
@@ -1338,10 +1338,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 152
+y 148
 w 56
 h 24
 fgColor index 25
@@ -1360,10 +1360,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 152
+y 148
 w 56
 h 24
 fgColor index 25
@@ -1382,10 +1382,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 152
+y 148
 w 56
 h 24
 fgColor index 25
@@ -1404,10 +1404,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 152
+y 148
 w 56
 h 24
 fgColor index 25
@@ -1426,10 +1426,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 152
+y 148
 w 56
 h 24
 fgColor index 25
@@ -1448,10 +1448,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 184
+y 180
 w 52
 h 24
 fgColor index 25
@@ -1470,10 +1470,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 184
+y 180
 w 36
 h 24
 controlPv "$(EVR):EVENT4CTRL.ENM"
@@ -1496,10 +1496,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 184
+y 180
 w 56
 h 24
 fgColor index 25
@@ -1518,10 +1518,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 184
+y 180
 w 56
 h 24
 fgColor index 25
@@ -1540,10 +1540,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 184
+y 180
 w 56
 h 24
 fgColor index 25
@@ -1562,10 +1562,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 184
+y 180
 w 56
 h 24
 fgColor index 25
@@ -1584,10 +1584,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 184
+y 180
 w 56
 h 24
 fgColor index 25
@@ -1606,10 +1606,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 184
+y 180
 w 56
 h 24
 fgColor index 25
@@ -1628,10 +1628,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 184
+y 180
 w 56
 h 24
 fgColor index 25
@@ -1650,10 +1650,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 184
+y 180
 w 56
 h 24
 fgColor index 25
@@ -1672,10 +1672,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 184
+y 180
 w 56
 h 24
 fgColor index 25
@@ -1694,10 +1694,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 184
+y 180
 w 56
 h 24
 fgColor index 25
@@ -1716,10 +1716,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 184
+y 180
 w 56
 h 24
 fgColor index 25
@@ -1738,10 +1738,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 184
+y 180
 w 56
 h 24
 fgColor index 25
@@ -1760,10 +1760,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 184
+y 180
 w 56
 h 24
 fgColor index 25
@@ -1782,10 +1782,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 216
+y 212
 w 52
 h 24
 fgColor index 25
@@ -1804,10 +1804,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 216
+y 212
 w 36
 h 24
 controlPv "$(EVR):EVENT5CTRL.ENM"
@@ -1830,10 +1830,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 216
+y 212
 w 56
 h 24
 fgColor index 25
@@ -1852,10 +1852,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 216
+y 212
 w 56
 h 24
 fgColor index 25
@@ -1874,10 +1874,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 216
+y 212
 w 56
 h 24
 fgColor index 25
@@ -1896,10 +1896,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 216
+y 212
 w 56
 h 24
 fgColor index 25
@@ -1918,10 +1918,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 216
+y 212
 w 56
 h 24
 fgColor index 25
@@ -1940,10 +1940,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 216
+y 212
 w 56
 h 24
 fgColor index 25
@@ -1962,10 +1962,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 216
+y 212
 w 56
 h 24
 fgColor index 25
@@ -1984,10 +1984,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 216
+y 212
 w 56
 h 24
 fgColor index 25
@@ -2006,10 +2006,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 216
+y 212
 w 56
 h 24
 fgColor index 25
@@ -2028,10 +2028,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 216
+y 212
 w 56
 h 24
 fgColor index 25
@@ -2050,10 +2050,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 216
+y 212
 w 56
 h 24
 fgColor index 25
@@ -2072,10 +2072,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 216
+y 212
 w 56
 h 24
 fgColor index 25
@@ -2094,10 +2094,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 216
+y 212
 w 56
 h 24
 fgColor index 25
@@ -2116,10 +2116,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 248
+y 244
 w 52
 h 24
 fgColor index 25
@@ -2138,10 +2138,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 248
+y 244
 w 36
 h 24
 controlPv "$(EVR):EVENT6CTRL.ENM"
@@ -2164,10 +2164,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 248
+y 244
 w 56
 h 24
 fgColor index 25
@@ -2186,10 +2186,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 248
+y 244
 w 56
 h 24
 fgColor index 25
@@ -2208,10 +2208,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 248
+y 244
 w 56
 h 24
 fgColor index 25
@@ -2230,10 +2230,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 248
+y 244
 w 56
 h 24
 fgColor index 25
@@ -2252,10 +2252,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 248
+y 244
 w 56
 h 24
 fgColor index 25
@@ -2274,10 +2274,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 248
+y 244
 w 56
 h 24
 fgColor index 25
@@ -2296,10 +2296,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 248
+y 244
 w 56
 h 24
 fgColor index 25
@@ -2318,10 +2318,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 248
+y 244
 w 56
 h 24
 fgColor index 25
@@ -2340,10 +2340,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 248
+y 244
 w 56
 h 24
 fgColor index 25
@@ -2362,10 +2362,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 248
+y 244
 w 56
 h 24
 fgColor index 25
@@ -2384,10 +2384,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 248
+y 244
 w 56
 h 24
 fgColor index 25
@@ -2406,10 +2406,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 248
+y 244
 w 56
 h 24
 fgColor index 25
@@ -2428,10 +2428,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 248
+y 244
 w 56
 h 24
 fgColor index 25
@@ -2450,10 +2450,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 312
+y 308
 w 56
 h 24
 fgColor index 25
@@ -2472,10 +2472,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 312
+y 308
 w 56
 h 24
 fgColor index 25
@@ -2494,10 +2494,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 312
+y 308
 w 56
 h 24
 fgColor index 25
@@ -2516,10 +2516,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 312
+y 308
 w 56
 h 24
 fgColor index 25
@@ -2538,10 +2538,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 312
+y 308
 w 56
 h 24
 fgColor index 25
@@ -2560,10 +2560,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 312
+y 308
 w 56
 h 24
 fgColor index 25
@@ -2582,10 +2582,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 312
+y 308
 w 56
 h 24
 fgColor index 25
@@ -2604,10 +2604,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 312
+y 308
 w 56
 h 24
 fgColor index 25
@@ -2626,10 +2626,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 312
+y 308
 w 56
 h 24
 fgColor index 25
@@ -2648,10 +2648,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 312
+y 308
 w 56
 h 24
 fgColor index 25
@@ -2670,10 +2670,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 312
+y 308
 w 56
 h 24
 fgColor index 25
@@ -2692,10 +2692,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 312
+y 308
 w 56
 h 24
 fgColor index 25
@@ -2714,10 +2714,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 312
+y 308
 w 56
 h 24
 fgColor index 25
@@ -2736,10 +2736,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 312
+y 308
 w 36
 h 24
 controlPv "$(EVR):EVENT8CTRL.ENM"
@@ -2762,10 +2762,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 312
+y 308
 w 52
 h 24
 fgColor index 25
@@ -2784,10 +2784,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 280
+y 276
 w 56
 h 24
 fgColor index 25
@@ -2806,10 +2806,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 280
+y 276
 w 56
 h 24
 fgColor index 25
@@ -2828,10 +2828,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 280
+y 276
 w 56
 h 24
 fgColor index 25
@@ -2850,10 +2850,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 280
+y 276
 w 56
 h 24
 fgColor index 25
@@ -2872,10 +2872,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 280
+y 276
 w 56
 h 24
 fgColor index 25
@@ -2894,10 +2894,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 280
+y 276
 w 56
 h 24
 fgColor index 25
@@ -2916,10 +2916,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 280
+y 276
 w 56
 h 24
 fgColor index 25
@@ -2938,10 +2938,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 280
+y 276
 w 56
 h 24
 fgColor index 25
@@ -2960,10 +2960,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 280
+y 276
 w 56
 h 24
 fgColor index 25
@@ -2982,10 +2982,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 280
+y 276
 w 56
 h 24
 fgColor index 25
@@ -3004,10 +3004,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 280
+y 276
 w 56
 h 24
 fgColor index 25
@@ -3026,10 +3026,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 280
+y 276
 w 56
 h 24
 fgColor index 25
@@ -3048,10 +3048,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 280
+y 276
 w 56
 h 24
 fgColor index 25
@@ -3070,10 +3070,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 280
+y 276
 w 36
 h 24
 controlPv "$(EVR):EVENT7CTRL.ENM"
@@ -3096,10 +3096,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 280
+y 276
 w 52
 h 24
 fgColor index 25
@@ -3118,10 +3118,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 344
+y 340
 w 52
 h 24
 fgColor index 25
@@ -3140,10 +3140,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 344
+y 340
 w 36
 h 24
 controlPv "$(EVR):EVENT9CTRL.ENM"
@@ -3166,10 +3166,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 344
+y 340
 w 56
 h 24
 fgColor index 25
@@ -3188,10 +3188,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 344
+y 340
 w 56
 h 24
 fgColor index 25
@@ -3210,10 +3210,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 344
+y 340
 w 56
 h 24
 fgColor index 25
@@ -3232,10 +3232,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 344
+y 340
 w 56
 h 24
 fgColor index 25
@@ -3254,10 +3254,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 344
+y 340
 w 56
 h 24
 fgColor index 25
@@ -3276,10 +3276,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 344
+y 340
 w 56
 h 24
 fgColor index 25
@@ -3298,10 +3298,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 344
+y 340
 w 56
 h 24
 fgColor index 25
@@ -3320,10 +3320,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 344
+y 340
 w 56
 h 24
 fgColor index 25
@@ -3342,10 +3342,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 344
+y 340
 w 56
 h 24
 fgColor index 25
@@ -3364,10 +3364,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 344
+y 340
 w 56
 h 24
 fgColor index 25
@@ -3386,10 +3386,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 344
+y 340
 w 56
 h 24
 fgColor index 25
@@ -3408,10 +3408,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 344
+y 340
 w 56
 h 24
 fgColor index 25
@@ -3430,10 +3430,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 344
+y 340
 w 56
 h 24
 fgColor index 25
@@ -3452,10 +3452,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 376
+y 372
 w 52
 h 24
 fgColor index 25
@@ -3474,10 +3474,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 376
+y 372
 w 36
 h 24
 controlPv "$(EVR):EVENT10CTRL.ENM"
@@ -3500,10 +3500,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 376
+y 372
 w 56
 h 24
 fgColor index 25
@@ -3522,10 +3522,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 376
+y 372
 w 56
 h 24
 fgColor index 25
@@ -3544,10 +3544,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 376
+y 372
 w 56
 h 24
 fgColor index 25
@@ -3566,10 +3566,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 376
+y 372
 w 56
 h 24
 fgColor index 25
@@ -3588,10 +3588,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 376
+y 372
 w 56
 h 24
 fgColor index 25
@@ -3610,10 +3610,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 376
+y 372
 w 56
 h 24
 fgColor index 25
@@ -3632,10 +3632,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 376
+y 372
 w 56
 h 24
 fgColor index 25
@@ -3654,10 +3654,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 376
+y 372
 w 56
 h 24
 fgColor index 25
@@ -3676,10 +3676,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 376
+y 372
 w 56
 h 24
 fgColor index 25
@@ -3698,10 +3698,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 376
+y 372
 w 56
 h 24
 fgColor index 25
@@ -3720,10 +3720,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 376
+y 372
 w 56
 h 24
 fgColor index 25
@@ -3742,10 +3742,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 376
+y 372
 w 56
 h 24
 fgColor index 25
@@ -3764,10 +3764,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 376
+y 372
 w 56
 h 24
 fgColor index 25
@@ -3786,10 +3786,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 408
+y 404
 w 52
 h 24
 fgColor index 25
@@ -3808,10 +3808,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 408
+y 404
 w 36
 h 24
 controlPv "$(EVR):EVENT11CTRL.ENM"
@@ -3834,10 +3834,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 408
+y 404
 w 56
 h 24
 fgColor index 25
@@ -3856,10 +3856,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 408
+y 404
 w 56
 h 24
 fgColor index 25
@@ -3878,10 +3878,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 408
+y 404
 w 56
 h 24
 fgColor index 25
@@ -3900,10 +3900,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 408
+y 404
 w 56
 h 24
 fgColor index 25
@@ -3922,10 +3922,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 408
+y 404
 w 56
 h 24
 fgColor index 25
@@ -3944,10 +3944,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 408
+y 404
 w 56
 h 24
 fgColor index 25
@@ -3966,10 +3966,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 408
+y 404
 w 56
 h 24
 fgColor index 25
@@ -3988,10 +3988,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 408
+y 404
 w 56
 h 24
 fgColor index 25
@@ -4010,10 +4010,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 408
+y 404
 w 56
 h 24
 fgColor index 25
@@ -4032,10 +4032,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 408
+y 404
 w 56
 h 24
 fgColor index 25
@@ -4054,10 +4054,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 408
+y 404
 w 56
 h 24
 fgColor index 25
@@ -4076,10 +4076,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 408
+y 404
 w 56
 h 24
 fgColor index 25
@@ -4098,10 +4098,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 408
+y 404
 w 56
 h 24
 fgColor index 25
@@ -4120,10 +4120,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 440
+y 436
 w 52
 h 24
 fgColor index 25
@@ -4142,10 +4142,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 440
+y 436
 w 36
 h 24
 controlPv "$(EVR):EVENT12CTRL.ENM"
@@ -4168,10 +4168,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 440
+y 436
 w 56
 h 24
 fgColor index 25
@@ -4190,10 +4190,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 440
+y 436
 w 56
 h 24
 fgColor index 25
@@ -4212,10 +4212,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 440
+y 436
 w 56
 h 24
 fgColor index 25
@@ -4234,10 +4234,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 440
+y 436
 w 56
 h 24
 fgColor index 25
@@ -4256,10 +4256,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 440
+y 436
 w 56
 h 24
 fgColor index 25
@@ -4278,10 +4278,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 440
+y 436
 w 56
 h 24
 fgColor index 25
@@ -4300,10 +4300,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 440
+y 436
 w 56
 h 24
 fgColor index 25
@@ -4322,10 +4322,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 440
+y 436
 w 56
 h 24
 fgColor index 25
@@ -4344,10 +4344,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 440
+y 436
 w 56
 h 24
 fgColor index 25
@@ -4366,10 +4366,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 440
+y 436
 w 56
 h 24
 fgColor index 25
@@ -4388,10 +4388,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 440
+y 436
 w 56
 h 24
 fgColor index 25
@@ -4410,10 +4410,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 440
+y 436
 w 56
 h 24
 fgColor index 25
@@ -4432,10 +4432,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 440
+y 436
 w 56
 h 24
 fgColor index 25
@@ -4454,10 +4454,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 472
+y 468
 w 52
 h 24
 fgColor index 25
@@ -4476,10 +4476,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 472
+y 468
 w 36
 h 24
 controlPv "$(EVR):EVENT13CTRL.ENM"
@@ -4502,10 +4502,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 472
+y 468
 w 56
 h 24
 fgColor index 25
@@ -4524,10 +4524,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 472
+y 468
 w 56
 h 24
 fgColor index 25
@@ -4546,10 +4546,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 472
+y 468
 w 56
 h 24
 fgColor index 25
@@ -4568,10 +4568,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 472
+y 468
 w 56
 h 24
 fgColor index 25
@@ -4590,10 +4590,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 472
+y 468
 w 56
 h 24
 fgColor index 25
@@ -4612,10 +4612,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 472
+y 468
 w 56
 h 24
 fgColor index 25
@@ -4634,10 +4634,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 472
+y 468
 w 56
 h 24
 fgColor index 25
@@ -4656,10 +4656,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 472
+y 468
 w 56
 h 24
 fgColor index 25
@@ -4678,10 +4678,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 472
+y 468
 w 56
 h 24
 fgColor index 25
@@ -4700,10 +4700,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 472
+y 468
 w 56
 h 24
 fgColor index 25
@@ -4722,10 +4722,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 472
+y 468
 w 56
 h 24
 fgColor index 25
@@ -4744,10 +4744,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 472
+y 468
 w 56
 h 24
 fgColor index 25
@@ -4766,10 +4766,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 472
+y 468
 w 56
 h 24
 fgColor index 25
@@ -4788,10 +4788,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 200
-y 504
+y 500
 w 52
 h 24
 fgColor index 25
@@ -4810,10 +4810,10 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 160
-y 504
+y 500
 w 36
 h 24
 controlPv "$(EVR):EVENT14CTRL.ENM"
@@ -4836,10 +4836,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 264
-y 504
+y 500
 w 56
 h 24
 fgColor index 25
@@ -4858,10 +4858,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 328
-y 504
+y 500
 w 56
 h 24
 fgColor index 25
@@ -4880,10 +4880,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 392
-y 504
+y 500
 w 56
 h 24
 fgColor index 25
@@ -4902,10 +4902,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 456
-y 504
+y 500
 w 56
 h 24
 fgColor index 25
@@ -4924,10 +4924,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 520
-y 504
+y 500
 w 56
 h 24
 fgColor index 25
@@ -4946,10 +4946,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 584
-y 504
+y 500
 w 56
 h 24
 fgColor index 25
@@ -4968,10 +4968,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 648
-y 504
+y 500
 w 56
 h 24
 fgColor index 25
@@ -4990,10 +4990,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 712
-y 504
+y 500
 w 56
 h 24
 fgColor index 25
@@ -5012,10 +5012,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 776
-y 504
+y 500
 w 56
 h 24
 fgColor index 25
@@ -5034,10 +5034,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 840
-y 504
+y 500
 w 56
 h 24
 fgColor index 25
@@ -5056,10 +5056,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 904
-y 504
+y 500
 w 56
 h 24
 fgColor index 25
@@ -5078,10 +5078,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 968
-y 504
+y 500
 w 56
 h 24
 fgColor index 25
@@ -5100,10 +5100,10 @@ endObjectProperties
 object activeButtonClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 1040
-y 504
+y 500
 w 56
 h 24
 fgColor index 25
@@ -5150,7 +5150,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 88
+y 84
 w 112
 h 24
 controlPv "$(EVR):EVENT1CNT"
@@ -5171,7 +5171,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 88
+y 84
 w 40
 h 24
 controlPv "$(EVR):EVENT1RATE"
@@ -5183,8 +5183,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Static Text)
@@ -5192,7 +5191,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 1168
 y 48
 w 64
@@ -5211,11 +5210,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 1152
 y 64
 w 48
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -5230,11 +5229,11 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 1232
 y 64
 w 64
-h 24
+h 16
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -5274,7 +5273,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 88
+y 84
 w 8
 h 23
 lineColor index 12
@@ -5289,7 +5288,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 88
+y 84
 w 8
 h 23
 lineColor index 12
@@ -5304,7 +5303,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 120
+y 116
 w 112
 h 24
 controlPv "$(EVR):EVENT2CNT"
@@ -5325,7 +5324,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 120
+y 116
 w 40
 h 24
 controlPv "$(EVR):EVENT2RATE"
@@ -5337,8 +5336,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Rectangle)
@@ -5348,7 +5346,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 120
+y 116
 w 8
 h 23
 lineColor index 12
@@ -5363,7 +5361,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 120
+y 116
 w 8
 h 23
 lineColor index 12
@@ -5378,7 +5376,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 152
+y 148
 w 112
 h 24
 controlPv "$(EVR):EVENT3CNT"
@@ -5399,7 +5397,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 152
+y 148
 w 40
 h 24
 controlPv "$(EVR):EVENT3RATE"
@@ -5411,8 +5409,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Rectangle)
@@ -5422,7 +5419,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 152
+y 148
 w 8
 h 23
 lineColor index 12
@@ -5437,7 +5434,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 152
+y 148
 w 8
 h 23
 lineColor index 12
@@ -5452,7 +5449,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 184
+y 180
 w 112
 h 24
 controlPv "$(EVR):EVENT4CNT"
@@ -5473,7 +5470,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 184
+y 180
 w 40
 h 24
 controlPv "$(EVR):EVENT4RATE"
@@ -5485,8 +5482,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Rectangle)
@@ -5496,7 +5492,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 184
+y 180
 w 8
 h 23
 lineColor index 12
@@ -5511,7 +5507,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 184
+y 180
 w 8
 h 23
 lineColor index 12
@@ -5526,7 +5522,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 216
+y 212
 w 112
 h 24
 controlPv "$(EVR):EVENT5CNT"
@@ -5547,7 +5543,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 216
+y 212
 w 40
 h 24
 controlPv "$(EVR):EVENT5RATE"
@@ -5559,8 +5555,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Rectangle)
@@ -5570,7 +5565,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 216
+y 212
 w 8
 h 23
 lineColor index 12
@@ -5585,7 +5580,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 216
+y 212
 w 8
 h 23
 lineColor index 12
@@ -5600,7 +5595,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 248
+y 244
 w 112
 h 24
 controlPv "$(EVR):EVENT6CNT"
@@ -5621,7 +5616,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 248
+y 244
 w 40
 h 24
 controlPv "$(EVR):EVENT6RATE"
@@ -5633,8 +5628,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Rectangle)
@@ -5644,7 +5638,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 248
+y 244
 w 8
 h 23
 lineColor index 12
@@ -5659,7 +5653,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 248
+y 244
 w 8
 h 23
 lineColor index 12
@@ -5674,7 +5668,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 280
+y 276
 w 112
 h 24
 controlPv "$(EVR):EVENT7CNT"
@@ -5695,7 +5689,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 280
+y 276
 w 40
 h 24
 controlPv "$(EVR):EVENT7RATE"
@@ -5707,8 +5701,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Rectangle)
@@ -5718,7 +5711,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 280
+y 276
 w 8
 h 23
 lineColor index 12
@@ -5733,7 +5726,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 280
+y 276
 w 8
 h 23
 lineColor index 12
@@ -5748,7 +5741,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 312
+y 308
 w 112
 h 24
 controlPv "$(EVR):EVENT8CNT"
@@ -5769,7 +5762,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 312
+y 308
 w 40
 h 24
 controlPv "$(EVR):EVENT8RATE"
@@ -5781,8 +5774,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Rectangle)
@@ -5792,7 +5784,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 312
+y 308
 w 8
 h 23
 lineColor index 12
@@ -5807,7 +5799,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 312
+y 308
 w 8
 h 23
 lineColor index 12
@@ -5822,7 +5814,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 344
+y 340
 w 112
 h 24
 controlPv "$(EVR):EVENT9CNT"
@@ -5843,7 +5835,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 344
+y 340
 w 40
 h 24
 controlPv "$(EVR):EVENT9RATE"
@@ -5855,8 +5847,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Rectangle)
@@ -5866,7 +5857,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 344
+y 340
 w 8
 h 23
 lineColor index 12
@@ -5881,7 +5872,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 344
+y 340
 w 8
 h 23
 lineColor index 12
@@ -5896,7 +5887,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 376
+y 372
 w 112
 h 24
 controlPv "$(EVR):EVENT10CNT"
@@ -5917,7 +5908,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 376
+y 372
 w 40
 h 24
 controlPv "$(EVR):EVENT10RATE"
@@ -5929,8 +5920,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Rectangle)
@@ -5940,7 +5930,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 376
+y 372
 w 8
 h 23
 lineColor index 12
@@ -5955,7 +5945,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 376
+y 372
 w 8
 h 23
 lineColor index 12
@@ -5970,7 +5960,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 408
+y 404
 w 112
 h 24
 controlPv "$(EVR):EVENT11CNT"
@@ -5991,7 +5981,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 408
+y 404
 w 40
 h 24
 controlPv "$(EVR):EVENT11RATE"
@@ -6003,8 +5993,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Rectangle)
@@ -6014,7 +6003,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 408
+y 404
 w 8
 h 23
 lineColor index 12
@@ -6029,7 +6018,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 408
+y 404
 w 8
 h 23
 lineColor index 12
@@ -6044,7 +6033,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 440
+y 436
 w 112
 h 24
 controlPv "$(EVR):EVENT12CNT"
@@ -6065,7 +6054,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 440
+y 436
 w 40
 h 24
 controlPv "$(EVR):EVENT12RATE"
@@ -6077,8 +6066,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Rectangle)
@@ -6088,7 +6076,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 440
+y 436
 w 8
 h 23
 lineColor index 12
@@ -6103,7 +6091,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 440
+y 436
 w 8
 h 23
 lineColor index 12
@@ -6118,7 +6106,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 472
+y 468
 w 112
 h 24
 controlPv "$(EVR):EVENT13CNT"
@@ -6139,7 +6127,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 472
+y 468
 w 40
 h 24
 controlPv "$(EVR):EVENT13RATE"
@@ -6151,8 +6139,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Rectangle)
@@ -6162,7 +6149,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 472
+y 468
 w 8
 h 23
 lineColor index 12
@@ -6177,7 +6164,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 472
+y 468
 w 8
 h 23
 lineColor index 12
@@ -6192,7 +6179,7 @@ major 10
 minor 0
 release 0
 x 1112
-y 504
+y 500
 w 112
 h 24
 controlPv "$(EVR):EVENT14CNT"
@@ -6213,7 +6200,7 @@ major 10
 minor 0
 release 0
 x 1240
-y 504
+y 500
 w 40
 h 24
 controlPv "$(EVR):EVENT14RATE"
@@ -6225,8 +6212,7 @@ bgColor index 12
 fill
 font "courier-medium-r-12.0"
 fontAlign "right"
-lineWidth 2
-lineAlarm
+lineWidth 0
 endObjectProperties
 
 # (Rectangle)
@@ -6236,7 +6222,7 @@ major 4
 minor 0
 release 0
 x 1224
-y 504
+y 500
 w 8
 h 23
 lineColor index 12
@@ -6251,7 +6237,7 @@ major 4
 minor 0
 release 0
 x 1280
-y 504
+y 500
 w 8
 h 23
 lineColor index 12
@@ -6287,7 +6273,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 4
 y 48
 w 88
@@ -6305,10 +6291,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 84
+y 80
 w 140
 h 24
 controlPv "$(EVR):EVENT1_NAME"
@@ -6326,10 +6312,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 116
+y 112
 w 140
 h 24
 controlPv "$(EVR):EVENT2_NAME"
@@ -6347,10 +6333,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 148
+y 144
 w 140
 h 24
 controlPv "$(EVR):EVENT3_NAME"
@@ -6368,10 +6354,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 180
+y 176
 w 140
 h 24
 controlPv "$(EVR):EVENT4_NAME"
@@ -6389,10 +6375,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 212
+y 208
 w 140
 h 24
 controlPv "$(EVR):EVENT5_NAME"
@@ -6410,10 +6396,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 244
+y 240
 w 140
 h 24
 controlPv "$(EVR):EVENT6_NAME"
@@ -6431,10 +6417,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 276
+y 272
 w 140
 h 24
 controlPv "$(EVR):EVENT7_NAME"
@@ -6452,10 +6438,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 308
+y 304
 w 140
 h 24
 controlPv "$(EVR):EVENT8_NAME"
@@ -6473,10 +6459,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 340
+y 336
 w 140
 h 24
 controlPv "$(EVR):EVENT9_NAME"
@@ -6494,10 +6480,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 372
+y 368
 w 140
 h 24
 controlPv "$(EVR):EVENT10_NAME"
@@ -6515,10 +6501,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 404
+y 400
 w 140
 h 24
 controlPv "$(EVR):EVENT11_NAME"
@@ -6536,10 +6522,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 436
+y 432
 w 140
 h 24
 controlPv "$(EVR):EVENT12_NAME"
@@ -6557,10 +6543,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 468
+y 464
 w 140
 h 24
 controlPv "$(EVR):EVENT13_NAME"
@@ -6578,10 +6564,10 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 8
-y 500
+y 496
 w 140
 h 24
 controlPv "$(EVR):EVENT14_NAME"
@@ -6593,5 +6579,569 @@ nullColor index 18
 smartRefresh
 newPos
 noExecuteClipMask
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 264
+y 532
+w 56
+h 24
+fgColor index 25
+onColor index 6
+offColor index 3
+inconsistentColor index 46
+topShadowColor index 1
+botShadowColor index 14
+controlPv "$(EVR):TRIG0:EVENTCTRL.OUT0"
+3d
+font "courier-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 264
+y 564
+w 56
+h 24
+controlPv "$(EVR):TRIG0:EVENTCTRL.ENM"
+font "courier-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+fastUpdate
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 328
+y 564
+w 56
+h 24
+controlPv "$(EVR):TRIG1:EVENTCTRL.ENM"
+font "courier-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+fastUpdate
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 328
+y 532
+w 56
+h 24
+fgColor index 25
+onColor index 6
+offColor index 3
+inconsistentColor index 46
+topShadowColor index 1
+botShadowColor index 14
+controlPv "$(EVR):TRIG1:EVENTCTRL.OUT1"
+3d
+font "courier-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 392
+y 564
+w 56
+h 24
+controlPv "$(EVR):TRIG2:EVENTCTRL.ENM"
+font "courier-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+fastUpdate
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 392
+y 532
+w 56
+h 24
+fgColor index 25
+onColor index 6
+offColor index 3
+inconsistentColor index 46
+topShadowColor index 1
+botShadowColor index 14
+controlPv "$(EVR):TRIG2:EVENTCTRL.OUT2"
+3d
+font "courier-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 456
+y 564
+w 56
+h 24
+controlPv "$(EVR):TRIG3:EVENTCTRL.ENM"
+font "courier-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+fastUpdate
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 456
+y 532
+w 56
+h 24
+fgColor index 25
+onColor index 6
+offColor index 3
+inconsistentColor index 46
+topShadowColor index 1
+botShadowColor index 14
+controlPv "$(EVR):TRIG3:EVENTCTRL.OUT3"
+3d
+font "courier-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 520
+y 564
+w 56
+h 24
+controlPv "$(EVR):TRIG4:EVENTCTRL.ENM"
+font "courier-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+fastUpdate
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 520
+y 532
+w 56
+h 24
+fgColor index 25
+onColor index 6
+offColor index 3
+inconsistentColor index 46
+topShadowColor index 1
+botShadowColor index 14
+controlPv "$(EVR):TRIG4:EVENTCTRL.OUT4"
+3d
+font "courier-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 584
+y 564
+w 56
+h 24
+controlPv "$(EVR):TRIG5:EVENTCTRL.ENM"
+font "courier-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+fastUpdate
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 584
+y 532
+w 56
+h 24
+fgColor index 25
+onColor index 6
+offColor index 3
+inconsistentColor index 46
+topShadowColor index 1
+botShadowColor index 14
+controlPv "$(EVR):TRIG5:EVENTCTRL.OUT5"
+3d
+font "courier-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 648
+y 564
+w 56
+h 24
+controlPv "$(EVR):TRIG6:EVENTCTRL.ENM"
+font "courier-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+fastUpdate
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 648
+y 532
+w 56
+h 24
+fgColor index 25
+onColor index 6
+offColor index 3
+inconsistentColor index 46
+topShadowColor index 1
+botShadowColor index 14
+controlPv "$(EVR):TRIG6:EVENTCTRL.OUT6"
+3d
+font "courier-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 712
+y 564
+w 56
+h 24
+controlPv "$(EVR):TRIG7:EVENTCTRL.ENM"
+font "courier-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+fastUpdate
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 712
+y 532
+w 56
+h 24
+fgColor index 25
+onColor index 6
+offColor index 3
+inconsistentColor index 46
+topShadowColor index 1
+botShadowColor index 14
+controlPv "$(EVR):TRIG7:EVENTCTRL.OUT7"
+3d
+font "courier-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 776
+y 564
+w 56
+h 24
+controlPv "$(EVR):TRIG8:EVENTCTRL.ENM"
+font "courier-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+fastUpdate
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 776
+y 532
+w 56
+h 24
+fgColor index 25
+onColor index 6
+offColor index 3
+inconsistentColor index 46
+topShadowColor index 1
+botShadowColor index 14
+controlPv "$(EVR):TRIG8:EVENTCTRL.OUT8"
+3d
+font "courier-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 840
+y 564
+w 56
+h 24
+controlPv "$(EVR):TRIG9:EVENTCTRL.ENM"
+font "courier-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+fastUpdate
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 840
+y 532
+w 56
+h 24
+fgColor index 25
+onColor index 6
+offColor index 3
+inconsistentColor index 46
+topShadowColor index 1
+botShadowColor index 14
+controlPv "$(EVR):TRIG9:EVENTCTRL.OUT9"
+3d
+font "courier-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 904
+y 564
+w 56
+h 24
+controlPv "$(EVR):TRIGA:EVENTCTRL.ENM"
+font "courier-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+fastUpdate
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 904
+y 532
+w 56
+h 24
+fgColor index 25
+onColor index 6
+offColor index 3
+inconsistentColor index 46
+topShadowColor index 1
+botShadowColor index 14
+controlPv "$(EVR):TRIGA:EVENTCTRL.OUTA"
+3d
+font "courier-bold-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 968
+y 564
+w 56
+h 24
+controlPv "$(EVR):TRIGB:EVENTCTRL.ENM"
+font "courier-bold-r-12.0"
+fontAlign "center"
+fgColor index 25
+bgColor index 5
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+fastUpdate
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 968
+y 532
+w 56
+h 24
+fgColor index 25
+onColor index 6
+offColor index 3
+inconsistentColor index 46
+topShadowColor index 1
+botShadowColor index 14
+controlPv "$(EVR):TRIGB:EVENTCTRL.OUTB"
+3d
+font "courier-bold-r-10.0"
+objType "controls"
 endObjectProperties
 
