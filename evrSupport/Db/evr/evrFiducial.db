@@ -39,7 +39,6 @@ record( longin, "$(DEV):Fiducial")
 }
 
 # 360Hz fiducial PV
-# The .NAME field reference is a filler, since we only grab the timestamp
 record( aSub, "$(DEV):360HzFiducial")
 {
   field( DESC, "360Hz Fiducial ID" )
