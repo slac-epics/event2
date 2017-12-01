@@ -131,13 +131,6 @@ typedef epicsUInt32 evrModifier_ta[MAX_EVR_MODIFIER];
   
 typedef void (*FIDUCIALFUNCTION)(void *arg);
 
-struct  evrFifoInfo
-{
-    epicsTimeStamp      fifo_time;
-    long long           fifo_tsc;
-    int                 fifo_status;
-};
-
 int evrInitialize         (void);
 int evrTimeRegister       (FIDUCIALFUNCTION fiducialFunc,
                            void *           fiducialArg);
@@ -164,14 +157,6 @@ int evrTimeGetFromEdefTime(unsigned int     edefIdx,
 unsigned int evrTimeGetInitGen(unsigned int edefIdx, unsigned int edefGen);
 int evrTimeGet            (epicsTimeStamp  *epicsTime_ps,
                            unsigned int     eventCode);
-int evrTimeGetFifoInfo(    struct evrFifoInfo *pFifoInfoRet,
-                           unsigned int        eventCode,
-                           unsigned long long *idx,
-                           int                 incr );
-int evrTimeGetFifo(        epicsTimeStamp  *   epicsTime_ps,
-                           unsigned int        eventCode,
-                           unsigned long long *idx,
-                           int                 incr );
 int evrTimePutPulseID     (epicsTimeStamp  *epicsTime_ps,
                            unsigned int     pulseID);
 /* Routines used only by event module and Mpg application */

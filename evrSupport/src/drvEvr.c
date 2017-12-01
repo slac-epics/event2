@@ -25,6 +25,7 @@
 =============================================================================*/
 
 #include <stdlib.h> 		/* for calloc             */
+#include <stdint.h>
 #include <dbScan.h>             /* for post_event         */
 #include "drvSup.h" 		/* for DRVSUPFN           */
 #include "errlog.h"		/* for errlogPrintf       */
@@ -45,6 +46,7 @@
 #else
 #include "HiResTimeStub.h"
 #endif	/* DIAG_TIMER */
+#include<timingFifoApi.h>
 
 #ifdef __rtems__
 #define EVR_TIMEOUT     (0.06)  /* Timeout in sec waiting for 360hz input. */
@@ -145,14 +147,17 @@ int evrGetLastFiducial( )
 }
 
 /*=============================================================================
-  Name: timesyncGetLastFiducial()
+  Name: timingGetLastFiducial()
 
   Abs: A simple routine to return the fiducial id for the most
   	   recently received EVENT_FIDUCIAL, but as a long long for timesync!
 =============================================================================*/
-long long timesyncGetLastFiducial( )
+timingPulseId timingGetLastFiducial( )
 {
-    return (long long) lastfid;
+    if (lastfid == 0x1ffff)
+        return TIMING_PULSEID_INVALID;
+    else
+        return (timingPulseId) lastfid;
 }
 
 

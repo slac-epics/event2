@@ -13,8 +13,6 @@
            evrTimeGetFromEdef     - Get Timestamp from EDEF
            evrTimeGetFromEdefTime - Get Timestamp from EDEF and timestamp
            evrTimeGet        - Get Timestamp for an Event
-           evrTimeGetFifo    - Get Timestamp from an Event FIFO
-           evrTimeGetFifoInfo- Get evrFifoInfo from an Event FIFO
            evrTimePutPulseID - Encode Pulse ID into a Timestamp
            evrTimeGetSystem  - Get System Time with Encoded Invalid Pulse ID
            evrTimePatternPutStart - Start New Time/Pattern Update
@@ -55,6 +53,7 @@
 
 #include <string.h>           /* for memset                */
 #include <sys/time.h>
+#include <stdint.h>
 #include "subRecord.h"        /* for struct subRecord      */
 #include "longSubRecord.h"    /* for struct longSubRecord  */
 #include "registryFunction.h" /* for epicsExport           */
@@ -83,6 +82,7 @@
 #else
 #include "HiResTimeStub.h"
 #endif	/* DIAG_TIMER */
+#include<timingFifoApi.h>
 
 #define  EVR_TIME_OK 0
 #define  EVR_TIME_INVALID 1
@@ -105,7 +105,7 @@ typedef struct {
                               /*           except lower 17 bits = pulsid */
   t_HiResTime		  hiResTsc;	/* 64 bit hi res counter, typically cpu tsc */
   int                 status; /* 0=OK; -1=invalid                        */
-  struct evrFifoInfo  fifoInfo[	MAX_TS_QUEUE ];
+  timingFifoInfo  fifoInfo[MAX_TS_QUEUE];
   unsigned long long  ts_idx;
   int                 count;         /* # times this event has happened  */
 
@@ -549,125 +549,32 @@ int evrTimeGet (epicsTimeStamp  *epicsTime_ps, unsigned int eventCode)
 
 /*=============================================================================
 
-  Name: evrTimeGetFifo
+  Name: timingGetFifoInfo
 
-  Abs:  Get the epics timestamp associated with an event code from the fifo, defined as:
+  Abs:  Get the timing associated with an event code from the fifo, defined as:
         1st integer = number of seconds since 1990  
         2nd integer = number of nsecs since last sec, except lower 17 bits=pulsid
         
-  Args: Type     Name           Access     Description
+  Args: Type     Name       Access     Description
         -------  -------    ---------- ----------------------------
-  epicsTimeStamp * epicsTime_ps write  ptr to epics timestamp to be returned
-  unsigned int   eventCode      read   Event code 0 to 255.
-                                      0,1=time associated w this pulse
-                                          (event code 1 = fiducial)
-                                          1 to 255 = EVR event codes
-  unsigned long long * idx      read/write The last fifo index we read
-  int            incr           read       How far to move ahead (MAX_TS_QUEUE if idx is uninitialized)
+  unsigned int   eventCode     read    Event code 0 to 255.
+  int            incr          read    How far to move ahead (TS_INDEX_INIT if idx 
+                                       is uninitialized).
+  unsigned long long *idx   read/write The last fifo index we read.
 
   Rem:  Routine to get the epics timestamp from a queue of timestamps.  This must
-        be called no faster than timestamps come in, as there is no checking for bounds.
-
-        "evrTimeGetFifo(&ts, event, &idx, MAX_TS_QUEUE)" and "evrTimeGet(&ts, event)" return
-        identical timestamps.
-        
+        be called no faster than timestamps come in, as there is no checking for 
+        bounds.
 
   Side: 
 
   Ret:  -1=Failed; 0 = Success
 ==============================================================================*/
 
-int evrTimeGetFifo ( epicsTimeStamp  * epicsTime_ps, unsigned int eventCode, unsigned long long *idx, int incr)
-{
-	struct evrFifoInfo  fifoInfo;
-	int					status = 0;
-
-	status = evrTimeGetFifoInfo( &fifoInfo, eventCode, idx, incr );
-	if ( status == 0 )
-	{
-		*epicsTime_ps	= fifoInfo.fifo_time;
-		status			= fifoInfo.fifo_status;
-	}
-	return status;
-}
-
-/*=============================================================================
-
-  Name: timesyncGetFifo
-
-  Abs:  Get the epics timestamp associated with an event code from the fifo, defined as:
-        1st integer = number of seconds since 1990  
-        2nd integer = number of nsecs since last sec, except lower 17 bits=pulsid
-        
-  Args: Type     Name           Access     Description
-        -------  -------    ---------- ----------------------------
-  epicsTimeStamp * epicsTime_ps write  ptr to epics timestamp to be returned
-  long long *    fid            write  ptr to fiducial to be returned
-  unsigned int   eventCode      read   Event code 0 to 255.
-                                      0,1=time associated w this pulse
-                                          (event code 1 = fiducial)
-                                          1 to 255 = EVR event codes
-  unsigned long long * idx      read/write The last fifo index we read
-  int            incr           read       How far to move ahead (MAX_TS_QUEUE if idx is uninitialized)
-
-  Rem:  Routine to get the epics timestamp from a queue of timestamps.  This must
-        be called no faster than timestamps come in, as there is no checking for bounds.
-
-        "timesyncGetFifo(&ts, &fid, event, &idx, MAX_TS_QUEUE)" and "evrTimeGet(&ts, event)" return
-        identical timestamps.
-        
-
-  Side: 
-
-  Ret:  -1=Failed; 0 = Success
-==============================================================================*/
-
-int timesyncGetFifo (epicsTimeStamp  *epicsTime_ps, long long *fid, unsigned int eventCode, unsigned long long *idx, int incr)
-{
-	struct evrFifoInfo  fifoInfo;
-	int					status = 0;
-
-	status = evrTimeGetFifoInfo( &fifoInfo, eventCode, idx, incr );
-	if ( status == 0 )
-	{
-		*epicsTime_ps	= fifoInfo.fifo_time;
-                *fid            = epicsTime_ps->nsec & 0x1ffff;
-		status		= fifoInfo.fifo_status;
-	}
-	return status;
-}
-
-/*=============================================================================
-
-  Name: evrTimeGetFifoInfo
-
-  Abs:  Get the epics timestamp associated with an event code from the fifo, defined as:
-        1st integer = number of seconds since 1990  
-        2nd integer = number of nsecs since last sec, except lower 17 bits=pulsid
-        
-  Args: Type     Name           Access     Description
-        -------  -------    ---------- ----------------------------
-  evrFifoInfo *  pFifoInfoRet	write  ptr to where evrFifoInfo should be copied
-  unsigned int   eventCode      read   Event code 0 to 255.
-                                      0,1=time associated w this pulse
-                                          (event code 1 = fiducial)
-                                          1 to 255 = EVR event codes
-  unsigned long long * idx      read/write The last fifo index we read
-  int            incr           read       How far to move ahead (MAX_TS_QUEUE if idx is uninitialized)
-
-  Rem:  Routine to get the epics timestamp from a queue of timestamps.  This must
-        be called no faster than timestamps come in, as there is no checking for bounds.
-        
-        "evrTimeGetFifoInfo(&fifoInfo, event, &idx, MAX_TS_QUEUE)" and "evrTimeGet(&ts, event)" return
-        identical timestamps.
-        
-
-  Side: 
-
-  Ret:  -1=Failed; 0 = Success
-==============================================================================*/
-
-int evrTimeGetFifoInfo( struct evrFifoInfo  * pFifoInfoRet, unsigned int eventCode, unsigned long long *idx, int incr )
+int timingGetFifoInfo(unsigned int            eventCode,
+                      int                     incr,
+                      unsigned long long  *   idx,
+                      timingFifoInfo      *   pFifoInfoRet   )
 {
 	if (	(pFifoInfoRet == NULL)
 		||	(eventCode > MRF_NUM_EVENTS)
@@ -675,9 +582,9 @@ int evrTimeGetFifoInfo( struct evrFifoInfo  * pFifoInfoRet, unsigned int eventCo
 		return epicsTimeERROR;
 
 	pFifoInfoRet->fifo_time.secPastEpoch	= 0;
-	pFifoInfoRet->fifo_time.nsec			= 0;
-	pFifoInfoRet->fifo_tsc					= 0LL;
-	pFifoInfoRet->fifo_status				= epicsTimeERROR;
+	pFifoInfoRet->fifo_time.nsec		= 0;
+	pFifoInfoRet->fifo_tsc			= 0LL;
+        pFifoInfoRet->fifo_fid                  = TIMING_PULSEID_INVALID;
 
 	if ( epicsMutexLock( evrTimeRWMutex_ps ) != 0 )
 		return epicsTimeERROR;
@@ -701,7 +608,7 @@ int evrTimeGetFifoInfo( struct evrFifoInfo  * pFifoInfoRet, unsigned int eventCo
 	}
 
 	/* Copy the requested fifo information */
-	*pFifoInfoRet	= eventCodeTime_as[eventCode].fifoInfo[     *idx & MAX_TS_QUEUE_MASK ];
+	*pFifoInfoRet	= eventCodeTime_as[eventCode].fifoInfo[*idx & MAX_TS_QUEUE_MASK];
 
 	epicsMutexUnlock(evrTimeRWMutex_ps);
 	return 0; 
@@ -820,8 +727,8 @@ int evrTimeInit(epicsInt32 firstTimeSlotIn, epicsInt32 secondTimeSlotIn)
 		  t_HiResTime			hiResTsc	= GetHiResTicks();
           for (idx2 = 0; idx2 < MAX_TS_QUEUE; idx2++) {
               pevrTime->fifoInfo[idx2].fifo_time   = mod720time;
+              pevrTime->fifoInfo[idx2].fifo_fid    = TIMING_PULSEID_INVALID;
               pevrTime->fifoInfo[idx2].fifo_tsc    = hiResTsc;
-              pevrTime->fifoInfo[idx2].fifo_status = epicsTimeERROR;
           }
           pevrTime->ts_idx  = 0LL;
           pevrTime->time    = mod720time;
@@ -1568,8 +1475,8 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
         {
 			/* Keep stats on min and max deltaTsc vs prior fidqTsc in the fifo queue */
             unsigned int    	prior_idx		= (pevrTime->ts_idx - 1) & MAX_TS_QUEUE_MASK;
-            long long			prior_tsc		= pevrTime->fifoInfo[prior_idx].fifo_tsc;
-			long long			deltaTsc		= fidqTsc - prior_tsc;
+            long long		prior_tsc		= pevrTime->fifoInfo[prior_idx].fifo_tsc;
+            long long		deltaTsc		= fidqTsc - prior_tsc;
 
 			// Don't set fifoDeltaMax on the first deltaTsc as it's possibly invalid
 			if( pevrTime->fifoDeltaMin != 0
@@ -1585,10 +1492,12 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
              * EVENT_FIDUCIAL also saves timestamps here,
              * so if you want to see corrected FIDUCIAL timestamps,
              * call evrTimeGetFifoInfo() to get it from the event FIFO */
-            unsigned int		idx				= (pevrTime->ts_idx++) & MAX_TS_QUEUE_MASK;
+            unsigned int idx		        = (pevrTime->ts_idx++) & MAX_TS_QUEUE_MASK;
             pevrTime->fifoInfo[idx].fifo_time   = pevrTime->time;
             pevrTime->fifoInfo[idx].fifo_tsc    = fidqTsc;
-            pevrTime->fifoInfo[idx].fifo_status = pevrTime->status;
+            pevrTime->fifoInfo[idx].fifo_fid    = pevrTime->time.nsec & 0x1ffff;
+            if (pevrTime->fifoInfo[idx].fifo_fid == 0x1ffff)
+                pevrTime->fifoInfo[idx].fifo_fid = TIMING_PULSEID_INVALID;
         }
     }
 
@@ -1726,7 +1635,7 @@ extern void eventDebug(int arg1, int arg2)
 		for ( iFifoDump = 0; iFifoDump < nFifoDump; iFifoDump++ )
 		{
 			char	strTime[40];
-			struct evrFifoInfo	fifoInfo;
+			timingFifoInfo	fifoInfo;
 			int		incr;
 			int		status;
 			if ( iFifoDump == 0 )
@@ -1734,7 +1643,7 @@ extern void eventDebug(int arg1, int arg2)
 			else
 				incr	= -1;
 
-			status = evrTimeGetFifoInfo( &fifoInfo, arg1, &idx, incr );
+			status = timingGetFifoInfo( arg1, incr, &idx, &fifoInfo );
 			if ( iFifoDump == 0 )
 			{
 				int fidx = idx & MAX_TS_QUEUE_MASK;
