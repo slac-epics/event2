@@ -52,50 +52,50 @@ DBDINC += $(CUSTOM_RECORDS)
 #---------------------
 # Install DBD files
 #
-DBD += drvMrfEr.dbd
-DBD += devMrfEr.dbd
-#DBD += devMrfErLib.dbd
-devMrfErLib_DBD += base.dbd
-devMrfErLib_DBD += devMrfEr.dbd
+DBD += drvEvent2Er.dbd
+DBD += devEvent2Er.dbd
+#TODO: Delete these
+##DBD += devEvent2ErLib.dbd
+#devEvent2ErLib_DBD += base.dbd
+#devEvent2ErLib_DBD += devEvent2Er.dbd
 
 #---------------------
 # Build the Event Receiver Library
 #
 ifeq ($(EVR_DRIVER_SUPPORT_LINUX), YES)
-LIBRARY_IOC_Linux   += devMrfEr
+LIBRARY_IOC_Linux   += devEvent2Er
 endif
 
 # Source objects for Event Receiver Library
-devMrfEr_OBJS       += devMrfEr
-devMrfEr_OBJS       += erRecord
-devMrfEr_OBJS       += ereventRecord
+devEvent2Er_OBJS       += devMrfEr
+devEvent2Er_OBJS       += erRecord
+devEvent2Er_OBJS       += ereventRecord
 
 # Linux source
 ifeq ($(EVR_DRIVER_SUPPORT_LINUX), YES)
-devMrfEr_OBJS_Linux += drvLinuxEvr
+devEvent2Er_OBJS_Linux += drvLinuxEvr
 endif
 
-devMrfErLib_OBJS += $(devMrfEr_OBJS)
-devMrfErLib_SRCS += devMrfErLib_registerRecordDeviceDriver.cpp
+devEvent2ErLib_OBJS += $(devEvent2Er_OBJS)
+devEvent2ErLib_SRCS += devEvent2ErLib_registerRecordDeviceDriver.cpp
 
 #---------------------
 # Build the Library for the MRF driver level access
 #
 ifeq ($(EVR_DRIVER_SUPPORT_LINUX), YES)
-LIBRARY_IOC_Linux	+= drvMrf
+LIBRARY_IOC_Linux	+= drvEvent2
 endif
 
 # Source objects for MRF driver Library
 ifeq ($(EVR_DRIVER_SUPPORT_LINUX), YES)
-drvMrf_OBJS_Linux	+= drvLinux
-drvMrf_OBJS_Linux += evrIrqHandlerThread
-drvMrf_OBJS_Linux += erapi.o
-drvMrfLib_LIBS_Linux+= mrfApi
+drvEvent2_OBJS_Linux += drvLinux
+drvEvent2_OBJS_Linux += evrIrqHandlerThread
+drvEvent2_OBJS_Linux += erapi.o
 endif
 
-drvMrfLib_OBJS		+= $(drvMrf_OBJS)
+drvEvent2Lib_OBJS	+= $(drvEvent2_OBJS)
 
-OBJS_IOC_vxWorks 	+= $(drvMrf_OBJS)
+OBJS_IOC_vxWorks 	+= $(drvEvent2_OBJS)
 
 #---------------------
 # Install include files
@@ -103,8 +103,8 @@ OBJS_IOC_vxWorks 	+= $(drvMrf_OBJS)
 INC += mrfCommon.h
 # INC += mrfVme64x.h
 
-INC += drvMrfEr.h
-INC += devMrfEr.h
+#INC += drvMrfEr.h
+#INC += devMrfEr.h
 
 INC += erapi.h
 INC += evrIrqHandler.h
