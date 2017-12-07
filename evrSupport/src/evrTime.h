@@ -141,13 +141,6 @@ int evrTimeGetFromPipeline(epicsTimeStamp  *epicsTime_ps,
                            epicsUInt32   *  edefAvgDoneMask_p,
                            epicsUInt32   *  edefMinorMask_p,
                            epicsUInt32   *  edefMajorMask_p);
-#if 0
-int evrTimeGetFromEdef    (unsigned int     edefIdx,
-                           epicsTimeStamp  *edefTime_ps,
-                           epicsTimeStamp  *edefTimeInit_ps,
-                           int             *edefAvgDone_p,
-                           epicsEnum16     *edefSevr_p);
-#endif
 int evrTimeGetFromEdefTime(unsigned int     edefIdx,
                            epicsTimeStamp  *edefTime_ps,
                            epicsTimeStamp  *edefTimeInit_ps,
