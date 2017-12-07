@@ -9,51 +9,51 @@ include $(TOP)/configure/CONFIG
 # Build an ioc application
 # Use PROD_IOC_RTEMS for RTEMS only
 # Use PROD_IOC_Linux for Linux only
-PROD_IOC_Linux = evrIoc evrTest evrDiag evrVersion
+PROD_IOC_Linux = event2Ioc event2Test event2Diag event2Version
 
 # ipimbIoc.dbd will be created and installed
-DBD += evrIoc.dbd
+DBD += event2Ioc.dbd
 
-# evrIoc.dbd will be made up from these files:
-evrIoc_DBD += base.dbd
-evrIoc_DBD += evrSupport.dbd
-evrIoc_DBD += devMrfEr.dbd
+# event2Ioc.dbd will be made up from these files:
+event2Ioc_DBD += base.dbd
+event2Ioc_DBD += event2Support.dbd
+event2Ioc_DBD += devEvent2Er.dbd
 
 # <name>_registerRecordDeviceDriver.cpp will be created from <name>.dbd
-evrIoc_SRCS += evrIoc_registerRecordDeviceDriver.cpp
-evrIoc_SRCS_DEFAULT += evrMain.cpp
+event2Ioc_SRCS += event2Ioc_registerRecordDeviceDriver.cpp
+event2Ioc_SRCS_DEFAULT += event2Main.cpp
 
 # Add locally compiled object code
-#evrIoc_SRCS += dbSubExample.c
+#event2Ioc_SRCS += dbSubExample.c
 
-evrIoc_LIBS += evrSupport
-evrIoc_LIBS += devMrfEr
-evrIoc_LIBS += drvMrf
+event2Ioc_LIBS += event2Support
+event2Ioc_LIBS += devEvent2Er
+event2Ioc_LIBS += drvEvent2
 ifdef DIAG_TIMER
-evrIoc_LIBS += diagTimer
+event2Ioc_LIBS += diagTimer
 endif
-evrIoc_LIBS += $(EPICS_BASE_IOC_LIBS)
+event2Ioc_LIBS += $(EPICS_BASE_IOC_LIBS)
 
-evrTest_SRCS_DEFAULT += evrTest.c
-evrTest_LIBS += drvMrf
+event2Test_SRCS_DEFAULT += event2Test.c
+event2Test_LIBS += drvEvent2
 ifdef DIAG_TIMER
-evrTest_LIBS += diagTimer
+event2Test_LIBS += diagTimer
 endif
-evrTest_LIBS += $(EPICS_BASE_IOC_LIBS)
+event2Test_LIBS += $(EPICS_BASE_IOC_LIBS)
 
-evrDiag_SRCS_DEFAULT += evrDiag.c
-evrDiag_LIBS += drvMrf
+event2Diag_SRCS_DEFAULT += event2Diag.c
+event2Diag_LIBS += drvEvent2
 ifdef DIAG_TIMER
-evrDiag_LIBS += diagTimer
+event2Diag_LIBS += diagTimer
 endif
-evrDiag_LIBS += $(EPICS_BASE_IOC_LIBS)
+event2Diag_LIBS += $(EPICS_BASE_IOC_LIBS)
 
-evrVersion_SRCS_DEFAULT += evrVersion.c
-evrVersion_LIBS += drvMrf
+event2Version_SRCS_DEFAULT += event2Version.c
+event2Version_LIBS += drvEvent2
 ifdef DIAG_TIMER
-evrVersion_LIBS += diagTimer
+event2Version_LIBS += diagTimer
 endif
-evrVersion_LIBS += $(EPICS_BASE_IOC_LIBS)
+event2Version_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 #===========================
 
