@@ -491,6 +491,83 @@ int evrTimeGet (epicsTimeStamp  *epicsTime_ps, unsigned int eventCode)
 
 /*=============================================================================
 
+  Name: timingGetCurTimeStamp
+
+  Abs:  Retrieve the most recent timestamp available
+        
+  Ret:  -1=Failed; 0 = Success
+  		Most recent timestamp via pTimeStampDest
+  
+==============================================================================*/ 
+int timingGetCurTimeStamp(	epicsTimeStamp  *   pTimeStampDest )
+{
+#if 1
+	return evrTimeGet ( pTimeStampDest, EVENT_FIDUCIAL );
+#else
+	int						status	= 0;
+	unsigned long long		idx		=	0LL;
+	timingFifoInfo			fifoInfo;
+
+	if ( pTimeStampDest == NULL )
+		return -1;
+
+	status = timingGetFifoInfo(	EVENT_FIDUCIAL, TS_INDEX_INIT, &idx, &fifoInfo );
+	if ( status < 0 )
+	{
+		pTimeStampDest->secPastEpoch = 0;
+		pTimeStampDest->nsec		 = PULSEID_INVALID;
+	}
+	else
+	{
+		pTimeStampDest->secPastEpoch = fifoInfo.fifo_time.secPastEpoch;
+		pTimeStampDest->nsec		 = fifoInfo.fifo_time.nsec;
+	}
+
+	return status;
+#endif
+}
+
+/*=============================================================================
+
+  Name: timingGetEventTimeStamp
+
+  Abs:  Retrieve the most recent timestamp and pulseId for the specified eventCode
+        
+  Ret:  -1=Failed; 0 = Success
+  		Most recent timestamp via pTimeStampDest
+  
+==============================================================================*/ 
+int timingGetEventTimeStamp(    epicsTimeStamp  *   pTimeStampDest,
+                                unsigned int        eventCode   	)
+{
+#if 1
+	return evrTimeGet ( pTimeStampDest, eventCode );
+#else
+	int						status	= 0;
+	unsigned long long		idx		=	0LL;
+	timingFifoInfo			fifoInfo;
+
+	if ( pTimeStampDest == NULL )
+		return -1;
+
+	status = timingGetFifoInfo(	eventCode, TS_INDEX_INIT, &idx, &fifoInfo );
+	if ( status < 0 )
+	{
+		pTimeStampDest->secPastEpoch = 0;
+		pTimeStampDest->nsec		 = PULSEID_INVALID;
+	}
+	else
+	{
+		pTimeStampDest->secPastEpoch = fifoInfo.fifo_time.secPastEpoch;
+		pTimeStampDest->nsec		 = fifoInfo.fifo_time.nsec;
+	}
+
+	return status;
+#endif
+}
+
+/*=============================================================================
+
   Name: timingGetFifoInfo
 
   Abs:  Get the timing associated with an event code from the fifo, defined as:

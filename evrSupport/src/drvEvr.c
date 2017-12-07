@@ -154,10 +154,25 @@ int evrGetLastFiducial( )
 =============================================================================*/
 timingPulseId timingGetLastFiducial( )
 {
-    if (lastfid == 0x1ffff)
+    if (lastfid == PULSEID_INVALID)
         return TIMING_PULSEID_INVALID;
     else
         return (timingPulseId) lastfid;
+}
+
+/*=============================================================================
+  Name: timingGetFiducialForTimeStamp()
+
+  Abs: timingGetFiducialForTimeStamp returns the 64 bit fiducial that corresponds to the specified timestamp.
+	   If the timing module cannot determine the correct fiducial, it returns TIMING_PULSEID_INVALID.
+=============================================================================*/
+extern timingPulseId timingGetFiducialForTimeStamp( epicsTimeStamp timeStamp )
+{
+	epicsUInt32		fiducial = timeStamp.nsec & PULSEID_INVALID;
+    if ( fiducial == PULSEID_INVALID )
+        return TIMING_PULSEID_INVALID;
+    else
+        return (timingPulseId) fiducial;
 }
 
 
