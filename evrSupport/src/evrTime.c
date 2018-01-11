@@ -105,7 +105,7 @@ typedef struct {
                               /*           except lower 17 bits = pulsid */
   t_HiResTime		  hiResTsc;	/* 64 bit hi res counter, typically cpu tsc */
   int                 status; /* 0=OK; -1=invalid                        */
-  timingFifoInfo  fifoInfo[MAX_TS_QUEUE];
+  timingFifoInfo      fifoInfo[MAX_TS_QUEUE];
   unsigned long long  ts_idx;
   int                 count;         /* # times this event has happened  */
 
@@ -285,64 +285,6 @@ int evrTimeGetFromPipeline(epicsTimeStamp  *epicsTime_ps,
   
   return status;
 }
-
-#if 0
-/*
- * OK, now to win a race in evrTimeGetFromEdefTime, we are looking ahead and
- * putting the latest result we've received into the queue.  The problem is
- * that perhaps we've gotten ahead of ourselves and need to go back *two*
- * entries.  However, I don't think anyone is using this routine at this point,
- * so I'm not going to fix this right now.
- */
-/*=============================================================================
-
-  Name: evrTimeGetFromEdef
-
-  Abs:  Get the evr epics timestamp from EDEF, defined as:
-        1st integer = number of seconds since 1990  
-        2nd integer = number of nsecs since last sec, except lower 17 bits=pulsid
-        
-  Args: Type                Name        Access     Description
-        ------------------- ----------- ---------- ----------------------------
-        unsigned int        edefIdx       Read     EDEF Index (0 to EDEF_MAX-1)
-        epicsTimeStamp *    edefTime_ps   Write    EDEF active timestamp
-        epicsTimeStamp *    edefTimeInit_ps Write  EDEF init   timestamp
-        int *               edefAvgDone_p Write    EDEF average-done flag
-        epicsEnum16  *      edefSevr_p    Write    EDEF severity
-
-  Rem:  Routine to get the epics timestamp and flags from the EDEF timestamp
-        table that is populated from incoming broadcast from EVG
-
-  Side: None
-
-  Ret:  -1=Failed; 0 = Success
-==============================================================================*/
-
-int evrTimeGetFromEdef    (unsigned int     edefIdx,
-                           epicsTimeStamp  *edefTime_ps,
-                           epicsTimeStamp  *edefTimeInit_ps,
-                           int             *edefAvgDone_p,
-                           epicsEnum16     *edefSevr_p)
-{
-  int idx; 
-  evrTimeEdef_ts *edef;
-
-  if ((edefIdx >= EDEF_MAX) || (!evrTimeRWMutex_ps)) return epicsTimeERROR;
-  /* if the r/w mutex is valid, and we can lock with it, read requested time index */
-  if (epicsMutexLock(evrTimeRWMutex_ps)) return epicsTimeERROR;
-
-  idx = (edef_idx[edefIdx] - 1) & MAX_EDEF_TIME_MASK; /* Back one == last written! */
-  edef = &edef_as[edefIdx][idx];
-
-  *edefTime_ps     = edef->time;
-  *edefTimeInit_ps = edef->timeInit;
-  *edefAvgDone_p   = edef->avgdone;
-  *edefSevr_p      = edef->sevr;
-  epicsMutexUnlock(evrTimeRWMutex_ps);
-  
-  return epicsTimeOK;
-}
-#endif
 
 /*=============================================================================
 
@@ -545,6 +487,83 @@ int evrTimeGet (epicsTimeStamp  *epicsTime_ps, unsigned int eventCode)
   epicsMutexUnlock(evrTimeRWMutex_ps);
   
   return status; 
+}
+
+/*=============================================================================
+
+  Name: timingGetCurTimeStamp
+
+  Abs:  Retrieve the most recent timestamp available
+        
+  Ret:  -1=Failed; 0 = Success
+  		Most recent timestamp via pTimeStampDest
+  
+==============================================================================*/ 
+int timingGetCurTimeStamp(	epicsTimeStamp  *   pTimeStampDest )
+{
+#if 1
+	return evrTimeGet ( pTimeStampDest, EVENT_FIDUCIAL );
+#else
+	int						status	= 0;
+	unsigned long long		idx		=	0LL;
+	timingFifoInfo			fifoInfo;
+
+	if ( pTimeStampDest == NULL )
+		return -1;
+
+	status = timingGetFifoInfo(	EVENT_FIDUCIAL, TS_INDEX_INIT, &idx, &fifoInfo );
+	if ( status < 0 )
+	{
+		pTimeStampDest->secPastEpoch = 0;
+		pTimeStampDest->nsec		 = PULSEID_INVALID;
+	}
+	else
+	{
+		pTimeStampDest->secPastEpoch = fifoInfo.fifo_time.secPastEpoch;
+		pTimeStampDest->nsec		 = fifoInfo.fifo_time.nsec;
+	}
+
+	return status;
+#endif
+}
+
+/*=============================================================================
+
+  Name: timingGetEventTimeStamp
+
+  Abs:  Retrieve the most recent timestamp and pulseId for the specified eventCode
+        
+  Ret:  -1=Failed; 0 = Success
+  		Most recent timestamp via pTimeStampDest
+  
+==============================================================================*/ 
+int timingGetEventTimeStamp(    epicsTimeStamp  *   pTimeStampDest,
+                                unsigned int        eventCode   	)
+{
+#if 1
+	return evrTimeGet ( pTimeStampDest, eventCode );
+#else
+	int						status	= 0;
+	unsigned long long		idx		=	0LL;
+	timingFifoInfo			fifoInfo;
+
+	if ( pTimeStampDest == NULL )
+		return -1;
+
+	status = timingGetFifoInfo(	eventCode, TS_INDEX_INIT, &idx, &fifoInfo );
+	if ( status < 0 )
+	{
+		pTimeStampDest->secPastEpoch = 0;
+		pTimeStampDest->nsec		 = PULSEID_INVALID;
+	}
+	else
+	{
+		pTimeStampDest->secPastEpoch = fifoInfo.fifo_time.secPastEpoch;
+		pTimeStampDest->nsec		 = fifoInfo.fifo_time.nsec;
+	}
+
+	return status;
+#endif
 }
 
 /*=============================================================================

@@ -31,7 +31,7 @@ DBDINC += longSubRecord
 DBDINC += bsaRecord
 DBDINC += bsacompressRecord
 
-DBD += evrSupport.dbd
+DBD += event2Support.dbd
 DBD += evrEvInvariantDelay.dbd
 DBD += evrEvDesc.dbd
 DBD += evrPattern.dbd
@@ -40,22 +40,22 @@ DBD += evrTime.dbd
 DBD += bsa.dbd
 DBD += drvEvr.dbd
 
-LIBRARY_IOC = evrSupport
+LIBRARY_IOC = event2Support
 
-evrSupport_SRCS += evrEvInvariantDelay.c
-evrSupport_SRCS += evrEvDesc.c
-evrSupport_SRCS += evrPattern.c
-evrSupport_SRCS += evrModifier5.c
-evrSupport_SRCS += evrTime.c
-evrSupport_SRCS += evrMessage.c
-evrSupport_SRCS += bsa.c
-evrSupport_SRCS += longSubRecord.c
-evrSupport_SRCS += bsaRecord.c
-evrSupport_SRCS += bsacompressRecord.c
-evrSupport_SRCS += drvEvr.c
-evrSupport_LIBS += $(EPICS_BASE_IOC_LIBS)
+event2Support_SRCS += evrEvInvariantDelay.c
+event2Support_SRCS += evrEvDesc.c
+event2Support_SRCS += evrPattern.c
+event2Support_SRCS += evrModifier5.c
+event2Support_SRCS += evrTime.c
+event2Support_SRCS += evrMessage.c
+event2Support_SRCS += bsa.c
+event2Support_SRCS += longSubRecord.c
+event2Support_SRCS += bsaRecord.c
+event2Support_SRCS += bsacompressRecord.c
+event2Support_SRCS += drvEvr.c
+event2Support_LIBS += $(EPICS_BASE_IOC_LIBS)
 ifdef DIAG_TIMER
-evrSupport_LIBS += diagTimer
+event2Support_LIBS += diagTimer
 endif
 
 #===========================

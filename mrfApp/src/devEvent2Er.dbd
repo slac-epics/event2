@@ -1,4 +1,4 @@
-include "drvMrfEr.dbd"
+include "drvEvent2Er.dbd"
 include "erRecord.dbd"
 include "ereventRecord.dbd"
 device (er, VME_IO, devMrfEr, "MRF Event Receiver")
