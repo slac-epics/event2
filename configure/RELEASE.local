@@ -22,7 +22,7 @@
 MISCUTILS_MODULE_VERSION	= R2.2.4
 DIAG_TIMER_MODULE_VERSION	= R1.9.1
 EV2_DRIVER_MODULE_VERSION	= R1.0.2
-TIMING_API_MODULE_VERSION	= R0.3
+TIMING_API_MODULE_VERSION	= R0.6
 
 # ==========================================================
 # Define module paths using pattern

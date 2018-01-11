@@ -105,7 +105,7 @@ typedef struct {
                               /*           except lower 17 bits = pulsid */
   t_HiResTime		  hiResTsc;	/* 64 bit hi res counter, typically cpu tsc */
   int                 status; /* 0=OK; -1=invalid                        */
-  timingFifoInfo      fifoInfo[MAX_TS_QUEUE];
+  EventTimingData      fifoInfo[MAX_TS_QUEUE];
   unsigned long long  ts_idx;
   int                 count;         /* # times this event has happened  */
 
@@ -506,12 +506,12 @@ int timingGetCurTimeStamp(	epicsTimeStamp  *   pTimeStampDest )
 #else
 	int						status	= 0;
 	unsigned long long		idx		=	0LL;
-	timingFifoInfo			fifoInfo;
+	EventTimingData			fifoInfo;
 
 	if ( pTimeStampDest == NULL )
 		return -1;
 
-	status = timingGetFifoInfo(	EVENT_FIDUCIAL, TS_INDEX_INIT, &idx, &fifoInfo );
+	status = timingFifoRead(	EVENT_FIDUCIAL, TS_INDEX_INIT, &idx, &fifoInfo );
 	if ( status < 0 )
 	{
 		pTimeStampDest->secPastEpoch = 0;
@@ -538,19 +538,19 @@ int timingGetCurTimeStamp(	epicsTimeStamp  *   pTimeStampDest )
   
 ==============================================================================*/ 
 int timingGetEventTimeStamp(    epicsTimeStamp  *   pTimeStampDest,
-                                unsigned int        eventCode   	)
+                                int        eventCode   	)
 {
 #if 1
 	return evrTimeGet ( pTimeStampDest, eventCode );
 #else
 	int						status	= 0;
 	unsigned long long		idx		=	0LL;
-	timingFifoInfo			fifoInfo;
+	EventTimingData			fifoInfo;
 
 	if ( pTimeStampDest == NULL )
 		return -1;
 
-	status = timingGetFifoInfo(	eventCode, TS_INDEX_INIT, &idx, &fifoInfo );
+	status = timingFifoRead(	eventCode, TS_INDEX_INIT, &idx, &fifoInfo );
 	if ( status < 0 )
 	{
 		pTimeStampDest->secPastEpoch = 0;
@@ -568,7 +568,7 @@ int timingGetEventTimeStamp(    epicsTimeStamp  *   pTimeStampDest,
 
 /*=============================================================================
 
-  Name: timingGetFifoInfo
+  Name: timingFifoRead
 
   Abs:  Get the timing associated with an event code from the fifo, defined as:
         1st integer = number of seconds since 1990  
@@ -590,10 +590,10 @@ int timingGetEventTimeStamp(    epicsTimeStamp  *   pTimeStampDest,
   Ret:  -1=Failed; 0 = Success
 ==============================================================================*/
 
-int timingGetFifoInfo(unsigned int            eventCode,
-                      int                     incr,
-                      unsigned long long  *   idx,
-                      timingFifoInfo      *   pFifoInfoRet   )
+int timingFifoRead(unsigned int            eventCode,
+                   int                     incr,
+                   uint64_t               *idx,
+                   EventTimingData        *pFifoInfoRet   )
 {
 	if (	(pFifoInfoRet == NULL)
 		||	(eventCode > MRF_NUM_EVENTS)
@@ -1654,7 +1654,7 @@ extern void eventDebug(int arg1, int arg2)
 		for ( iFifoDump = 0; iFifoDump < nFifoDump; iFifoDump++ )
 		{
 			char	strTime[40];
-			timingFifoInfo	fifoInfo;
+			EventTimingData	fifoInfo;
 			int		incr;
 			int		status;
 			if ( iFifoDump == 0 )
@@ -1662,7 +1662,7 @@ extern void eventDebug(int arg1, int arg2)
 			else
 				incr	= -1;
 
-			status = timingGetFifoInfo( arg1, incr, &idx, &fifoInfo );
+			status = timingFifoRead( arg1, incr, &idx, &fifoInfo );
 			if ( iFifoDump == 0 )
 			{
 				int fidx = idx & MAX_TS_QUEUE_MASK;

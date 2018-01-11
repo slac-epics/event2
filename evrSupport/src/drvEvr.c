@@ -152,12 +152,12 @@ int evrGetLastFiducial( )
   Abs: A simple routine to return the fiducial id for the most
   	   recently received EVENT_FIDUCIAL, but as a long long for timesync!
 =============================================================================*/
-timingPulseId timingGetLastFiducial( )
+TimingPulseId timingGetLastFiducial( )
 {
     if (lastfid == PULSEID_INVALID)
         return TIMING_PULSEID_INVALID;
     else
-        return (timingPulseId) lastfid;
+        return (TimingPulseId) lastfid;
 }
 
 /*=============================================================================
@@ -166,13 +166,13 @@ timingPulseId timingGetLastFiducial( )
   Abs: timingGetFiducialForTimeStamp returns the 64 bit fiducial that corresponds to the specified timestamp.
 	   If the timing module cannot determine the correct fiducial, it returns TIMING_PULSEID_INVALID.
 =============================================================================*/
-extern timingPulseId timingGetFiducialForTimeStamp( epicsTimeStamp timeStamp )
+extern TimingPulseId timingGetFiducialForTimeStamp( epicsTimeStamp timeStamp )
 {
 	epicsUInt32		fiducial = timeStamp.nsec & PULSEID_INVALID;
     if ( fiducial == PULSEID_INVALID )
         return TIMING_PULSEID_INVALID;
     else
-        return (timingPulseId) fiducial;
+        return (TimingPulseId) fiducial;
 }
 
 
@@ -609,3 +609,7 @@ void peek_fiducialRegistrar (void) {
 
 epicsExportRegistrar (peek_fiducialRegistrar);
 
+void timingPrintNow()
+{
+    printf("%d\n", lastfid);
+}
