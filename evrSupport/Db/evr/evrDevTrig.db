@@ -644,7 +644,8 @@ record( calcout, "$(TRIG):TWID2" )
 	field( PREC, "1" )
 	field( VAL, "$(WID=100)" )
 	field( MDEL, "-1" )
-	field( SDIS, "$(TRIG):FW_SW2.VAL" )
+# No need to disable TWID2
+#	field( SDIS, "$(TRIG):FW_SW2.VAL" )
 #field(TPRO, 2)
 }
 
@@ -715,6 +716,18 @@ record( bo, "$(TRIG):FW_EC_SEQ_ENAB" )
 	field( ONAM, "Enabled" )
 }
 
+# Disable BW_EC_SEQ for 1 sec during startup
+# and during EC_FW_SEQ to avoid stepping on TEC
+record( bo, "$(TRIG):BW_EC_SEQ_DISABLE" )
+{
+	field( DOL,	 "1" )
+	field( ZNAM, "Enabled" )
+	field( ONAM, "Disabled" )
+	field( OUT,  "$(TRIG):BW_EC_SEQ.DISA" )
+	field( HIGH, "1" )
+	field( PINI, "YES" )
+}
+
 # The foward event code sequence is now an aSub
 # record, which copies INPA to OUTA, INPB to OUTB, ...
 # It's configured to write the current trigger event code
@@ -729,6 +742,7 @@ record( aSub, "$(TRIG):FW_EC_SEQ" )
 	field( DESC, "Output Selector" )
 	field( SCAN, "Passive" )
 	field( PINI, "NO" )
+	field( FLNK, "$(TRIG):BW_EC_SEQ_DISABLE" )
 #	field( EFLG, "ON CHANGE" )
 	field( EFLG, "ON CHANGE" )
 	field( INAM, "asubCopyInToOutInit" )
