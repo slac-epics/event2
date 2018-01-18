@@ -55,6 +55,8 @@
 
 #include <string.h>           /* for memset                */
 #include <sys/time.h>
+#include <stdint.h>
+#include <math.h>
 #include "subRecord.h"        /* for struct subRecord      */
 #include "longSubRecord.h"    /* for struct longSubRecord  */
 #include "registryFunction.h" /* for epicsExport           */
@@ -104,7 +106,7 @@ typedef struct {
                               /*           except lower 17 bits = pulsid */
   int                 status; /* 0=OK; -1=invalid                        */
   struct evrFifoInfo  fifoInfo[	MAX_TS_QUEUE ];
-  long long           fifo_tsc_nom[MAX_TS_QUEUE];
+  long long int       fifo_tsc_nom[MAX_TS_QUEUE];
   unsigned long long  ts_idx;
   int                 count;         /* # times this event has happened  */
 
@@ -773,10 +775,10 @@ int evrTimeInit(epicsInt32 firstTimeSlotIn, epicsInt32 secondTimeSlotIn)
         for (idx=0; idx<=MRF_NUM_EVENTS; idx++) {
     	  evrTime_ts  *   pevrTime = &eventCodeTime_as[idx];
           int idx2;    
-		  t_HiResTime			hiResTsc	= GetHiResTicks();
+		  /* t_HiResTime			hiResTsc	= GetHiResTicks(); */
           for (idx2 = 0; idx2 < MAX_TS_QUEUE; idx2++) {
               pevrTime->fifoInfo[idx2].fifo_time   = mod720time;
-              pevrTime->fifoInfo[idx2].fifo_tsc    = hiResTsc;
+              pevrTime->fifoInfo[idx2].fifo_tsc    = 0LL;
               pevrTime->fifoInfo[idx2].fifo_status = epicsTimeERROR;
               pevrTime->fifo_tsc_nom[idx2]         = 0LL;
           }
@@ -1329,7 +1331,6 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
     int                         fidqFiducial	= PULSEID_INVALID;
 	t_HiResTime	 				fidqTsc 		= 0LL;
 	const double				fidInterval		= 1.0 / 360.0;
-	long long					tscPerFid		= (long long)( HiResTicksPerSecond() * fidInterval );
     int                         countDiff;
     if ((eventNum <= 0) || (eventNum > MRF_NUM_EVENTS)) {
         return epicsTimeERROR;
@@ -1421,8 +1422,11 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
                 pevrTime->nFidQEarly++;
             }
         else	if (	pLastGoodTS	  != NULL
+#if 0
 					|| (	curTimeStatus == epicsTimeOK
-						&&  curFiducial   != PULSEID_INVALID ) )
+						&&  curFiducial   != PULSEID_INVALID )
+#endif
+						)
             {
                 /*
                  * fidq fiducial is valid, but doesn't match evrTimeCurrent or evrTimeNext1
@@ -1436,10 +1440,12 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
 				/* We see too many of these! */
                 pevrTime->nFidQLate++;
 
+#if 0
                 /* See if we have a new last good timestamp */
 				if (	curTimeStatus == epicsTimeOK
 					&&  curFiducial   != PULSEID_INVALID )
                     pLastGoodTS = &EVR_APS_TIME( evrTimeCurrent );
+#endif
 
                 /* Grab the last good fiducial */
                 lastGoodFiducial = PULSEID(*pLastGoodTS);
@@ -1526,12 +1532,13 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
 
         {
 			/* Keep stats on min and max deltaTsc vs prior fidqTsc in the fifo queue */
-            unsigned int    prior_idx		= (pevrTime->ts_idx - 1) & MAX_TS_QUEUE_MASK;
-            long long		prior_tsc		= pevrTime->fifoInfo[prior_idx].fifo_tsc;
-            long long		prior_tsc_nom	= pevrTime->fifo_tsc_nom[prior_idx];
-            int				prior_fid		= PULSEID(pevrTime->fifoInfo[prior_idx].fifo_time);
-			if( prior_tsc_nom != 0LL )
-				prior_tsc = prior_tsc_nom;
+            unsigned long long	prior_idx		= (pevrTime->ts_idx - 1) & MAX_TS_QUEUE_MASK;
+            long long			prior_tsc		= pevrTime->fifoInfo[prior_idx].fifo_tsc;
+            long long			prior_tsc_nom	= pevrTime->fifo_tsc_nom[prior_idx];
+            int					prior_fid		= PULSEID(pevrTime->fifoInfo[prior_idx].fifo_time);
+			long long			tscPerFid		= llround( (double) HiResTicksPerSecond() * fidInterval );
+            /* prior_fid		= pevrTime->fifoInfo[prior_idx].fifo_fid; */
+			/* if( prior_tsc_nom != 0LL ) prior_tsc = prior_tsc_nom; */
 			long long		deltaTsc		= fidqTsc - prior_tsc;
 
 			// Don't set fifoDeltaMax on the first deltaTsc as it's possibly invalid
@@ -1551,19 +1558,22 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
             unsigned int		idx		        = (pevrTime->ts_idx++) & MAX_TS_QUEUE_MASK;
             pevrTime->fifoInfo[idx].fifo_time   = pevrTime->time;
             pevrTime->fifoInfo[idx].fifo_tsc    = fidqTsc;
-            pevrTime->fifoInfo[idx].fifo_fid    = pevrTime->time.nsec & 0x1ffff;
+            // pevrTime->fifoInfo[idx].fifo_fid    = pevrTime->time.nsec & 0x1ffff;
             pevrTime->fifoInfo[idx].fifo_status = pevrTime->status;
-            if (pevrTime->fifoInfo[idx].fifo_fid == 0x1ffff)
-                pevrTime->fifoInfo[idx].fifo_fid = TIMING_PULSEID_INVALID;
+            // if (pevrTime->fifoInfo[idx].fifo_fid == 0x1ffff)
+            //     pevrTime->fifoInfo[idx].fifo_fid = TIMING_PULSEID_INVALID;
 
 			// Advance fifo_tsc_nom
 			int	cur_fid	= PULSEID(pevrTime->time);
-			if ( prior_tsc_nom == 0LL || cur_fid == PULSEID_INVALID || prior_fid == PULSEID_INVALID )
+			if (	prior_tsc_nom == 0LL				/* No prior_tsc_nom		*/
+				||	prior_fid == PULSEID_INVALID		/* Invalid prior_fid	*/
+				||	cur_fid == PULSEID_INVALID			/* Invalid cur_fid		*/
+				||	HiResTicksPerSecond() < 1.5e8 )		/* diagTimer not calib.	*/
 			{
             	pevrTime->fifo_tsc_nom[idx]	= fidqTsc;
-				cum_isr_latency	= 0LL;
-				num_isr_latency_measurements = 0LL;
-				max_isr_latency = 0LL;
+				pevrTime->cum_isr_latency	= 0LL;
+				pevrTime->num_isr_latency_measurements = 0LL;
+				pevrTime->max_isr_latency = 0LL;
 			}
 			else
 			{
@@ -1571,24 +1581,43 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
 				 * Anything more than that is an indication of less than optimal interrupt latency.
 				 * Anything less is due to a shorter interrupt latency than previously seen.
 				 */
-				long long	fid_delta	= FID_DIFF(cur_fid - prior_fid);
+				long long	fid_delta	= FID_DIFF(cur_fid, prior_fid);
 				long long	tsc_nom		= prior_tsc_nom + tscPerFid * fid_delta;
-				if ( fidqTsc < tsc_nom )
+				if ( fid_delta <= 0 )
+				{
+					pevrTime->fifo_tsc_nom[idx]	= fidqTsc;
+					printf( "event %d: Error: cur_fid <= prior_fid: tsc_nom %lld, fidqTsc %lld, tscPerFid %lld, prior_fid %d, cur_fid %d\n",
+							eventNum, tsc_nom, fidqTsc, tscPerFid, prior_fid, cur_fid );
+					tsc_nom	= fidqTsc;
+				}
+				else if ( fidqTsc < tsc_nom )
 				{
 					pevrTime->fifo_tsc_nom[idx]	= fidqTsc;
 					// HACK - Remove printf after initial testing
-					printf( "fifo_tsc_nom backed up %ld tsc (%.4f us)\n",
-							(tsc_nom - fidqTsc), (double)(tsc_nom - fidqTsc) / HiResTicksPerSecond() / 1.0e6 );
+					printf( "event %d: tsc_nom %lld, fidqTsc %lld, tscPerFid %lld, prior_fid %d, cur_fid %d\n",
+							eventNum, tsc_nom, fidqTsc, tscPerFid, prior_fid, cur_fid );
+					printf( "event %d: fifo_tsc_nom backed up %lld tsc (%.4f us)\n",
+							eventNum, (tsc_nom - fidqTsc), (double)(tsc_nom - fidqTsc) / HiResTicksPerSecond() * 1.0e6 );
+					tsc_nom	= fidqTsc;
+				}
+				else if ( (fidqTsc - tsc_nom) > (fid_delta * tscPerFid) )
+				{
+					pevrTime->fifo_tsc_nom[idx]	= fidqTsc;
+					// HACK - Remove printf after initial testing
+					printf( "event %d: tsc_nom %lld, fidqTsc %lld, tscPerFid %lld, prior_fid %d, cur_fid %d\n",
+							eventNum, tsc_nom, fidqTsc, tscPerFid, prior_fid, cur_fid );
+					printf( "event %d: fifo_tsc_nom advanced by %lld tsc (%.4f us)\n",
+							eventNum, (fidqTsc - tsc_nom ), (double)(fidqTsc - tsc_nom) / HiResTicksPerSecond() * 1.0e6 );
 					tsc_nom	= fidqTsc;
 				}
 				else
 					pevrTime->fifo_tsc_nom[idx]	= tsc_nom;
 
 				/* Compare w/ actual ISR fidqTsc for diagnostics */
-				cum_isr_latency	+= fidqTsc - tsc_nom;
-				num_isr_latency_measurements++;
-				if( max_isr_latency < (fidqTsc - tsc_nom) )
-					max_isr_latency = (fidqTsc - tsc_nom);
+				pevrTime->cum_isr_latency	+= fidqTsc - tsc_nom;
+				pevrTime->num_isr_latency_measurements++;
+				if( pevrTime->max_isr_latency < (fidqTsc - tsc_nom) )
+					pevrTime->max_isr_latency = (fidqTsc - tsc_nom);
 			}
         }
     }
@@ -1703,9 +1732,10 @@ extern void eventDebug(int arg1, int arg2)
         doreset = 1;
     }
     do {
-		unsigned long long  idx         = 0LL;
-		long long  			delta_tsc   = 0LL;
-		long long  			prior_tsc   = 0LL;
+		uint64_t			idx         = 0LL;
+		long long			delta_tsc   = 0LL;
+		long long			prior_tsc   = 0LL;
+		long long			tsc_latency = 0LL;
         evrTime_ts      *   pevrTime    = &eventCodeTime_as[arg1];
         printf( "Event Code %d:\n", arg1 );
         printf( "   Count = %d, time = %08x.%08x, status = %d\n",
@@ -1729,26 +1759,37 @@ extern void eventDebug(int arg1, int arg2)
 				incr	= -1;
 
 			status = evrTimeGetFifoInfo( &fifoInfo, arg1, &idx, incr );
+  			long long int	tsc_nom = pevrTime->fifo_tsc_nom[idx & MAX_TS_QUEUE_MASK];
 			if ( iFifoDump == 0 )
 			{
 				int fidx = idx & MAX_TS_QUEUE_MASK;
 				int lidx = (idx + MAX_TS_QUEUE - 1) & MAX_TS_QUEUE_MASK;
-				printf("   FIFO: idx = 0x%llx, fidx = 0x%x, lidx = 0x%x\n", idx, fidx, lidx );
-				delta_tsc    = 0LL;
+				printf("   FIFO: idx = 0x%llx, fidx = 0x%x, lidx = 0x%x\n", (unsigned long long) idx, fidx, lidx );
+				delta_tsc	= 0LL;
+				tsc_latency	= 0LL;
 			}
 			else
 			{
-				delta_tsc = prior_tsc - fifoInfo.fifo_tsc;
+				tsc_latency	= fifoInfo.fifo_tsc - tsc_nom;
+				delta_tsc	= prior_tsc - fifoInfo.fifo_tsc;
 			}
 			prior_tsc = fifoInfo.fifo_tsc;
-			epicsTimeToStrftime( strTime, 40, "%M:%S.%03f", &fifoInfo.fifo_time );
+			epicsTimeToStrftime( strTime, 40, "%M:%S.%05f", &fifoInfo.fifo_time );
 #ifdef HI_RES_TIME_H
-			printf( "     time(%2d) = %14s, fid %d, delta %.3fms\n", -iFifoDump,
+#if 1
+			printf( "     time(%2d) = %14s, fid %d, delta %.3fms, latency %lld ticks\n", -iFifoDump,
 					strTime, fifoInfo.fifo_time.nsec & 0x1ffff,
-					HiResTicksToSeconds( delta_tsc ) * 1000	);
+					HiResTicksToSeconds( delta_tsc ) * 1000,
+					tsc_latency );
 #else
-			printf( "     time(%d) = %14s, fid %d, delta %lld ticks\n", -iFifoDump,
-					strTime, fifoInfo.fifo_time.nsec & 0x1ffff, delta_tsc );
+			printf( "     time(%2d) = %14s, fid %d, delta %.3fms, fifo_tsc %lld fifo_tsc_nom %lld\n", -iFifoDump,
+					strTime, fifoInfo.fifo_time.nsec & 0x1ffff,
+					HiResTicksToSeconds( delta_tsc ) * 1000,
+					(long long int) fifoInfo.fifo_tsc, tsc_nom );
+#endif
+#else
+			printf( "     time(%d) = %14s, fid %d, delta %lld ticks, latency %lld ticks\n", -iFifoDump,
+					strTime, fifoInfo.fifo_time.nsec & 0x1ffff, delta_tsc, tsc_latency );
 #endif /* HI_RES_TIME_H */
 			if ( status < 0 )
 			{
@@ -1778,8 +1819,8 @@ extern void eventDebug(int arg1, int arg2)
         printf( "   nTimeStampOK = %d, nTimeStampFailed = %d\n",
 					pevrTime->nTimeStampOK, pevrTime->nTimeStampFailed );
         printf( "   avg_isr_latency = %.3f us, max_isr_latency = %.3f us\n",
-					(double) pevrTime->cum_isr_latency / pevrTime->num_isr_latency_measurements / HiResTicksPerSecond() / 1.0e6,
-					pevrTime->max_isr_latency / HiResTicksPerSecond() / 1.0e6 );
+					(double) pevrTime->cum_isr_latency / pevrTime->num_isr_latency_measurements / HiResTicksPerSecond() * 1.0e6,
+					pevrTime->max_isr_latency / HiResTicksPerSecond() * 1.0e6 );
 
         if (doreset) {
 			// if ( evrTimeRWMutex_ps && epicsMutexLock(evrTimeRWMutex_ps) == 0 )
