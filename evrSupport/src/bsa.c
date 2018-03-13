@@ -98,6 +98,9 @@ typedef struct {
   /* Intermediate Values */
   double              avg;       /* average  so far   */
   double              var;       /* variance so far   */
+  double              stdDev;    /* std deviation so far   */
+  double              sumSq;     /* sum of squares so far   */
+  double              sumVar;    /* sum of variance so far   */
   int                 avgcnt;    /* count    so far   */
   epicsTimeStamp      timeData;  /* latest input time */
   epicsTimeStamp      timeInit;  /* init         time */
@@ -183,7 +186,11 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
 #endif
       bsa_ps->timeInit = edefTimeInit_s;
       bsa_ps->avg    = 0.0;
+      bsa_ps->rms    = 0.0;
       bsa_ps->var    = 0.0;
+      bsa_ps->stdDev = 0.0;
+      bsa_ps->sumSq  = 0.0;
+      bsa_ps->sumVar = 0.0;
       bsa_ps->avgcnt = 0;
       bsa_ps->readcnt= 0;
       if (bsa_ps->readFlag) bsa_ps->noread++;
@@ -213,50 +220,56 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
 	/* now start the averaging */
 	/* first time thru for new cycle; reset previous avg, variance */
 	
-	/* compute running avg and variance                      */
-	/*        This is translated from REF_RMX_BPM:CUM.F86.   */
-	/*                                                       */
-	/*        CUM computes VAR as the sample variance:       */ 
-	/*          VAR = (SUMSQ - SUM*SUM/N)/(N-1)              */
-	/*          where SUM = sum of the N values, and         */
-	/*           SUMSQ = sum of the squares of the N values. */
-	/*                                                       */
-	/*        Note that CUM's method of computing VAR avoids */
-	/*        possible loss of significance.                 */
-	/*                                                       */
-	/*  Compute running maximum status and severity          */
-                                                       
-	if ((bsa_ps->avgcnt == 1) || noAverage) {
-          bsa_ps->avgcnt = 1;
-	  bsa_ps->avg    = secnVal;
-          bsa_ps->var    = 0.0;
-	  bsa_ps->stat   = secnStat;
-	  bsa_ps->sevr   = secnSevr;
-	} 
-	else {
-	  int avgcnt_1 = bsa_ps->avgcnt-1;
-          int avgcnt_2 = bsa_ps->avgcnt-2;
-	  double diff  = secnVal - bsa_ps->avg;
-	  bsa_ps->avg += diff/(double)bsa_ps->avgcnt;
-	  bsa_ps->var  = ((double)avgcnt_2*(bsa_ps->var/(double)avgcnt_1)) +
-                         ((diff*diff)/(double)bsa_ps->avgcnt);
-	    if (secnSevr > bsa_ps->sevr) {
-                bsa_ps->sevr = secnSevr;
-                bsa_ps->stat = secnStat;
-            }
-	}
+    /*                                                      */
+    /* Running variance computed per Welford's method       */
+    /*  D.Knuth: Art of Computer Programming Vol 2 p. 232   */
+    /* Initialize for k = 1:                                */
+    /*      Mean(1) = x(1)                                  */
+    /*      SumVar(1) = 0                                   */
+    /* for k in 2..N                                        */
+    /*    Mean(k)   = Mean(k-1) + (x(k) - Mean(k-1))/k      */
+    /*    SumVar(k) = SumVar(k-1)                           */
+    /*                      +   (   (x(k) - Mean(k-1))      */
+    /*                          *   (x(k) - Mean(k)))       */
+    /*    Var(k) = SumVar(k) / (k-1)                        */
+    /*    StdDev(k) = sqrt( Var(k) )                        */
+    /*                                                      */
+    /* Compute running maximum status and severity          */
+
+    if ((bsa_ps->avgcnt == 1) || noAverage) {
+      bsa_ps->avgcnt = 1;
+      bsa_ps->avg    = secnVal;
+      bsa_ps->var    = 0.0;
+      bsa_ps->stat   = secnStat;
+      bsa_ps->sevr   = secnSevr;
+    }
+    else {
+      double diff  = secnVal - bsa_ps->avg;
+      bsa_ps->avg += diff/(double)bsa_ps->avgcnt;
+      double diff1 = secnVal - bsa_ps->avg;
+      bsa_ps->sumVar += diff * diff1;
+      bsa_ps->sumSq  += secnVal * secnVal;
+      if (secnSevr > bsa_ps->sevr) {
+        bsa_ps->sevr = secnSevr;
+        bsa_ps->stat = secnStat;
+      }
+    }
       } /* if good, include in averaging */
     }
     /* Finish up calcs when the average is done and force record processing */
     if (edefAvgDone) { /* values when avg is done */
       bsa_ps->val  = bsa_ps->avg;
       bsa_ps->cnt  = bsa_ps->avgcnt;
-      if (bsa_ps->avgcnt <= 1) {
-        bsa_ps->rms = 0.0;
-      } else {
-        bsa_ps->rms = sqrt(bsa_ps->rms);
-      }
       bsa_ps->time = bsa_ps->timeData;
+      if (bsa_ps->avgcnt <= 1) {
+        bsa_ps->var    = 0.0;
+        bsa_ps->stdDev = 0.0;
+        bsa_ps->rms    = 0.0;
+      } else {
+        bsa_ps->var    = bsa_ps->sumVar/(bsa_ps->avgcnt-1);
+        bsa_ps->stdDev = sqrt(bsa_ps->var);
+        bsa_ps->rms    = sqrt(bsa_ps->sumSq/bsa_ps->avgcnt);
+      }
       bsa_ps->avgcnt = 0;
       bsa_ps->avg    = 0;
       if (bsa_ps->ioscanpvt) {
