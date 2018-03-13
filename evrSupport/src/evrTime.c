@@ -55,6 +55,7 @@
 
 #include <string.h>           /* for memset                */
 #include <sys/time.h>
+#include <inttypes.h>
 #include <stdint.h>
 #include <math.h>
 #include "subRecord.h"        /* for struct subRecord      */
@@ -1786,10 +1787,10 @@ extern void eventDebug(int arg1, int arg2)
         doreset = 1;
     }
     do {
-		unsigned long long	idx         = 0LL;
-		long long			delta_tsc   = 0LL;
-		long long			prior_tsc   = 0LL;
-		long long			tsc_latency = 0LL;
+        uint64_t            idx         = 0LL;
+        long long           delta_tsc   = 0LL;
+        long long           prior_tsc   = 0LL;
+        long long           tsc_latency = 0LL;
         evrTime_ts      *   pevrTime    = &eventCodeTime_as[arg1];
         printf( "Event Code %d:\n", arg1 );
         printf( "   Count = %d, time = %08x.%08x, status = %d\n",
@@ -1818,9 +1819,9 @@ extern void eventDebug(int arg1, int arg2)
 			{
 				int fidx = idx & MAX_TS_QUEUE_MASK;
 				int lidx = (idx + MAX_TS_QUEUE - 1) & MAX_TS_QUEUE_MASK;
-				printf("   FIFO: idx = 0x%llx, fidx = 0x%x, lidx = 0x%x\n", idx, fidx, lidx );
-				delta_tsc	= 0LL;
-				tsc_latency	= 0LL;
+                printf( "   FIFO: idx = 0x%" PRIx64 ", fidx = 0x%x, lidx = 0x%x\n", idx, fidx, lidx );
+                delta_tsc   = 0LL;
+                tsc_latency = 0LL;
 			}
 			else
 			{
