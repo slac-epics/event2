@@ -1359,7 +1359,6 @@ epicsStatus ErEpicsStringinRead (stringinRecord  *pRec)
     epicsMutexUnlock (pCard->CardLock);
 
 	if ( pRec->tpro )
-#if EPICS_VERSION < 3 || (EPICS_VERSION == 3 && EPICS_REVISION < 15)
 		printf( "ErEpicsStringinRead: %s updated to %s for EC %d\n",
 				pRec->name, pRec->val, Event );
     return (0);
