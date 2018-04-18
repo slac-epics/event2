@@ -683,7 +683,7 @@ static int find_trigger(epicsEnum16 enable, int mask, ErCardStruct  *pCard, unsi
 
 /*
  * Input:
- *     X - Card number
+ *     Z - Card number
  * Output:
  *     A-L - Event number causing this output to trigger, 0 = no trigger,
  *           512 = multiple triggers, 1024 = misconfigure (no IRQ).

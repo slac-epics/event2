@@ -1344,6 +1344,9 @@ epicsStatus ErEpicsStringinRead (stringinRecord  *pRec)
 		 * for this record.  Possibly a duplicate, in
 		 * which case the field is set to -1.
 		 * We don't set pact here as the user can fix this. */
+		if ( pRec->tpro )
+			printf( "ErEpicsStringinRead: %s Invalid EC %d\n",
+					pRec->name, Event );
         return(-1);
     }/*end if event number is invalid*/
 
@@ -1364,13 +1367,8 @@ epicsStatus ErEpicsStringinRead (stringinRecord  *pRec)
     epicsMutexUnlock (pCard->CardLock);
 
 	if ( pRec->tpro )
-#if EPICS_VERSION < 3 || (EPICS_VERSION == 3 && EPICS_REVISION < 15)
 		printf( "ErEpicsStringinRead: %s updated to %s for EC %d\n",
-				pRec->name, pRec->val, pRec->evnt );
-#else
-		printf( "ErEpicsStringinRead: %s updated to %s for EC %s\n",
-				pRec->name, pRec->val, pRec->evnt );
-#endif
+				pRec->name, pRec->val, Event );
     return (0);
 
 }/*end ErEpicsStringinRead()*/
