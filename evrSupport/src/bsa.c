@@ -263,7 +263,8 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
         bsa_ps->stdDev = 0.0;
         bsa_ps->rms    = 0.0;
       } else {
-        bsa_ps->var    = bsa_ps->sumVar/(bsa_ps->avgcnt-1);
+        /* Using k denom for population var instead of sample var */
+        bsa_ps->var    = bsa_ps->sumVar/bsa_ps->avgcnt;
         bsa_ps->stdDev = sqrt(bsa_ps->var);
         bsa_ps->rms    = sqrt(bsa_ps->sumSq/bsa_ps->avgcnt);
       }
