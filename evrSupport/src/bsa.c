@@ -406,7 +406,7 @@ static long read_bsa(bsaRecord *pbsa)
       bsa_ps->readFlag = 0;
       noread           = 0;
       pbsa->val  = bsa_ps->val;
-      pbsa->rms  = bsa_ps->rms;
+      pbsa->rms  = bsa_ps->var;	/* BSA record RMS field is RMS variance, i.e. var */
       pbsa->cnt  = bsa_ps->cnt;
       pbsa->gen  = bsa_ps->edefGen;
       pbsa->ign  = bsa_ps->initGen;
