@@ -1,6 +1,9 @@
 #
 # RELEASE_NOTES
 #
+R5.2.0 2018-04-20	Bruce Hill
+	Revised rms variance computation to compute sample variance per Tim Maxwell request.
+
 R5.1.0 2018-04-19	Bruce Hill
 	Revised rms variance computation to use Welford algorithm to compute population variance.
 	Updated to diagTimer/R2.9.2 for base 3.16 compatibility
