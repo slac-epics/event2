@@ -17,39 +17,39 @@
 
   ---------------------------------------------------------------------------*/
 
-#include "copyright_SLAC.h"	/* SLAC copyright comments */
+#include "copyright_SLAC.h" /* SLAC copyright comments */
  
 /*-----------------------------------------------------------------------------
  
   Mod:  12 Feb 2010     S. Hoobler (sonya)
 
-	To set SEVR/STAT on BSA PVs:
+    To set SEVR/STAT on BSA PVs:
 
-	  Structure bsa_ts:
-	    (1) Add epicsEnum16 sevr and stat fields.
+      Structure bsa_ts:
+        (1) Add epicsEnum16 sevr and stat fields.
 
-	  Routine bsaSecnAvg:
-	    (1) Add epicsEnum16 secnStat to the argument list.
-	    (2) In the code that initializes the average under "if
-	    ((bsa_ps->avgcnt == 1) || noAverage)", set sevr and stat 
-	    of the bsa_ts structure to the input secnStat and secnSevr.
-	    (3) In the code that calculates running avg, add logic to 
+      Routine bsaSecnAvg:
+        (1) Add epicsEnum16 secnStat to the argument list.
+        (2) In the code that initializes the average under "if
+        ((bsa_ps->avgcnt == 1) || noAverage)", set sevr and stat 
+        of the bsa_ts structure to the input secnStat and secnSevr.
+        (3) In the code that calculates running avg, add logic to 
             compute running max of stat and sev
 
-	  Routine read_bsa:
-	    (1) Add local variables dstat and dsevr to copy stat and sevr from bsa_ts.
-	    (2) In the logic that calls recGblSetSevr, add an "else" that calls 
+      Routine read_bsa:
+        (1) Add local variables dstat and dsevr to copy stat and sevr from bsa_ts.
+        (2) In the logic that calls recGblSetSevr, add an "else" that calls 
                 recGblSetSevr with the local variables. 
 
-	 Routine write_ao:
-	    (1) Replace dbGetTimeStamp with dbGetField in order to get stat, sevr, 
-	    and time of input record.
-	    (2) In bsaSecnAvg call, replace pao->nsev with severity of input record
-	    and add stat of input record.
+     Routine write_ao:
+        (1) Replace dbGetTimeStamp with dbGetField in order to get stat, sevr, 
+        and time of input record.
+        (2) In bsaSecnAvg call, replace pao->nsev with severity of input record
+        and add stat of input record.
 
-	 README file of the event module:
-	  (1) In the section that describes calling BSA routines directly
-	  (II-2), update the API description to include the new argument.
+     README file of the event module:
+      (1) In the section that describes calling BSA routines directly
+      (II-2), update the API description to include the new argument.
 
  
 =============================================================================*/
@@ -135,7 +135,7 @@ static epicsMutexId bsaRWMutex_ps = 0;
         double              secnVal     Read       Data value
         epicsEnum16         secnStat    Read       Data status
         epicsEnum16         secnSevr    Read       Data severity
-	int                 noAveraging 
+        int                 noAveraging Read       Flag to disable averaging 
         void *              dev_ps      Read/Write BSA Device Structure
 
   Rem:  
@@ -215,45 +215,42 @@ int bsaSecnAvg(epicsTimeStamp *secnTime_ps,
     
       /* Include this value in the average if it's OK with the EDEF */
       if (secnSevr < edefSevr) {
-	bsa_ps->avgcnt++;
+        /* Running variance computed per Welford's method       */
+        /*  D.Knuth: Art of Computer Programming Vol 2 p. 232   */
+        /* Initialize for k = 1:                                */
+        /*      Mean(1) = x(1)                                  */
+        /*      SumVar(1) = 0                                   */
+        /* for k in 2..N                                        */
+        /*    Mean(k)   = Mean(k-1) + (x(k) - Mean(k-1))/k      */
+        /*    SumVar(k) = SumVar(k-1)                           */
+        /*                      +   (   (x(k) - Mean(k-1))      */
+        /*                          *   (x(k) - Mean(k)))       */
+        /*    Var(k) = SumVar(k) / (k-1)                        */
+        /*    StdDev(k) = sqrt( Var(k) )                        */
+        /*                                                      */
+        /* Compute running maximum status and severity          */
 
-	/* now start the averaging */
-	/* first time thru for new cycle; reset previous avg, variance */
-	
-    /*                                                      */
-    /* Running variance computed per Welford's method       */
-    /*  D.Knuth: Art of Computer Programming Vol 2 p. 232   */
-    /* Initialize for k = 1:                                */
-    /*      Mean(1) = x(1)                                  */
-    /*      SumVar(1) = 0                                   */
-    /* for k in 2..N                                        */
-    /*    Mean(k)   = Mean(k-1) + (x(k) - Mean(k-1))/k      */
-    /*    SumVar(k) = SumVar(k-1)                           */
-    /*                      +   (   (x(k) - Mean(k-1))      */
-    /*                          *   (x(k) - Mean(k)))       */
-    /*    Var(k) = SumVar(k) / (k-1)                        */
-    /*    StdDev(k) = sqrt( Var(k) )                        */
-    /*                                                      */
-    /* Compute running maximum status and severity          */
-
-    if ((bsa_ps->avgcnt == 1) || noAverage) {
-      bsa_ps->avgcnt = 1;
-      bsa_ps->avg    = secnVal;
-      bsa_ps->var    = 0.0;
-      bsa_ps->stat   = secnStat;
-      bsa_ps->sevr   = secnSevr;
-    }
-    else {
-      double diff  = secnVal - bsa_ps->avg;
-      bsa_ps->avg += diff/(double)bsa_ps->avgcnt;
-      double diff1 = secnVal - bsa_ps->avg;
-      bsa_ps->sumVar += diff * diff1;
-      bsa_ps->sumSq  += secnVal * secnVal;
-      if (secnSevr > bsa_ps->sevr) {
-        bsa_ps->sevr = secnSevr;
-        bsa_ps->stat = secnStat;
-      }
-    }
+        /* now start the averaging */
+        /* first time thru for new cycle; reset previous avg, variance */
+        bsa_ps->avgcnt++;
+        if ((bsa_ps->avgcnt == 1) || noAverage) {
+          bsa_ps->avgcnt = 1;
+          bsa_ps->avg    = secnVal;
+          bsa_ps->var    = 0.0;
+          bsa_ps->stat   = secnStat;
+          bsa_ps->sevr   = secnSevr;
+        }
+        else {
+          double diff  = secnVal - bsa_ps->avg;
+          bsa_ps->avg += diff/(double)bsa_ps->avgcnt;
+          double diff1 = secnVal - bsa_ps->avg;
+          bsa_ps->sumVar += diff * diff1;
+          bsa_ps->sumSq  += secnVal * secnVal;
+          if (secnSevr > bsa_ps->sevr) {
+            bsa_ps->sevr = secnSevr;
+            bsa_ps->stat = secnStat;
+          }
+        }
       } /* if good, include in averaging */
     }
     /* Finish up calcs when the average is done and force record processing */
@@ -406,7 +403,7 @@ static long read_bsa(bsaRecord *pbsa)
       bsa_ps->readFlag = 0;
       noread           = 0;
       pbsa->val  = bsa_ps->val;
-      pbsa->rms  = bsa_ps->var;	/* BSA record RMS field is RMS variance, i.e. var */
+      pbsa->rms  = bsa_ps->var; /* BSA record RMS field is RMS variance, i.e. var */
       pbsa->cnt  = bsa_ps->cnt;
       pbsa->gen  = bsa_ps->edefGen;
       pbsa->ign  = bsa_ps->initGen;
@@ -501,7 +498,7 @@ static long write_ao(aoRecord *pao)
   status = dbGetAlarm(&pao->dol, &input_status, &input_severity);
   if(status == 0) status = dbGetTimeStamp(&pao->dol, &input_timestamp);
   if(status == 0) {
-  	status = bsaSecnAvg(&input_timestamp, pao->val, input_status, input_severity, 0, pao->dpvt);
+    status = bsaSecnAvg(&input_timestamp, pao->val, input_status, input_severity, 0, pao->dpvt);
     if (pao->tse == epicsTimeEventDeviceTime)
       pao->time = input_timestamp;
   } else {
