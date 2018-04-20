@@ -1,6 +1,22 @@
 #
 # RELEASE_NOTES
 #
+R5.1.0 2018-04-19	Bruce Hill
+	Revised rms variance computation to use Welford algorithm to compute population variance.
+	Updated to diagTimer/R2.9.2 for base 3.16 compatibility
+
+R5.0.1	2018-01-11 Michael Browne
+	Move to timingApi R0.6.
+	Added support for some missing timingFifoApi functions.
+
+R5.0.0 2017-12-01 Michael Browne
+	Bring event2 into the timingApi world.
+
+R4.3.0 2018-01-18 Bruce Hill
+	Update RELEASE_NOTES for R4.3.0
+	Fix for trigger eventCode pv, TEC, getting cleared on some bootups.
+	Added trigger specific eventctrl records to trigger eventctrl grid screens
+
 R4.2.4 2017-09-23	Bruce Hill
 	More build fixes for R3.15.5 and bumped to diagTimer/R1.9.1
 
