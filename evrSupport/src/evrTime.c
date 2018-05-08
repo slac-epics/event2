@@ -618,7 +618,7 @@ int timingFifoRead(unsigned int            eventCode,
 	if ( epicsMutexLock( evrTimeRWMutex_ps ) != 0 )
 		return epicsTimeERROR;
 
-	if (incr == MAX_TS_QUEUE)
+	if (incr == TS_INDEX_INIT)
 		*idx = eventCodeTime_as[eventCode].ts_idx - 1;
 	else
 		*idx += incr;
