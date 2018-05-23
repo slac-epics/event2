@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 1288
-y 84
+x 329
+y 1238
 w 831
 h 936
 font "helvetica-bold-r-12.0"
@@ -92,7 +92,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 120
 y 48
 w 39
@@ -112,7 +112,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 16
 y 64
 w 39
@@ -132,7 +132,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 12
 y 84
 w 76
@@ -151,7 +151,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 4
 y 4
 w 249
@@ -170,7 +170,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 12
 y 112
 w 76
@@ -189,7 +189,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 12
 y 140
 w 142
@@ -209,7 +209,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 164
 y 48
 w 36
@@ -228,7 +228,7 @@ endObjectProperties
 object activeXTextDspClass
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 164
 y 84
@@ -254,7 +254,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 284
 y 84
 w 76
@@ -273,7 +273,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 388
 y 48
 w 39
@@ -293,7 +293,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 436
 y 48
 w 36
@@ -313,7 +313,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 660
 y 48
 w 39
@@ -333,7 +333,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 708
 y 48
 w 36
@@ -353,7 +353,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 204
 y 84
 w 60
@@ -372,7 +372,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 204
 y 48
 w 48
@@ -392,7 +392,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 288
 y 60
 w 39
@@ -412,7 +412,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 476
 y 48
 w 48
@@ -432,7 +432,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 748
 y 48
 w 48
@@ -452,7 +452,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 124
 y 84
 w 36
@@ -485,7 +485,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 552
 y 60
 w 39
@@ -774,7 +774,7 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 204
 y 112
@@ -799,7 +799,7 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 164
 y 112
@@ -822,7 +822,7 @@ endObjectProperties
 object activeXTextDspClass:noedit
 beginObjectProperties
 major 4
-minor 5
+minor 7
 release 0
 x 124
 y 112
@@ -1009,7 +1009,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 284
 y 308
 w 76
@@ -1110,7 +1110,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 284
 y 532
 w 76
@@ -1211,7 +1211,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 552
 y 84
 w 76
@@ -1312,7 +1312,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 552
 y 308
 w 76
@@ -1413,7 +1413,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 552
 y 532
 w 76
@@ -1542,7 +1542,7 @@ object activeXTextClass
 beginObjectProperties
 major 4
 minor 1
-release 0
+release 1
 x 272
 y 4
 w 268
@@ -1555,6 +1555,189 @@ useDisplayBg
 value {
   "Note: Delay times are computed"
   "based on the nominal 119MHz clock"
+}
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 272
+y 764
+w 544
+h 164
+lineColor index 14
+fillColor index 14
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 284
+y 768
+w 90
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "User Defined"
+}
+autoSize
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 276
+y 784
+w 528
+h 52
+fgColor index 14
+bgColor index 0
+topShadowColor index 1
+botShadowColor index 14
+displaySource "menu"
+filePv "LOC\\\\emb-ec=i,0"
+setSize
+numDsps 1
+displayFileName {
+  0 "event2Screens/emb-evg-2-user.edl"
+}
+symbols {
+  0 "NAME1=LCUSER1,NAME2=LCUSER2,ID1=131,ID2=132,EVG=$(EVG)"
+}
+noScroll
+endObjectProperties
+
+# (Embedded Window)
+object activePipClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 276
+y 840
+w 528
+h 84
+fgColor index 14
+bgColor index 0
+topShadowColor index 1
+botShadowColor index 14
+displaySource "menu"
+filePv "LOC\\\\emb-ec=i,0"
+setSize
+numDsps 1
+displayFileName {
+  0 "event2Screens/emb-evg-3-user.edl"
+}
+symbols {
+  0 "NAME1=LCUSER3,NAME2=LCUSER4,NAME3=LCUSER5,ID1=133,ID2=134,ID3=135,EVG=$(EVG)"
+}
+noScroll
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 476
+y 768
+w 48
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Delay"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 436
+y 768
+w 36
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Rate"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 388
+y 768
+w 40
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "EC"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 532
+y 768
+w 48
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "On/Off"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 584
+y 768
+w 48
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Beam"
 }
 endObjectProperties
 

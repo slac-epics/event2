@@ -1,0 +1,7932 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 727
+y 249
+w 965
+h 770
+font "helvetica-bold-r-18.0"
+ctlFont "helvetica-bold-r-18.0"
+btnFont "helvetica-bold-r-18.0"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 1
+ctlBgColor1 index 3
+ctlBgColor2 index 49
+topShadowColor index 1
+botShadowColor index 14
+title "$(LOCA) EVG Events"
+showGrid
+snapToGrid
+gridSize 5
+endScreenProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 180
+y 610
+w 570
+h 150
+lineColor index 14
+fillColor index 3
+endObjectProperties
+
+# (Exit Button)
+object activeExitButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 905
+y 10
+w 50
+h 20
+fgColor index 1
+bgColor index 25
+topShadowColor index 1
+botShadowColor index 14
+label "EXIT"
+font "helvetica-bold-r-14.0"
+3d
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 50
+w 970
+h 1
+lineColor index 14
+fillColor index 14
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 90
+y 55
+w 39
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Event"
+  "Code"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 135
+y 55
+w 45
+h 48
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Delay*"
+  "(Clock"
+  "Ticks)"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 5
+y 25
+w 210
+h 20
+controlPv "EVG:IN20:EV01:CTRL.DESC"
+format "exponential"
+font "helvetica-bold-r-24.0"
+fgColor index 22
+bgColor index 4
+useDisplayBg
+precision 2
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 15
+y 70
+w 39
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Name"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 280
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSBEAMCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 280
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSBEAMCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 105
+w 55
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Fiducial"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 285
+w 68
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Beam Full"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 90
+y 105
+w 35
+h 20
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 6
+value {
+  "  1        "
+}
+border
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 130
+y 105
+w 50
+h 20
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 6
+value {
+  "  0        "
+}
+border
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 245
+y 55
+w 25
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "On/"
+  "Off"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 280
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSBEAMCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 0
+w 275
+h 27
+font "helvetica-bold-r-24.0"
+fgColor index 76
+bgColor index 3
+useDisplayBg
+value {
+  "$(LOCA) EVG Events     "
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 155
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:TSX_360_CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+motifWidget
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 155
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:TSX_360_CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 15
+y 155
+w 40
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "360Hz"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 380
+y 210
+w 166
+h 21
+font "helvetica-bold-r-18.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "LCLS Beam Events"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 305
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_60_CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 305
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_60_CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 310
+w 81
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Beam&60Hz"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 305
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_60_CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 330
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_30_CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 330
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_30_CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 335
+w 81
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Beam&30Hz"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 330
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_30_CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 355
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_10_CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 355
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_10_CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 360
+w 81
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Beam&10Hz"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 355
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_10_CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 380
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_5_CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 380
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_5_CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 385
+w 81
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Beam & 5Hz"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 380
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_5_CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 405
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_1_CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 405
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_1_CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 410
+w 81
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Beam & 1Hz"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 405
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_1_CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 430
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSHALFCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 430
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSHALFCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 435
+w 85
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Beam&0.5Hz"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 430
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSHALFCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 130
+w 67
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Heartbeat"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 90
+y 130
+w 35
+h 20
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 6
+value {
+  "122        "
+}
+border
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 130
+y 130
+w 50
+h 20
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 6
+value {
+  "  1        "
+}
+border
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 455
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_N-1CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 455
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_N-1CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 460
+w 54
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Full N-1"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 455
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_N-1CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 485
+w 54
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Full N-2"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 580
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_ACCCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 580
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_ACCCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 585
+w 72
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Klys Accel"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 580
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_ACCCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 480
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_N-2CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 480
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_N-2CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 480
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_N-2CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 305
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCRFONLYCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 560
+y 305
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCRFONLYCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 430
+y 300
+w 85
+h 28
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Klys Standby "
+  "& No TCAV0"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 715
+y 305
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCRFONLYCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 355
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCACC_10CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 560
+y 355
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCACC_10CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 430
+y 360
+w 121
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Klys Accel and 10Hz"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 715
+y 355
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCACC_10CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 380
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:STRAIGHTCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 560
+y 380
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:STRAIGHTCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 430
+y 385
+w 126
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Straight Ahead Beam"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 715
+y 380
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:STRAIGHTCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 530
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTCV3CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 530
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTCV3CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 535
+w 47
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "TCAV3"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 530
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTCV3CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 330
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCNOTCV3CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 560
+y 330
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCNOTCV3CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 430
+y 330
+w 74
+h 28
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Kly Standby"
+  "& No TCAV3"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 715
+y 330
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCNOTCV3CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 280
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSBEAMDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 185
+y 105
+w 55
+h 20
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+value {
+  "0"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 155
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:TSX_360_DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 305
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_60_DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 330
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_30_DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 355
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_10_DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 380
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_5_DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 405
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_1_DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 430
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSHALFDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 185
+y 130
+w 55
+h 20
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+value {
+  "1"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 455
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_N-1DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 580
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_ACCDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 480
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_N-2DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 655
+y 305
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCRFONLYDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 655
+y 355
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCACC_10DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 655
+y 380
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:STRAIGHTDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 530
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTCV3DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 655
+y 330
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCNOTCV3DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 190
+y 55
+w 49
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Delay *"
+  "(nsec)"
+}
+autoSize
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 510
+y 10
+w 230
+h 25
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Time Slot 1 to 6 Event Codes"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventTSDiags"
+}
+menuLabel {
+  0 "Time Slot 1 to 6 Event Codes"
+}
+setPosition {
+  0 "parentWindow"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 280
+y 230
+w 38
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Beam"
+  "Code"
+}
+autoSize
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 360
+y 280
+w 0
+h 0
+lineColor index 14
+fillColor index 3
+numPoints 1
+xPoints {
+  0 360
+}
+yPoints {
+  0 280
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 325
+y 230
+w 41
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Mask"
+  "Setup"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 455
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_N-1CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 310
+y 455
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLS_N-1,CODE=147"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 480
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_N-2CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 310
+y 480
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLS_N-2,CODE=148"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 580
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_ACCCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 310
+y 580
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLS_ACC,CODE=151"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 745
+y 305
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCRFONLYCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 780
+y 305
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCRFONLY,CODE=153"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 745
+y 355
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCACC_10CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 780
+y 355
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCACC_10,CODE=154"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 745
+y 380
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:STRAIGHTCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 780
+y 380
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=STRAIGHT,CODE=155"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 530
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTCV3CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 310
+y 530
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLSTCV3,CODE=156"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 745
+y 330
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCNOTCV3CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 780
+y 330
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCNOTCV3,CODE=157"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 505
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTCAVCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 505
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTCAVCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 510
+w 47
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "TCAV0"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 505
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTCAVCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 505
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTCAVDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 505
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTCAVCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 310
+y 505
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLSTCAV,CODE=149"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 555
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSBURSCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 90
+y 555
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSBURSCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 5
+y 560
+w 38
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Burst"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 555
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSBURSCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 555
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSBURSDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 555
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSBURSCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 310
+y 555
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLSBURS,CODE=150"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 245
+y 155
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:TSX_360_CTRL.E"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 830
+y 10
+w 60
+h 25
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "EVG"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "evgDiags"
+}
+menuLabel {
+  0 "EVG"
+}
+setPosition {
+  0 "parentWindow"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 550
+y 175
+w 55
+h 20
+controlPv "IOC:$(LOCA):$(UNIT):TICKOFFSET"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+editable
+motifWidget
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 355
+y 170
+w 180
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Delay Offset for All Events"
+  "(Clock Ticks)"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 205
+w 970
+h 1
+lineColor index 14
+fillColor index 14
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 355
+y 115
+w 367
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "* Delay (nsec) = (Delay + Delay Offset for All Events) /"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 470
+y 135
+w 75
+h 15
+controlPv "EVG:$(LOCA):$(UNIT):CTRL.R1SP"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+useDisplayBg
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 560
+y 230
+w 39
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Event"
+  "Code"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 605
+y 230
+w 45
+h 48
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Delay*"
+  "(Clock"
+  "Ticks)"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 440
+y 245
+w 39
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Name"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 660
+y 230
+w 49
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Delay *"
+  "(nsec)"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 545
+y 135
+w 65
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "(Hz) * 1E9"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 90
+y 230
+w 39
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Event"
+  "Code"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 135
+y 230
+w 45
+h 48
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Delay*"
+  "(Clock"
+  "Ticks)"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 245
+y 230
+w 25
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "On/"
+  "Off"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 190
+y 230
+w 49
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Delay *"
+  "(nsec)"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 15
+y 245
+w 39
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Name"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 795
+y 230
+w 41
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Mask"
+  "Setup"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 750
+y 230
+w 38
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Beam"
+  "Code"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 715
+y 230
+w 25
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "On/"
+  "Off"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 375
+y 230
+w 32
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Rate"
+  "(Hz)"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 365
+y 280
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSBEAMRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 365
+y 305
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_60_RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 365
+y 330
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_30_RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 365
+y 355
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_10_RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 365
+y 380
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_5_RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 365
+y 405
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_1_RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 365
+y 430
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSHALFRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 365
+y 455
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_N-1RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 365
+y 480
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_N-2RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 280
+y 55
+w 32
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Rate"
+  "(Hz)"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 105
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:FIDUCIALRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 130
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:HEARTBEATRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 155
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:TSX_360_RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 845
+y 230
+w 32
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Rate"
+  "(Hz)"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 365
+y 505
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTCAVRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 365
+y 555
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSBURSRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 365
+y 580
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_ACCRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 835
+y 305
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCRFONLYRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 835
+y 355
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCACC_10RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 835
+y 380
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:STRAIGHTRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 365
+y 530
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTCV3RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 835
+y 330
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCNOTCV3RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 455
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCTCV3PMCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 560
+y 455
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCTCV3PMCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 430
+y 460
+w 70
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "TCAV3 OTR"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 715
+y 455
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCTCV3PMCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 655
+y 455
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCTCV3PMDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 745
+y 455
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCTCV3PMCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 780
+y 455
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCTCV3PM,CODE=160"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 835
+y 455
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCTCV3PMRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 480
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCBXKIKCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 560
+y 480
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCBXKIKCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 430
+y 485
+w 43
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "BXKIK"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 715
+y 480
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCBXKIKCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 655
+y 480
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCBXKIKDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 745
+y 480
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCBXKIKCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 780
+y 480
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCBXKIK,CODE=161"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 835
+y 480
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCBXKIKRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 505
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCBYKIKCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 560
+y 505
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCBYKIKCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 430
+y 510
+w 44
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "BYKIK"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 715
+y 505
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCBYKIKCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 655
+y 505
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCBYKIKDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 745
+y 505
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCBYKIKCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 780
+y 505
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEvent2MaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCBYKIK,CODE=162"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 835
+y 505
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCBYKIKRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 360
+y 60
+w 116
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Pattern Pipeline:"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 480
+y 60
+w 165
+h 15
+controlPv "IOC:$(LOCA):$(UNIT):PATTERNSTATE"
+format "hex"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 4
+autoHeight
+limitsFromDb
+nullColor index 1
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 750
+y 10
+w 70
+h 25
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Pattern"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgPatternDiags"
+}
+menuLabel {
+  0 "Pattern Diags"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 430
+y 410
+w 86
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Pockels Cell"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 405
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSPOCKCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 560
+y 405
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSPOCKCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 715
+y 405
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSPOCKCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 655
+y 405
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSPOCKDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 745
+y 405
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSPOCKCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 780
+y 405
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLSPOCK,CODE=158"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 835
+y 405
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSPOCKRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 430
+y 435
+w 88
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Profile Mons"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 430
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSPROFCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 560
+y 430
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSPROFCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 715
+y 430
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSPROFCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 655
+y 430
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSPROFDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 745
+y 430
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSPROFCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 780
+y 430
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEvent2MaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLSPROF,CODE=159"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 835
+y 430
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSPROFRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 280
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSBEAMCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 310
+y 280
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLSBEAM,CODE=140"
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 360
+y 310
+w 0
+h 0
+lineColor index 14
+fillColor index 3
+numPoints 1
+xPoints {
+  0 360
+}
+yPoints {
+  0 310
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 305
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_60_CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 310
+y 305
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLS_60_,CODE=141"
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 365
+y 335
+w 0
+h 0
+lineColor index 14
+fillColor index 3
+numPoints 1
+xPoints {
+  0 365
+}
+yPoints {
+  0 335
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 360
+y 335
+w 0
+h 0
+lineColor index 14
+fillColor index 3
+numPoints 1
+xPoints {
+  0 360
+}
+yPoints {
+  0 335
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 330
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_30_CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 310
+y 330
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLS_30_,CODE=142"
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 365
+y 360
+w 0
+h 0
+lineColor index 14
+fillColor index 3
+numPoints 1
+xPoints {
+  0 365
+}
+yPoints {
+  0 360
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 360
+y 360
+w 0
+h 0
+lineColor index 14
+fillColor index 3
+numPoints 1
+xPoints {
+  0 360
+}
+yPoints {
+  0 360
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 355
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_10_CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 310
+y 355
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLS_10_,CODE=143"
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 365
+y 385
+w 0
+h 0
+lineColor index 14
+fillColor index 3
+numPoints 1
+xPoints {
+  0 365
+}
+yPoints {
+  0 385
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 360
+y 385
+w 0
+h 0
+lineColor index 14
+fillColor index 3
+numPoints 1
+xPoints {
+  0 360
+}
+yPoints {
+  0 385
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 380
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_5_CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 310
+y 380
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLS_5_,CODE=144"
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 365
+y 410
+w 0
+h 0
+lineColor index 14
+fillColor index 3
+numPoints 1
+xPoints {
+  0 365
+}
+yPoints {
+  0 410
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 360
+y 410
+w 0
+h 0
+lineColor index 14
+fillColor index 3
+numPoints 1
+xPoints {
+  0 360
+}
+yPoints {
+  0 410
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 405
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLS_1_CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 310
+y 405
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLS_1_,CODE=145"
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 365
+y 435
+w 0
+h 0
+lineColor index 14
+fillColor index 3
+numPoints 1
+xPoints {
+  0 365
+}
+yPoints {
+  0 435
+}
+endObjectProperties
+
+# (Lines)
+object activeLineClass
+beginObjectProperties
+major 4
+minor 0
+release 1
+x 360
+y 435
+w 0
+h 0
+lineColor index 14
+fillColor index 3
+numPoints 1
+xPoints {
+  0 360
+}
+yPoints {
+  0 435
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 275
+y 430
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSHALFCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 310
+y 430
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLSHALF,CODE=146"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 280
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSSTBYCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 560
+y 280
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSSTBYCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 430
+y 280
+w 81
+h 14
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Klys Standby"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 715
+y 280
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSSTBYCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 655
+y 280
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSSTBYDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 745
+y 280
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSSTBYCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 780
+y 280
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLSSTBY,CODE=152"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 835
+y 280
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSSTBYRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 895
+y 215
+w 54
+h 48
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Desired"
+  "Rate"
+  "(Hz)"
+}
+autoSize
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 890
+y 280
+w 65
+h 20
+fgColor index 14
+bgColor index 6
+inconsistentColor index 45
+topShadowColor index 1
+botShadowColor index 14
+controlPv "EVNT:$(ELOCA):1:LCLSSTBYRDES"
+font "helvetica-bold-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 890
+y 305
+w 65
+h 20
+fgColor index 14
+bgColor index 6
+inconsistentColor index 45
+topShadowColor index 1
+botShadowColor index 14
+controlPv "EVNT:$(ELOCA):1:LCRFONLYRDES"
+font "helvetica-bold-r-12.0"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 890
+y 330
+w 65
+h 20
+fgColor index 14
+bgColor index 6
+inconsistentColor index 45
+topShadowColor index 1
+botShadowColor index 14
+controlPv "EVNT:$(ELOCA):1:LCNOTCV3RDES"
+font "helvetica-bold-r-12.0"
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 815
+y 125
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgAcqMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "ACQ=LCLS_BEAM"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 870
+y 125
+w 85
+h 20
+controlPv "PATT:$(ELOCA):1:LCLS_BEAMCNT"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 890
+y 100
+w 43
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Count"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 820
+y 90
+w 41
+h 32
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Mask"
+  "Setup"
+}
+autoSize
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 765
+y 50
+w 1
+h 155
+lineColor index 14
+fillColor index 3
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 790
+y 65
+w 136
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Acquisition Control"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 775
+y 125
+w 33
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "BPM"
+}
+autoSize
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 275
+y 10
+w 225
+h 25
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Event Code Sequence Events"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "ecs_status"
+}
+menuLabel {
+  0 "Event Code Sequence Events"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "SYS=SYS0"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 530
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCALKIKCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 560
+y 530
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCALKIKCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 430
+y 535
+w 83
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "A-Line KICK"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 715
+y 530
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCALKIKCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 655
+y 530
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCALKIKDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 745
+y 530
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCALKIKCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 780
+y 530
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEvent2MaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCALKIK,CODE=163"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 835
+y 530
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCALKIKRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 555
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:TESTBURSCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 560
+y 555
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:TESTBURSCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 430
+y 560
+w 87
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "Pulse Picker"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 715
+y 555
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:TESTBURSCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 655
+y 555
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:TESTBURSDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 745
+y 555
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:TESTBURSCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 780
+y 555
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEventMaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=TESTBURS,CODE=164"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 835
+y 555
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:TESTBURSRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 600
+y 580
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTBDCTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 560
+y 580
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTBDCTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 430
+y 585
+w 40
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "180Hz"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 715
+y 580
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTBDCTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 655
+y 580
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTBDDLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 745
+y 580
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTBDCHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 780
+y 580
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEvent2MaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCLSTBD,CODE=165"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 835
+y 580
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCLSTBDRATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 460
+y 635
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER1CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 420
+y 635
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER1CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 575
+y 635
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER1CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 515
+y 635
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER1DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 605
+y 635
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER1CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 640
+y 635
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEvent2MaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCUSER1,CODE=131"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 695
+y 635
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER1RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 420
+y 615
+w 183
+h 16
+font "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 5
+useDisplayBg
+value {
+  "User-Defined Event Codes"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 460
+y 660
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER2CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 420
+y 660
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER2CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 575
+y 660
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER2CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 515
+y 660
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER2DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 605
+y 660
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER2CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 640
+y 660
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEvent2MaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCUSER2,CODE=132"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 695
+y 660
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER2RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 460
+y 685
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER3CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 420
+y 685
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER3CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 575
+y 685
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER3CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 515
+y 685
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER3DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 605
+y 685
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER3CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 640
+y 685
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEvent2MaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCUSER3,CODE=133"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 695
+y 685
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER3RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 460
+y 710
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER4CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 420
+y 710
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER4CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 575
+y 710
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER4CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 515
+y 710
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER4DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 605
+y 710
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER4CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 640
+y 710
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEvent2MaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCUSER4,CODE=134"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 695
+y 710
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER4RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 460
+y 735
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER5CTRL.B"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 420
+y 735
+w 35
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER5CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 575
+y 735
+w 25
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER5CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 515
+y 735
+w 55
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER5DLY"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 605
+y 735
+w 30
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER5CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 640
+y 735
+w 50
+h 20
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "mpgEvent2MaskSetup"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=LCUSER5,CODE=135"
+}
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 695
+y 735
+w 50
+h 20
+controlPv "EVNT:$(ELOCA):1:LCUSER5RATE"
+font "helvetica-bold-r-14.0"
+fontAlign "center"
+fgColor index 14
+fgAlarm
+bgColor index 6
+limitsFromDb
+nullColor index 14
+useHexPrefix
+useAlarmBorder
+newPos
+objType "controls"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 635
+w 230
+h 20
+controlPv "EVNT:SYS0:1:NAME131"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 660
+w 230
+h 20
+controlPv "EVNT:SYS0:1:NAME132"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 685
+w 230
+h 20
+controlPv "EVNT:SYS0:1:NAME133"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 710
+w 230
+h 20
+controlPv "EVNT:SYS0:1:NAME134"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 185
+y 735
+w 230
+h 20
+controlPv "EVNT:SYS0:1:NAME135"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 6
+editable
+motifWidget
+limitsFromDb
+nullColor index 18
+useHexPrefix
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+

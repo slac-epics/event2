@@ -1,0 +1,574 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 927
+y 1382
+w 474
+h 93
+font "helvetica-bold-r-12.0"
+ctlFont "helvetica-bold-r-12.0"
+btnFont "helvetica-bold-r-14.0"
+btnFontAlign "center"
+fgColor index 14
+bgColor index 3
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 1
+ctlBgColor1 index 3
+ctlBgColor2 index 49
+topShadowColor index 1
+botShadowColor index 14
+title "Emb 3 EVG User Event Codes"
+showGrid
+snapToGrid
+gridSize 4
+endScreenProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 0
+y 0
+w 112
+h 24
+controlPv "$(EVG):1:NAME$(ID1)"
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 10
+useDisplayBg
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 116
+y 0
+w 36
+h 24
+controlPv "$(EVG):1:$(NAME1)CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 156
+y 0
+w 36
+h 24
+controlPv "$(EVG):1:$(NAME1)RATE"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 196
+y 0
+w 60
+h 24
+controlPv "CALC\\\{A*8.403361345\}($(EVG):1:$(NAME1)DLY.A)"
+format "float"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+precision 1
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 0
+y 28
+w 112
+h 24
+controlPv "$(EVG):1:NAME$(ID2)"
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 10
+useDisplayBg
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+id "x"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 116
+y 28
+w 36
+h 24
+controlPv "$(EVG):1:$(NAME2)CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 156
+y 28
+w 36
+h 24
+controlPv "$(EVG):1:$(NAME2)RATE"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+bgColor index 12
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 196
+y 28
+w 60
+h 24
+controlPv "CALC\\\{A*8.403361345\}($(EVG):1:$(NAME2)DLY.A)"
+format "float"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+precision 1
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 0
+y 56
+w 112
+h 24
+controlPv "$(EVG):1:NAME$(ID3)"
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 10
+useDisplayBg
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+id "x"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 196
+y 56
+w 60
+h 24
+controlPv "CALC\\\{A*8.403361345\}($(EVG):1:$(NAME3)DLY.A)"
+format "float"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+precision 1
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 156
+y 56
+w 36
+h 24
+controlPv "$(EVG):1:$(NAME3)RATE"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+bgColor index 12
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 116
+y 56
+w 36
+h 24
+controlPv "$(EVG):1:$(NAME3)CTRL.A"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 340
+y 28
+w 52
+h 24
+fgColor index 14
+bgColor index 6
+topShadowColor index 1
+botShadowColor index 13
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "event2Screens/mpgEvent2MaskSetup.edl"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=$(NAME2),CODE=$(ID2),ECS=ECS:SYS0,ELOCA=SYS0,EVGLOCA=$(EVG),SYS=SYS0,UNIT=EV01"
+}
+replaceSymbols {
+  0 1
+}
+propagateMacros {
+  0 0
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 300
+y 28
+w 36
+h 24
+controlPv "$(EVG):1:$(NAME2)CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 260
+y 28
+w 36
+h 24
+controlPv "$(EVG):1:$(NAME2)CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 340
+y 0
+w 52
+h 24
+fgColor index 14
+bgColor index 6
+topShadowColor index 1
+botShadowColor index 13
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "event2Screens/mpgEvent2MaskSetup.edl"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=$(NAME1),CODE=$(ID1),ECS=ECS:SYS0,ELOCA=SYS0,EVGLOCA=$(EVG),SYS=SYS0,UNIT=EV01"
+}
+replaceSymbols {
+  0 1
+}
+propagateMacros {
+  0 0
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 300
+y 0
+w 36
+h 24
+controlPv "$(EVG):1:$(NAME1)CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 260
+y 0
+w 36
+h 24
+controlPv "$(EVG):1:$(NAME1)CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 340
+y 56
+w 52
+h 24
+fgColor index 14
+bgColor index 6
+topShadowColor index 1
+botShadowColor index 13
+font "helvetica-bold-r-14.0"
+buttonLabel "Masks"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "event2Screens/mpgEvent2MaskSetup.edl"
+}
+menuLabel {
+  0 "Modifier Inclusion/Exclusion Masks"
+}
+setPosition {
+  0 "parentWindow"
+}
+symbols {
+  0 "EVNT=$(NAME3),CODE=$(ID3),ECS=ECS:SYS0,ELOCA=SYS0,EVGLOCA=$(EVG),SYS=SYS0,UNIT=EV01"
+}
+replaceSymbols {
+  0 1
+}
+propagateMacros {
+  0 0
+}
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 300
+y 56
+w 36
+h 24
+controlPv "$(EVG):1:$(NAME3)CHCK.C"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 260
+y 56
+w 36
+h 24
+controlPv "$(EVG):1:$(NAME3)CTRL.E"
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 1
+smartRefresh
+newPos
+objType "monitors"
+noExecuteClipMask
+endObjectProperties
+
