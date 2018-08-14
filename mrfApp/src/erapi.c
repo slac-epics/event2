@@ -24,6 +24,7 @@
 #include <signal.h>
 #include <string.h>
 #include <unistd.h>
+#include "epicsStdio.h"
 
 #define DEFINE_READ_EVR
 #define INLINE_READ_EVR static __inline__
