@@ -44,6 +44,7 @@
 #include "epicsMutex.h"
 #include "epicsThread.h"        /* epicsThreadSleep()          */
 #include "epicsTime.h"          /* epicsTimeStamp              */
+#include "epicsStdio.h"         /* EPICS stdio redirection support */
 #include "errlog.h"             /* errlogPrintf                */
 #include "evrMessage.h"         /* prototypes in this file     */
 

@@ -32,6 +32,7 @@
 #include "epicsExport.h" 	/* for epicsExportAddress */
 #include "epicsEvent.h" 	/* for epicsEvent*        */
 #include "epicsThread.h" 	/* for epicsThreadCreate  */
+#include "epicsStdio.h"     /* EPICS stdio redirection support */
 #include "epicsMessageQueue.h"
 #include "evrMessage.h"		/* for evrMessageCreate   */
 #include "evrTime.h"		/* for evrTimeCount       */
