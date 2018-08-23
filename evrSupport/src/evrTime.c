@@ -64,6 +64,7 @@
 #include "epicsExport.h"      /* for epicsRegisterFunction */
 #include "iocsh.h"            /* for iocshRegister         */
 #include "epicsTime.h"        /* epicsTimeStamp and protos */
+#include "epicsStdio.h"       /* EPICS stdio redirection support */
 #include "epicsGeneralTime.h" /* generalTimeTpRegister     */
 #include "generalTimeSup.h"
 #include "epicsMutex.h"       /* epicsMutexId and protos   */
