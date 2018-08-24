@@ -1,5 +1,9 @@
 #
 # Defines coming in: BASE, EVR, TRIG, NAME.
+#	BASE:	Device prefix
+#	EVR:	EVR prefix for devic
+#	TRIG:	EVR Trigger channel number
+#	NAME:	User friendly name for device (current practice NAME==BASE)
 #
 
 record(stringout, "$(BASE):_INFO")
