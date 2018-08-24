@@ -31,7 +31,6 @@ DB += evrEventAll.db
 DB += evrEventFACET.db
 DB += evrEventXTA.db
 DB += evrPatternAll.db
-DB += evrDevInfo.db
 DB += evrMod36.db
 # fiducialTimestamp timestamp support (includes patterns)
 DB += fiducialTimestamp.db
@@ -57,6 +56,9 @@ DB += evrSLAC.db
 
 # A record to disable/enable a particular trigger.
 DB += evrTrigCtrl.db
+
+# An optional database to provide EVR info for each device in IOC
+DB += devEvrInfo.db
 
 # Sample substitution files for each
 # of our common EVR boards
