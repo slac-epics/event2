@@ -28,7 +28,7 @@ record( stringout, "$(DEV):EventCode:$(ID):Name" )
   field( DOL,   "$(EVG):1:NAME$(ID) CP NMS" )
   field( DTYP,  "MRF Event Receiver" )
   field( OUT,   "#C$(CARD) S$(ID) @" )
-  field( EVNT,  "$(ID)" )
+  field( TSE,   "$(ID)" )
 }
 
 record( longSub, "$(DEV):EventCode:$(ID):Count" )
