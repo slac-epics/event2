@@ -1151,11 +1151,7 @@ epicsStatus ErEpicsStringoutWrite (stringoutRecord  *pRec)
     /*---------------------
      * Get the event number (signal)
      */
-#if EPICS_VERSION < 3 || (EPICS_VERSION == 3 && EPICS_REVISION < 15)
-    Event = pRec->evnt;
-#else
-    Event = atoi(pRec->evnt);
-#endif
+    Event = pRec->tse;
  
     /*---------------------
      * Get the card structure.
@@ -1259,7 +1255,7 @@ epicsStatus ErEpicsStringinInitRec (stringinRecord *pRec)
 
    /*---------------------
     * Extract the Event Receiver card number (card) from the record's input link.
-	* The signal number is not used here as we get the event code from our EVNT field.
+	* The signal number is not used here as we get the event code from the TSE field.
     */
     Card = pRec->inp.value.vmeio.card;
 
@@ -1321,11 +1317,7 @@ epicsStatus ErEpicsStringinRead (stringinRecord  *pRec)
     /*---------------------
      * Get the event number (signal)
      */
-#if EPICS_VERSION < 3 || (EPICS_VERSION == 3 && EPICS_REVISION < 15)
-    Event = pRec->evnt;
-#else
-    Event = atoi(pRec->evnt);
-#endif
+    Event = pRec->tse;
  
     /*---------------------
      * Get the card structure.

@@ -71,7 +71,7 @@ record(calc, "$(EVR):$(NAME)RATE") {
 
 
 # This record returns a copy of the event code name
-# for the event code specified by it's EVNT field.
+# for the event code specified by it's TSE field.
 # Update that field dynamically to fetch the name
 # for a different event code.
 record( stringin, "$(DEV):$(NAME)_NAME" )
@@ -80,7 +80,7 @@ record( stringin, "$(DEV):$(NAME)_NAME" )
   field( VAL,  "$(LNAME)" )
   field( DTYP,  "MRF Event Receiver" )
   field( INP,   "#C$(CARD) S$(ID) @" )
-  field( EVNT,  "$(ID)" )
+  field( TSE,   "$(ID)" )
 }
 
 record( longout, "$(DEV):$(NAME)_ID" )
@@ -89,6 +89,6 @@ record( longout, "$(DEV):$(NAME)_ID" )
   field( SCAN,  ".5 second" )
   field( OMSL,  "closed_loop" )
   field( DOL,	"$(DEV):$(NAME)CTRL.ENM NPP MS" )
-  field( OUT,	"$(DEV):$(NAME)_NAME.EVNT" )
-  field( FLNK,	"$(DEV):$(NAME)_NAME.EVNT PP MS" )
+  field( OUT,	"$(DEV):$(NAME)_NAME.TSE" )
+  field( FLNK,	"$(DEV):$(NAME)_NAME" )
 }
