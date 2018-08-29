@@ -830,10 +830,10 @@ int evrTimeInit(epicsInt32 firstTimeSlotIn, epicsInt32 secondTimeSlotIn)
         for (idx=0; idx<=MRF_NUM_EVENTS; idx++) {
     	  evrTime_ts  *   pevrTime = &eventCodeTime_as[idx];
           int idx2;    
-		  /* t_HiResTime			hiResTsc	= GetHiResTicks(); */
+		  t_HiResTime			hiResTsc	= GetHiResTicks();
           for (idx2 = 0; idx2 < MAX_TS_QUEUE; idx2++) {
               pevrTime->fifoInfo[idx2].fifo_time   = mod720time;
-              pevrTime->fifoInfo[idx2].fifo_tsc    = 0LL;
+              pevrTime->fifoInfo[idx2].fifo_tsc    = hiResTsc;
               pevrTime->fifoInfo[idx2].fifo_status = epicsTimeERROR;
           }
           pevrTime->ts_idx  = 0LL;
@@ -1475,11 +1475,8 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
                 pevrTime->nFidQEarly++;
             }
         else	if (	pLastGoodTS	  != NULL
-#if 0
 					|| (	curTimeStatus == epicsTimeOK
-						&&  curFiducial   != PULSEID_INVALID )
-#endif
-						)
+						&&  curFiducial   != PULSEID_INVALID ) )
             {
                 /*
                  * fidq fiducial is valid, but doesn't match evrTimeCurrent or evrTimeNext1
@@ -1493,12 +1490,10 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
 				/* We see too many of these! */
                 pevrTime->nFidQLate++;
 
-#if 0
                 /* See if we have a new last good timestamp */
 				if (	curTimeStatus == epicsTimeOK
 					&&  curFiducial   != PULSEID_INVALID )
                     pLastGoodTS = &EVR_APS_TIME( evrTimeCurrent );
-#endif
 
                 /* Grab the last good fiducial */
                 lastGoodFiducial = PULSEID(*pLastGoodTS);
@@ -1727,10 +1722,9 @@ extern void eventDebug(int arg1, int arg2)
         doreset = 1;
     }
     do {
-        uint64_t            idx         = 0LL;
-        long long           delta_tsc   = 0LL;
-        long long           prior_tsc   = 0LL;
-        long long           tsc_latency = 0LL;
+		unsigned long long  idx         = 0LL;
+		long long  			delta_tsc   = 0LL;
+		long long  			prior_tsc   = 0LL;
         evrTime_ts      *   pevrTime    = &eventCodeTime_as[arg1];
         printf( "Event Code %d:\n", arg1 );
         printf( "   Count = %d, time = %08x.%08x, status = %d\n",
@@ -1753,38 +1747,27 @@ extern void eventDebug(int arg1, int arg2)
 			else
 				incr	= -1;
 
-			status = evrTimeGetFifoInfo( &fifoInfo, arg1, (unsigned long long *) &idx, incr );
-  			long long int	tsc_nom = pevrTime->fifo_tsc_nom[idx & MAX_TS_QUEUE_MASK];
+			status = evrTimeGetFifoInfo( &fifoInfo, arg1, &idx, incr );
 			if ( iFifoDump == 0 )
 			{
 				int fidx = idx & MAX_TS_QUEUE_MASK;
 				int lidx = (idx + MAX_TS_QUEUE - 1) & MAX_TS_QUEUE_MASK;
-                printf( "   FIFO: idx = 0x%" PRIx64 ", fidx = 0x%x, lidx = 0x%x\n", idx, fidx, lidx );
-                delta_tsc   = 0LL;
-                tsc_latency = 0LL;
+				printf( "   FIFO: idx = 0x%llx, fidx = 0x%x, lidx = 0x%x\n", idx, fidx, lidx );
+				delta_tsc    = 0LL;
 			}
 			else
 			{
-				tsc_latency	= fifoInfo.fifo_tsc - tsc_nom;
-				delta_tsc	= prior_tsc - fifoInfo.fifo_tsc;
+				delta_tsc = prior_tsc - fifoInfo.fifo_tsc;
 			}
 			prior_tsc = fifoInfo.fifo_tsc;
-			epicsTimeToStrftime( strTime, 40, "%M:%S.%05f", &fifoInfo.fifo_time );
+			epicsTimeToStrftime( strTime, 40, "%M:%S.%03f", &fifoInfo.fifo_time );
 #ifdef HI_RES_TIME_H
-#if 1
-			printf( "     time(%2d) = %14s, fid %d, delta %.3fms, latency %lld ticks\n", -iFifoDump,
+			printf( "     time(%2d) = %14s, fid %d, delta %.3fms\n", -iFifoDump,
 					strTime, fifoInfo.fifo_time.nsec & 0x1ffff,
-					HiResTicksToSeconds( delta_tsc ) * 1000,
-					tsc_latency );
+					HiResTicksToSeconds( delta_tsc ) * 1000	);
 #else
-			printf( "     time(%2d) = %14s, fid %d, delta %.3fms, fifo_tsc %lld fifo_tsc_nom %lld\n", -iFifoDump,
-					strTime, fifoInfo.fifo_time.nsec & 0x1ffff,
-					HiResTicksToSeconds( delta_tsc ) * 1000,
-					(long long int) fifoInfo.fifo_tsc, tsc_nom );
-#endif
-#else
-			printf( "     time(%d) = %14s, fid %d, delta %lld ticks, latency %lld ticks\n", -iFifoDump,
-					strTime, fifoInfo.fifo_time.nsec & 0x1ffff, delta_tsc, tsc_latency );
+			printf( "     time(%d) = %14s, fid %d, delta %lld ticks\n", -iFifoDump,
+					strTime, fifoInfo.fifo_time.nsec & 0x1ffff, delta_tsc );
 #endif /* HI_RES_TIME_H */
 			if ( status < 0 )
 			{
