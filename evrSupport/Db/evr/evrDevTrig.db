@@ -60,8 +60,8 @@ record( bo, "$(TRIG):TYPE" )
 record( longout, "$(TRIG):TEC" )
 {
 	field( DESC, "Trigger's Event code" )
-	field( OUT,  "$(TRIG):EC_NAME.EVNT" )
-	field( FLNK, "$(TRIG):EC_NAME PP MS" )
+	field( OUT,  "$(TRIG):EC_NAME.TSE" )
+	field( FLNK, "$(TRIG):EC_NAME" )
 #field( TPRO, "2" )
 	info( autosaveFields, "DESC VAL" )
 }
@@ -705,7 +705,7 @@ record( stringin, "$(TRIG):EC_NAME" )
 	field( DESC,  "Get event code name" )
 	field( DTYP,  "MRF Event Receiver" )
 	field( INP,   "#C$(CARD) S0 @" )
-	field( EVNT,  "0" )
+	field( TSE,   "0" )
 	field( FLNK,  "$(TRIG):FW_EC_SEQ" )
 }
 
