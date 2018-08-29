@@ -1,0 +1,86 @@
+#
+# This db file can be loaded into an IOC with or w/o an EVR
+# We recommend adding this to each IOC that supports EVRs so
+# scripts are able to derive the EVR and trigger info from
+# each device's PV prefix.
+#
+# Required macros:
+#	DEV				Device PV prefix
+#	EVR_USED		0 = Not used, 1 = Used
+#
+# Optional macros:
+#	EVR				EVR PV prefix, defaults to $(DEV):NoEvr
+#	TRIG_CH			EVR Trigger channel number, defaults to 0
+#
+# It adds 2 new PVs for each device
+#	$(DEV):EVR_PV		PV prefix for this device's EVR
+#	$(DEV):EVR_TRIG_CH	EVR Trigger channel number for this device
+#
+# It also adds a new record, EvrUsed with required macro
+#	$(EVR):EvrUsed		bo record: 0 = Unused, 1 = Used
+#
+# The other records provide a minimal subset of records that
+# are compatible w/ their equivalent event2 module records
+# to allow edm screens to work properly with or without an EVR
+#	$(EVR):STATUS
+#	$(EVR):_CALC_STATUS
+#	$(EVR):LINK
+#
+# Usage for devices with an EVR:
+#	Just add this line to your st.cmd file with appropriate definitions for DEV_PV, EVR_PV, and TRIG_CH
+#	You can load it before or after your evr db files, and can load one instance per device.
+# dbLoadRecords( "db/devEvrInfo.db", "DEV=$DEV_PV,EVR=$EVR_PV,TRIG_CH=$TRIG_CH,EVR_USED=1 )
+#
+# If your IOC supports some devices with EVRs and some without, follow the above usage
+# for devices with EVRs.   For devices without EVRs you can just load this. 
+# dbLoadRecords( "db/devEvrInfo.db", "DEV=$DEV_PV,EVR_USED=0 )
+#
+# This allows your edm screens to use group visibility to hide or show our traditional
+# green diamond $(EVR):STATUS widget without getting white unconnected widget outlines
+# for the hidden $(EVR):STATUS widget for device screens w/ no EVR
+# Your edm screen should define the EVR macro as $(DEV):NoEvr or you can use your desired EVR_PV value.
+#
+
+record( stringout, "$(DEV):EVR_PV" )
+{
+	field( PINI, "YES" )
+	field( VAL, "$(EVR=$(DEV):NoEvr)" )
+}
+
+record( longout, "$(DEV):EVR_TRIG_CH" )
+{
+	field( PINI, "YES" )
+	field( VAL, "$(TRIG_CH=0)" )
+}
+
+record( bo, "$(EVR=$(DEV):NoEvr):EvrUsed" )
+{
+	field( PINI, "YES" )
+	field( ZNAM, "Unused" )
+	field( ONAM, "Used" )
+	field( DOL,  "$(EVR_USED)" )
+}
+
+record(mbbi, "$(EVR=$(DEV):NoEvr):STATUS")
+{
+  field(INP, "$(EVR=$(DEV):NoEvr):_CALC_STATUS NPP MS")
+  field(ZRVL, "0")
+  field(ZRST, "FAIL")
+  field(ZRSV, "MAJOR")
+}
+
+record(calc, "$(EVR=$(DEV):NoEvr):_CALC_STATUS")
+{
+  field(CALC, "(A=0||L=0)?0:2")
+  field(INPA, "$(EVR=$(DEV):NoEvr):EvrUsed CPP MS")
+  field(INPL, "$(EVR=$(DEV):NoEvr):LINK    CPP MS")
+  field(FLNK, "$(EVR=$(DEV):NoEvr):STATUS PP MS")
+}
+
+record(bi, "$(EVR=$(DEV):NoEvr):LINK")
+{
+  field(PINI, "YES")
+  field(ZSV,  "MAJOR")
+  field(ZNAM, "OFF")
+  field(ONAM, "ON")
+}
