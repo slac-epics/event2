@@ -73,6 +73,7 @@
 #include <epicsTypes.h>         /* EPICS Architecture-independent type definitions                */
 #include <epicsInterrupt.h>     /* EPICS Interrupt context support routines                       */
 #include <epicsMutex.h>         /* EPICS Mutex support library                                    */
+#include <epicsVersion.h>
 #include <errno.h>
 #include <string.h>
 
@@ -571,8 +572,8 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
    /*---------------------
     * Local variables
     */
-    epicsBoolean   DebugFlag;			/* True if debug output prints are enabled        */
-    epicsBoolean   LoadRam  = epicsFalse;       /* True if need ro re-load the Event Map RAM      */
+    int            DebugFlag;			        /* True if debug output prints are enabled        */
+    int            LoadRam  = epicsFalse;       /* True if need ro re-load the Event Map RAM      */
     epicsUInt16    Mask = 0;                    /* New output mask for this event                 */
     ErCardStruct  *pCard;                       /* Pointer to Event Receiver card structure       */
   
@@ -1145,12 +1146,16 @@ epicsStatus ErEpicsStringoutWrite (stringoutRecord  *pRec)
      * Local variables
      */
     ErCardStruct  *pCard;                       /* Pointer to Event Receiver card structure       */
-	int				Event;
+    int            Event;
 
     /*---------------------
      * Get the event number (signal)
      */
+#if EPICS_VERSION < 3 || (EPICS_VERSION == 3 && EPICS_REVISION < 15)
     Event = pRec->evnt;
+#else
+    Event = atoi(pRec->evnt);
+#endif
  
     /*---------------------
      * Get the card structure.
@@ -1316,7 +1321,11 @@ epicsStatus ErEpicsStringinRead (stringinRecord  *pRec)
     /*---------------------
      * Get the event number (signal)
      */
+#if EPICS_VERSION < 3 || (EPICS_VERSION == 3 && EPICS_REVISION < 15)
     Event = pRec->evnt;
+#else
+    Event = atoi(pRec->evnt);
+#endif
  
     /*---------------------
      * Get the card structure.
@@ -1355,8 +1364,13 @@ epicsStatus ErEpicsStringinRead (stringinRecord  *pRec)
     epicsMutexUnlock (pCard->CardLock);
 
 	if ( pRec->tpro )
+#if EPICS_VERSION < 3 || (EPICS_VERSION == 3 && EPICS_REVISION < 15)
 		printf( "ErEpicsStringinRead: %s updated to %s for EC %d\n",
 				pRec->name, pRec->val, pRec->evnt );
+#else
+		printf( "ErEpicsStringinRead: %s updated to %s for EC %s\n",
+				pRec->name, pRec->val, pRec->evnt );
+#endif
     return (0);
 
 }/*end ErEpicsStringinRead()*/

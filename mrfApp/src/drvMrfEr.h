@@ -262,36 +262,36 @@ typedef void (*DEV_DBUFF_FUNC)  (ErCardStruct *pCard, epicsInt16 Size, void *Buf
 
 int            ErAcquireTrigger(ErCardStruct*, unsigned int, unsigned int);
 int            ErCheckTrigger(ErCardStruct*, unsigned int);
-epicsBoolean   ErCheckTaxi (ErCardStruct*);
+int            ErCheckTaxi (ErCardStruct*);
 void           ErDebugLevel (epicsInt32);
 epicsUInt16    ErEnableIrq (ErCardStruct*, epicsUInt16);
-void           ErEnableDBuff (ErCardStruct*, epicsBoolean);
+void           ErEnableDBuff (ErCardStruct*, int);
 void           ErEnableRam (ErCardStruct*, int);
 epicsStatus    ErFinishDrvInit (int);
-void           ErDBuffIrq (ErCardStruct*, epicsBoolean);
-void           ErEventIrq (ErCardStruct*, epicsBoolean);
+void           ErDBuffIrq (ErCardStruct*, int);
+void           ErEventIrq (ErCardStruct*, int);
 void           ErFlushFifo (ErCardStruct*);
 ErCardStruct  *ErGetCardStruct (int);
 epicsUInt32    ErGetFpgaVersion (ErCardStruct*);
 epicsUInt32    ErGetSecondsSR (ErCardStruct*);
-epicsBoolean   ErGetRamStatus (ErCardStruct*, int);
+int            ErGetRamStatus (ErCardStruct*, int);
 epicsStatus    ErGetTicks (int, epicsUInt32*);
-epicsBoolean   ErMasterEnableGet (ErCardStruct*);
-void           ErMasterEnableSet (ErCardStruct*, epicsBoolean);
+int            ErMasterEnableGet (ErCardStruct*);
+void           ErMasterEnableSet (ErCardStruct*, int);
 void           ErRegisterDevEventHandler (ErCardStruct*, DEV_EVENT_FUNC);
 void           ErRegisterDevErrorHandler (ErCardStruct*, DEV_ERROR_FUNC);
 void           ErRegisterDevDBuffHandler (ErCardStruct*, DEV_DBUFF_FUNC);
 void           ErResetAll (ErCardStruct*);
-int            ErSetDg (ErCardStruct*, int, epicsBoolean, epicsUInt32, epicsUInt32, epicsUInt16,
-                        epicsBoolean);
-void           ErSetDirq (ErCardStruct*, epicsBoolean, epicsUInt16, epicsUInt16);
+int            ErSetDg (ErCardStruct*, int, int, epicsUInt32, epicsUInt32, epicsUInt16,
+                        int);
+void           ErSetDirq (ErCardStruct*, int, epicsUInt16, epicsUInt16);
 epicsStatus    ErSetFPMap (ErCardStruct*, int, epicsUInt16);
-void           ErSetOtb (ErCardStruct*, int, epicsBoolean);
-void           ErSetOtl (ErCardStruct*, int, epicsBoolean);
-void           ErSetOtp (ErCardStruct*, int, epicsBoolean, epicsUInt32, epicsUInt32, epicsBoolean);
-void           ErSetTrg (ErCardStruct*, int, epicsBoolean);
+void           ErSetOtb (ErCardStruct*, int, int);
+void           ErSetOtl (ErCardStruct*, int, int);
+void           ErSetOtp (ErCardStruct*, int, int, epicsUInt32, epicsUInt32, int);
+void           ErSetTrg (ErCardStruct*, int, int);
 void           ErSetTickPre (ErCardStruct*, epicsUInt16);
-void           ErTaxiIrq (ErCardStruct*, epicsBoolean);
+void           ErTaxiIrq (ErCardStruct*, int);
 void           ErProgramRam (ErCardStruct*, epicsUInt16*, int);
 void           ErUpdateRam (ErCardStruct*, epicsUInt16*);
 char        *  FormFactorToString(  int formFactor );
@@ -339,7 +339,7 @@ struct ErCardStruct {
     DBUFF_FUNC      DBuffFunc;              /* Pointer to user-registered data buffer ready rtn.  */
     epicsUInt32     RxvioCount;             /* RXVIO error counter                                */
     epicsUInt16     DBuffSize;              /* Number of bytes in the data stream buffer          */
-    epicsBoolean    DBuffError;             /* True if there was a data buffer error              */
+    int             DBuffError;             /* True if there was a data buffer error              */
     IOSCANPVT       DBuffReady;             /* Trigger record processing when data buffer ready   */
     epicsUInt16     ErEventTab [EVR_NUM_EVENTS];     /* Current view of the event mapping RAM     */
     epicsUInt16     ErEventCnt[EVR_NUM_EVENTS][EVR_MAP_N_CHAN_MAX]; /* # of enabled events per ch */
