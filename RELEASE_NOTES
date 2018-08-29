@@ -1,6 +1,15 @@
 #
 # RELEASE_NOTES
 #
+R4.4.0 2018-08-29	Bruce Hill
+	Added devEvrInfo.db
+	Update to diagTimer/R1.9.2
+	Include epicsStdio.h so driver report output can be redirected from iocsh
+	Brought in latest bsa.c from slac-master branch.
+	Use TSE instead of EVNT for event code for MRF stringin & stringout
+	Added User-defined event codes to lclsEventCodes.edl
+	Fix build issues for EPICS 3.15 and 3.16
+
 R4.3.0 2018-01-18	Bruce Hill
 	Fix for trigger eventCode pv, TEC, getting cleared on some bootups.
 	Added trigger specific eventctrl records to trigger eventctrl screens (evrTrig3T.edl and evrTrig3T_slac.edl)
