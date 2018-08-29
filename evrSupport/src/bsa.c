@@ -481,17 +481,8 @@ static long init_ao_record(aoRecord *pao)
 static long write_ao(aoRecord *pao)
 {
   long status = 0;
-
-  long options = DBR_STATUS | DBR_TIME;
-  long nrequest = 0;
-
   epicsEnum16      input_status, input_severity;
   epicsTimeStamp   input_timestamp;
-
-  struct {
-	DBRstatus
-	DBRtime
-  } options_s;
 
   /* Get the input's STAT and SEVR and timestamp (but don't get value) */
   status = dbGetAlarm(&pao->dol, &input_status, &input_severity);
