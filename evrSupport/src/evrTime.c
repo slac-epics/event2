@@ -1822,7 +1822,7 @@ extern void eventDebug(int arg1, int arg2)
 			else
 				incr	= -1;
 
-			status = evrTimeGetFifoInfo( &fifoInfo, arg1, &idx, incr );
+			status = evrTimeGetFifoInfo( &fifoInfo, arg1, (unsigned long long *) &idx, incr );
   			long long int	tsc_nom = pevrTime->fifo_tsc_nom[idx & MAX_TS_QUEUE_MASK];
 			if ( iFifoDump == 0 )
 			{
