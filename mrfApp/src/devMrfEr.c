@@ -572,8 +572,8 @@ epicsStatus ErEventProcess (ereventRecord  *pRec)
    /*---------------------
     * Local variables
     */
-    int   DebugFlag;			/* True if debug output prints are enabled        */
-    int   LoadRam  = epicsFalse;       /* True if need ro re-load the Event Map RAM      */
+    int            DebugFlag;			        /* True if debug output prints are enabled        */
+    int            LoadRam  = epicsFalse;       /* True if need ro re-load the Event Map RAM      */
     epicsUInt16    Mask = 0;                    /* New output mask for this event                 */
     ErCardStruct  *pCard;                       /* Pointer to Event Receiver card structure       */
   
@@ -1146,7 +1146,7 @@ epicsStatus ErEpicsStringoutWrite (stringoutRecord  *pRec)
      * Local variables
      */
     ErCardStruct  *pCard;                       /* Pointer to Event Receiver card structure       */
-    int	           Event;
+    int            Event;
 
     /*---------------------
      * Get the event number (signal)
@@ -1359,6 +1359,7 @@ epicsStatus ErEpicsStringinRead (stringinRecord  *pRec)
     epicsMutexUnlock (pCard->CardLock);
 
 	if ( pRec->tpro )
+#if EPICS_VERSION < 3 || (EPICS_VERSION == 3 && EPICS_REVISION < 15)
 		printf( "ErEpicsStringinRead: %s updated to %s for EC %d\n",
 				pRec->name, pRec->val, Event );
     return (0);

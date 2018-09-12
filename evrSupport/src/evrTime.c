@@ -1648,9 +1648,10 @@ extern void eventDebug(int arg1, int arg2)
         doreset = 1;
     }
     do {
-        uint64_t            idx         = 0LL;
-        long long           delta_tsc   = 0LL;
-        long long           prior_tsc   = 0LL;
+		unsigned long long	idx         = 0LL;
+		long long			delta_tsc   = 0LL;
+		long long			prior_tsc   = 0LL;
+		long long			tsc_latency = 0LL;
         evrTime_ts      *   pevrTime    = &eventCodeTime_as[arg1];
         printf( "Event Code %d:\n", arg1 );
         printf( "   Count = %d, time = %08x.%08x, status = %d\n",
