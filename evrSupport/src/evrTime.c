@@ -615,10 +615,10 @@ int timingFifoRead(unsigned int            eventCode,
 		||	(!evrTimeRWMutex_ps) )
 		return epicsTimeERROR;
 
-	pFifoInfoRet->fifo_time.secPastEpoch	= 0;
-	pFifoInfoRet->fifo_time.nsec		= 0;
-	pFifoInfoRet->fifo_tsc			= 0LL;
-        pFifoInfoRet->fifo_fid                  = TIMING_PULSEID_INVALID;
+    pFifoInfoRet->fifo_time.secPastEpoch = 0;
+    pFifoInfoRet->fifo_time.nsec         = 0;
+    pFifoInfoRet->fifo_tsc               = 0LL;
+    pFifoInfoRet->fifo_fid               = TIMING_PULSEID_INVALID;
 
 	if ( epicsMutexLock( evrTimeRWMutex_ps ) != 0 )
 		return epicsTimeERROR;
