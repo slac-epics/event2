@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include <sys/timex.h>        /* for ntp_adjtime           */
 #include "dbAccess.h"
 #include "epicsTypes.h"
@@ -137,6 +138,156 @@ static long aSubEvOffset(aSubRecord *prec)
     return 0;
 }
 
+static long aSubEvrDevTrigInit(aSubRecord *prec)
+{
+	/* Input and Output parameters */
+	assert( dbValueSize(prec->fta)  == sizeof(epicsFloat64) );
+	assert( dbValueSize(prec->ftva) == sizeof(epicsFloat64) );
+	assert( dbValueSize(prec->ftb)  == sizeof(epicsUInt32) );
+	assert( dbValueSize(prec->ftvb) == sizeof(epicsUInt32) );
+	assert( dbValueSize(prec->ftc)  == sizeof(epicsUInt32) );
+	assert( dbValueSize(prec->ftvc) == sizeof(epicsUInt32) );
+	assert( dbValueSize(prec->ftd)  == sizeof(epicsUInt32) );
+	assert( dbValueSize(prec->ftvd) == sizeof(epicsUInt32) );
+	assert( dbValueSize(prec->fte)  == sizeof(epicsFloat64) );
+	assert( dbValueSize(prec->ftve) == sizeof(epicsFloat64) );
+
+	/* Input only parameters */
+	assert( dbValueSize(prec->ftm)  == sizeof(epicsInt32) );
+	assert( dbValueSize(prec->ftn)  == sizeof(epicsInt32) );
+	assert( dbValueSize(prec->fto)  == sizeof(epicsFloat64) );
+//	assert( dbValueSize(prec->ftp)  == sizeof(epicsFloat64) );
+	assert( dbValueSize(prec->ftq)  == sizeof(epicsUInt32) );
+
+	/* Output only parameters */
+
+    return 0;
+}
+
+/*
+ *   -----------------
+ *   Input/Output list 
+ *   -----------------
+ *
+ * I/O Parameters
+ *	INPA,OUTA:	Desired trigger delay (TDES)
+ *	INPB,OUTB:	Trigger delay in ticks ($EVR:CTRL.DG*D)
+ *	INPC,OUTC:	Trigger scale factor ($EVR:CTRL.DG*C)
+ *	INPD,OUTD:	User specified trigger event code (TEC)
+ *	INPE,OUTE:	DEV trigger event code, normally empty string, overridden by camera IOC
+ *	INPF,OUTF:	DEV trigger delay,      normally empty string, overridden by camera IOC
+ * Input only Parameters
+ *	INPM:	0 (disable) or 1 (enable) invariant timing
+ *	INPN:	Currently selected trigger event code from EVENT*CTRL records (EC_RBV)
+ *	INPO:	Trigger reference time (TREF)
+ *	INPP:	Current trigger event code offset in ticks (TOFFSET)
+ *
+ */
+static long aSubEvrDevTrig(aSubRecord *prec)
+{
+    epicsFloat64	newTDES			= *(epicsFloat64*)(prec->a);
+    epicsUInt32		newDGTickDelay	= *(epicsUInt32 *)(prec->b);
+    epicsUInt32		newDGTickScale	= *(epicsUInt32 *)(prec->c);
+    epicsUInt32		newTEC			= *(epicsUInt32 *)(prec->d);
+    epicsUInt32		enableInvariant	= *(epicsUInt32 *)(prec->m);
+    epicsUInt32		newEC_RBV		= *(epicsUInt32 *)(prec->n);
+    epicsFloat64	newTREF			= *(epicsFloat64*)(prec->o);
+    epicsUInt32 *	pDelayArray		=  (epicsUInt32 *)(prec->p);
+    epicsUInt32		fStartingUp		= *(epicsUInt32 *)(prec->q);
+
+    epicsFloat64	oldTDES			= *(epicsFloat64*)(prec->ovla);
+    epicsUInt32		oldDGTickDelay	= *(epicsUInt32 *)(prec->ovlb);
+    epicsUInt32		oldDGTickScale	= *(epicsUInt32 *)(prec->ovlc);
+    epicsUInt32		oldTEC			= *(epicsUInt32 *)(prec->ovld);
+    epicsFloat64	oldTOFFSET		= *(epicsFloat64*)(prec->ovle);
+
+    const epicsFloat64	nsPerTick	= 1e9 / 119e6;	/* ~8.4 ns per tick */
+	int				fUpdateOutputs	= 0;
+	
+	epicsFloat64	newTOFFSET		= 0;
+	if (	pDelayArray != NULL
+		&&	newTEC >= 0
+		&&	newTEC <  prec->nop )
+	{
+		newTOFFSET = *(pDelayArray + newTEC);
+	}
+
+	if ( prec->tpro >= 2 )
+	{
+		printf( "aSubEvrDevTrig %s: OLD,     %s TDES=%.0f, TEC=%d, TOFFSET=%.0f, DG=%d\n", prec->name,
+				( fStartingUp ? "StartingUp" : "InvariantOff" ),
+				oldTDES, oldTEC, oldTOFFSET, oldDGTickDelay );
+		printf( "aSubEvrDevTrig %s: OnEntry, %s TDES=%.0f, TEC=%d, TOFFSET=%.0f, DG=%d\n", prec->name,
+				( fStartingUp ? "StartingUp" : "InvariantOff" ),
+				newTDES, newTEC, newTOFFSET, newDGTickDelay );
+	}
+	if ( !fStartingUp && enableInvariant )
+	{
+		if (	( newTDES		!= oldTDES )
+			||	( newDGTickScale!= oldDGTickScale )
+		/*	||	( newTEC		!= oldTEC ) */
+		/*	||	( newEC_RBV		!= oldTEC ) */
+			||	( newTOFFSET	!= oldTOFFSET ) )
+		{	/* New TDES from user */
+			/* Compute total delay in ns */
+			epicsFloat64	TDLY_NS	= newTDES + newTREF - (newTOFFSET * nsPerTick);
+			if ( TDLY_NS >= 0 )
+			{
+				/* Convert to ticks */
+				newDGTickDelay		= floor( (TDLY_NS / nsPerTick / newDGTickScale ) + 0.5 );
+				fUpdateOutputs		= 1;
+				if ( prec->tpro >= 2 )
+					printf( "aSubEvrDevTrig %s: DG=(%.0f + %.0f - %.0f*8.4)/8.4/%d = %d\n", prec->name,
+							newTDES, newTREF, newTOFFSET, newDGTickScale, newDGTickDelay );
+			}
+			if ( 0 && newTEC	== oldTEC && newEC_RBV != newTEC )
+			{
+				newTEC = newEC_RBV;
+				fUpdateOutputs = 1;
+				if ( prec->tpro >= 2 )
+					printf( "aSubEvrDevTrig %s: newTEC = %d\n", prec->name, newTEC );
+			}
+		}
+		else if ( newDGTickDelay != oldDGTickDelay )
+		{	/* New tick delay from user */
+			epicsUInt32		BW_TDLY			= newDGTickDelay * newDGTickScale;
+			epicsFloat64	BW_TDES_CALC	= (newTOFFSET + BW_TDLY) * nsPerTick - newTREF;
+			epicsFloat64	BW_TDES			= BW_TDES_CALC;
+			newTDES	= BW_TDES;
+			fUpdateOutputs		= 1;
+			if ( prec->tpro >= 2 )
+				printf( "aSubEvrDevTrig %s: TDES=(%.0f + %d * %d)*8.4 - %.0f = %.0f\n", prec->name,
+						newTOFFSET, newDGTickDelay, newDGTickScale, newTREF, newTDES );
+		}
+	}
+	else
+	{
+		if ( prec->tpro >= 3 )
+			printf( "aSubEvrDevTrig %s: %s TDES=%.0f, TEC=%d, TOFFSET=%.0f, DG=%d\n", prec->name,
+					( fStartingUp ? "StartingUp" : "InvariantOff" ),
+					newTDES, newTEC, newTOFFSET, newDGTickDelay );
+	}
+
+	/* Update VALA, VALB, ... fields */
+	*(epicsFloat64*)(prec->vala)	= newTDES;
+	*(epicsUInt32 *)(prec->valb)	= newDGTickDelay;
+	*(epicsUInt32 *)(prec->valc)	= newDGTickScale;
+	*(epicsUInt32 *)(prec->vald)	= newTEC;
+	*(epicsFloat64*)(prec->vale)	= newTOFFSET;
+
+	if ( fUpdateOutputs == 0 )
+	{
+		/* Update the old values so we don't trigger monitors */
+		*(epicsFloat64*)(prec->ovla)	= newTDES;
+		*(epicsUInt32*)(prec->ovlb)		= newDGTickDelay;
+		*(epicsUInt32*)(prec->ovlc)		= newDGTickScale;
+		*(epicsUInt32*)(prec->ovld)		= newTEC;
+		*(epicsFloat64*)(prec->ovle)	= newTOFFSET;
+		return 1;
+	}
+    return 0;
+}
+
 static long lsubCountNonZeroInit(longSubRecord *prec)
 {
     if ( prec->tpro )
@@ -183,7 +334,7 @@ static long asubCopyInToOutInit( aSubRecord * prec )
 	{
 		assert( dbValueSize(*pInType)	== dbValueSize(DBF_ULONG) );
 		assert( dbValueSize(*pOutType)	== dbValueSize(DBF_ULONG) );
-		if ( prec->tpro >= 2 )
+		if ( prec->tpro >= 3 )
 		{
 			printf( "INP%c: pIn  = %p, cnt = %u\n",
 					'A' + i, pIn[i], *pInCnt );
@@ -232,6 +383,8 @@ epicsRegisterFunction(lsubEvSelInit);
 epicsRegisterFunction(lsubEvSel);
 epicsRegisterFunction(aSubEvOffsetInit);
 epicsRegisterFunction(aSubEvOffset);
+epicsRegisterFunction(aSubEvrDevTrigInit);
+epicsRegisterFunction(aSubEvrDevTrig);
 epicsRegisterFunction(lsubCountNonZeroInit);
 epicsRegisterFunction(lsubCountNonZero);
 epicsRegisterFunction(asubCopyInToOutInit);
