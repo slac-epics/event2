@@ -38,19 +38,19 @@ file evrSLAC.template
 file evrDevTrig.db
 {
 	pattern
-	{	N,	TRIG,		TYPE,	TYPENUM,TCTL	}
-	{	0,	$(EVR):TRIG0,	DG,	0,	DG$(N)E	}
-	{	1,	$(EVR):TRIG1,	DG,	0,	DG$(N)E	}
-	{	2,	$(EVR):TRIG2,	DG,	0,	DG$(N)E	}
-	{	3,	$(EVR):TRIG3,	DG,	0,	DG$(N)E	}
-	{	4,	$(EVR):TRIG4,	DG,	0,	DG$(N)E	}
-	{	5,	$(EVR):TRIG5,	DG,	0,	DG$(N)E	}
-	{	6,	$(EVR):TRIG6,	DG,	0,	DG$(N)E	}
-	{	7,	$(EVR):TRIG7,	DG,	0,	DG$(N)E	}
-	{	8,	$(EVR):TRIG8,	DG,	0,	DG$(N)E	}
-	{	9,	$(EVR):TRIG9,	DG,	0,	DG$(N)E	}
-	{	A,	$(EVR):TRIGA,	DG,	0,	DG$(N)E	}
-	{	B,	$(EVR):TRIGB,	DG,	0,	DG$(N)E	}
+	{	N,	TRIG,		TYPE,	TYPENUM,TCTL,	TPRO}
+	{	0,	$(EVR):TRIG0,	DG,	0,		DG$(N)E, 0	}
+	{	1,	$(EVR):TRIG1,	DG,	0,		DG$(N)E, 0	}
+	{	2,	$(EVR):TRIG2,	DG,	0,		DG$(N)E, 2	}
+	{	3,	$(EVR):TRIG3,	DG,	0,		DG$(N)E, 0	}
+	{	4,	$(EVR):TRIG4,	DG,	0,		DG$(N)E, 0	}
+	{	5,	$(EVR):TRIG5,	DG,	0,		DG$(N)E, 0	}
+	{	6,	$(EVR):TRIG6,	DG,	0,		DG$(N)E, 0	}
+	{	7,	$(EVR):TRIG7,	DG,	0,		DG$(N)E, 0	}
+	{	8,	$(EVR):TRIG8,	DG,	0,		DG$(N)E, 0	}
+	{	9,	$(EVR):TRIG9,	DG,	0,		DG$(N)E, 0	}
+	{	A,	$(EVR):TRIGA,	DG,	0,		DG$(N)E, 0	}
+	{	B,	$(EVR):TRIGB,	DG,	0,		DG$(N)E, 0	}
 }
 
 # Make a set of event control records for each output trigger
