@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 214
-y 862
+x 415
+y 479
 w 760
 h 600
 font "helvetica-medium-r-12.0"
@@ -4465,5 +4465,32 @@ endObjectProperties
 
 endGroup
 
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 424
+y 8
+w 120
+h 24
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-12.0"
+buttonLabel "Old EVR Panel"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "event2Screens/evr_slac.edl"
+}
+setPosition {
+  0 "parentWindow"
+}
+icon
 endObjectProperties
 
