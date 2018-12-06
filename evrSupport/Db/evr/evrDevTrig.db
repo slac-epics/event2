@@ -77,7 +77,11 @@ record( calc, "$(TRIG):INVARIANT_UPDATE" )
 	field( INPB, "$(EVR):CTRL.$(TYPE)$(N)D CPP NMS" )
 	field( INPC, "$(EVR):CTRL.$(TYPE)$(N)C CPP NMS" )
 	field( INPD, "$(TRIG):LSUB_EVSEL.VAL CPP NMS" )
-	field( CALC, "A!=LA||B!=LB||C!=LC||D!=LD" )
+	field( INPE, "$(TRIG):INVARIANT_UPDATE.LA NPP NMS" )
+	field( INPF, "$(TRIG):INVARIANT_UPDATE.LB NPP NMS" )
+	field( INPG, "$(TRIG):INVARIANT_UPDATE.LC NPP NMS" )
+	field( INPH, "$(TRIG):INVARIANT_UPDATE.LD NPP NMS" )
+	field( CALC, "A!=E||B!=F||C!=G||D!=H" )
 	field( FLNK, "$(TRIG):ASUB_INVARIANT" )
 }
 
@@ -717,24 +721,13 @@ record( calcout, "$(TRIG):BW_TDES" )
 	field( CALC, "(A+B)*C-D" )
 # which?
 #	field( INPA, "$(TRIG):TOFFSET.VAL NPP MS" )
-	field( INPA, "$(TRIG):TOFFSET.VAL CPP MS" )
-	field( INPB, "$(TRIG):BW_TDLY CPP MS" )
+	field( INPA, "$(TRIG):ASUB_LKUOFFSET.VALA PP MS" )
+	field( INPB, "$(TRIG):BW_TDLY NPP MS" )
 	field( INPC, "8.403361345" )
 	field( INPD, "$(EVR):TREF NPP MS" )
-#	field( OOPT, "On Change" )
-#	field( OUT,  "$(TRIG):BW_TDES.VAL PP MS" )
 	field( EGU,  "ns" )
 	field( PREC, "2" )
 }
-
-#record( ao, "$(TRIG):BW_TDES" )
-#{
-#field( TPRO, "$(TPRO=2)" )
-#	field( OMSL, "closed_loop" )
-#	field( DOL,  "$(TRIG):BW_TDES_CALC.VAL" )
-#	field( OUT,  "$(TRIG):TDES.VAL PP MS" )
-#	field( FLNK, "$(TRIG):BW_TDES_SEQ" )
-#}
 
 record( seq, "$(TRIG):PROP_SEQ2" )
 {
