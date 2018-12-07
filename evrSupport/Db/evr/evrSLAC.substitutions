@@ -41,7 +41,7 @@ file evrDevTrig.db
 	{	N,	TRIG,		TYPE,	TYPENUM,TCTL,	TPRO}
 	{	0,	$(EVR):TRIG0,	DG,	0,		DG$(N)E, 0	}
 	{	1,	$(EVR):TRIG1,	DG,	0,		DG$(N)E, 0	}
-	{	2,	$(EVR):TRIG2,	DG,	0,		DG$(N)E, 2	}
+	{	2,	$(EVR):TRIG2,	DG,	0,		DG$(N)E, 0	}
 	{	3,	$(EVR):TRIG3,	DG,	0,		DG$(N)E, 0	}
 	{	4,	$(EVR):TRIG4,	DG,	0,		DG$(N)E, 0	}
 	{	5,	$(EVR):TRIG5,	DG,	0,		DG$(N)E, 0	}
