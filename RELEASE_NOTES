@@ -1,6 +1,14 @@
 #
 # RELEASE_NOTES
 #
+R4.5.0 2018-12-17	Bruce Hill
+	Reworked evrDevTrig to calc TOFFSET in a new aSub function, evrDevTrig()
+		Fixes issues w/ TDES vs CTRL.DG*D and interactions w/ Camera PVs for delay and event code.
+	Use exponential format for TDES and BW_TDES
+	Changing dbd and lib names to avoid conflicts w/ same names in event module.
+		Allows building ioc's like gigECam that can build separate apps for different timing modules.
+	Minor tweaks to trigger Pictorial screen
+
 R4.4.0 2018-08-29	Bruce Hill
 	Added devEvrInfo.db
 	Update to diagTimer/R1.9.2
