@@ -37,7 +37,6 @@ ARCHIVE += archive_evr_PMC.archive
 ARCHIVE += archive_evr_PMC.tpl-arch
 ARCHIVE += archive_evr_SLAC.archive
 ARCHIVE += archive_evr_SLAC.tpl-arch
-ARCHIVE += archive_pmc_evr.tpl-arch
 
 #----------------------------------------------------
 # Create and install (or just install)
@@ -50,7 +49,6 @@ REQ += autosave_evr_PMC.req
 REQ += autosave_evr_PMC.tpl-req
 REQ += autosave_evr_SLAC.req
 REQ += autosave_evr_SLAC.tpl-req
-REQ += autosave_pmc_evr.tpl-req
 
 include $(TOP)/configure/RULES
 #----------------------------------------
