@@ -178,10 +178,11 @@ static long aSubEvrDevTrigInit(aSubRecord *prec)
  *	INPF,OUTF:	DEV trigger delay,      normally empty string, overridden by camera IOC
  * Input only Parameters
  *	INPM:	0 (disable) or 1 (enable) invariant timing
- *	INPN:	Currently selected trigger event code from EVENT*CTRL records (EC_RBV)
  *	INPO:	Trigger reference time (TREF)
  *	INPP:	Current trigger event code offset in ticks (TOFFSET)
  *
+ *  Available but currently not used in C code or configured in db file.
+ *	INPN:	Currently selected trigger event code from EVENT*CTRL records (EC_RBV)
  */
 static long aSubEvrDevTrig(aSubRecord *prec)
 {
@@ -190,7 +191,7 @@ static long aSubEvrDevTrig(aSubRecord *prec)
     epicsUInt32		newDGTickScale	= *(epicsUInt32 *)(prec->c);
     epicsUInt32		newTEC			= *(epicsUInt32 *)(prec->d);
     epicsUInt32		enableInvariant	= *(epicsUInt32 *)(prec->m);
-    epicsUInt32		newEC_RBV		= *(epicsUInt32 *)(prec->n);
+/*	epicsUInt32		newEC_RBV		= *(epicsUInt32 *)(prec->n); */ 
     epicsFloat64	newTREF			= *(epicsFloat64*)(prec->o);
     epicsUInt32 *	pDelayArray		=  (epicsUInt32 *)(prec->p);
     epicsUInt32		fStartingUp		= *(epicsUInt32 *)(prec->q);
@@ -225,8 +226,6 @@ static long aSubEvrDevTrig(aSubRecord *prec)
 	{
 		if (	( newTDES		!= oldTDES )
 			||	( newDGTickScale!= oldDGTickScale )
-		/*	||	( newTEC		!= oldTEC ) */
-		/*	||	( newEC_RBV		!= oldTEC ) */
 			||	( newTOFFSET	!= oldTOFFSET ) )
 		{	/* New TDES from user */
 			/* Compute total delay in ns */
@@ -239,13 +238,6 @@ static long aSubEvrDevTrig(aSubRecord *prec)
 				if ( prec->tpro >= 2 )
 					printf( "aSubEvrDevTrig %s: DG=(%.0f + %.0f - %.0f*8.4)/8.4/%d = %d\n", prec->name,
 							newTDES, newTREF, newTOFFSET, newDGTickScale, newDGTickDelay );
-			}
-			if ( 0 && newTEC	== oldTEC && newEC_RBV != newTEC )
-			{
-				newTEC = newEC_RBV;
-				fUpdateOutputs = 1;
-				if ( prec->tpro >= 2 )
-					printf( "aSubEvrDevTrig %s: newTEC = %d\n", prec->name, newTEC );
 			}
 		}
 		else if ( newDGTickDelay != oldDGTickDelay )
