@@ -129,7 +129,7 @@ record( calc, "$(TRIG):INVARIANT_UPDATE" )
 #	OUT?:	TOFFSET_NS
 record( aSub, "$(TRIG):ASUB_INVARIANT" )
 {
-field( TPRO, "$(TPRO=2)" )
+	field( TPRO, "$(TPRO=0)" )
 	field( DESC, "Invariant timing logic" )
 	field( INAM, "aSubEvrDevTrigInit" )
 	field( SNAM, "aSubEvrDevTrig" )
@@ -159,7 +159,7 @@ field( TPRO, "$(TPRO=2)" )
 
 record( calcout, "$(TRIG):BW_TDES_CALC" )
 {
-field( TPRO, "$(TPRO=2)" )
+#field( TPRO, "$(TPRO=2)" )
 	field( SDIS, "$(TRIG):STARTING_UP" )
 	field( INPA, "$(TRIG):ASUB_INVARIANT.VALA NPP NMS" )
 	field( CALC, "A" )
@@ -171,7 +171,7 @@ field( TPRO, "$(TPRO=2)" )
 
 record( calcout, "$(TRIG):FW_TDLY_CALC" )
 {
-field( TPRO, "$(TPRO=2)" )
+#field( TPRO, "$(TPRO=2)" )
 	field( SDIS, "$(TRIG):STARTING_UP" )
 	field( INPA, "$(TRIG):ASUB_INVARIANT.VALB NPP NMS" )
 	field( CALC, "A" )
@@ -183,7 +183,7 @@ field( TPRO, "$(TPRO=2)" )
 
 record( calcout, "$(TRIG):FW_TDLY_SCALE_CALC" )
 {
-field( TPRO, "$(TPRO=2)" )
+#field( TPRO, "$(TPRO=2)" )
 	field( SDIS, "$(TRIG):STARTING_UP" )
 	field( INPA, "$(TRIG):ASUB_INVARIANT.VALC NPP NMS" )
 	field( CALC, "A" )
@@ -195,7 +195,7 @@ field( TPRO, "$(TPRO=2)" )
 
 record( calcout, "$(TRIG):BW_TEC_CALC" )
 {
-field( TPRO, "$(TPRO=2)" )
+#field( TPRO, "$(TPRO=2)" )
 	field( SDIS, "$(TRIG):STARTING_UP" )
 	field( INPA, "$(TRIG):ASUB_INVARIANT.VALD NPP NMS" )
 	field( CALC, "A" )
@@ -508,7 +508,7 @@ record( seq, "$(TRIG):FW_TDES_SEQ" )
 # Reenable after a short delay
 record( seq, "$(TRIG):BW_TDES_SEQ_REENABLE" )
 {
-field( TPRO, "$(TPRO=1)" )
+#field( TPRO, "$(TPRO=1)" )
 	field( DLY1, "0.25" )
 	field( DOL1, "1" )
 	field( LNK1, "$(TRIG):BW_TDES_SEQ_ENAB_CALC.A PP NMS" )
@@ -528,7 +528,7 @@ record( calcout, "$(TRIG):BW_TDES_SEQ_ENAB_CALC" )
 
 record( bo, "$(TRIG):BW_TDES_SEQ_ENAB" )
 {
-field( TPRO, "$(TPRO=2)" )
+#field( TPRO, "$(TPRO=2)" )
 	field( ZNAM, "Disabled" )
 	field( ONAM, "Enabled" )
 }
@@ -537,7 +537,7 @@ field( TPRO, "$(TPRO=2)" )
 # No delays in this record, see the re-enable
 record( seq, "$(TRIG):BW_TDES_SEQ" )
 {
-field( TPRO, "$(TPRO=1)" )
+#field( TPRO, "$(TPRO=1)" )
 	field( SDIS, "$(TRIG):BW_TDES_SEQ_ENAB PP" )
 	field( DISV, "0" )
 	field( DESC, "Backward delay seq" )
