@@ -141,10 +141,6 @@ record( aSub, "$(TRIG):ASUB_INVARIANT" )
 	field( FTVC, "ULONG" )
 	field( FTD,  "ULONG" )	field( INPD, "$(TRIG):LSUB_EVSEL.VAL NPP MS" )
 	field( FTVD, "ULONG" )
-#	field( FTE,  "DOUBLE" )	field( INPE, "$(TRIG):TOFFSET.VAL CPP MS" )
-#	field( FTVE, "DOUBLE" )
-#	INPE,OUTE:	DEV trigger event code, normally empty string, overridden by camera IOC
-#	INPF,OUTF:	DEV trigger delay,      normally empty string, overridden by camera IOC
 	field( INPM, "$(ACTV=1)" )							field( FTM,  "LONG" )
 #	field( INPN, "$(TRIG):EC_RBV NPP MS" )
 	field( FTN,  "LONG" )
@@ -160,7 +156,6 @@ record( aSub, "$(TRIG):ASUB_INVARIANT" )
 
 record( calcout, "$(TRIG):BW_TDES_CALC" )
 {
-#field( TPRO, "$(TPRO=2)" )
 	field( SDIS, "$(TRIG):STARTING_UP" )
 	field( INPA, "$(TRIG):ASUB_INVARIANT.VALA NPP NMS" )
 	field( CALC, "A" )
@@ -172,7 +167,6 @@ record( calcout, "$(TRIG):BW_TDES_CALC" )
 
 record( calcout, "$(TRIG):FW_TDLY_CALC" )
 {
-#field( TPRO, "$(TPRO=2)" )
 	field( SDIS, "$(TRIG):STARTING_UP" )
 	field( INPA, "$(TRIG):ASUB_INVARIANT.VALB NPP NMS" )
 	field( CALC, "A" )
@@ -184,25 +178,12 @@ record( calcout, "$(TRIG):FW_TDLY_CALC" )
 
 record( calcout, "$(TRIG):FW_TDLY_SCALE_CALC" )
 {
-#field( TPRO, "$(TPRO=2)" )
 	field( SDIS, "$(TRIG):STARTING_UP" )
 	field( INPA, "$(TRIG):ASUB_INVARIANT.VALC NPP NMS" )
 	field( CALC, "A" )
 	field( OOPT, "On Change" )
 	field( EGU,  "" )
 	field( OUT, "$(EVR):CTRL.$(TYPE)$(N)C  PP MS" )
-	field( FLNK, "$(TRIG):BW_TEC_CALC" )
-}
-
-record( calcout, "$(TRIG):BW_TEC_CALC" )
-{
-#field( TPRO, "$(TPRO=2)" )
-	field( SDIS, "$(TRIG):STARTING_UP" )
-	field( INPA, "$(TRIG):ASUB_INVARIANT.VALD NPP NMS" )
-	field( CALC, "A" )
-	field( OOPT, "On Change" )
-	field( EGU,  "" )
-#	field( OUT, "$(TRIG):TEC  PP NMS" )
 }
 
 # Trigger event code
@@ -222,14 +203,12 @@ record( bo, "$(TRIG):TCTL" )
 	field( DESC, "Trigger Control" )
 	field( DTYP, "Soft Channel" )
 	field( OUT,  "$(EVR):CTRL.$(TCTL) PP" )
-#	field( OUT,  "$(EVR):CTRL.$(TCTL) CA" )
 	field( ZNAM, "Disabled" )
 	field( ONAM, "Enabled" )
 	field( OMSL, "supervisory" )
 	field( VAL,  "$(CTL=0)" )
 	field( PINI, "YES" )
 	field( FLNK, "$(TRIG):FW_EC_SEQ" )
-#	field( TPRO, "$(TPRO=0)" )
 	info( autosaveFields, "DESC VAL ZNAM ONAM ZSV OSV" )
 }
 
@@ -239,7 +218,6 @@ record( bo, "$(TRIG):TPOL" )
 	field( DESC, "Trigger Polarity" )
 	field( DTYP, "Soft Channel" )
 	field( OUT, "$(EVR):CTRL.$(TYPE)$(N)P PP" )
-#	field( OUT, "$(EVR):CTRL.$(TYPE)$(N)P CA" )
 	field( ZNAM, "Normal" )
 	field( ONAM, "Inverted" )
 	field( OMSL, "supervisory" )
@@ -301,30 +279,8 @@ record( longout, "$(TRIG):EC_RBV" )
 {
 	field( DESC, "Trigger's Event code" )
 	field( OMSL, "closed_loop" )
-#	field( DOL,  "$(TRIG):LSUB_EVSEL NPP MS" )
 	field( DOL,  "$(TRIG):LSUB_EVSEL CPP MS" )
-#	field( FLNK, "$(TRIG):BW_EC_SEQ" )
 	field( TPRO, "$(TPRO=0)" )
-	info( autosaveFields, "DESC" )
-}
-
-# Disable the forward event code set sequence
-# while updating from a backward fetch of the event code
-# from an enabled ctrl record
-# Note: Do not use any delays in this sequence or the
-# record will still be active if new event code updates
-# come through.  That is why the FW_EC_SEQ_ENAB is
-# re-enabled in a separate PV.
-record( seq, "$(TRIG):BW_EC_SEQ" )
-{
-	field( DOL1, "0" )
-	field( LNK1, "$(TRIG):FW_EC_SEQ_ENAB PP NMS" )
-
-#	field( DLY2, "0.5" )
-	field( DOL2, "$(TRIG):EC_RBV NPP NMS" )
-	field( TPRO, "$(TPRO=0)" )
-
-	field( FLNK, "$(TRIG):FW_EC_SEQ_REENABLE PP NMS" )
 	info( autosaveFields, "DESC" )
 }
 
@@ -336,7 +292,6 @@ record( seq, "$(TRIG):FW_EC_SEQ_REENABLE" )
 	field( DOL1, "1" )
 	field( LNK1, "$(TRIG):FW_EC_SEQ_ENAB NPP NMS" )
 	info( autosaveFields, "DESC" )
-#	field( TPRO, "$(TPRO=0)" )
 }
 
 # Tick count for the trigger
@@ -357,7 +312,6 @@ record( ai, "$(TRIG):TOFFSET" )
 
 record( calc, "$(TRIG):TOFFSET_NS" )
 {
-#	field( TPRO, "$(TPRO=0)" )
 	field( DESC, "Offset in ns for ec" )
 	field( EGU,  "ns" )
 	field( CALC, "A*B" )
@@ -391,7 +345,6 @@ record( aSub, "$(TRIG):ASUB_LKUOFFSET" )
 	field( EFLG, "ON CHANGE" )
 	field( OUTA, "$(TRIG):TOFFSET.VAL PP MS" )
 	field( FTVA, "LONG" )
-#	field( FLNK, "$(TRIG):EC_RBV" )
 }
 
 # PV to read currently assigned event code
@@ -424,8 +377,6 @@ record( longSub, "$(TRIG):LSUB_EVSEL" )
 	field( INPN, "$(EVR):EVENT13CTRL.ENM CPP NMS" )
 	field( INPO, "$(EVR):EVENT14CTRL.ENM CPP NMS" )
 	field( INPZ, "$(TRIG):LSUB_TRGSEL.VAL PP MS" )
-#	field( FLNK, "$(TRIG):ASUB_LKUOFFSET" )
-#	field( FLNK, "$(TRIG):ASUB_INVARIANT" )
 	field( TPRO, "$(TPRO=0)" )
 }
 
@@ -436,7 +387,6 @@ record( longSub, "$(TRIG):LSUB_EVSEL" )
 # LSUB_TRGSEL is processed on demand by LSUB_EVSEL
 record( longSub, "$(TRIG):LSUB_TRGSEL" )
 {
-#	field( TPRO, "$(TPRO=0)" )
 	field( SDIS, "$(EVR):CTRL.IP$(N)E" )
 	field( DISV, "0" )
 	field( DESC, "Delay Selector" )
@@ -462,108 +412,6 @@ record( longSub, "$(TRIG):LSUB_TRGSEL" )
 #	field( FLNK, "$(TRIG):LSUB_EVSEL" )
 }
 
-# Forward trigger delay sequence enable calculation
-# Input A is used for temporary disable of the FW_TDES sequence
-# Processed on demand by FW_TDES_SEQ
-record( calcout, "$(TRIG):FW_TDES_SEQ_ENAB_CALC" )
-{
-#	field( TPRO, "$(TPRO=0)" )
-	field( INPA, "1" )
-	field( INPB, "$(TRIG):LSUB_TRGSEL.SEVR NPP NMS" )
-	field( INPC, "$(TRIG):TDES.SEVR NPP NMS" )
-	field( INPD, "$(TRIG):TDLY NPP MS" )
-	field( INPE, "$(TRIG):ASUB_LKUOFFSET.SEVR NPP NMS" )
-	field( CALC, "A&&(B==0)&&(D>=0)&&(E==0)" )
-#	field( CALC, "A&&(B==0)&&(C==0)&&(D>=0)&&(E==0)" )
-#	field( OUT,  "$(TRIG):FW_TDES_SEQ_ENAB PP NMS" )
-}
-
-record( bo, "$(TRIG):FW_TDES_SEQ_ENAB" )
-{
-	field( TPRO, "$(TPRO=0)" )
-	field( ZNAM, "Disabled" )
-	field( ONAM, "Enabled" )
-}
-
-# Sequence for forward delay updates
-# No delays in this record, see the re-enable
-record( seq, "$(TRIG):FW_TDES_SEQ" )
-{
-	field( TPRO, "$(TPRO=0)" )
-	field( SDIS, "$(TRIG):FW_TDES_SEQ_ENAB_CALC PP" )
-	field( DISV, "0" )
-	field( DESC, "Update delay seq" )
-
-#   Disable the BW_TDES_SEQ while we do the FW_TDES_SEQ
-	field( DOL1, "0" )
-	field( LNK1, "$(TRIG):BW_TDES_SEQ_ENAB_CALC.A PP MS" )
-
-#	field( DOL2, "$(TRIG):TDLY NPP MS" )
-	field( DOL2, "1" )
-	field( LNK2, "$(TRIG):FW_TDES_TICK_CALC.PROC PP NMS" )
-
-	field( FLNK, "$(TRIG):BW_TDES_SEQ_REENABLE PP NMS" )
-	info( autosaveFields, "DESC" )
-}
-
-# Reenable after a short delay
-record( seq, "$(TRIG):BW_TDES_SEQ_REENABLE" )
-{
-#field( TPRO, "$(TPRO=1)" )
-	field( DLY1, "0.25" )
-	field( DOL1, "1" )
-	field( LNK1, "$(TRIG):BW_TDES_SEQ_ENAB_CALC.A PP NMS" )
-	info( autosaveFields, "DESC" )
-}
-
-# Backward trigger delay seqence enable calculation
-# Input A is used for temporary disable of the BW_TDES sequence
-# Processed on demand by BW_TDES_SEQ
-record( calcout, "$(TRIG):BW_TDES_SEQ_ENAB_CALC" )
-{
-	field( INPA, "1" )
-	field( INPB, "$(TRIG):LSUB_TRGSEL.SEVR NPP NMS" )
-	field( CALC, "A && (B==0)" )
-	field( OUT,  "$(TRIG):BW_TDES_SEQ_ENAB PP NMS" )
-}
-
-record( bo, "$(TRIG):BW_TDES_SEQ_ENAB" )
-{
-#field( TPRO, "$(TPRO=2)" )
-	field( ZNAM, "Disabled" )
-	field( ONAM, "Enabled" )
-}
-
-# Sequence for backward delay updates
-# No delays in this record, see the re-enable
-record( seq, "$(TRIG):BW_TDES_SEQ" )
-{
-#field( TPRO, "$(TPRO=1)" )
-	field( SDIS, "$(TRIG):BW_TDES_SEQ_ENAB PP" )
-	field( DISV, "0" )
-	field( DESC, "Backward delay seq" )
-
-#   Disable the FW_TDES_SEQ while we do the BW_TDES_SEQ
-	field( DOL1, "0" )
-	field( LNK1, "$(TRIG):FW_TDES_SEQ_ENAB_CALC.A NPP NMS" )
-
-#	Update TDES from BW_TDES
-#	field( DOL2, "$(TRIG):BW_TDES NPP MS" )
-#	field( LNK2, "$(TRIG):TDES.VAL PP NMS" )
-
-	field( FLNK, "$(TRIG):FW_TDES_SEQ_REENABLE PP NMS" )
-	info( autosaveFields, "DESC" )
-}
-
-# Reenable after a short delay
-record( seq, "$(TRIG):FW_TDES_SEQ_REENABLE" )
-{
-	field( DOL1, "1" )
-	field( DLY1, "0.25" )
-	field( LNK1, "$(TRIG):FW_TDES_SEQ_ENAB_CALC.A NPP NMS" )
-	info( autosaveFields, "DESC" )
-}
-
 # This PV computes the Trigger Delay in ticks
 record( calcout, "$(TRIG):TDLY" )
 {
@@ -577,7 +425,6 @@ record( calcout, "$(TRIG):TDLY" )
 	field( LOW,  "-1e-9" )
 	field( LSV,  "MINOR" )
 	field( OUT,  "$(TRIG):TDLY_TICKS PP NMS" )
-#	field( FLNK, "$(TRIG):FW_TDES_SEQ" )
 }
 
 # This record shows the pulse generator desired delay in ticks
@@ -607,7 +454,6 @@ record( ao, "$(TRIG):TDLY_TICKS"	)
 	field( DOL,  "$(TRIG):TDLY NPP MS" )
 	field( OMSL, "closed_loop" )
 	field( EGU,  "ticks" )
-#	field( FLNK, "$(TRIG):FW_TDES_SEQ" )
 }
 
 record( calcout, "$(TRIG):FW_TDES_TICK_CALC"	)
@@ -621,7 +467,6 @@ record( calcout, "$(TRIG):FW_TDES_TICK_CALC"	)
 	field( DOPT, "Use OCAL" )
 	field( OCAL, "A/C" )
 	field( OUT,  "$(EVR):CTRL.$(TYPE)$(N)D PP NMS" )
-#	field( OUT,  "$(EVR):CTRL.$(TYPE)$(N)D CA NMS" )
 	field( EGU,  "ticks" )
 }
 
@@ -649,7 +494,6 @@ record( calc, "$(TRIG):TDLY_NS" )
 # flagging 0 delays on EC 140 due to rounding errors
 record( calcout, "$(TRIG):TDES_CALC_LOW" )
 {
-#	field( TPRO, "$(TPRO=0)" )
 	field( DESC, "TDES low limit calc" )
 	field( CALC, "A*B-C-0.01" )
 	field( INPA, "$(TRIG):TOFFSET.VAL CPP NMS" )
@@ -663,7 +507,6 @@ record( calcout, "$(TRIG):TDES_CALC_LOW" )
 
 record( ao, "$(TRIG):TDES_CALC_LOPR" )
 {
-#	field( TPRO, "$(TPRO=0)" )
 	field( DESC, "TDES low operator calc" )
 	field( OMSL, "closed_loop" )
 	field( DOL,  "$(TRIG):TDES_CALC_LOW NPP MS" )
@@ -675,14 +518,13 @@ record( ao, "$(TRIG):TDES_CALC_LOPR" )
 # Grab the delay tick count for easy edm viewing w/ EGU of ticks
 record( calcout, "$(TRIG):BW_TDLY" )
 {
-#	field( TPRO, "$(TPRO=0)" )
 	field( DESC, "Tick count from delay gen" )
 	field( INPA, "$(EVR):CTRL.$(TYPE)$(N)D CPP NMS" )
 	field( INPB, "$(EVR):CTRL.$(TYPE)$(N)C CPP NMS" )
 	field( CALC, "A*B" )
 # 	field( OOPT, "On Change" )
 	field( OUT,  "$(TRIG):BW_TDLY_TICKS PP MS" )
-# Try this
+# TODO: Try this
 #	field( OUT,  "$(TRIG):BW_TDLY_NS.A PP MS" )
 	field( EGU,  "ticks" )
 }
@@ -690,7 +532,6 @@ record( calcout, "$(TRIG):BW_TDLY" )
 # Process only on a change in BW_TDLY
 record( ao, "$(TRIG):BW_TDLY_TICKS" )
 {
-#field( TPRO, "$(TPRO=2)" )
 	field( DESC, "Tick count from delay gen" )
 	field( EGU,  "ticks" )
 	field( PINI, "YES" )
@@ -714,29 +555,15 @@ record( calc, "$(TRIG):BW_TDLY_NS" )
 # Compute desired delay relative to TREF (ns)
 record( calcout, "$(TRIG):BW_TDES" )
 {
-#	field( TPRO, "$(TPRO=0)" )
 	field( DESC, "Backward TDES calc" )
 	field( SCAN, "Passive" )
-#	field( SDIS, "$(TRIG):BW_TDES_SEQ_ENAB PP" )
-#	field( DISV, "0" )
 	field( CALC, "(A+B)*C-D" )
-# which?
 	field( INPA, "$(TRIG):TOFFSET.VAL CPP MS" )
-#	field( INPA, "$(TRIG):ASUB_LKUOFFSET.VALA PP MS" )
 	field( INPB, "$(TRIG):BW_TDLY NPP MS" )
 	field( INPC, "8.403361345" )
 	field( INPD, "$(EVR):TREF NPP MS" )
 	field( EGU,  "ns" )
 	field( PREC, "2" )
-}
-
-record( seq, "$(TRIG):PROP_SEQ2" )
-{
-#	field( TPRO, "$(TPRO=0)" )
-	field( PINI, "YES" )
-	field( DLY1, "15" )
-	field( DOL1, "1" )
-	field( LNK1, "$(TRIG):FW_SEQ2.DLY1" )
 }
 
 record( fanout, "$(TRIG):TINI" )
@@ -745,10 +572,9 @@ record( fanout, "$(TRIG):TINI" )
 # These fanout links shouldn't be needed.  Just set their PINI=YES
 	field( DESC, "Trigger Init" )
 	field( PINI, "YES" )
-#	field( LNK1, "$(TRIG):TDES PP" )
-	field( LNK2, "$(TRIG):TWID PP" )
-	field( LNK3, "$(TRIG):TPOL PP" )
-	field( LNK4, "$(TRIG):TCTL PP" )
+#	field( LNK2, "$(TRIG):TWID PP" )
+#	field( LNK3, "$(TRIG):TPOL PP" )
+#	field( LNK4, "$(TRIG):TCTL PP" )
 }
 
 record( seq, "$(TRIG):TPOL_ITNSEQ" )
@@ -785,9 +611,9 @@ record( seq, "$(TRIG):TCTL_ITNSEQ" )
 	field( LNK2, "$(TRIG):TCTL_ITN.DISV" )
 }
 
+# TODO: Replace TCTL_ITNSEQ and TCL_ITN w/ a calcout
 record( bo, "$(TRIG):TCTL_ITN" )
 {
-#	field( TPRO, "$(TPRO=0)" )
 	field( SCAN, "Passive" )
 	field( DTYP, "Soft Channel" )
 	field( OMSL, "closed_loop" )
@@ -871,7 +697,6 @@ record( calcout, "$(TRIG):TWID2" )
 	field( INPC, "8.403361345" )
 	field( CALC, "A/B/C" )
 	field( OUT,  "$(EVR):CTRL.$(TYPE)$(N)W PP NMS" )
-#	field( OUT,  "$(EVR):CTRL.$(TYPE)$(N)W CA NMS" )
 	field( EGU, "ns" )
 	field( PREC, "1" )
 	field( VAL, "$(WID=100)" )
@@ -946,18 +771,6 @@ record( bo, "$(TRIG):FW_EC_SEQ_ENAB" )
 	field( ONAM, "Enabled" )
 }
 
-# Disable BW_EC_SEQ during startup
-# and during FW_EC_SEQ to avoid stepping on TEC
-record( bo, "$(TRIG):BW_EC_SEQ_DISABLE" )
-{
-	field( TPRO, "$(TPRO=0)" )
-	field( DOL,	 "1" )
-	field( ZNAM, "Enabled" )
-	field( ONAM, "Disabled" )
-	field( OUT,  "$(TRIG):BW_EC_SEQ.DISA" )
-	field( HIGH, "1.0" )
-	field( PINI, "YES" )
-}
 
 # The foward event code sequence is now an aSub
 # record, which copies INPA to OUTA, INPB to OUTB, ...
@@ -973,7 +786,6 @@ record( aSub, "$(TRIG):FW_EC_SEQ" )
 	field( DESC, "Output Selector" )
 	field( SCAN, "Passive" )
 	field( PINI, "NO" )
-	field( FLNK, "$(TRIG):BW_EC_SEQ_DISABLE" )
 # NOTE: EFLG ON CHANGE suppress CA monitor events, but
 # OUT* links get processed on each successful process.
 #	field( EFLG, "ON CHANGE" )
