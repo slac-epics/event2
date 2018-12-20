@@ -1,6 +1,13 @@
 #
 # RELEASE_NOTES
 #
+R4.6.0 2018-12-19	Bruce Hill
+	Simplified evrDevTrig.db by deleting unneeding records and obs comments.
+	Added a README w/ a test plan
+	Make some inputs be CPP in evrDevTrig.db to fix BW_TDES and TOFFSET update issues.
+	Fixed update issue for EC_RBV.
+	Turned off some TPRO settings which got left enabled.
+
 R4.5.0 2018-12-17	Bruce Hill
 	Reworked evrDevTrig to calc TOFFSET in a new aSub function, evrDevTrig()
 		Fixes issues w/ TDES vs CTRL.DG*D and interactions w/ Camera PVs for delay and event code.
