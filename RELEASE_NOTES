@@ -1,7 +1,7 @@
 #
 # RELEASE_NOTES
 #
-R5.3.0 2018-12-20	Bruce Hill
+R5.4.0 2018-12-20	Bruce Hill
 	Merged in R4.4.0 through R4.6.0 w/ following:
 		Reworked evrDevTrig to calc TOFFSET in a new aSub function, evrDevTrig()
 			Fixes issues w/ TDES vs CTRL.DG*D and interactions w/ Camera PVs for delay and event code.
@@ -9,6 +9,9 @@ R5.3.0 2018-12-20	Bruce Hill
 		Added devEvrInfo.db
 		Use TSE instead of EVNT for event code for MRF stringin & stringout
 		Added User-defined event codes to lclsEventCodes.edl
+
+R5.3.0 2018-05-08 Michael Browne
+	Use proper initialization constant in timingFifoRead.
 
 R5.2.0 2018-04-20	Bruce Hill
 	Revised rms variance computation to compute sample variance per Tim Maxwell request.
