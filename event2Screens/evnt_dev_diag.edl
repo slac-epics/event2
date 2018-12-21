@@ -11,8 +11,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 24
-y 407
+x 1049
+y 494
 w 784
 h 582
 font "helvetica-medium-r-12.0"
@@ -422,7 +422,7 @@ major 4
 minor 0
 release 1
 x 144
-y 472
+y 468
 w 0
 h 0
 lineColor index 14
@@ -434,9 +434,9 @@ xPoints {
   2 144
 }
 yPoints {
-  0 472
-  1 472
-  2 472
+  0 468
+  1 468
+  2 468
 }
 endObjectProperties
 
@@ -471,6 +471,7 @@ fgColor index 14
 bgColor index 3
 value {
   "Time of ECx"
+  "TOFFSET"
 }
 endObjectProperties
 
@@ -914,7 +915,7 @@ major 4
 minor 7
 release 0
 x 200
-y 276
+y 272
 w 120
 h 24
 controlPv "$(EVR):TREF"
@@ -939,7 +940,7 @@ major 4
 minor 7
 release 0
 x 436
-y 276
+y 272
 w 116
 h 24
 controlPv "$(TRIG):BW_TDES"
@@ -964,7 +965,7 @@ major 4
 minor 7
 release 0
 x 196
-y 460
+y 456
 w 128
 h 24
 controlPv "$(TRIG):TOFFSET"
@@ -989,7 +990,7 @@ major 4
 minor 7
 release 0
 x 436
-y 460
+y 456
 w 116
 h 24
 controlPv "$(TRIG):BW_TDLY"
@@ -1067,7 +1068,7 @@ x 280
 y 104
 w 88
 h 24
-controlPv "$(TRIG):BW_TDES"
+controlPv "$(TRIG):TDES"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 15
@@ -1258,7 +1259,7 @@ major 4
 minor 0
 release 1
 x 348
-y 260
+y 256
 w 224
 h 0
 lineColor index 14
@@ -1270,8 +1271,8 @@ xPoints {
   1 572
 }
 yPoints {
-  0 260
-  1 260
+  0 256
+  1 256
 }
 endObjectProperties
 
@@ -1282,7 +1283,7 @@ major 4
 minor 0
 release 1
 x 84
-y 260
+y 256
 w 260
 h 0
 lineColor index 14
@@ -1294,8 +1295,8 @@ xPoints {
   1 344
 }
 yPoints {
-  0 260
-  1 260
+  0 256
+  1 256
 }
 endObjectProperties
 
@@ -1321,7 +1322,7 @@ major 4
 minor 0
 release 1
 x 384
-y 424
+y 420
 w 188
 h 0
 lineColor index 14
@@ -1333,8 +1334,8 @@ xPoints {
   1 572
 }
 yPoints {
-  0 424
-  1 424
+  0 420
+  1 420
 }
 endObjectProperties
 
@@ -1345,7 +1346,7 @@ major 4
 minor 0
 release 1
 x 84
-y 424
+y 420
 w 296
 h 0
 lineColor index 14
@@ -1357,8 +1358,8 @@ xPoints {
   1 380
 }
 yPoints {
-  0 424
-  1 424
+  0 420
+  1 420
 }
 endObjectProperties
 
@@ -1369,7 +1370,7 @@ major 4
 minor 7
 release 0
 x 436
-y 432
+y 428
 w 116
 h 24
 controlPv "$(TRIG):BW_TDLY_NS"
@@ -1394,7 +1395,7 @@ major 4
 minor 7
 release 0
 x 196
-y 432
+y 428
 w 128
 h 24
 controlPv "$(TRIG):TOFFSET_NS"
@@ -1509,7 +1510,7 @@ major 4
 minor 1
 release 1
 x 356
-y 304
+y 300
 w 76
 h 24
 font "helvetica-bold-r-14.0"
@@ -1528,7 +1529,7 @@ major 4
 minor 7
 release 0
 x 436
-y 304
+y 300
 w 116
 h 24
 controlPv "$(TRIG):TDES.LOW"
@@ -1621,7 +1622,7 @@ major 4
 minor 1
 release 1
 x 356
-y 276
+y 272
 w 76
 h 24
 font "helvetica-bold-r-14.0"
@@ -1639,15 +1640,15 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 140
-y 432
-w 40
+x 112
+y 428
+w 76
 h 24
 font "helvetica-bold-r-14.0"
 fgColor index 32
 bgColor index 3
 value {
-  "TECx"
+  "TECx ns"
 }
 endObjectProperties
 
@@ -1657,15 +1658,15 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 140
-y 460
-w 40
+x 112
+y 456
+w 76
 h 24
 font "helvetica-bold-r-14.0"
 fgColor index 32
 bgColor index 3
 value {
-  "TECx"
+  "TECx ticks"
 }
 endObjectProperties
 
@@ -1676,7 +1677,7 @@ major 4
 minor 1
 release 1
 x 392
-y 432
+y 428
 w 40
 h 24
 font "helvetica-bold-r-14.0"
@@ -1694,7 +1695,7 @@ major 4
 minor 1
 release 1
 x 392
-y 460
+y 456
 w 40
 h 24
 font "helvetica-bold-r-14.0"
@@ -1766,15 +1767,15 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 156
-y 276
-w 40
+x 136
+y 272
+w 60
 h 24
 font "helvetica-bold-r-14.0"
 fgColor index 34
 bgColor index 3
 value {
-  "TREF"
+  "TREF ns"
 }
 endObjectProperties
 
@@ -1904,5 +1905,47 @@ h 68
 font "helvetica-medium-r-12.0"
 fgColor index 31
 bgColor index 32
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 200
+y 300
+w 120
+h 24
+controlPv "EVNT:SYS0:1:LCLSBEAMDLY.A"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 14
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 136
+y 300
+w 60
+h 24
+font "helvetica-bold-r-14.0"
+fgColor index 32
+bgColor index 3
+value {
+  "TEC 140"
+}
 endObjectProperties
 

@@ -433,7 +433,7 @@ static int evrEventTask(void)
 #if EPICS_VERSION < 3 || (EPICS_VERSION == 3 && EPICS_REVISION < 15)
 		post_event(eventMessage.eventNum);
 #else
-                myPostEvent(eventMessage.eventNum);
+		myPostEvent(eventMessage.eventNum);
 #endif
 
 		/* pCard cannot be NULL since the only entities which send messages are

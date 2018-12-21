@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 214
-y 862
+x 1924
+y 226
 w 760
 h 600
 font "helvetica-medium-r-12.0"
@@ -48,7 +48,7 @@ major 4
 minor 0
 release 0
 x 600
-y 112
+y 144
 w 144
 h 120
 lineColor index 14
@@ -164,10 +164,10 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 668
-y 168
+x 664
+y 216
 w 72
-h 24
+h 20
 controlPv "$(TRIG):TDES"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -192,9 +192,9 @@ major 4
 minor 1
 release 1
 x 668
-y 152
+y 184
 w 72
-h 16
+h 20
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -212,9 +212,9 @@ major 4
 minor 1
 release 1
 x 596
-y 152
+y 184
 w 68
-h 16
+h 20
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 14
@@ -231,10 +231,10 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 612
-y 124
-w 45
-h 14
+x 604
+y 152
+w 60
+h 20
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -242,7 +242,6 @@ useDisplayBg
 value {
   "Polarity:"
 }
-autoSize
 endObjectProperties
 
 # (Text Control)
@@ -251,10 +250,10 @@ beginObjectProperties
 major 4
 minor 7
 release 0
-x 596
-y 168
+x 592
+y 216
 w 68
-h 24
+h 20
 controlPv "$(TRIG):TWID"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -279,7 +278,7 @@ major 4
 minor 1
 release 0
 x 676
-y 92
+y 120
 w 56
 h 20
 fgColor index 25
@@ -303,10 +302,10 @@ beginObjectProperties
 major 4
 minor 1
 release 1
-x 628
-y 92
-w 31
-h 14
+x 604
+y 120
+w 60
+h 20
 font "helvetica-medium-r-12.0"
 fgColor index 14
 bgColor index 3
@@ -314,7 +313,6 @@ useDisplayBg
 value {
   "State:"
 }
-autoSize
 endObjectProperties
 
 # (Button)
@@ -324,7 +322,7 @@ major 4
 minor 1
 release 0
 x 676
-y 124
+y 152
 w 55
 h 20
 fgColor index 25
@@ -1845,7 +1843,7 @@ major 4
 minor 1
 release 1
 x 592
-y 248
+y 280
 w 156
 h 24
 font "helvetica-bold-r-12.0"
@@ -1864,7 +1862,7 @@ major 4
 minor 0
 release 1
 x 592
-y 244
+y 276
 w 156
 h 0
 lineColor index 10
@@ -1875,8 +1873,8 @@ xPoints {
   1 748
 }
 yPoints {
-  0 244
-  1 244
+  0 276
+  1 276
 }
 endObjectProperties
 
@@ -1887,7 +1885,7 @@ major 4
 minor 7
 release 0
 x 684
-y 280
+y 312
 w 60
 h 24
 controlPv "$(TRIG):TCTL"
@@ -1908,7 +1906,7 @@ major 4
 minor 1
 release 1
 x 596
-y 280
+y 312
 w 80
 h 24
 font "helvetica-medium-r-12.0"
@@ -1928,7 +1926,7 @@ major 4
 minor 1
 release 1
 x 596
-y 312
+y 344
 w 80
 h 24
 font "helvetica-medium-r-12.0"
@@ -1948,7 +1946,7 @@ major 4
 minor 7
 release 0
 x 684
-y 312
+y 344
 w 60
 h 24
 controlPv "$(TRIG):TPOL"
@@ -1969,7 +1967,7 @@ major 4
 minor 7
 release 0
 x 684
-y 376
+y 408
 w 60
 h 24
 controlPv "$(TRIG):BW_TDLY"
@@ -1990,7 +1988,7 @@ major 4
 minor 7
 release 0
 x 684
-y 404
+y 436
 w 60
 h 24
 controlPv "$(EVR):CTRL.DG$(CH)C"
@@ -2011,7 +2009,7 @@ major 4
 minor 1
 release 1
 x 596
-y 344
+y 376
 w 80
 h 24
 font "helvetica-medium-r-12.0"
@@ -2031,7 +2029,7 @@ major 4
 minor 1
 release 1
 x 596
-y 376
+y 408
 w 80
 h 24
 font "helvetica-medium-r-12.0"
@@ -2051,7 +2049,7 @@ major 4
 minor 1
 release 1
 x 596
-y 404
+y 436
 w 80
 h 24
 font "helvetica-medium-r-12.0"
@@ -2071,7 +2069,7 @@ major 4
 minor 7
 release 0
 x 684
-y 344
+y 376
 w 60
 h 24
 controlPv "$(TRIG):BW_TWID_TICKS"
@@ -2092,7 +2090,7 @@ major 4
 minor 1
 release 1
 x 592
-y 436
+y 468
 w 151
 h 48
 font "helvetica-medium-i-10.0"
@@ -2118,7 +2116,7 @@ major 4
 minor 0
 release 0
 x 596
-y 208
+y 248
 w 140
 h 24
 
@@ -2131,9 +2129,9 @@ major 4
 minor 1
 release 1
 x 596
-y 208
+y 248
 w 72
-h 24
+h 20
 font "helvetica-medium-r-14.0"
 fontAlign "center"
 fgColor index 14
@@ -2150,9 +2148,9 @@ major 4
 minor 7
 release 0
 x 668
-y 208
+y 248
 w 72
-h 24
+h 20
 controlPv "$(TRIG):TDES.LOW"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
@@ -4465,5 +4463,73 @@ endObjectProperties
 
 endGroup
 
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 424
+y 8
+w 120
+h 24
+fgColor index 1
+bgColor index 44
+topShadowColor index 1
+botShadowColor index 14
+font "helvetica-bold-r-12.0"
+buttonLabel "Old EVR Panel"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "event2Screens/evr_slac.edl"
+}
+setPosition {
+  0 "parentWindow"
+}
+icon
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 680
+y 88
+w 60
+h 24
+controlPv "$(TRIG):EC_RBV"
+font "helvetica-medium-r-12.0"
+fontAlign "center"
+fgColor index 15
+bgColor index 12
+nullColor index 18
+smartRefresh
+newPos
+noExecuteClipMask
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 592
+y 88
+w 80
+h 24
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Event Code"
+}
 endObjectProperties
 

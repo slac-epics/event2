@@ -6,7 +6,7 @@
 #
 # Required macros:
 #	DEV				Device PV prefix
-#	EVR_USED		0 = Not used, 1 = Used
+#	EVR_USED		0 = Unused, 1 = Used
 #
 # Optional macros:
 #	EVR				EVR PV prefix, defaults to $(DEV):NoEvr

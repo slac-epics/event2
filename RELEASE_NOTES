@@ -15,10 +15,33 @@ R5.0.1	2018-01-11 Michael Browne
 R5.0.0 2017-12-01 Michael Browne
 	Bring event2 into the timingApi world.
 
-R4.3.0 2018-01-18 Bruce Hill
-	Update RELEASE_NOTES for R4.3.0
+R4.6.0 2018-12-19	Bruce Hill
+	Simplified evrDevTrig.db by deleting unneeding records and obs comments.
+	Added a README w/ a test plan
+	Make some inputs be CPP in evrDevTrig.db to fix BW_TDES and TOFFSET update issues.
+	Fixed update issue for EC_RBV.
+	Turned off some TPRO settings which got left enabled.
+
+R4.5.0 2018-12-17	Bruce Hill
+	Reworked evrDevTrig to calc TOFFSET in a new aSub function, evrDevTrig()
+		Fixes issues w/ TDES vs CTRL.DG*D and interactions w/ Camera PVs for delay and event code.
+	Use exponential format for TDES and BW_TDES
+	Changing dbd and lib names to avoid conflicts w/ same names in event module.
+		Allows building ioc's like gigECam that can build separate apps for different timing modules.
+	Minor tweaks to trigger Pictorial screen
+
+R4.4.0 2018-08-29	Bruce Hill
+	Added devEvrInfo.db
+	Update to diagTimer/R1.9.2
+	Include epicsStdio.h so driver report output can be redirected from iocsh
+	Brought in latest bsa.c from slac-master branch.
+	Use TSE instead of EVNT for event code for MRF stringin & stringout
+	Added User-defined event codes to lclsEventCodes.edl
+	Fix build issues for EPICS 3.15 and 3.16
+
+R4.3.0 2018-01-18	Bruce Hill
 	Fix for trigger eventCode pv, TEC, getting cleared on some bootups.
-	Added trigger specific eventctrl records to trigger eventctrl grid screens
+	Added trigger specific eventctrl records to trigger eventctrl screens (evrTrig3T.edl and evrTrig3T_slac.edl)
 
 R4.2.4 2017-09-23	Bruce Hill
 	More build fixes for R3.15.5 and bumped to diagTimer/R1.9.1

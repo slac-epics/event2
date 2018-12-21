@@ -96,6 +96,15 @@
 #define epicsTimeERROR (-1)
 #endif
 
+#ifndef epicsTimeERROR
+/*
+ * EPICS 3.16 drops support for epicsTimeERROR in favor of S_time_* error codes,
+ * but those are all postive values > 34M and evrTime API
+ * specifies -1 function returns on errors.
+ * */
+#define epicsTimeERROR (-1)
+#endif
+
 #define  EVR_TIME_OK 0
 #define  EVR_TIME_INVALID 1
 

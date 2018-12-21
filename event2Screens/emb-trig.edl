@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 164
-y 1632
+x 168
+y 1656
 w 880
 h 200
 font "helvetica-medium-r-18.0"
@@ -373,7 +373,7 @@ fgAlarm
 bgColor index 5
 editable
 motifWidget
-limitsFromDb
+precision 0
 nullColor index 18
 nullCondition "disabled"
 newPos
@@ -416,7 +416,7 @@ fgColor index 25
 fgAlarm
 bgColor index 5
 editable
-limitsFromDb
+fieldLen "2"
 nullColor index 18
 nullCondition "disabled"
 newPos
@@ -486,6 +486,7 @@ y 8
 w 80
 h 24
 controlPv "$(TRIG):TDES"
+format "exponential"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 25
@@ -493,7 +494,7 @@ fgAlarm
 bgColor index 5
 editable
 motifWidget
-limitsFromDb
+precision 4
 nullColor index 18
 nullCondition "disabled"
 newPos
@@ -645,7 +646,7 @@ fontAlign "center"
 fgColor index 15
 fgAlarm
 bgColor index 12
-limitsFromDb
+precision 0
 nullColor index 14
 smartRefresh
 useHexPrefix
@@ -665,12 +666,13 @@ y 36
 w 80
 h 24
 controlPv "$(TRIG):BW_TDES"
+format "exponential"
 font "helvetica-medium-r-12.0"
 fontAlign "center"
 fgColor index 16
 fgAlarm
 bgColor index 12
-limitsFromDb
+precision 4
 nullColor index 40
 smartRefresh
 useHexPrefix
