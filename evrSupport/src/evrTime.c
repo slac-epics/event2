@@ -771,7 +771,6 @@ int evrTimeInit(epicsInt32 firstTimeSlotIn, epicsInt32 secondTimeSlotIn)
           for (idx2 = 0; idx2 < MAX_TS_QUEUE; idx2++) {
               pevrTime->fifoInfo[idx2].fifo_time   = mod720time;
               pevrTime->fifoInfo[idx2].fifo_fid    = TIMING_PULSEID_INVALID;
-              /* pevrTime->fifoInfo[idx2].fifo_tsc    = hiResTsc; */
               pevrTime->fifoInfo[idx2].fifo_tsc    = 0LL;
               pevrTime->fifo_tsc_nom[idx2]         = 0LL;
           }
@@ -1528,9 +1527,8 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
             unsigned long long	prior_idx		= (pevrTime->ts_idx - 1) & MAX_TS_QUEUE_MASK;
             long long			prior_tsc		= pevrTime->fifoInfo[prior_idx].fifo_tsc;
             long long			prior_tsc_nom	= pevrTime->fifo_tsc_nom[prior_idx];
-            int					prior_fid		= PULSEID(pevrTime->fifoInfo[prior_idx].fifo_time);
+            int					prior_fid		= pevrTime->fifoInfo[prior_idx].fifo_fid;
 			long long			tscPerFid		= llround( (double) HiResTicksPerSecond() * fidInterval );
-            /* prior_fid		= pevrTime->fifoInfo[prior_idx].fifo_fid; */
 			/* if( prior_tsc_nom != 0LL ) prior_tsc = prior_tsc_nom; */
 			long long		deltaTsc		= fidqTsc - prior_tsc;
 
@@ -1551,10 +1549,7 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
             unsigned int		idx		        = (pevrTime->ts_idx++) & MAX_TS_QUEUE_MASK;
             pevrTime->fifoInfo[idx].fifo_time   = pevrTime->time;
             pevrTime->fifoInfo[idx].fifo_tsc    = fidqTsc;
-            // pevrTime->fifoInfo[idx].fifo_fid    = pevrTime->time.nsec & 0x1ffff;
-            pevrTime->fifoInfo[idx].fifo_status = pevrTime->status;
-            // if (pevrTime->fifoInfo[idx].fifo_fid == 0x1ffff)
-            //     pevrTime->fifoInfo[idx].fifo_fid = TIMING_PULSEID_INVALID;
+            pevrTime->fifoInfo[idx].fifo_fid    = timingGetFiducialForTimeStamp( pevrTime->time );
 
 			// Advance fifo_tsc_nom
 			int	cur_fid	= PULSEID(pevrTime->time);
