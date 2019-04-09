@@ -1678,3 +1678,32 @@ void devMrfErRegistrar (void) {
 }/*end devMrfErRegister()*/
 
 epicsExportRegistrar (devMrfErRegistrar);
+
+
+/**************************************************************************************************/
+/*  Device Support Entry Table (DSET)                                                             */
+/**************************************************************************************************/
+
+LOCAL_RTN epicsStatus ErProcessSoft(erRecord*);
+
+static ErDsetStruct devMrfErSoft = {
+    5,                                  /* Number of entries in the Device Support Entry Table    */
+    (DEVSUPFUN)NULL,                    /* -- No device report routine                            */
+    (DEVSUPFUN)NULL,                    /* -- No Driver-Layer routine, since no hardware to init! */
+    (DEVSUPFUN)NULL,                    /* -- No record initialization routine                    */
+    (DEVSUPFUN)NULL,                    /* -- No I/O Interrupt information routine                */
+    (DEVSUPFUN)ErProcessSoft            /* Record processing routine                              */
+};
+
+epicsExportAddress (dset, devMrfErSoft);
+
+LOCAL_RTN
+epicsStatus ErProcessSoft(erRecord  *pRec)
+{
+    pRec->udf = 0;
+    pRec->pact = 1;
+    recGblGetTimeStamp(pRec);
+    recGblFwdLink(pRec);
+    pRec->pact = 0;
+    return 0;
+}
