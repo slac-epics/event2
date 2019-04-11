@@ -19,7 +19,7 @@ ctlBgColor1 index 25
 ctlBgColor2 index 7
 topShadowColor index 1
 botShadowColor index 14
-title "$(EVR) PMC EVR-230"
+title "$(EVR) Trigger Ch$(CH)"
 showGrid
 snapToGrid
 gridSize 4
