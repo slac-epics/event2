@@ -77,11 +77,7 @@ record( calc, "$(TRIG):INVARIANT_UPDATE" )
 	field( INPB, "$(EVR):CTRL.$(TYPE)$(N)D CPP NMS" )
 	field( INPC, "$(EVR):CTRL.$(TYPE)$(N)C CPP NMS" )
 	field( INPD, "$(TRIG):LSUB_EVSEL.VAL CPP NMS" )
-	field( INPE, "$(TRIG):INVARIANT_UPDATE.LA NPP NMS" )
-	field( INPF, "$(TRIG):INVARIANT_UPDATE.LB NPP NMS" )
-	field( INPG, "$(TRIG):INVARIANT_UPDATE.LC NPP NMS" )
-	field( INPH, "$(TRIG):INVARIANT_UPDATE.LD NPP NMS" )
-	field( CALC, "A!=E||B!=F||C!=G||D!=H" )
+	field( CALC, "0" )
 	field( FLNK, "$(TRIG):ASUB_INVARIANT" )
 }
 
@@ -772,7 +768,7 @@ record( bo, "$(TRIG):FW_EC_SEQ_ENAB" )
 }
 
 
-# The foward event code sequence is now an aSub
+# The forward event code sequence is now an aSub
 # record, which copies INPA to OUTA, INPB to OUTB, ...
 # It's configured to write the current trigger event code
 # to the trigger's dedicated erevent EVENTCTRL event code field.

@@ -51,9 +51,9 @@ file evrDevTrig.db
 {
 	pattern
 	{	N,	TRIG,			TYPE,	TYPENUM,	TCTL,	TPRO	}
-	{	0,	$(EVR):TRIG$(N),	DG,	0,			DG$(N)E, 0	}
-	{	1,	$(EVR):TRIG$(N),	DG,	0,			DG$(N)E, 0	}
-	{	2,	$(EVR):TRIG$(N),	DG,	0,			DG$(N)E, 0	}
+	{	0,	$(EVR):TRIG$(N),	DG,	0,		DG$(N)E, 0	}
+	{	1,	$(EVR):TRIG$(N),	DG,	0,		DG$(N)E, 0	}
+	{	2,	$(EVR):TRIG$(N),	DG,	0,		DG$(N)E, 0	}
 }
 
 # Make a set of event control records for each output trigger

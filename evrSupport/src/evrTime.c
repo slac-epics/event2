@@ -177,6 +177,8 @@ int bsa_debug_mask  = 0x0; /* BSA debugging mask */
 int bsa_debug_level = 0;
 #endif
 
+int evrTimeEventVerbose = 0;
+
 /* evr_aps easy access macros */
 #define EVR_APS_STATUS(i)       ( evr_aps[i]->timeStatus )
 #define EVR_APS_TIME(i)         ( evr_aps[i]->pattern_s.time )
@@ -1574,28 +1576,34 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
 				if ( fid_delta <= 0 )
 				{
 					pevrTime->fifo_tsc_nom[idx]	= fidqTsc;
-					printf( "event %d: Error: cur_fid <= prior_fid: tsc_nom %lld, fidqTsc %lld, tscPerFid %lld, prior_fid %d, cur_fid %d\n",
+                                        if (evrTimeEventVerbose) {
+                                            printf( "event %d: Error: cur_fid <= prior_fid: tsc_nom %lld, fidqTsc %lld, tscPerFid %lld, prior_fid %d, cur_fid %d\n",
 							eventNum, tsc_nom, fidqTsc, tscPerFid, prior_fid, cur_fid );
+                                        }
 					tsc_nom	= fidqTsc;
 				}
 				else if ( fidqTsc < tsc_nom )
 				{
 					pevrTime->fifo_tsc_nom[idx]	= fidqTsc;
 					// HACK - Remove printf after initial testing
-					printf( "event %d: tsc_nom %lld, fidqTsc %lld, tscPerFid %lld, prior_fid %d, cur_fid %d\n",
+                                        if (evrTimeEventVerbose) {
+                                            printf( "event %d: tsc_nom %lld, fidqTsc %lld, tscPerFid %lld, prior_fid %d, cur_fid %d\n",
 							eventNum, tsc_nom, fidqTsc, tscPerFid, prior_fid, cur_fid );
-					printf( "event %d: fifo_tsc_nom backed up %lld tsc (%.4f us)\n",
+                                            printf( "event %d: fifo_tsc_nom backed up %lld tsc (%.4f us)\n",
 							eventNum, (tsc_nom - fidqTsc), (double)(tsc_nom - fidqTsc) / HiResTicksPerSecond() * 1.0e6 );
+                                        }
 					tsc_nom	= fidqTsc;
 				}
 				else if ( (fidqTsc - tsc_nom) > (fid_delta * tscPerFid) )
 				{
 					pevrTime->fifo_tsc_nom[idx]	= fidqTsc;
 					// HACK - Remove printf after initial testing
-					printf( "event %d: tsc_nom %lld, fidqTsc %lld, tscPerFid %lld, prior_fid %d, cur_fid %d\n",
+                                        if (evrTimeEventVerbose) {
+                                            printf( "event %d: tsc_nom %lld, fidqTsc %lld, tscPerFid %lld, prior_fid %d, cur_fid %d\n",
 							eventNum, tsc_nom, fidqTsc, tscPerFid, prior_fid, cur_fid );
-					printf( "event %d: fifo_tsc_nom advanced by %lld tsc (%.4f us)\n",
+                                            printf( "event %d: fifo_tsc_nom advanced by %lld tsc (%.4f us)\n",
 							eventNum, (fidqTsc - tsc_nom ), (double)(fidqTsc - tsc_nom) / HiResTicksPerSecond() * 1.0e6 );
+                                        }
 					tsc_nom	= fidqTsc;
 				}
 				else
@@ -1878,3 +1886,4 @@ epicsRegisterFunction(	evrTimeRate	);
 epicsRegisterFunction(	evrTimeEvent	);
 epicsRegisterFunction(	evrTimeGetFiducial	);
 epicsRegisterFunction(	eventDebug	);
+epicsExportAddress(int, evrTimeEventVerbose );
