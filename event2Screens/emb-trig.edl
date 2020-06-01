@@ -756,8 +756,8 @@ topShadowColor index 1
 botShadowColor index 13
 controlPv "$(EVR):CTRL.IP$(CH)E"
 indicatorPv "$(EVR):CTRL.IP$(CH)E"
-onLabel "Acquired"
-offLabel "Released"
+onLabel "Release"
+offLabel "Acquire"
 labelType "literal"
 3d
 font "helvetica-medium-r-12.0"
