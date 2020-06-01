@@ -1,6 +1,15 @@
 #
 # RELEASE_NOTES
 #
+R5.5.2 2020-06-01 Bruce Hill
+	Fix confusing label for acquiring and releasing trigger channel button.
+	Tweak diag on invalid evr pattern.
+	Have autosave_evr_PMC.sub-req use PMC template instead of evr_SLAC.
+
+R5.5.1 2019-09-24 Michael Browne
+	evrTimeEventVerbose was added to hide all of the spammy debug messages.
+	Fix title on evrOneTrig.edl
+
 R5.5.0 2019-04-09       Michael Browne
         Added a soft channel driver and deleted linux arm build.
 
