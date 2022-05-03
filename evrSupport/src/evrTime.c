@@ -68,7 +68,6 @@
 #include "epicsMutex.h"       /* epicsMutexId and protos   */
 #include "alarm.h"            /* INVALID_ALARM             */
 #include "dbScan.h"           /* for post_event            */
-#include <dbAccess.h>         /* for dbNameToAddr          */
 #include <aSubRecord.h>
 #include <recGbl.h>
 #include <stdlib.h>
@@ -648,7 +647,11 @@ int timingFifoRead(unsigned int            eventCode,
 	if ( *idx + MAX_TS_QUEUE < eventCodeTime_as[eventCode].ts_idx ||
 		 *idx >= eventCodeTime_as[eventCode].ts_idx) {
 		epicsMutexUnlock(evrTimeRWMutex_ps);
-		/* Invalid index or FIFO is empty */
+		/* FIFO is empty */
+		if (evrTimeEventVerbose)
+		{
+			printf( "timingFifoRead: Empty Fifo\n" );
+		}
 		return epicsTimeERROR;
 	}
 
@@ -1730,6 +1733,7 @@ extern void eventDebug(int arg1, int arg2)
 	int iFifoDump = 0;
 	int nFifoDump = 10;
     int doreset = 0;
+	evrTimeEventVerbose = 1;
     if (arg1 < 0) {
         arg1 = -arg1;
         doreset = 1;
@@ -1856,6 +1860,7 @@ extern void eventDebug(int arg1, int arg2)
         }
         arg1++;
     } while (arg1 <= arg2);
+	evrTimeEventVerbose = 0;
     fflush(stdout);
 }
 
