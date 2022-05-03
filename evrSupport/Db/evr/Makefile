@@ -14,6 +14,8 @@ USR_VPATH += $(COMMON_DIR)
 # Create and install (or just install)
 # databases, templates, substitutions like this
 #
+# fiducialTimestamp timestamp support (includes patterns)
+DB += fiducialTimestamp.db
 # EVR databases
 DB += evr.db
 DB += evr-pmc.db
@@ -32,8 +34,6 @@ DB += evrEventFACET.db
 DB += evrEventXTA.db
 DB += evrPatternAll.db
 DB += evrMod36.db
-# fiducialTimestamp timestamp support (includes patterns)
-DB += fiducialTimestamp.db
 
 # Event Codes
 DB += evrEventCode.template
