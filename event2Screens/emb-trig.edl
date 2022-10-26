@@ -173,7 +173,7 @@ useDisplayBg
 visPv "$(TRIG):LSUB_TRGSEL"
 visInvert
 visMin "0"
-visMax "25"
+visMax "200"
 value {
   "No event code!"
 }
@@ -218,9 +218,8 @@ endObjectProperties
 endGroup
 
 visPv "$(TRIG):LSUB_EVSEL"
-visInvert
 visMin "0"
-visMax "25"
+visMax "200"
 endObjectProperties
 
 # (Lines)
@@ -391,6 +390,50 @@ w 620
 h 56
 
 beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 145
+y 34
+w 196
+h 24
+
+beginGroup
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 145
+y 34
+w 196
+h 24
+controlPv "$(TRIG):EC_NAME"
+font "helvetica-medium-r-12.0"
+fgColor index 16
+fgAlarm
+bgColor index 12
+limitsFromDb
+nullColor index 40
+smartRefresh
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+endGroup
+
+visPv "$(TRIG):LSUB_EVSEL"
+visInvert
+visMin "0"
+visMax "200"
+endObjectProperties
 
 # (Group)
 object activeGroupClass
