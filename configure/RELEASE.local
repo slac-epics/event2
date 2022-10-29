@@ -20,9 +20,9 @@
 # could match a directory name.
 # ==========================================================
 MISCUTILS_MODULE_VERSION	= R2.2.4
-DIAG_TIMER_MODULE_VERSION	= R1.9.2
+DIAG_TIMER_MODULE_VERSION	= R1.9.2.1
 EV2_DRIVER_MODULE_VERSION	= R1.0.2
-TIMING_API_MODULE_VERSION	= R0.8
+TIMING_API_MODULE_VERSION	= R0.9
 
 # ==========================================================
 # Define module paths using pattern
