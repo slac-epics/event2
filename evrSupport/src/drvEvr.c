@@ -47,7 +47,7 @@
 #else
 #include "HiResTimeStub.h"
 #endif	/* DIAG_TIMER */
-#include<timingFifoApi.h>
+#include "timingFifoApi.h"
 
 #ifdef __rtems__
 #define EVR_TIMEOUT     (0.06)  /* Timeout in sec waiting for 360hz input. */
@@ -167,7 +167,7 @@ TimingPulseId timingGetLastFiducial( )
   Abs: timingGetFiducialForTimeStamp returns the 64 bit fiducial that corresponds to the specified timestamp.
 	   If the timing module cannot determine the correct fiducial, it returns TIMING_PULSEID_INVALID.
 =============================================================================*/
-extern TimingPulseId timingGetFiducialForTimeStamp( epicsTimeStamp timeStamp )
+extern epicsUInt64 timingGetFiducialForTimeStamp( epicsTimeStamp timeStamp )
 {
 	epicsUInt32		fiducial = timeStamp.nsec & PULSEID_INVALID;
     if ( fiducial == PULSEID_INVALID )

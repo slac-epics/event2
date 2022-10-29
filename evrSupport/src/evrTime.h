@@ -85,6 +85,9 @@ extern "C" {
 
 extern int  evrGetLastFiducial( );              /* Returns lastfid, the last fiducial set by ISR */
 extern int lastfid;                             /* Keep this for a while to avoid compiler errors */
+/** timingGetFiducialForTimeStamp returns the fiducial that corresponds to the specified timestamp.
+ ** If the timing module cannot determine the correct fiducial, it returns TIMING_PULSEID_INVALID.  */
+extern epicsUInt64	timingGetFiducialForTimeStamp( epicsTimeStamp  timeStamp );
 
 
 /*

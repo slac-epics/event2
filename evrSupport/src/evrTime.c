@@ -84,7 +84,7 @@
 #else
 #include "HiResTimeStub.h"
 #endif	/* DIAG_TIMER */
-#include<timingFifoApi.h>
+#include "timingFifoApi.h"
 
 #ifndef epicsTimeERROR
 /*
