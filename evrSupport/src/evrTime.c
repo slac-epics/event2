@@ -653,7 +653,11 @@ int timingFifoRead(unsigned int            eventCode,
 		/* FIFO is empty */
 		if (evrTimeEventVerbose)
 		{
-			printf( "timingFifoRead: Empty Fifo\n" );
+			printf( "timingFifoRead: Empty Fifo!" );
+			if ( *idx + MAX_TS_QUEUE < eventCodeTime_as[eventCode].ts_idx )
+				printf( " *idx+MAX_TS_QUEUE=%lu < ts_idx=%llu\n", *idx + MAX_TS_QUEUE, eventCodeTime_as[eventCode].ts_idx );
+		 	if ( *idx >= eventCodeTime_as[eventCode].ts_idx)
+				printf( " *idx=%lu >= ts_idx=%llu\n", *idx, eventCodeTime_as[eventCode].ts_idx );
 		}
 		return epicsTimeERROR;
 	}
