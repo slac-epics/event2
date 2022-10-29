@@ -634,7 +634,10 @@ int timingFifoRead(unsigned int            eventCode,
 		return epicsTimeERROR;
 
 	if (incr == TS_INDEX_INIT)
-		*idx = eventCodeTime_as[eventCode].ts_idx - 1;
+		if (eventCodeTime_as[eventCode].ts_idx == 0)
+			*idx = 0LL;
+		else
+			*idx = eventCodeTime_as[eventCode].ts_idx - 1;
 	else
 		*idx += incr;
 
@@ -1761,7 +1764,7 @@ extern void eventDebug(int arg1, int arg2)
 			int		incr;
 			int		status;
 			if ( iFifoDump == 0 )
-				incr	= MAX_TS_QUEUE;
+				incr	= TS_INDEX_INIT;
 			else
 				incr	= -1;
 
