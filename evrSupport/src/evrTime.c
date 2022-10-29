@@ -1317,11 +1317,11 @@ static long evrTimeEvent(longSubRecord *psub)
 /*
  * evrTimeEventProcessing handles updating the timestamps for
  * the specified event number in the event code timestamp FIFO.
+ * Called from evrEventTask which runs a forever loop draining the eventTaskQueue.
+ *
  * This code used to be inline in evrTimeEvent(), but was
  * broken out into a separate routine so it could be called
  * in a more timely manner and possibly combined with evrTimeCount().
- *
- * fiddbg printf'e replaced with diag counters to avoid skewing our timestamping
  */
 long evrTimeEventProcessing( epicsInt16 eventNum )
 {
@@ -1594,6 +1594,8 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
 				}
 				else if ( fidqTsc < tsc_nom )
 				{
+					// fidqTsc is less than tsc_nom, so we need to backup the nominal.
+					// This is normal and expected as we acquire more samples.
 					pevrTime->fifo_tsc_nom[idx]	= fidqTsc;
 					// HACK - Remove printf after initial testing
                                         if (evrTimeEventVerbose) {
@@ -1606,6 +1608,8 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
 				}
 				else if ( (fidqTsc - tsc_nom) > (fid_delta * tscPerFid) )
 				{
+					// fidqTsc is further ahead of nominal tsc than expected, so we need to advance the nominal.
+					// This is normal and expected as we acquire more samples.
 					pevrTime->fifo_tsc_nom[idx]	= fidqTsc;
 					// HACK - Remove printf after initial testing
                                         if (evrTimeEventVerbose) {
