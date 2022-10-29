@@ -1598,12 +1598,13 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
 					// This is normal and expected as we acquire more samples.
 					pevrTime->fifo_tsc_nom[idx]	= fidqTsc;
 					// HACK - Remove printf after initial testing
-                                        if (evrTimeEventVerbose) {
-                                            printf( "event %d: tsc_nom %lld, fidqTsc %lld, tscPerFid %lld, prior_fid %d, cur_fid %d\n",
-							eventNum, tsc_nom, fidqTsc, tscPerFid, prior_fid, cur_fid );
-                                            printf( "event %d: fifo_tsc_nom backed up %lld tsc (%.4f us)\n",
-							eventNum, (tsc_nom - fidqTsc), (double)(tsc_nom - fidqTsc) / HiResTicksPerSecond() * 1.0e6 );
-                                        }
+					if (evrTimeEventVerbose)
+					{
+						printf( "event %d: tsc_nom %lld, fidqTsc %lld, tscPerFid %lld, prior_fid %d, cur_fid %d\n",
+								eventNum, tsc_nom, fidqTsc, tscPerFid, prior_fid, cur_fid );
+						printf( "event %d: fifo_tsc_nom backed up %lld tsc (%.4f us)\n",
+								eventNum, (tsc_nom - fidqTsc), (double)(tsc_nom - fidqTsc) / HiResTicksPerSecond() * 1.0e6 );
+					}
 					tsc_nom	= fidqTsc;
 				}
 				else if ( (fidqTsc - tsc_nom) > (fid_delta * tscPerFid) )
@@ -1612,12 +1613,13 @@ long evrTimeEventProcessing( epicsInt16 eventNum )
 					// This is normal and expected as we acquire more samples.
 					pevrTime->fifo_tsc_nom[idx]	= fidqTsc;
 					// HACK - Remove printf after initial testing
-                                        if (evrTimeEventVerbose) {
-                                            printf( "event %d: tsc_nom %lld, fidqTsc %lld, tscPerFid %lld, prior_fid %d, cur_fid %d\n",
-							eventNum, tsc_nom, fidqTsc, tscPerFid, prior_fid, cur_fid );
-                                            printf( "event %d: fifo_tsc_nom advanced by %lld tsc (%.4f us)\n",
-							eventNum, (fidqTsc - tsc_nom ), (double)(fidqTsc - tsc_nom) / HiResTicksPerSecond() * 1.0e6 );
-                                        }
+					if (evrTimeEventVerbose)
+					{
+						printf( "event %d: tsc_nom %lld, fidqTsc %lld, tscPerFid %lld, prior_fid %d, cur_fid %d\n",
+								eventNum, tsc_nom, fidqTsc, tscPerFid, prior_fid, cur_fid );
+						printf( "event %d: fifo_tsc_nom advanced by %lld tsc (%.4f us)\n",
+								eventNum, (fidqTsc - tsc_nom ), (double)(fidqTsc - tsc_nom) / HiResTicksPerSecond() * 1.0e6 );
+					}
 					tsc_nom	= fidqTsc;
 				}
 				else
