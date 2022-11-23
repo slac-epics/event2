@@ -1,8 +1,14 @@
 #
 # RELEASE_NOTES
 #
-R5.6.0	2022-01-13 Michael Browne
-	Add new SLAC EVR version.
+R5.6.0	2022-11-22 Bruce Hill
+	Build w/ timingApi/R0.9 and diagTimer/R1.9.2.1
+	Additional diags for timing FIFO empty warning
+	Fixed uses of MAX_TS_QUEUE instead of TS_INDEX_INIT.
+	Fix issues w/ timingGetFiducialForTimeStamp() for timingApi/R0.9 which removes it from the API.
+	Show EC_NAME for event codes up to 200, owned or not
+	Show DESC and event code even when Not Owned
+	2022-01-13 Michael Browne Add new SLAC EVR version.
 
 R5.5.4	2021-03-29 Michael Browne
 	Update to latest versions.
