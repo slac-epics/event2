@@ -27,13 +27,13 @@
 #	$(EVR):LINK
 #
 # Usage for devices with an EVR:
-#	Just add this line to your st.cmd file with appropriate definitions for DEV_PV, EVR_PV, and TRIG_CH
+#	Just add this line to your st.cmd file with appropriate definitions for DEV, EVR_PV, and TRIG_CH
 #	You can load it before or after your evr db files, and can load one instance per device.
-# dbLoadRecords( "db/devEvrInfo.db", "DEV=$DEV_PV,EVR=$EVR_PV,TRIG_CH=$TRIG_CH,EVR_USED=1 )
+# dbLoadRecords( "db/devEvrInfo.db", "DEV=$DEV,EVR=$EVR_PV,TRIG_CH=$TRIG_CH,EVR_USED=1 )
 #
 # If your IOC supports some devices with EVRs and some without, follow the above usage
 # for devices with EVRs.   For devices without EVRs you can just load this. 
-# dbLoadRecords( "db/devEvrInfo.db", "DEV=$DEV_PV,EVR_USED=0 )
+# dbLoadRecords( "db/devEvrInfo.db", "DEV=$DEV,EVR_USED=0 )
 #
 # This allows your edm screens to use group visibility to hide or show our traditional
 # green diamond $(EVR):STATUS widget without getting white unconnected widget outlines
