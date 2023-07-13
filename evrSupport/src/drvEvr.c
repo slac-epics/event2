@@ -91,6 +91,8 @@ typedef struct {
 
 ELLLIST evrFiducialFuncList_s;
 static epicsMutexId evrRWMutex_ps = 0; 
+
+int lcls1_timing = 1; /* We are *always* LCLS1 timing! */
 
 /*=============================================================================
 
