@@ -54,6 +54,7 @@
  
 =============================================================================*/
 
+#define USE_TYPED_RSET
 #include <string.h>        /* strcmp */
 #include <stdlib.h>        /* calloc */
 #include <stdio.h>
