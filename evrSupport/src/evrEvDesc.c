@@ -1,3 +1,4 @@
+#define USE_TYPED_RSET
 #ifdef __rtems__
 #include <rtems.h>            /* required for timex.h      */
 #endif

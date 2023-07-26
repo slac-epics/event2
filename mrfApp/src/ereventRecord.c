@@ -13,6 +13,7 @@
  *      Date:           8/27/93
  */
 
+#define USE_TYPED_RSET
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -63,8 +64,8 @@ rset ereventRSET={
 	RSETNUMBER,
 	report,
 	initialize,
-	ErEventInitRec,
-	ErEventProc,
+	(long (*)())ErEventInitRec,
+	(long (*)())ErEventProc,
 	special,
 	get_value,
 	cvt_dbaddr,

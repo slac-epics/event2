@@ -26,6 +26,7 @@
  */
 
 
+#define USE_TYPED_RSET
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdarg.h>

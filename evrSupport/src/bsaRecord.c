@@ -21,6 +21,7 @@
  *                    beam synchronous acquisition.
  */
 
+#define USE_TYPED_RSET
 #include <string.h>
 
 #include "dbDefs.h"
