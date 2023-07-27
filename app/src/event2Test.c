@@ -54,17 +54,17 @@ void ErIrqHandler(int fd, int flags)
 	if (mydrp == -1)
 	    mydrp = lastdrp - 1;
 	for (drp = mydrp + 1; drp <= lastdrp; drp++) {
-            int idx = drp & (MAX_EVR_DBQ - 1);
-            int databuf_sts = pEq->dbq[idx].status;
+            int idx = drp & (MAX_EVR_DBQ2 - 1);
+            int databuf_sts = pEq->dbq2[idx].status;
 
             if(databuf_sts & (1<<C_EVR_DATABUF_CHECKSUM)) {
                 printf("C%d\n", idx);
             } else {
-                u32 *dd = pEq->dbq[idx].data;
-                printf("D%d: %08x %08x.%08x\n", idx, dd[0], dd[7], dd[8]);
+                u32 *dd = pEq->dbq2[idx].data;
+                printf("D%02d: %08x %08x.%08x\n", idx, dd[0], dd[7], dd[8]);
 #if 0
                 pCard->DBuffSize = (databuf_sts & ((1<<(C_EVR_DATABUF_SIZEHIGH+1))-1));
-                memcpy(pCard->DataBuffer, pEq->dbq[idx].data, pCard->DBuffSize);
+                memcpy(pCard->DataBuffer, pEq->dbq2[idx].data, pCard->DBuffSize);
 #endif
             }
         }
