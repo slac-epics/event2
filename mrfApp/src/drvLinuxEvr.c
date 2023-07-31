@@ -245,9 +245,8 @@ void ErIrqHandler(int fd, int flags)
 		{				                                             \
 		    if (erp < pEq->ewp) {				                     \
 			struct FIFOEvent *fe = &pEq->evtq[erp & (MAX_EVR_EVTQ-1)];           \
-			nextEfid = fe->TimestampHigh + ((fe->EventCode == 1) ? 4 : 3);       \
-			if (nextEfid >= FID_MAX)				             \
-			    nextEfid -= FID_MAX;		                             \
+			nextEfid = (fe->TimestampHigh +			                     \
+				    ((fe->EventCode == 1) ? 4 : 3)) % FID_MAX;               \
 		    } else						                     \
 			nextEfid = FID_INVALID;				                     \
 		}
@@ -265,7 +264,7 @@ void ErIrqHandler(int fd, int flags)
 		{                       					 	     \
 		    struct FIFOEvent *fe = &pEq->evtq[erp & (MAX_EVR_EVTQ-1)];               \
 		    int curFid = (fe->TimestampHigh + 4) % FID_MAX;	                     \
-		    if (fe->EventCode == 1 && FID_GT(curFid, nextEfid)) {                    \
+		    if (fe->EventCode == 1 && curFid != nextEfid) {                          \
 			break;						                     \
 		    };							                     \
 		    erp++;						                     \
