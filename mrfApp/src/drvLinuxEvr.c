@@ -181,11 +181,11 @@ void ErIrqHandler(int fd, int flags)
 	struct ErCardStruct *pCard;
         struct EvrQueues *pEq;
 
-	epicsMutexLock(ErCardListLock);
+	epicsMutexMustLock(ErCardListLock);
 	for (pCard = (ErCardStruct *)ellFirst(&ErCardList);
 		pCard != NULL;
 		pCard = (ErCardStruct *)ellNext(&pCard->Link)) {
-		epicsMutexLock(pCard->CardLock);
+		epicsMutexMustLock(pCard->CardLock);
 		if(pCard->Slot != fd || pCard->IrqLevel != 1) {
 			epicsMutexUnlock(pCard->CardLock);
 			continue;
@@ -407,7 +407,7 @@ static int ErConfigure (
 	void   *pEq;
         u32	FPGAVersion;
 
-	epicsMutexLock(ErCardListLock);
+	epicsMutexMustLock(ErCardListLock);
 	/* If not already done, initialize the driver structures */
 	if (!bErCardListInitDone) {
 		ellInit (&ErCardList);
@@ -421,7 +421,7 @@ static int ErConfigure (
 		return ERROR;
 	}
 	
-	epicsMutexLock(ErConfigureLock);
+	epicsMutexMustLock(ErConfigureLock);
 	for (pCard = (ErCardStruct *)ellFirst(&ErCardList);
 		pCard != NULL;
 		pCard = (ErCardStruct *)ellNext(&pCard->Link)) {
@@ -536,7 +536,7 @@ static int ErConfigure (
 	/* Finish filling the driver structure and configuring the hardware,
 		if this fails we cannot release the linked list link, instead we
 		we set Cardno to an invalid value */
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	pCard->pEq = (void *)pEq;
 	pCard->Slot = fdEvr;	/* we steal this irrelevant field */
         pCard->FPGAVersion = FPGAVersion;
@@ -570,7 +570,7 @@ int ErCheckTaxi(ErCardStruct *pCard)
 {
 	int ret = epicsFalse;
 	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	if (EvrGetViolation(pCard->Slot))
 		ret = epicsTrue;
 	epicsMutexUnlock(pCard->CardLock);
@@ -629,7 +629,7 @@ epicsUInt16 ErEnableIrq (ErCardStruct *pCard, epicsUInt16 Mask)
 {
 	epicsUInt16 ret;
 	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	ret = ErEnableIrq_nolock(pCard, Mask);
 	epicsMutexUnlock(pCard->CardLock);
 	return ret;
@@ -667,7 +667,7 @@ void ErDBuffIrq(ErCardStruct *pCard, int Enable)
 {
 	int mask;
 	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	mask = pCard->IrqVector;
 	if (Enable)
 		mask |= EVR_IRQFLAG_DATABUF;
@@ -697,7 +697,7 @@ void ErEventIrq(ErCardStruct *pCard, int Enable)
 {
 	int mask;
 	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	mask = pCard->IrqVector;
 	if (Enable) {
 		mask |= EVR_IRQFLAG_EVENT | EVR_IRQFLAG_FIFOFULL;
@@ -800,7 +800,7 @@ int ErGetRamStatus(ErCardStruct *pCard, int RamNumber)
 {
 	epicsUInt32 ctrl;
 	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	ctrl = READ_EVR_REGISTER(pCard->Slot, Control);
 	epicsMutexUnlock(pCard->CardLock);
 	return ((ctrl>>C_EVR_CTRL_MAP_RAM_SELECT) & 1) == (RamNumber-1) ? 
@@ -831,7 +831,7 @@ int	ErAcquireTrigger( ErCardStruct * pCard,	unsigned int iTrig, unsigned int fAc
 	if ( iTrig >= MAX_DG )
 		return EINVAL;
 
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	eit.Id = iTrig;
 	if ( fAcquire )
 		eit.Op = EvrTrigAlloc;
@@ -886,7 +886,7 @@ int ErCheckTrigger( ErCardStruct * pCard, unsigned int iTrig )
 	if ( iTrig >= MAX_DG )
 		return 0;
 
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	eit.Id = iTrig;
 	eit.Op = EvrTrigCheck;
 	if ( ioctl( pCard->Slot, EV_IOCTRIG, &eit ) != 0 )
@@ -947,7 +947,7 @@ epicsStatus ErGetTicks(int Card, epicsUInt32 *Ticks)
 
 	if(pCard == NULL)
 		return ERROR;
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	*Ticks = (epicsUInt32)EvrGetTimestampCounter(pCard->Slot);
 	epicsMutexUnlock(pCard->CardLock);
 	return OK;
@@ -1011,7 +1011,7 @@ void ErRegisterDevDBuffHandler (ErCardStruct *pCard, DEV_DBUFF_FUNC DBuffFunc)
 \**************************************************************************************************/
 void ErResetAll(ErCardStruct *pCard)
 {	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	ErEnableIrq_nolock(pCard, EVR_IRQ_OFF);
 	epicsMutexUnlock(pCard->CardLock);
 	return;
@@ -1058,7 +1058,7 @@ int ErSetDg(ErCardStruct *pCard, int Channel, int Enable,
 				Channel, Prescaler, Delay, Width,
 				( Pol ? "Inv" : "Nml" )	);
 
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	if(Enable) {
             status = EvrSetPulseParams(pCard->Slot, Channel, Prescaler, Delay, Width, Pol, 1);
 	} else {
@@ -1086,7 +1086,7 @@ void ErTaxiIrq(ErCardStruct *pCard, int Enable)
 {
 	int mask;
 	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	mask = pCard->IrqVector;
 	if (Enable)
 		mask |= EVR_IRQFLAG_VIOLATION;
