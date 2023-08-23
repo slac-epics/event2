@@ -230,7 +230,6 @@ void ErIrqHandler(int fd, int flags)
 		 *     TimestampHigh is the seconds field, which at SLAC is used to hold
 		 *     the fiducial count for this event.
 		 */
-		 */
 
 #define SET_NEXT_EFID()				                                             \
 		{				                                             \
