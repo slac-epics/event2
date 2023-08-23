@@ -167,7 +167,8 @@ epicsUInt16 ErEnableIrq_nolock (ErCardStruct *pCard, epicsUInt16 Mask)
 |*
 |*-------------------------------------------------------------------------------------------------
 |* INPUT PARAMETERS:
-|*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
+|*      fd     = (int) Open fd pointing to the EVR.
+|*      flags  = (int) A mask of interrupt conditions.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* NOTES:
