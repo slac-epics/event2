@@ -211,14 +211,12 @@ void ErIrqHandler(int fd, int flags)
 
 		/*
 		 * OK, the usual sequence of events is:
-		 *     D F+3
-		 *     delay ~2ms
-		 *     E1 F
-		 *     Em F+1
-		 *     En F+1
-		 *     ...
-		 *     delay ~0.7ms
-		 *     D F+4
+		 *     Data buffer for fiducial F+3
+		 *     ~2ms delay
+		 *     Event code 1 with timestamp F
+		 *     Other events with timestamp F+1
+		 *     ~0.7ms delay
+		 *     Data buffer for fiducial F+4
 		 *
 		 * So we want to figure out what to process next... data buffers or events!
 		 * The important decision comes when we get a fiducial!
