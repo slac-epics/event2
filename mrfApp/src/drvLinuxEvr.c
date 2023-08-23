@@ -175,7 +175,6 @@ epicsUInt16 ErEnableIrq_nolock (ErCardStruct *pCard, epicsUInt16 Mask)
 |*   it has to figure out why and who generated an interrupt
 |*
 \**************************************************************************************************/
-int irqCount = 0;
 void ErIrqHandler(int fd, int flags)
 {
 	struct ErCardStruct *pCard;
@@ -196,8 +195,6 @@ void ErIrqHandler(int fd, int flags)
                  */
 
 		pEq = pCard->pEq;
-
-                irqCount++;
 
                 long long erp      = pCard->erp;
 		long long drp      = pCard->drp;
