@@ -221,7 +221,7 @@ void ErIrqHandler(int fd, int flags)
 		 * So we want to figure out what to process next... data buffers or events!
 		 * The important decision comes when we get a fiducial!
 		 *
-		 * If dd is a pointer to a databufffer, then:
+		 * If dd is a pointer to a databuffer, then:
 		 *     dd[7] is the seconds field of the timestamp.
 		 *     dd[8] is the nanosecond field of the timestamp, the low 17-bits
 		 *     of which are the fiducial count.  
