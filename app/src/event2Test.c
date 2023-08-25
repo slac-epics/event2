@@ -20,7 +20,6 @@ u16 ErEventTab[256];
 int noI = 0;
 long long lasttsc = 0;
 
-define	read_tsc(tscVal) (tscVal) = _rdtsc()
 #if	defined(__x86_64__)
 #define		read_tsc(tscVal)	     			       \
 do								       \
