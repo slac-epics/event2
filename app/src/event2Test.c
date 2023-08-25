@@ -7,7 +7,6 @@
 #include <signal.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
-#include <x86intrin.h>
 #include "evrIrqHandler.h"
 #include "erapi.h"
 
@@ -21,7 +20,19 @@ u16 ErEventTab[256];
 int noI = 0;
 long long lasttsc = 0;
 
-#define	read_tsc(tscVal) (tscVal) = _rdtsc()
+define	read_tsc(tscVal) (tscVal) = _rdtsc()
+#if	defined(__x86_64__)
+#define		read_tsc(tscVal)	     			       \
+do								       \
+{	/*	=A is for 32 bit mode reading 64 bit integer */	       \
+	unsigned long	tscHi, tscLo;      			       \
+	__asm__ volatile("rdtsc" : "=a" (tscLo), "=d" (tscHi) );       \
+	tscVal	=  (long long)( tscHi ) << 32;      		       \
+	tscVal	|= (long long)( tscLo );                               \
+}	while ( 0 )
+#elif	defined(__i386__)
+#define	read_tsc(tscVal)	__asm__ volatile("rdtsc": "=A" (tscVal))
+#endif
 
 double ms_per_tick = 1.0L / 2400148.L;
 
