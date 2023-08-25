@@ -71,8 +71,8 @@ epicsExportAddress(drvet, drvEvr);
 
 static epicsMessageQueueId  eventTaskQueue;
 static ErCardStruct    *pCard             = NULL;  /* EVR card pointer    */
-static epicsEventId     evrTaskEventSem   = NULL;  /* evr task semaphore  */
-static epicsEventId     evrRecordEventSem = NULL;  /* evr record task sem */
+static int evrTask();
+static int evrRecord();
 static int readyForFiducial = 1;                   /* evrTask ready for new fiducial */
 static int evrInitialized = 0;                     /* evrInitialize performed        */
 int lastfid = -1;                           /* Last fiducial seen             */
@@ -245,7 +245,7 @@ void evrEvent(int cardNo, epicsInt16 eventNum, epicsUInt32 timeNum)
       ErGetTicks(0, &evrClockCounter);                                   // NEW
       evrMessageClockCounter(EVR_MESSAGE_FIDUCIAL, evrClockCounter);     // NEW
       evrMessageStart(EVR_MESSAGE_FIDUCIAL);
-      epicsEventSignal(evrTaskEventSem);
+      evrTask();
     } else {
       evrMessageNoDataError(EVR_MESSAGE_FIDUCIAL);
     }
@@ -307,30 +307,16 @@ epicsUInt32 peek_fiducial(epicsUInt32* next_event_to_watch,
 =============================================================================*/
 static int evrTask()
 {  
-  epicsEventWaitStatus status;
   epicsUInt32          mpsModifier;
   int                  messagePending;
   EventMessage         eventMessage;
 
-  if (evrTimeInit(0,0)) {
-    errlogPrintf("evrTask: Exit due to bad status from evrTimeInit\n");
-    return -1;
-  }
-
-  if(!pCard) {
-    errlogPrintf("evrTask: could not find an EVR module\n");
-    return -1;
-  }
-
   eventMessage.eventNum  = EVENT_FIDUCIAL;
 
-  for (;;)
-  {
     readyForFiducial = 1;
-    status = epicsEventWaitWithTimeout(evrTaskEventSem, EVR_TIMEOUT);
 
     evrMessageLap(EVR_MESSAGE_FIDUCIAL);
-    if (status == epicsEventWaitOK) {
+
 	  /* Note: evrPattern locks evrTimeRWMutex but releases it */
       evrPattern(0, &mpsModifier);/* N-3           */
 	  /* Note: evrTime also locks evrTimeRWMutex but under linux evrEventTask could run before it takes the lock */
@@ -353,26 +339,9 @@ static int evrTask()
       messagePending = epicsMessageQueuePending(eventTaskQueue);
       evrMessageQ(EVR_MESSAGE_FIDUCIAL, messagePending);
 
-    /* If timeout or other error, process the data which will result in bad
-       status since there is nothing to do.  Then advance the pipeline so
-       that the bad status makes it from N-3 to N-2 then to N-2 and
-       then to N. */
-    } else {
-      readyForFiducial = 0;
-      evrPattern(1, &mpsModifier);/* N-3 */
-      evrTime(mpsModifier);       /* N-2 */
-      evrTime(mpsModifier);       /* N-1 */
-      evrTime(mpsModifier);       /* N   */
-      if (status != epicsEventWaitTimeout) {
-        errlogPrintf("evrTask: Exit due to bad status from epicsEventWaitWithTimeout\n");
-        return -1;
-      }
-    }
-
     /* Now do record processing */
     evrMessageStart(EVR_MESSAGE_PATTERN);
-    epicsEventSignal(evrRecordEventSem);
-  }
+    evrRecord();
   return 0;
 }
 
@@ -387,16 +356,9 @@ static int evrTask()
 =============================================================================*/
 static int evrRecord()
 {  
-  for (;;)
-  {
-    if (epicsEventWait(evrRecordEventSem)) {
-      errlogPrintf("evrRecord: Exit due to bad status from epicsEventWait\n");
-      return -1;
-    }
     evrMessageProcess(EVR_MESSAGE_PATTERN);
     evrMessageProcess(EVR_MESSAGE_FIDUCIAL);
     evrMessageEnd(EVR_MESSAGE_PATTERN);
-  }
   return 0;
 }
 
@@ -487,17 +449,9 @@ int evrInitialize()
   /* Create space for the fiducial + diagnostics */
   if (evrMessageCreate(EVR_MESSAGE_FIDUCIAL_NAME, 0) !=
       EVR_MESSAGE_FIDUCIAL) return -1;
-  
-  /* Create the semaphores used by the ISR to wake up the evr tasks */
-  evrTaskEventSem = epicsEventMustCreate(epicsEventEmpty);
-  if (!evrTaskEventSem) {
-    errlogPrintf("evrInitialize: unable to create the EVR task semaphore\n");
-    return -1;
-  }
 
-  evrRecordEventSem = epicsEventMustCreate(epicsEventEmpty);
-  if (!evrRecordEventSem) {
-    errlogPrintf("evrInitialize: unable to create the EVR record task semaphore\n");
+  if (evrTimeInit(0,0)) {
+    errlogPrintf("evrTask: Exit due to bad status from evrTimeInit\n");
     return -1;
   }
 
@@ -516,24 +470,11 @@ int evrInitialize()
   eventTaskQueue = epicsMessageQueueCreate(256, sizeof(EventMessage));
   
   /* Create the processing tasks */
-  if (!epicsThreadCreate("evrTask", epicsThreadPriorityHigh+1,
-                         epicsThreadGetStackSize(epicsThreadStackMedium),
-                         (EPICSTHREADFUNC)evrTask, 0)) {
-    errlogPrintf("evrInitialize: unable to create the EVR task\n");
-    return -1;
-  }
 
   if(!epicsThreadCreate("evrEventTask", epicsThreadPriorityHigh,
                         epicsThreadGetStackSize(epicsThreadStackMedium),
                         (EPICSTHREADFUNC)evrEventTask,0)) {
     errlogPrintf("evrInitialize: unable to create the evrEvent task\n");
-    return -1;
-  }
-
-  if (!epicsThreadCreate("evrRecord", epicsThreadPriorityScanHigh+10,
-                         epicsThreadGetStackSize(epicsThreadStackMedium),
-                         (EPICSTHREADFUNC)evrRecord, 0)) {
-    errlogPrintf("evrInitialize: unable to create the EVR record task\n");
     return -1;
   }
   
@@ -542,9 +483,6 @@ int evrInitialize()
   /* Register the ISR functions in this file with the EVR */
   } else {
     ErRegisterDevDBuffHandler(pCard, (DEV_DBUFF_FUNC)evrSend);
-#if 0
-    ErEnableDBuff            (pCard, 1); // Not for event2!  It's always enabled!
-#endif
 #ifndef NO_DBUF_IRQ
     ErDBuffIrq               (pCard, 1);
 #endif

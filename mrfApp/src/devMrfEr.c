@@ -60,6 +60,7 @@
 /*  If EVR_DEBUG Flag is Defined, Make All Local Routines Globally Callable                       */
 /**************************************************************************************************/
 
+#define USE_TYPED_RSET
 #ifdef EVR_DEBUG
 #define LOCAL_RTN
 #endif

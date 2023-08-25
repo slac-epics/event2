@@ -55,6 +55,7 @@ DEVELOPMENT CENTER AT ARGONNE NATIONAL LABORATORY (708-252-2000).
  *      Date                    06/28/01
  */
 
+#define USE_TYPED_RSET
 #include        <epicsStdio.h>  
 #include        <dbDefs.h>
 #include        <epicsPrint.h>
@@ -100,8 +101,8 @@ rset erRSET={
 	RSETNUMBER,
 	report,
 	initialize,
-	ErInitRec,
-	ErProc,
+	(long(*)())ErInitRec,
+	(long(*)())ErProc,
 	ErSpecial,
 	get_value,
 	cvt_dbaddr,

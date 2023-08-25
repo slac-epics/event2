@@ -351,7 +351,9 @@ struct ErCardStruct {
     char            FormFactor;              /* "VME_EVR" or "PMC_EVR" */
     char            EventCodeDesc[EVR_NUM_EVENTS][MAX_STRING_SIZE+1];   /* Event code description */
     long long       drp;                     /* Last data buffer read pointer */
+    epicsUInt32     lastnsec;                /* Last message nsec value */
     long long       erp;                     /* Next event read pointer */
+    int             havefid;                 /* Have we started receiving fiducials yet? */
     epicsUInt32     FPGAVersion;             /* The board version register */
 };/*ErCardStruct*/
 

@@ -37,6 +37,7 @@
 #include <unistd.h>
 #include <byteswap.h>
 #include "erapi.h"
+#include "fidmath.h"
 
 #define DEVNODE_NAME_BASE	"/dev/er"
 #define DEVNODE_MINOR            '4'
@@ -166,7 +167,8 @@ epicsUInt16 ErEnableIrq_nolock (ErCardStruct *pCard, epicsUInt16 Mask)
 |*
 |*-------------------------------------------------------------------------------------------------
 |* INPUT PARAMETERS:
-|*      pCard     = (ErCardStruct *) Pointer to the Event Receiver card structure.
+|*      fd     = (int) Open fd pointing to the EVR.
+|*      flags  = (int) A mask of interrupt conditions.
 |*
 |*-------------------------------------------------------------------------------------------------
 |* NOTES:
@@ -174,17 +176,16 @@ epicsUInt16 ErEnableIrq_nolock (ErCardStruct *pCard, epicsUInt16 Mask)
 |*   it has to figure out why and who generated an interrupt
 |*
 \**************************************************************************************************/
-int irqCount = 0;
 void ErIrqHandler(int fd, int flags)
 {
 	struct ErCardStruct *pCard;
         struct EvrQueues *pEq;
-	int i;
-	epicsMutexLock(ErCardListLock);
+
+	epicsMutexMustLock(ErCardListLock);
 	for (pCard = (ErCardStruct *)ellFirst(&ErCardList);
 		pCard != NULL;
 		pCard = (ErCardStruct *)ellNext(&pCard->Link)) {
-		epicsMutexLock(pCard->CardLock);
+		epicsMutexMustLock(pCard->CardLock);
 		if(pCard->Slot != fd || pCard->IrqLevel != 1) {
 			epicsMutexUnlock(pCard->CardLock);
 			continue;
@@ -196,70 +197,153 @@ void ErIrqHandler(int fd, int flags)
 
 		pEq = pCard->pEq;
 
-                irqCount++;
+                long long erp      = pCard->erp;
+		long long drp      = pCard->drp;
+		u32 lastnsec       = pCard->lastnsec;
+		int nextEfid = FID_INVALID;
+		int nextDfid = FID_INVALID;
 
-		if(flags & EVR_IRQFLAG_EVENT) {
-                    long long erplimit = pEq->ewp;     /* Pointer to the next! */
-                    long long erp      = pCard->erp;   /* Where we are now. */
-                    if (erp == -1)
-                        erp = erplimit - 1;            /* If just starting, jump to where we are now. */
-                    if (erplimit - erp > MAX_EVR_EVTQ / 2) {
-                        /* Wow, we're far behind! Catch up a bit, but flag an error. */
-                        erp = erplimit - MAX_EVR_EVTQ / 2;
-                        flags |= EVR_IRQFLAG_FIFOFULL;
-                    }
-#if 0
-                    // TODO: How to ensure we callback for event code 1 before other event codes
-                    for( long long ec1Check = erplimit - 1; ec1Check >= erp; ec1Check-- )
-                    {
-                        // TODO: struct FIFOEvent *fe = GetFifoEvent( pEq, erp );
-                        struct FIFOEvent *fe = &pEq->evtq[erp & (MAX_EVR_EVTQ - 1)];
-						if ( fe->EventCode == 1 )
-                        {
-							lastFid = fe->TimestampHigh;
-							break;
-                        }
-                    }
-#endif
-                    for(i=0; erp < erplimit && i < EVR_FIFO_EVENT_LIMIT; erp++) {
-                        struct FIFOEvent *fe = &pEq->evtq[erp & (MAX_EVR_EVTQ - 1)];
-                        if (pCard->ErEventTab[fe->EventCode] & (1 << 15)) {
-                            if (pCard->DevEventFunc != NULL)
-                               (*pCard->DevEventFunc)(pCard, fe->EventCode, fe->TimestampHigh);
-                            i++;
-                        }
-                    }
-                    pCard->erp = erp;
+		/* If just starting or hopelessly behind, jump to where we are now. */
+		if (drp == -1 || pEq->dwp - drp >= 12) {
+		    erp = pEq->ewp - 1;
+		    drp = pEq->dwp - 1;
 		}
 
-                /*
-                 * This should always be here 2ms before the fiducial event.  That said, this means
-                 * that the *next* one comes 0.7ms *after* a fiducial event.  So if we have some
-                 * latency, we're almost always going to have the fiducial interrupt extending over
-                 * into the data buffer time.  So we do the *event* first!
-                 */
-		if(flags & EVR_IRQFLAG_DATABUF) {
-                    long long drp = pEq->dwp - 1; /* Read the latest! */
-                    if (drp != pCard->drp) {
-                        int idx = drp & (MAX_EVR_DBQ - 1);
-                        int databuf_sts = pEq->dbq[idx].status;
+		/*
+		 * OK, the usual sequence of events is:
+		 *     Data buffer for fiducial F+3
+		 *     ~2ms delay
+		 *     Event code 1 with timestamp F
+		 *     Other events with timestamp F+1
+		 *     ~0.7ms delay
+		 *     Data buffer for fiducial F+4
+		 *
+		 * So we want to figure out what to process next... data buffers or events!
+		 * The important decision comes when we get a fiducial!
+		 *
+		 * If dd is a pointer to a databuffer, then:
+		 *     dd[7] is the seconds field of the timestamp.
+		 *     dd[8] is the nanosecond field of the timestamp, the low 17-bits
+		 *     of which are the fiducial count.  
+		 *
+		 * If fe is a pointer to a FIFOEvent, then:
+		 *     TimestampHigh is the seconds field, which at SLAC is used to hold
+		 *     the fiducial count for this event.
+		 */
 
-                        if(databuf_sts & (1<<C_EVR_DATABUF_CHECKSUM)) {
-                            if (pCard->DevErrorFunc != NULL)
-                                (*pCard->DevErrorFunc)(pCard, ERROR_DBUF_CHECKSUM);
-                        } else {
-                            if (pCard->DevDBuffFunc != NULL) {
-                                pCard->DBuffSize = (databuf_sts & ((1<<(C_EVR_DATABUF_SIZEHIGH+1))-1));
-                                memcpy(pCard->DataBuffer, pEq->dbq[idx].data, pCard->DBuffSize);
-                                (*pCard->DevDBuffFunc)(pCard, pCard->DBuffSize, pCard->DataBuffer);
-                            }
-                        }
-                        /* TBD - Check if we skipped some? */
-                        pCard->drp = drp;
-                    } else {
-                        /* We must have skipped one earlier, but caught up? */
-                    }
+#define SET_NEXT_EFID()				                                             \
+		{				                                             \
+		    if (erp < pEq->ewp) {				                     \
+			struct FIFOEvent *fe = &pEq->evtq[erp & (MAX_EVR_EVTQ-1)];           \
+			nextEfid = (fe->TimestampHigh +			                     \
+				    ((fe->EventCode == 1) ? 4 : 3)) % FID_MAX;               \
+		    } else						                     \
+			nextEfid = FID_INVALID;				                     \
 		}
+
+#define SET_NEXT_DFID()                                                                      \
+		{							                     \
+		    if (drp < pEq->dwp) {				                     \
+			u32 *dd = pEq->dbq2[drp & (MAX_EVR_DBQ2-1)].data;                    \
+			nextDfid = dd[8] & 0x1ffff;			                     \
+		    } else						                     \
+			nextDfid = FID_INVALID;				                     \
+	        }
+
+#define HANDLE_EVENT()						                             \
+		{                       					 	     \
+		    struct FIFOEvent *fe = &pEq->evtq[erp & (MAX_EVR_EVTQ-1)];               \
+		    int curFid = (fe->TimestampHigh + 4) % FID_MAX;	                     \
+		    if (fe->EventCode == 1 && curFid != nextEfid) {                          \
+			break;						                     \
+		    };							                     \
+		    erp++;						                     \
+		    if (pCard->ErEventTab[fe->EventCode] & (1 << 15)) {                      \
+			if (fe->EventCode == 1)				                     \
+			    pCard->havefid = 1;                                              \
+			if (pCard->DevEventFunc != NULL)		                     \
+			    (*pCard->DevEventFunc)(pCard, fe->EventCode, fe->TimestampHigh); \
+		    }							                     \
+		}
+
+#define SKIP_DATA()                                                                          \
+		while (drp < pEq->dwp) {					             \
+		    int idx = drp & (MAX_EVR_DBQ2-1);			                     \
+		    int databuf_sts = pEq->dbq2[idx].status;		                     \
+		    u32 *dd = pEq->dbq2[idx].data;				             \
+		    if (databuf_sts & (1<<C_EVR_DATABUF_CHECKSUM)) {                         \
+			if (pCard->DevErrorFunc != NULL)		                     \
+			    (*pCard->DevErrorFunc)(pCard, ERROR_DBUF_CHECKSUM);              \
+			drp++;					                             \
+		    } else if (dd[8] == lastnsec) {				             \
+			drp++;                                                               \
+	            } else						                     \
+			break;						                     \
+		}
+
+#define HANDLE_DATA()                                                                        \
+		{							                     \
+		    int idx = drp & (MAX_EVR_DBQ2-1);			                     \
+		    int databuf_sts = pEq->dbq2[idx].status;		                     \
+		    u32 *dd = pEq->dbq2[idx].data;			                     \
+		    if (pCard->DevDBuffFunc != NULL && pCard->havefid) {		     \
+			pCard->DBuffSize = (databuf_sts &		                     \
+		                            ((1<<(C_EVR_DATABUF_SIZEHIGH+1))-1));	     \
+			memcpy(pCard->DataBuffer, dd, pCard->DBuffSize);                     \
+			(*pCard->DevDBuffFunc)(pCard, pCard->DBuffSize,	pCard->DataBuffer);  \
+	            }								             \
+		    lastnsec = dd[8];					                     \
+		    drp++;						                     \
+		}
+
+		/*
+		 * If we are far behind events, try to catch up, but flag an error!
+		 */
+		if (pEq->ewp - erp > MAX_EVR_EVTQ / 2) {
+		    erp = pEq->ewp - MAX_EVR_EVTQ / 2;
+		    flags |= EVR_IRQFLAG_FIFOFULL;
+		    printf("EVENT FIFO FULL!!\n");
+
+		    /* Now, skip forward to next fiducial event! */
+		    while (erp < pEq->ewp && pEq->evtq[erp & (MAX_EVR_EVTQ-1)].EventCode != 1)
+			erp++;
+		    if (erp < pEq->ewp) /* Skip the fiducial itself! */
+			erp++;
+                }
+
+		SKIP_DATA();   /* Skip if we have duplicates or errors! */
+
+		SET_NEXT_EFID();
+		SET_NEXT_DFID();
+
+		while (erp < pEq->ewp || drp < pEq->dwp) {
+		    /*
+		     * Sigh.  Our macro assumes valid fiducials.  So we need to write the
+		     * comparison carefully.
+		     */
+		    if (nextEfid == FID_INVALID || 
+			(nextDfid != FID_INVALID && FID_GT(nextEfid, nextDfid))) {
+			/* Process a data buffer! */
+			HANDLE_DATA();
+			SKIP_DATA();
+			usleep(1000);
+			SET_NEXT_DFID();
+		    } else {
+			/* Process events until we get to the next fiducial or the end! */
+			while (erp != pEq->ewp) {
+			    HANDLE_EVENT();
+			}
+			SET_NEXT_EFID();
+		    }
+		    if (nextEfid == FID_INVALID)
+			SET_NEXT_EFID();
+		    if (nextDfid == FID_INVALID)
+			SET_NEXT_DFID();
+		}
+
+		pCard->lastnsec = lastnsec;
+		pCard->erp = erp;
+		pCard->drp = drp;
 
 		if(flags & EVR_IRQFLAG_PULSE) {
 			if(pCard->DevEventFunc != NULL)
@@ -323,7 +407,7 @@ static int ErConfigure (
 	void   *pEq;
         u32	FPGAVersion;
 
-	epicsMutexLock(ErCardListLock);
+	epicsMutexMustLock(ErCardListLock);
 	/* If not already done, initialize the driver structures */
 	if (!bErCardListInitDone) {
 		ellInit (&ErCardList);
@@ -337,7 +421,7 @@ static int ErConfigure (
 		return ERROR;
 	}
 	
-	epicsMutexLock(ErConfigureLock);
+	epicsMutexMustLock(ErConfigureLock);
 	for (pCard = (ErCardStruct *)ellFirst(&ErCardList);
 		pCard != NULL;
 		pCard = (ErCardStruct *)ellNext(&pCard->Link)) {
@@ -433,6 +517,8 @@ static int ErConfigure (
 	memset(pCard, 0, sizeof(struct ErCardStruct));
         pCard->drp = -1;
         pCard->erp = -1;
+	pCard->lastnsec = 0xffffffff;
+	pCard->havefid = 0;
 	pCard->Cardno = Card;
 	pCard->CardLock = epicsMutexCreate();
 	if (pCard->CardLock == 0) {
@@ -450,7 +536,7 @@ static int ErConfigure (
 	/* Finish filling the driver structure and configuring the hardware,
 		if this fails we cannot release the linked list link, instead we
 		we set Cardno to an invalid value */
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	pCard->pEq = (void *)pEq;
 	pCard->Slot = fdEvr;	/* we steal this irrelevant field */
         pCard->FPGAVersion = FPGAVersion;
@@ -484,7 +570,7 @@ int ErCheckTaxi(ErCardStruct *pCard)
 {
 	int ret = epicsFalse;
 	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	if (EvrGetViolation(pCard->Slot))
 		ret = epicsTrue;
 	epicsMutexUnlock(pCard->CardLock);
@@ -543,7 +629,7 @@ epicsUInt16 ErEnableIrq (ErCardStruct *pCard, epicsUInt16 Mask)
 {
 	epicsUInt16 ret;
 	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	ret = ErEnableIrq_nolock(pCard, Mask);
 	epicsMutexUnlock(pCard->CardLock);
 	return ret;
@@ -581,7 +667,7 @@ void ErDBuffIrq(ErCardStruct *pCard, int Enable)
 {
 	int mask;
 	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	mask = pCard->IrqVector;
 	if (Enable)
 		mask |= EVR_IRQFLAG_DATABUF;
@@ -611,7 +697,7 @@ void ErEventIrq(ErCardStruct *pCard, int Enable)
 {
 	int mask;
 	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	mask = pCard->IrqVector;
 	if (Enable) {
 		mask |= EVR_IRQFLAG_EVENT | EVR_IRQFLAG_FIFOFULL;
@@ -714,7 +800,7 @@ int ErGetRamStatus(ErCardStruct *pCard, int RamNumber)
 {
 	epicsUInt32 ctrl;
 	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	ctrl = READ_EVR_REGISTER(pCard->Slot, Control);
 	epicsMutexUnlock(pCard->CardLock);
 	return ((ctrl>>C_EVR_CTRL_MAP_RAM_SELECT) & 1) == (RamNumber-1) ? 
@@ -745,7 +831,7 @@ int	ErAcquireTrigger( ErCardStruct * pCard,	unsigned int iTrig, unsigned int fAc
 	if ( iTrig >= MAX_DG )
 		return EINVAL;
 
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	eit.Id = iTrig;
 	if ( fAcquire )
 		eit.Op = EvrTrigAlloc;
@@ -800,7 +886,7 @@ int ErCheckTrigger( ErCardStruct * pCard, unsigned int iTrig )
 	if ( iTrig >= MAX_DG )
 		return 0;
 
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	eit.Id = iTrig;
 	eit.Op = EvrTrigCheck;
 	if ( ioctl( pCard->Slot, EV_IOCTRIG, &eit ) != 0 )
@@ -861,7 +947,7 @@ epicsStatus ErGetTicks(int Card, epicsUInt32 *Ticks)
 
 	if(pCard == NULL)
 		return ERROR;
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	*Ticks = (epicsUInt32)EvrGetTimestampCounter(pCard->Slot);
 	epicsMutexUnlock(pCard->CardLock);
 	return OK;
@@ -925,7 +1011,7 @@ void ErRegisterDevDBuffHandler (ErCardStruct *pCard, DEV_DBUFF_FUNC DBuffFunc)
 \**************************************************************************************************/
 void ErResetAll(ErCardStruct *pCard)
 {	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	ErEnableIrq_nolock(pCard, EVR_IRQ_OFF);
 	epicsMutexUnlock(pCard->CardLock);
 	return;
@@ -972,7 +1058,7 @@ int ErSetDg(ErCardStruct *pCard, int Channel, int Enable,
 				Channel, Prescaler, Delay, Width,
 				( Pol ? "Inv" : "Nml" )	);
 
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	if(Enable) {
             status = EvrSetPulseParams(pCard->Slot, Channel, Prescaler, Delay, Width, Pol, 1);
 	} else {
@@ -1000,7 +1086,7 @@ void ErTaxiIrq(ErCardStruct *pCard, int Enable)
 {
 	int mask;
 	
-	epicsMutexLock(pCard->CardLock);
+	epicsMutexMustLock(pCard->CardLock);
 	mask = pCard->IrqVector;
 	if (Enable)
 		mask |= EVR_IRQFLAG_VIOLATION;

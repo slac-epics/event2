@@ -7,6 +7,7 @@
 #include <signal.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <x86intrin.h>
 #include "evrIrqHandler.h"
 #include "erapi.h"
 
@@ -17,34 +18,48 @@ int irqCount = 0;
 long long mydrp = -1;
 long long myerp = -1;
 u16 ErEventTab[256];
+int noI = 0;
+long long lasttsc = 0;
+
+#define	read_tsc(tscVal) (tscVal) = _rdtsc()
+
+double ms_per_tick = 1.0L / 2400148.L;
 
 void ErIrqHandler(int fd, int flags)
 {
     int i;
     irqCount++;
 
-    printf("I%08x\n", flags);
+    if (!noI) {
+        long long tsc;
+        read_tsc(tsc);
+        printf("I %5.3lf %08x\n", (tsc - lasttsc) * ms_per_tick, flags);
+        lasttsc = tsc;
+    }
 
     /* This should always be here 2ms before the fiducial event */
     if(flags & EVR_IRQFLAG_DATABUF) {
-        long long drp = pEq->dwp - 1; /* Read the latest! */
-        if (drp != mydrp) {
-            int idx = drp & (MAX_EVR_DBQ - 1);
-            int databuf_sts = pEq->dbq[idx].status;
+        long long lastdrp = pEq->dwp - 1; /* Read the latest! */
+	long long drp;
+	if (mydrp == -1)
+	    mydrp = lastdrp - 1;
+	for (drp = mydrp + 1; drp <= lastdrp; drp++) {
+            int idx = drp & (MAX_EVR_DBQ2 - 1);
+            int databuf_sts = pEq->dbq2[idx].status;
 
             if(databuf_sts & (1<<C_EVR_DATABUF_CHECKSUM)) {
-                putchar('C');
+                printf("C%d\n", idx);
             } else {
-                u32 *dd = pEq->dbq[idx].data;
-                printf("D%d: %08x %08x.%08x\n", idx, dd[0], dd[7], dd[8]);
+                u32 *dd = pEq->dbq2[idx].data;
+                printf("D%02d: %08x %08x.%08x\n", idx, dd[0], dd[7], dd[8]);
 #if 0
                 pCard->DBuffSize = (databuf_sts & ((1<<(C_EVR_DATABUF_SIZEHIGH+1))-1));
-                memcpy(pCard->DataBuffer, pEq->dbq[idx].data, pCard->DBuffSize);
+                memcpy(pCard->DataBuffer, pEq->dbq2[idx].data, pCard->DBuffSize);
 #endif
             }
         }
         /* TBD - Check if we skipped some? */
-        mydrp = drp;
+        mydrp = lastdrp;
     } else {
         /* We must have skipped one earlier, but caught up? */
     }
@@ -117,9 +132,12 @@ int main(int argc,char *argv[])
     int dbuf = 0;
     int i;
     void *mem;
+    char *dev = getenv("EVRNAME");
 
     memset(ErEventTab, 0, sizeof(ErEventTab));
-    fd = EvrOpen(&mem, "/dev/era4");
+    dev = dev ? dev : "/dev/era4";
+    printf("Opening %s.\n", dev);
+    fd = EvrOpen(&mem, dev);
     pEq = (struct EvrQueues *) mem;
     if (fd < 0) {
         perror("evrTest");
@@ -132,7 +150,15 @@ int main(int argc,char *argv[])
             if (argv[i][0] == '-') {
                 if (argv[i][1] == 'd')
                     dbuf = EVR_IRQFLAG_DATABUF;
-                else {
+                else if (argv[i][1] == 'i')
+                    noI = 1;
+                else if (argv[i][1] == 'h') {
+                    printf("event2Test [ -d ] [ -i ] N1 N2...\n");
+                    printf("    where -d = use data buffers\n");
+                    printf("          -i = don't print IRQ entry\n");
+                    printf("          Nn = event code to enable\n");
+                    exit(0);
+                } else {
                     printf("Unknown argument: %s\n", argv[i]);
                 }
             } else if (argv[i][0] >= '0' && argv[i][0] <= '9') {

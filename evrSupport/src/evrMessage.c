@@ -27,6 +27,7 @@
 
 =============================================================================*/
 
+#define USE_TYPED_RSET
 #include <stddef.h>             /* size_t                      */
 #include <string.h>             /* strcmp                      */
 #include <stdio.h>              /* printf                      */

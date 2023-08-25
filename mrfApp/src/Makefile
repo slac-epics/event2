@@ -101,6 +101,7 @@ OBJS_IOC_vxWorks 	+= $(drvEvent2_OBJS)
 # Install include files
 #
 INC += mrfCommon.h
+INC += fidmath.h
 # INC += mrfVme64x.h
 
 #INC += drvMrfEr.h

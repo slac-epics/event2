@@ -20,6 +20,7 @@
  *      Date:            7-14-89 
  */
 
+#define USE_TYPED_RSET
 #define _ISOC99_SOURCE
 #include <math.h>
 #include <stddef.h>
@@ -69,15 +70,15 @@ rset bsacompressRSET={
 	RSETNUMBER,
 	report,
 	initialize,
-	init_record,
-	process,
+	(long (*)()) init_record,
+	(long (*)()) process,
 	special,
 	get_value,
 	cvt_dbaddr,
 	get_array_info,
 	put_array_info,
 	get_units,
-	get_precision,
+	(long (*)()) get_precision,
 	get_enum_str,
 	get_enum_strs,
 	put_enum_str,
