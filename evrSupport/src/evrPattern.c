@@ -200,10 +200,13 @@ int evrPattern(int fidMsgTimedOut, epicsUInt32 *mpsModifier_p)
     } else {
       pattern_ps->time = prevTime;
     }
-    evrTimePutPulseID(&pattern_ps->time, PULSEID_INVALID);
     if ( ErDebug >= 5 ) {
-        printf("Recvd invalid evr pattern.\n");fflush(stdout);
+        printf("Recvd invalid evr pattern: %d.%09d (%08x.%08x)\n",
+	       pattern_ps->time.secPastEpoch, pattern_ps->time.nsec,
+	       pattern_ps->time.secPastEpoch, pattern_ps->time.nsec);
+	fflush(stdout);
     }
+    evrTimePutPulseID(&pattern_ps->time, PULSEID_INVALID);
     if (epicsTimeDiffInSeconds(&currentTime, mod720time_ps) > MODULO720_SECS)
       pattern_ps->modifier_a[MOD1_IDX] |= MODULO720_MASK;
   } else {
