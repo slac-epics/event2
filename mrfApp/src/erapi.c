@@ -37,6 +37,7 @@ extern void EvrIrqHandlerThreadCreate(void (**handler) (int, int), int);
 */
 
 #define DEBUG_PRINTF printf
+int evr_new_dbq = 1; /* A hidden global variable to allow using the "old" driver DBQ. */
 
 int EvrOpen(void **pEq, char *device_name)
 {
@@ -54,7 +55,7 @@ int EvrOpen(void **pEq, char *device_name)
   else
   {
       /* Memory map Event Receiver registers */
-      *pEq = (void *) mmap(0, EVR_SH_MEM_WINDOW, PROT_READ, MAP_SHARED, fd, 0);
+      *pEq = (void *) mmap(0, evr_new_dbq ? EVR_SH_MEM_WINDOW : EVR_SH_MEM_WINDOW_OLD, PROT_READ, MAP_SHARED, fd, 0);
 #ifdef DEBUG
       DEBUG_PRINTF("EvrOpen: mmap returned %p, errno %d\n", *pEq,
                    errno);

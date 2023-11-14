@@ -21,7 +21,7 @@
 # ==========================================================
 MISCUTILS_MODULE_VERSION	= R2.2.4
 DIAG_TIMER_MODULE_VERSION	= R1.9.2.1
-EV2_DRIVER_MODULE_VERSION	= R1.0.3
+EV2_DRIVER_MODULE_VERSION	= R1.0.5
 TIMING_API_MODULE_VERSION	= R0.10
 
 # ==========================================================

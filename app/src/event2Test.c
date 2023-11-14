@@ -39,6 +39,8 @@ void ErIrqHandler(int fd, int flags)
 {
     int i;
     irqCount++;
+    int dbq_mask = (evr_new_dbq ? MAX_EVR_DBQ2 : MAX_EVR_DBQ) - 1;
+    struct DBufInfo *dbq = evr_new_dbq ? pEq->dbq2 : pEq->dbq;
 
     if (!noI) {
         long long tsc;
@@ -54,17 +56,17 @@ void ErIrqHandler(int fd, int flags)
 	if (mydrp == -1)
 	    mydrp = lastdrp - 1;
 	for (drp = mydrp + 1; drp <= lastdrp; drp++) {
-            int idx = drp & (MAX_EVR_DBQ2 - 1);
-            int databuf_sts = pEq->dbq2[idx].status;
+            int idx = drp & dbq_mask;
+            int databuf_sts = dbq[idx].status;
 
             if(databuf_sts & (1<<C_EVR_DATABUF_CHECKSUM)) {
                 printf("C%d\n", idx);
             } else {
-                u32 *dd = pEq->dbq2[idx].data;
+                u32 *dd = dbq[idx].data;
                 printf("D%02d: %08x %08x.%08x\n", idx, dd[0], dd[7], dd[8]);
 #if 0
                 pCard->DBuffSize = (databuf_sts & ((1<<(C_EVR_DATABUF_SIZEHIGH+1))-1));
-                memcpy(pCard->DataBuffer, pEq->dbq2[idx].data, pCard->DBuffSize);
+                memcpy(pCard->DataBuffer, dbq[idx].data, pCard->DBuffSize);
 #endif
             }
         }
@@ -106,7 +108,6 @@ void ErIrqHandler(int fd, int flags)
     if(flags & EVR_IRQFLAG_VIOLATION) {
         putchar('V');
     }
-    putchar('\n');
     fflush(stdout);
     return;
 }
@@ -138,12 +139,40 @@ void ErSetEvent(int id, int enable)
 
 int main(int argc,char *argv[])
 {
-    int haveevent = 0;
     int dbuf = 0;
     int i;
     void *mem;
     char *dev = getenv("EVRNAME");
+    int events[255];
+    int evcnt = 0;
 
+    if (argc > 1) {
+        for (i = 1; i < argc; i++) {
+            if (argv[i][0] == '-') {
+                if (argv[i][1] == 'd')
+                    dbuf = EVR_IRQFLAG_DATABUF;
+                else if (argv[i][1] == 'i')
+                    noI = 1;
+                else if (argv[i][1] == 'o')
+                    evr_new_dbq = 0;
+                else if (argv[i][1] == 'h') {
+                    printf("event2Test [ -d ] [ -o ] [ -i ] N1 N2...\n");
+                    printf("    where -d = use data buffers\n");
+                    printf("          -i = don't print IRQ entry\n");
+		    printf("          -o = use old dbq (for old evr_device drivers)\n");
+                    printf("          Nn = event code to enable\n");
+                    exit(0);
+                } else {
+                    printf("Unknown argument: %s\n", argv[i]);
+                }
+            } else if (argv[i][0] >= '0' && argv[i][0] <= '9') {
+                int event = atoi(argv[i]);
+                printf("Enabling event %d.\n", event);
+                events[evcnt++] = event;
+            } else
+                printf("Unknown argument: %s\n", argv[i]);
+        }
+    }
     memset(ErEventTab, 0, sizeof(ErEventTab));
     dev = dev ? dev : "/dev/era4";
     printf("Opening %s.\n", dev);
@@ -155,33 +184,11 @@ int main(int argc,char *argv[])
     }
     EvrIrqAssignHandler(fd, ErIrqHandler);
 
-    if (argc > 1) {
-        for (i = 1; i < argc; i++) {
-            if (argv[i][0] == '-') {
-                if (argv[i][1] == 'd')
-                    dbuf = EVR_IRQFLAG_DATABUF;
-                else if (argv[i][1] == 'i')
-                    noI = 1;
-                else if (argv[i][1] == 'h') {
-                    printf("event2Test [ -d ] [ -i ] N1 N2...\n");
-                    printf("    where -d = use data buffers\n");
-                    printf("          -i = don't print IRQ entry\n");
-                    printf("          Nn = event code to enable\n");
-                    exit(0);
-                } else {
-                    printf("Unknown argument: %s\n", argv[i]);
-                }
-            } else if (argv[i][0] >= '0' && argv[i][0] <= '9') {
-                int event = atoi(argv[i]);
-                printf("Enabling event %d.\n", event);
-                ErSetEvent(event, 1);
-                haveevent = 1;
-            } else
-                printf("Unknown argument: %s\n", argv[i]);
-        }
-    }
-    if (!haveevent)
+    if (!evcnt)
         ErSetEvent(46, 1); /* 0.5 Hz */
+    else
+	for (i = 0; i < evcnt; i++)
+	    ErSetEvent(events[i], 1);
     ErEnableIrq(EVR_IRQFLAG_EVENT | dbuf);
     ErUpdateRam();
 
