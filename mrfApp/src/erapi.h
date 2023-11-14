@@ -21,3 +21,4 @@ int EvrSetPulseParams(int fd, int pulse, u32 presc, u32 delay, u32 width,
 void EvrDumpPulses(int fd, int pulses);
 void EvrIrqAssignHandler(int fd, void (*handler)(int, int));
 int EvrGetTimestampCounter(int fd);
+extern int evr_new_dbq;
