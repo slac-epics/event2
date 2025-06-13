@@ -1,6 +1,9 @@
 #
 # RELEASE_NOTES
 #
+R6.0.3  2025-06-13 Jeremy Lorelli
+    Update to miscUtils/R2.2.5
+
 R5.6.0	2022-11-22 Bruce Hill
 	Build w/ timingApi/R0.9 and diagTimer/R1.9.2.1
 	Additional diags for timing FIFO empty warning
