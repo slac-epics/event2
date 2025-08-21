@@ -1,8 +1,28 @@
 #
 # RELEASE_NOTES
 #
+R6.0.4  2025-08-21 Bruce Hill
+    Update to timingApi/R0.11
+
 R6.0.3  2025-06-13 Jeremy Lorelli
     Update to miscUtils/R2.2.5
+
+R6.0.2	2023-11-13 Michael Browne
+	Give more debugging info about invalid pattern.
+	Added ability to use the old linux ev2_driver.
+
+R6.0.1 2023-08-25 Michael Browne
+	Go back to roll-your-own asm, as x86intrin.h isn't available on RHEL5.
+
+R6.0.0 2023-08-25 Michael Browne
+	Use epicsMutexMustLock instead of just epicsMutexLock.
+	Delete unused irqCount.
+	Break out fiducial-related defines into a separate include file.
+	Use intrinsic rather than roll-your-own asm code.
+	Update to use new queue.
+	Eliminate evrTask/evrRecord threads and just call the routines directly.
+	Modify IRQ handler to strictly alternate fiducials and data buffers.
+	USE_TYPED_RSETize the world.
 
 R5.6.0	2022-11-22 Bruce Hill
 	Build w/ timingApi/R0.9 and diagTimer/R1.9.2.1
