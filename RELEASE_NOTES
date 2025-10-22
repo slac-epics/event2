@@ -1,6 +1,9 @@
 #
 # RELEASE_NOTES
 #
+R6.0.5  2025-10-21 Bruce Hill
+    Update to diagTimer/R1.9.4
+
 R6.0.4  2025-08-21 Bruce Hill
     Update to timingApi/R0.11
 
